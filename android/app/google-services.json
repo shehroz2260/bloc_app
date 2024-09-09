@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "323336714804",
+    "project_id": "chat-app-bloc-c3ea9",
+    "storage_bucket": "chat-app-bloc-c3ea9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323336714804:android:65710828563a5c41c8e861",
+        "android_client_info": {
+          "package_name": "com.cht.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCedk5PHV485DRBoSbJijdjXTqbJ2p-MZg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
