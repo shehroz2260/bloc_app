@@ -1,6 +1,7 @@
 import 'package:chat_with_bloc/model/filter_model.dart';
 import 'package:chat_with_bloc/repos/filter_repo.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
+import 'package:chat_with_bloc/utils/loading_dialog.dart';
 import 'package:chat_with_bloc/view_model/home_bloc/home_bloc.dart';
 import '../home_bloc/home_event.dart';
 import 'filter_event.dart';
@@ -32,9 +33,11 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
   }
 
   _onApplyFilter(OnAppLyFilter event ,Emitter<FilterState>emit)async{
+    LoadingDialog.showProgress(event.context);
    FilterModel filterModel = FilterModel(minAge: state.minAge.toInt(), maxAge: state.maxAge.toInt(), intrestedIn: state.gender, distance: state.radius);
 await  FilterRepo.setFilter(filterModel, event.context);
 event.context.read<HomeBloc>().add(ONINITEvent());
+    LoadingDialog.hideProgress(event.context);
 Go.back(event.context);
   }
 }

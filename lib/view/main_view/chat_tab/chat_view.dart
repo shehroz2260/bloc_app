@@ -1,4 +1,6 @@
 import 'package:chat_with_bloc/src/go_file.dart';
+import 'package:chat_with_bloc/src/width_hieght.dart';
+import 'package:chat_with_bloc/view/main_view/chat_tab/video_call/video_calling_page.dart';
 import 'package:chat_with_bloc/view_model/chat_bloc/chat_bloc.dart';
 import 'package:chat_with_bloc/view_model/chat_bloc/chat_event.dart';
 import 'package:chat_with_bloc/view_model/chat_bloc/chat_state.dart';
@@ -7,6 +9,7 @@ import 'package:chat_with_bloc/widgets/user_detail_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../model/user_model.dart';
+import '../../../src/app_colors.dart';
 import '../../../widgets/app_cache_image.dart';
 import '../../../widgets/chat_bubble.dart';
 import '../../../widgets/custom_text_field.dart';
@@ -40,6 +43,7 @@ class _ChatScreenState extends State<ChatScreen> {
   context.read<ChatBloc>().add(InitiaLizeAudioController());
     super.initState();
   }
+  Signaling signaling = Signaling();
   ChatBloc? ancestorContext;
   @override
   void didChangeDependencies() {
@@ -51,7 +55,6 @@ class _ChatScreenState extends State<ChatScreen> {
    ancestorContext!.add(ClearData());
     super.dispose();
   }
-  
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
@@ -60,32 +63,46 @@ class _ChatScreenState extends State<ChatScreen> {
         builder: (context,state) {
           return Column(
             children: [
-              GestureDetector(
-                onTap: ()=> Go.to(context, ProfilePage(user: widget.model)),
-                child: Container(
-                  width: mediaQuery.width,
-                  color: Colors.green.withOpacity(0.5),
-                  alignment: Alignment.center,
-                  height: 100,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child:  Row(
-                    children: [
+              Container(
+                width: mediaQuery.width,
+                color: Colors.green.withOpacity(0.5),
+                alignment: Alignment.center,
+                height: 100,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child:  Row(
+                  children: [
+                    GestureDetector(
+                      onTap: ()=> Go.back(context),
+                      child: const SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: Icon(Icons.arrow_back_ios_new))),
+                     const AppWidth(width: 20),
+                     GestureDetector(
+                      onTap: () {
+                        Go.to(context, ProfilePage(user: widget.model));
+                      },
+                       child: Row(
+                         children: [
+                           AppCacheImage(imageUrl: widget.model.profileImage,height: 50,width: 50,round: 50),
+                            const SizedBox(width: 10),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(widget.model.name),
+                              Text(widget.model.email),
+                              ],
+                            ),
+                         ],
+                       ),
+                     ),
                       GestureDetector(
-                        onTap: ()=> Go.back(context),
-                        child: const Icon(Icons.arrow_back_ios_new)),
-                        const SizedBox(width: 10),
-                       AppCacheImage(imageUrl: widget.model.profileImage,height: 50,width: 50,round: 50,),
-                        const SizedBox(width: 10),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(widget.model.name),
-                          Text(widget.model.email),
-                          ],
-                        )
-                    ],
-                  ),
+                        onTap: (){
+                         Go.to(context,  MyHomePage(threadId: createThreadId(),isCreateRoom: true,roomId: "",userModel: widget.model,));
+                        },
+                        child: Icon(Icons.video_call,color: AppColors.whiteColor,size: 40,))
+                  ],
                 ),
               ),
               state.isLoading?
@@ -100,7 +117,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
                   itemBuilder: (context, index){
                     var data = state.messageList[index];
-                    return ChatBubble(data: data,showTime: index == state.messageList.length-1 ||state.messageList[index]
+                    return ChatBubble(userModel: widget.model, data: data,showTime: index == state.messageList.length-1 ||state.messageList[index]
             .messageTime
             .difference(state.messageList[index + 1].messageTime)
             .inHours >

@@ -1,6 +1,7 @@
 import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/view/main_view/home_tab/filter_view.dart';
+// import 'package:chat_with_bloc/view/main_view/home_tab/filter_view.dart';
 import 'package:chat_with_bloc/view_model/home_bloc/home_bloc.dart';
 import 'package:chat_with_bloc/view_model/home_bloc/home_event.dart';
 import 'package:chat_with_bloc/view_model/home_bloc/home_state.dart';
@@ -53,9 +54,133 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
           const AppHeight(height: 20),
+               if(state.isLoading )
+          Expanded(child: Center(
+            child: CircularProgressIndicator(color: AppColors.blueColor),
+          )),
+          if(!state.isLoading && state.userList.isEmpty)
+          Expanded(child: Center(
+            child: Text("There is no users",style: AppTextStyle.font16),
+          )),
+          if(!state.isLoading && state.userList.isNotEmpty)
           ...List.generate(state.userList.length, (index){
             return Text(state.userList[index].name,style: AppTextStyle.font16,);
           })
+          //  PageView.builder(
+          //       controller: PageController(),
+          //       scrollDirection: Axis.vertical,
+          //       itemCount: state.userList.length,
+          //       itemBuilder: (context, index) {
+          //         var user = state.userList[index];
+          //         return Padding(
+          //           padding: const EdgeInsets.symmetric(horizontal: 20),
+          //           child: AnimatedSwitcher(
+          //             transitionBuilder: (child, animation) {
+          //               return SlideTransition(
+          //                   position: Tween<Offset>(
+          //                           begin: const Offset(0, 1),
+          //                           end: const Offset(0, 0))
+          //                       .animate(animation),
+          //                   child: child);
+          //             },
+          //             duration: const Duration(milliseconds: 200),
+          //             child: Dismissible(
+          //               movementDuration: const Duration(milliseconds: 1),
+          //               resizeDuration: const Duration(milliseconds: 1),
+          //               onUpdate: (details) {
+          //                 if (details.direction == DismissDirection.startToEnd &&
+          //                     details.progress >= 0.4) {
+                           
+          //                 }
+          //                 if (details.direction == DismissDirection.endToStart &&
+          //                     details.progress >= 0.4) {
+                          
+          //                 }
+          //               },
+          //               onDismissed: (direction) async {
+          //                 context.read<HomeBloc>().add(RemoveUserFromList(userModel: user));
+          //                 if (direction == DismissDirection.startToEnd) {
+          //                   // controller.likeUser(user);
+          //                 }
+          //                 if (direction == DismissDirection.endToStart) {
+          //                   // controller.disLikeUser(user);
+          //                 }
+          //               },
+          //               key: ValueKey(state.userList[index]),
+          //               child: Column(
+          //                 crossAxisAlignment: CrossAxisAlignment.start,
+          //                 children: [
+          //                   Expanded(
+          //                     child: AppCacheImage(
+          //                       onTap: () {
+          //                         // Go.to(context,
+          //                         //    PreviewScreen(
+          //                         //           users: [
+          //                         //             controller.users[index].imageUrl ??
+          //                         //                 "",
+          //                         //             ...(controller.users[index]
+          //                         //                     .galleryImages ??
+          //                         //                 [])
+          //                         //           ],
+          //                         //         ),
+          //                         //     arguments: {"index": 0});
+          //                       },
+          //                       imageUrl: user.profileImage,
+          //                       width: double.infinity,
+          //                       height: MediaQuery.of(context).size.height * 0.75,
+          //                       round: 25,
+          //                     ),
+          //                   ),
+          //                   const SizedBox(height: 13),
+          //                   RichText(
+          //                       text: TextSpan(children: [
+          //                     TextSpan(
+          //                       text: "${user.name }, ",
+          //                       style:  AppTextStyle.font16,
+          //                     ),
+          //                     TextSpan(
+          //                       text: '${user.age}',
+          //                       style: AppTextStyle.font16,
+          //                     ),
+          //                   ])),
+          //                   const SizedBox(height: 8),
+          //                   // SingleChildScrollView(
+          //                   //   scrollDirection: Axis.horizontal,
+          //                   //   child: Row(
+          //                   //     children: [
+          //                   //       ...(user.selectedInterestList ?? []).map(
+          //                   //         (e) => Row(children: [
+          //                   //           Container(
+          //                   //             padding: const EdgeInsets.symmetric(
+          //                   //                 horizontal: 10, vertical: 6),
+          //                   //             decoration: BoxDecoration(
+          //                   //               color: AppColors.purple,
+          //                   //               borderRadius: BorderRadius.circular(38),
+          //                   //             ),
+          //                   //             child: Text(
+          //                   //               PreferencesScreenController()
+          //                   //                       .interestList[int.parse(e)]
+          //                   //                   ['trailing'],
+          //                   //               style: const TextStyle(
+          //                   //                   color: AppColors.white,
+          //                   //                   fontSize: 12,
+          //                   //                   fontFamily: AppFonts.interRegular),
+          //                   //             ),
+          //                   //           ),
+          //                   //           const SizedBox(width: 7),
+          //                   //         ]),
+          //                   //       ),
+          //                   //     ],
+          //                   //   ),
+          //                   // ),
+          //                   const SizedBox(height: 15),
+                           
+          //                 ],
+          //               ),
+          //             ),
+          //           ),
+          //         );
+          //       }),
         ]);
       },
     );

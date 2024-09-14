@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:audio_waveforms/audio_waveforms.dart';
@@ -12,13 +13,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chat_with_bloc/utils/app_funcs.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import '../../model/char_model.dart';
 import 'chat_event.dart';
 import 'chat_state.dart';
-
+import 'package:http/http.dart' as http;
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   DocumentSnapshot? lastDocument;
   Timer? _timer;
@@ -30,6 +32,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<OnChangeTextField>(_onTextFieldChange);
     on<ChatListener>(_messageListener);
     on<SendMessage>(_onSendMessage);
+    on<DownloadMedia>(_downloadAndSaveMedia);
     on<StartTimer>(_startTimer);
     on<InitiaLizeAudioController>(_onInitializeAudio);
     on<StartOrStopRecording>(_onStartorStopRecording);
@@ -80,7 +83,9 @@ url = await FirebaseStorageService().uploadImage("Chat/Video/${AppFuncs.generate
 thumbUrl = await FirebaseStorageService().uploadImage("Chat/thumbnail/${AppFuncs.generateRandomString(10)}", state.thumbnail?.path??"");
 }
   ChatModel model  = ChatModel(id: AppFuncs.generateRandomString(15), threadId: event.threadId, message: event.textEditingController.text, messageTime: DateTime.now(), senderId: event.context.read<UserBaseBloc>().state.userData.uid, isRead: false,media: (url??"").isEmpty?null: MediaModel(type: MediaType.type, id: AppFuncs.generateRandomString(15), url: url??"", createdAt: DateTime.now(), name: "",thumbnail: thumbUrl));
-  
+  if(event.isForVc){
+    model = model.copyWith(media: MediaModel(type: 5, id: AppFuncs.generateRandomString(15), url: "url", createdAt: DateTime.now(), name: ""));
+  }
   try{
 await FirebaseFirestore.instance.collection("thread").doc(event.threadId).collection(ChatModel.tableName).doc(model.id).set(model.toMap());
 event.textEditingController.clear();
@@ -277,5 +282,60 @@ _onChatListenerStream(ChatListenerStream event , Emitter<ChatState>emit){
     lastDocument = null;
     await subs?.cancel();
     emit(state.copyWith(limit: 20,messageList: [],audioUrl: "",duration: Duration.zero,isLoading: false,isRecording: false,messageSending: false,pickFile: null,text: "",thumbnail: null));
+  }
+
+  _downloadAndSaveMedia(DownloadMedia event , Emitter<ChatState>emit)async{
+          log("^^^^^^^^^^^^^^^^^^");
+
+             await Permission.storage.request();
+        final photoStatus  = await Permission.phone.request();
+        final videoStatus  = await Permission.videos.request();
+        final medialibrary = await Permission.mediaLibrary.request();
+          log("^^^^^^^^^^^^^^^^^^storage$medialibrary");
+    if (!medialibrary.isGranted) {
+          log("^^^^^^^^^^^^^^^^^^storage$medialibrary");
+          log("^^^^^^^^^^^^^^^^^^photo$photoStatus");
+          log("^^^^^^^^^^^^^^^^^^video$videoStatus");
+
+      return;
+    }
+     try {
+      final response = await http.get(Uri.parse(event.chat.media?.url??""));
+      log("^^^^^^^^^^^^^^^^^^$response");
+      if (response.statusCode == 200) {
+        if ((event.chat.media?.type??0) == MediaType.image) {
+          final result = await ImageGallerySaver.saveImage(
+            response.bodyBytes,
+            quality: 100,
+          );
+          if (result != null && result['isSuccess']) {
+            showOkAlertDialog(context: event.context,message: "Image save to gallery",title: "Download media");
+          } else {
+            showOkAlertDialog(context: event.context,message: "Failed to save image",title: "Download media");
+
+          }
+        } else if ((event.chat.media?.type??0) == MediaType.video) {
+          final directory = await getTemporaryDirectory();
+          final filePath = '${directory.path}/${DateTime.now().millisecondsSinceEpoch}.mp4';
+          final file = File(filePath);
+          await file.writeAsBytes(response.bodyBytes);
+
+          final result = await ImageGallerySaver.saveFile(filePath);
+          if (result != null && result['isSuccess']) {
+            showOkAlertDialog(context: event.context,message: "Video saved to gallery",title: "Download media");
+
+          } else {
+            showOkAlertDialog(context: event.context,message: "Failed to save video",title: "Download media");
+
+          }
+        }
+      } else {
+            showOkAlertDialog(context: event.context,message: "Failed to download media",title: "Download media");
+
+      }
+    } catch (e) {
+            showOkAlertDialog(context: event.context,message: e.toString(),title: "Download media");
+
+    }
   }
 }

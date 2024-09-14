@@ -7,12 +7,13 @@ import 'home_event.dart';
 import 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc() : super(HomeState(userList: [])) {
+  HomeBloc() : super(HomeState(userList: [],isLoading: false)) {
     on<ONINITEvent>(_onInitEvent);
+    on<RemoveUserFromList>(_onRemoveUSerFromList);
   }
 
   _onInitEvent(ONINITEvent event, Emitter<HomeState>emit)async{
-    emit(state.copyWith(userList: []));
+    emit(state.copyWith(userList: [],isLoading: true));
     final userList = await GetAllUsers.getAllUser();
     final filterModel = await FilterRepo.getFilter();
     await emit.forEach(Stream.fromIterable(userList), onData: (value){
@@ -21,13 +22,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
        state.userList.add(value);
        return state.copyWith(userList: state.userList);
     });
+    emit(state.copyWith(isLoading: false));
   }
 
     bool applyFilter(UserModel user, FilterModel userFilter) {
-    return (userFilter.maxAge == 100
-            ? userFilter.minAge <= user.age
-            : userFilter.minAge <= user.age && userFilter.maxAge >= user.age) &&
-        userFilter.intrestedIn == 0 || userFilter.intrestedIn == user.gender;
+      bool genderCondition = (userFilter.intrestedIn == 0 || userFilter.intrestedIn == user.gender);
+       bool ageCondition = (userFilter.maxAge == 100)
+        ? userFilter.minAge <= user.age
+        : (userFilter.minAge <= user.age && userFilter.maxAge >= user.age);
+    return ageCondition && genderCondition;
   }
 
+_onRemoveUSerFromList (RemoveUserFromList event , Emitter<HomeState>emit){
+  state.userList.remove(event.userModel);
+emit(state.copyWith(userList: state.userList));
+}
 }

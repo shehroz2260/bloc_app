@@ -7,9 +7,10 @@ abstract class ChatEvent {}
 
 class SendMessage extends ChatEvent {
   final String threadId;
+  final bool isForVc;
   final TextEditingController textEditingController;
   final BuildContext context;
-  SendMessage({required this.threadId,required this.context,required this.textEditingController});
+  SendMessage({required this.threadId,required this.context,required this.textEditingController, this.isForVc = false});
 }
 
 class LoadChat extends ChatEvent {
@@ -76,5 +77,24 @@ class ChatListenerStream extends ChatEvent {
   final ChatModel model;
   ChatListenerStream({
     required this.model,
+  });
+}
+
+
+class DownloadMedia extends ChatEvent {
+  final BuildContext context;
+  final ChatModel chat;
+  DownloadMedia({
+    required this.context,
+    required this.chat
+  });
+}
+
+class DownLoadMediaForApp extends ChatEvent {
+  final BuildContext context;
+  final ChatModel chat;
+  DownLoadMediaForApp({
+    required this.context,
+    required this.chat
   });
 }
