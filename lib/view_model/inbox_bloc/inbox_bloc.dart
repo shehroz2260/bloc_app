@@ -13,6 +13,7 @@ class InboxBloc extends Bloc<InboxEvent, InboxState> {
     on<OnDispose>(_onDispose);
     on<ThreadListener>(_messageListener);
     on<TreadListenerStream>(_onChatListenerStream);
+    on<MessageClearList>(_treadClearList);
   }
 
 
@@ -23,11 +24,11 @@ await subs?.cancel();
 }
 
   StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? subs;
-  Stream<InboxState> _chatListenerStream(ThreadListener event, Emitter<InboxState> emit) async* {
+  Stream<InboxState> _chatListenerStream(ThreadListener event,Emitter<InboxState> emit) async* {
    subs = FirebaseFirestore.instance.collection(ThreadModel.tableName).where("participantUserList",
             arrayContains: event.context.read<UserBaseBloc>().state.userData.uid).snapshots().listen((value)async{
+             add(MessageClearList());
      if (value.docs.isEmpty) return ;
-    // await emit(state.copyWith(threadList: []));
      for(final e in value.docs){
  var chat = ThreadModel.fromMap(e.data());
 var userModel = await NetworkService.getUserDetailById(
@@ -39,7 +40,7 @@ var userModel = await NetworkService.getUserDetailById(
           if ((chat.messageCount ) > 0 &&
               chat.senderId != event.context.read<UserBaseBloc>().state.userData.uid) {
                 state.copyWith(unreadCount: state.unreadCount +1);
-          }     
+          }   
  add(TreadListenerStream(model: chat));
      }
            
@@ -52,8 +53,14 @@ var userModel = await NetworkService.getUserDetailById(
         });
   }
   _onChatListenerStream(TreadListenerStream event , Emitter<InboxState>emit){
-    // emit(state.copyWith(threadList: []));
+    // if(!state.threadList.contains(event.model)){
   state.threadList.add(event.model);
   emit(state.copyWith(threadList: state.threadList));
+    // } 
+
+}
+
+_treadClearList (MessageClearList event , Emitter<InboxState>emit){
+  emit(state.copyWith(threadList: []));
 }
 }

@@ -51,7 +51,7 @@ InboxBloc ancestorContext = InboxBloc();
                   children: List.generate(state.threadList.length, (index) {
                     return GestureDetector(
                       onTap: (){
-                        Go.to(context,ChatScreen(model: state.threadList[index].userDetail!));},
+                        Go.to(context,ChatScreen(model: state.threadList[index]));},
                       behavior: HitTestBehavior.opaque,
                       child: ListTile(
                         leading: AppCacheImage(imageUrl: state.threadList[index].userDetail?.profileImage??"",width: 40,height: 40,round: 40),

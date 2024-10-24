@@ -21,5 +21,7 @@ class TreadListenerStream extends InboxEvent {
   TreadListenerStream({
     required this.model,
   });
-
+}
+class MessageClearList extends InboxEvent{
+  
 }

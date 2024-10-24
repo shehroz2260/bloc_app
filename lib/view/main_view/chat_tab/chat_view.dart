@@ -1,21 +1,21 @@
+import 'package:chat_with_bloc/model/thread_model.dart';
+import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
-import 'package:chat_with_bloc/view/main_view/chat_tab/video_call/video_calling_page.dart';
 import 'package:chat_with_bloc/view_model/chat_bloc/chat_bloc.dart';
 import 'package:chat_with_bloc/view_model/chat_bloc/chat_event.dart';
 import 'package:chat_with_bloc/view_model/chat_bloc/chat_state.dart';
-import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:chat_with_bloc/widgets/user_detail_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../model/user_model.dart';
 import '../../../src/app_colors.dart';
 import '../../../widgets/app_cache_image.dart';
 import '../../../widgets/chat_bubble.dart';
 import '../../../widgets/custom_text_field.dart';
+import 'video_call/video_calling_page.dart';
 
 class ChatScreen extends StatefulWidget {
-  final UserModel model;
+  final ThreadModel model;
   const ChatScreen({super.key, required this.model});
 
   @override
@@ -25,21 +25,17 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final _chatController = TextEditingController();
   ScrollController scrollController = ScrollController();
-  String createThreadId() {
-    final s1 = context.read<UserBaseBloc>().state.userData.uid;
-    final s2 = widget.model.uid;
-  return s1.compareTo(s2) >= 0 ? "${s1}__$s2" : "${s2}__$s1";
-}
+ 
     void onScroll() {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
-     context.read<ChatBloc>().add(LoadChat(thradId: createThreadId()));
+     context.read<ChatBloc>().add(LoadChat(thradId: widget.model.threadId));
     }
   } 
   @override
   void initState() {
     scrollController.addListener(onScroll);
-  context.read<ChatBloc>().add(LoadChat(thradId: createThreadId()));
+  context.read<ChatBloc>().add(LoadChat(thradId: widget.model.threadId));
   context.read<ChatBloc>().add(InitiaLizeAudioController());
     super.initState();
   }
@@ -80,18 +76,18 @@ class _ChatScreenState extends State<ChatScreen> {
                      const AppWidth(width: 20),
                       GestureDetector(
                        onTap: () {
-                        Go.to(context, ProfilePage(user: widget.model));
+                        Go.to(context, ProfilePage(user: widget.model.userDetail??UserModel.emptyModel));
                         },
                         child: Row(
                          children: [
-                           AppCacheImage(imageUrl: widget.model.profileImage,height: 50,width: 50,round: 50),
+                           AppCacheImage(imageUrl: widget.model.userDetail?.profileImage??"",height: 50,width: 50,round: 50),
                             const SizedBox(width: 10),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(widget.model.name),
-                              Text(widget.model.email),
+                                Text(widget.model.userDetail?.name??""),
+                              Text(widget.model.userDetail?.email??""),
                               ],
                             ),
                          ],
@@ -99,7 +95,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                       GestureDetector(
                         onTap: (){
-                         Go.to(context,  MyHomePage(threadId: createThreadId(),isCreateRoom: true,roomId: "",userModel: widget.model,));
+                         Go.to(context,  MyHomePage(threadId: widget.model.threadId,isCreateRoom: true,roomId: "",userModel: widget.model.userDetail??UserModel.emptyModel,));
                         },
                         child: Icon(Icons.video_call,color: AppColors.whiteColor,size: 40,))
                   ],
@@ -119,7 +115,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     var data = state.messageList[index];
                     return ChatBubble(
                       key: UniqueKey(),
-                      userModel: widget.model, data: data,showTime: index == state.messageList.length-1 ||state.messageList[index]
+                      userModel: widget.model.userDetail?? UserModel.emptyModel, data: data,showTime: index == state.messageList.length-1 ||state.messageList[index]
             .messageTime
             .difference(state.messageList[index + 1].messageTime)
             .inHours >
@@ -143,10 +139,10 @@ class _ChatScreenState extends State<ChatScreen> {
                 context.read<ChatBloc>().add(PickFileEvent(context: context));
               },
               sendMessage: state.messageSending ? (){}: (){
-                context.read<ChatBloc>().add(SendMessage(threadId: createThreadId(), context: context,textEditingController: _chatController));
+                context.read<ChatBloc>().add(SendMessage(threadId: widget.model.threadId, context: context,textEditingController: _chatController));
               },
               startOrStopRecording: (){
-                context.read<ChatBloc>().add(StartOrStopRecording(context: context, threadId: createThreadId()));
+                context.read<ChatBloc>().add(StartOrStopRecording(context: context, threadId: widget.model.threadId));
               },
               ),
               const SizedBox(height: 14)
