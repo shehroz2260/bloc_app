@@ -78,11 +78,11 @@ class _ChatScreenState extends State<ChatScreen> {
                         width: 30,
                         child: Icon(Icons.arrow_back_ios_new))),
                      const AppWidth(width: 20),
-                     GestureDetector(
-                      onTap: () {
+                      GestureDetector(
+                       onTap: () {
                         Go.to(context, ProfilePage(user: widget.model));
-                      },
-                       child: Row(
+                        },
+                        child: Row(
                          children: [
                            AppCacheImage(imageUrl: widget.model.profileImage,height: 50,width: 50,round: 50),
                             const SizedBox(width: 10),
@@ -96,7 +96,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             ),
                          ],
                        ),
-                     ),
+                      ),
                       GestureDetector(
                         onTap: (){
                          Go.to(context,  MyHomePage(threadId: createThreadId(),isCreateRoom: true,roomId: "",userModel: widget.model,));
@@ -117,7 +117,9 @@ class _ChatScreenState extends State<ChatScreen> {
 
                   itemBuilder: (context, index){
                     var data = state.messageList[index];
-                    return ChatBubble(userModel: widget.model, data: data,showTime: index == state.messageList.length-1 ||state.messageList[index]
+                    return ChatBubble(
+                      key: UniqueKey(),
+                      userModel: widget.model, data: data,showTime: index == state.messageList.length-1 ||state.messageList[index]
             .messageTime
             .difference(state.messageList[index + 1].messageTime)
             .inHours >

@@ -54,8 +54,7 @@ static const String weAreSettingUpYourProfile = "We are setting up your profile 
 static const String selectPhotosThatExpressYourPersonality = "Select photos that express your personality and show you doing things you love.";
 }
 
-class 
-ErrorStrings {
+class ErrorStrings {
   static String checkInternet = "Please check Internet Connection";
   static const String someThingWentWrong = "some thing went wrong";
   static const String nameReq = "Name is Required";

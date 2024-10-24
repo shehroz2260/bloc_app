@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
@@ -18,6 +17,7 @@ import 'app_cache_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'custom_video_player.dart';
 import 'wave_bubble.dart';
+
 class ChatBubble extends StatelessWidget {
   const ChatBubble({
     super.key,

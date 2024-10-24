@@ -117,6 +117,22 @@ static UserModel get emptyModel {
   int get age {
     return DateTime.now().difference(dob).inDays ~/ 365;
   }
+   bool isLiked(String uid) {
+    if (myLikes.isEmpty) {
+      return false;
+    }
+
+    return myLikes.contains(uid);
+  }
+
+  bool isDisLiked(String uid) {
+    if (myDislikes.isEmpty) {
+      return false;
+    }
+    return myDislikes.contains(uid);
+  }
+
+
   @override
   String toString() {
     return 'UserModel(name: $name, email: $email, uid: $uid, location: $location, lat: $lat, lng: $lng, gender: $gender, preferGender: $preferGender, dob: $dob, profileImage: $profileImage, myLikes: $myLikes, myDislikes: $myDislikes, otherLikes: $otherLikes, otherDislikes: $otherDislikes, matches: $matches)';

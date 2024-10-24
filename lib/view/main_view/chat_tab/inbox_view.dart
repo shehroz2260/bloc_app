@@ -20,8 +20,19 @@ class InboxView extends StatefulWidget {
 class _InboxViewState extends State<InboxView> {
   @override
   void initState() {
-    context.read<InboxBloc>().add(OnInitEvent());
+    context.read<InboxBloc>().add(ThreadListener(context: context));
     super.initState();
+  }
+InboxBloc ancestorContext = InboxBloc();
+  @override
+  void didChangeDependencies() {
+   ancestorContext = MyInheritedWidget(bloc: context.read<InboxBloc>(),child: const SizedBox()).bloc;
+    super.didChangeDependencies();
+  }
+  @override
+  void dispose() {
+   ancestorContext.add(OnDispose());
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -40,12 +51,12 @@ class _InboxViewState extends State<InboxView> {
                   children: List.generate(state.threadList.length, (index) {
                     return GestureDetector(
                       onTap: (){
-                        Go.to(context,ChatScreen(model: state.threadList[index]));},
+                        Go.to(context,ChatScreen(model: state.threadList[index].userDetail!));},
                       behavior: HitTestBehavior.opaque,
                       child: ListTile(
-                        leading: AppCacheImage(imageUrl: state.threadList[index].profileImage,width: 40,height: 40,round: 40),
-                        title: Text(state.threadList[index].name,style: AppTextStyle.font16),
-                        subtitle: Text(state.threadList[index].email,style: AppTextStyle.font16.copyWith(fontSize: 12,color: AppColors.whiteColor.withOpacity(0.7)),),
+                        leading: AppCacheImage(imageUrl: state.threadList[index].userDetail?.profileImage??"",width: 40,height: 40,round: 40),
+                        title: Text(state.threadList[index].userDetail?.name??"",style: AppTextStyle.font16),
+                        subtitle: Text(state.threadList[index].userDetail?.email??"",style: AppTextStyle.font16.copyWith(fontSize: 12,color: AppColors.whiteColor.withOpacity(0.7)),),
                       ),
                     );
                   }),
@@ -56,5 +67,27 @@ class _InboxViewState extends State<InboxView> {
         },
       ),
     );
+  }
+}
+
+
+class MyInheritedWidget extends InheritedWidget {
+  final InboxBloc bloc;
+
+  const MyInheritedWidget({
+    super.key,
+    required this.bloc,
+    required super.child,
+  });
+
+  // Access the BLoC from the widget tree.
+  static MyInheritedWidget? of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<MyInheritedWidget>();
+  }
+
+  @override
+  bool updateShouldNotify(covariant MyInheritedWidget oldWidget) {
+    // Notify when the BLoC changes (not needed here because BLoC is the same).
+    return false;
   }
 }

@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:audio_waveforms/audio_waveforms.dart';
+import 'package:chat_with_bloc/model/thread_model.dart';
 import 'package:chat_with_bloc/repos/chat_repo.dart';
 import 'package:chat_with_bloc/services/firebase_services_storage.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
@@ -87,7 +88,7 @@ thumbUrl = await FirebaseStorageService().uploadImage("Chat/thumbnail/${AppFuncs
     model = model.copyWith(media: MediaModel(type: 5, id: AppFuncs.generateRandomString(15), url: "url", createdAt: DateTime.now(), name: ""));
   }
   try{
-await FirebaseFirestore.instance.collection("thread").doc(event.threadId).collection(ChatModel.tableName).doc(model.id).set(model.toMap());
+await FirebaseFirestore.instance.collection(ThreadModel.tableName).doc(event.threadId).collection(ChatModel.tableName).doc(model.id).set(model.toMap());
 event.textEditingController.clear();
 MediaType.type = 0;
 emit(state.copyWith(messageSending: false, audioUrl: null,
@@ -168,7 +169,9 @@ _onStartorStopRecording(StartOrStopRecording event, Emitter<ChatState>emit)async
     final duration = Duration(seconds: timer.tick);
     add(UpdateTimer(duration: duration));
   });
-}StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? subs;
+}
+
+StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? subs;
   Stream<ChatState> _chatListenerStream(ChatListener event) async* {
    subs = ChatRepo.ref(event.thradId).limit(1).snapshots().listen((value){
      if (value.docs.isEmpty) return ;
