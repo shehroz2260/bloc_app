@@ -12,9 +12,20 @@ import 'preference_event.dart';
 import 'preference_state.dart';
 
 class PreferenceBloc extends Bloc<PreferenceEvent, PreferenceState> {
-  PreferenceBloc() : super(PreferenceState(prefGenders: -1)) {
+  PreferenceBloc() : super(PreferenceState(prefGenders: -1,intrestList: [])) {
     on<PickGenders>(_onPickGender);
     on<OnNextEvent>(_onNext);
+    on<SelectInstrest>(_onSelectIntrst);
+  }
+
+  _onSelectIntrst(SelectInstrest event , Emitter<PreferenceState> emit){
+    if(state.intrestList.contains(event.index)){
+      state.intrestList.remove(event.index);
+      emit(state.copyWith(intrestList: state.intrestList));
+    }else{
+      state.intrestList.add(event.index);
+      emit(state.copyWith(intrestList: state.intrestList));
+    }
   }
 
   _onPickGender(PickGenders event , Emitter<PreferenceState>emit){
@@ -22,12 +33,16 @@ class PreferenceBloc extends Bloc<PreferenceEvent, PreferenceState> {
   }
   _onNext(OnNextEvent event , Emitter<PreferenceState>emit){
     if(state.prefGenders == -1){
-      showOkAlertDialog(context: event.context, message: "Please select on gender",title: "Error");
+      showOkAlertDialog(context: event.context, message: "Please select one gender",title: "Error");
+      return;
+    }
+    if(state.intrestList.isEmpty){
+      showOkAlertDialog(context: event.context, message: "Please select at least one instrest",title: "Error");
       return;
     }
     LoadingDialog.showProgress(event.context);
     var user = event.context.read<UserBaseBloc>().state.userData;
-    user = user.copyWith(preferGender: state.prefGenders);
+    user = user.copyWith(preferGender: state.prefGenders,myInstrest: state.intrestList);
     FilterModel filterModel = FilterModel(minAge: 18, maxAge: 50, intrestedIn: state.prefGenders, distance: 50);
     event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
     NetworkService.updateUser(user);

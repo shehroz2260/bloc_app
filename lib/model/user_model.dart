@@ -15,11 +15,13 @@ class UserModel {
   final String profileImage;
   final List<String> myLikes;
   final List<String> myDislikes;
+  final List<int> myInstrest;
   final List<String> otherLikes;
   final List<String> otherDislikes;
   final List<String> matches;
   UserModel({
     required this.userName,
+    required this.myInstrest,
     required this.firstName,
     required this.email,
     this.password,
@@ -54,6 +56,7 @@ class UserModel {
     DateTime? dob,
     String? profileImage,
     List<String>? myLikes,
+    List<int>? myInstrest,
     List<String>? myDislikes,
     List<String>? otherLikes,
     List<String>? otherDislikes,
@@ -61,6 +64,7 @@ class UserModel {
   }) {
     return UserModel(
       userName: userName ?? this.userName,
+      myInstrest: myInstrest ?? this.myInstrest,
       firstName: firstName ?? this.firstName,
       email: email ?? this.email,
       uid: uid ?? this.uid,
@@ -83,6 +87,7 @@ class UserModel {
     return <String, dynamic>{
       'userName': userName,
       'firstName': firstName,
+      'myInstrest': myInstrest,
       'email': email,
       'uid': uid,
       'location': location,
@@ -114,6 +119,7 @@ class UserModel {
       dob: (map['dob'] as Timestamp).toDate(),
       profileImage: map['profileImage'] ??"",
       myLikes: List<String>.from((map['myLikes'] ??[])),
+      myInstrest: List<int>.from((map['myInstrest'] ??[])),
       myDislikes: List<String>.from((map['myDislikes']  ??[])),
       otherLikes: List<String>.from((map['otherLikes']  ??[])),
       otherDislikes: List<String>.from((map['otherDislikes']  ??[])),
@@ -132,7 +138,7 @@ class UserModel {
     return myLikes.contains(uid);
   }
   static UserModel get emptyModel {
-  return UserModel(userName: "",firstName: "",  email: "", uid: "", location: "", lat: 0.0, lng: 0.0, gender: 0, preferGender: 0, dob: DateTime(1800), profileImage: "", myLikes: [], myDislikes: [], otherLikes: [], otherDislikes: [], matches: []);
+  return UserModel(myInstrest: [], userName: "",firstName: "",  email: "", uid: "", location: "", lat: 0.0, lng: 0.0, gender: 0, preferGender: 0, dob: DateTime(1800), profileImage: "", myLikes: [], myDislikes: [], otherLikes: [], otherDislikes: [], matches: []);
 }
 
   bool isDisLiked(String uid) {
@@ -143,6 +149,6 @@ class UserModel {
   }
   @override
   String toString() {
-    return 'UserModel(userName: $userName, first1Name: $firstName, email: $email, password: $password, uid: $uid, location: $location, lat: $lat, lng: $lng, gender: $gender, preferGender: $preferGender, dob: $dob, profileImage: $profileImage, myLikes: $myLikes, myDislikes: $myDislikes, otherLikes: $otherLikes, otherDislikes: $otherDislikes, matches: $matches)';
+    return 'UserModel(myInstrest: $myInstrest, userName: $userName, first1Name: $firstName, email: $email, password: $password, uid: $uid, location: $location, lat: $lat, lng: $lng, gender: $gender, preferGender: $preferGender, dob: $dob, profileImage: $profileImage, myLikes: $myLikes, myDislikes: $myDislikes, otherLikes: $otherLikes, otherDislikes: $otherDislikes, matches: $matches)';
   }
 }

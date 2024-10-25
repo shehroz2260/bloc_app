@@ -16,3 +16,11 @@ class OnNextEvent extends PreferenceEvent {
     required this.context,
   });
 }
+
+
+class SelectInstrest extends PreferenceEvent {
+  final int index;
+  SelectInstrest({
+    required this.index,
+  });
+}

@@ -39,6 +39,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           dob: DateTime(1800),
           matches: [],
           myDislikes: [],
+          myInstrest: [],
           myLikes: [],
           otherDislikes: [],
           otherLikes: [],
