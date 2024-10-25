@@ -2,7 +2,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/services/network_service.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/utils/loading_dialog.dart';
-import 'package:chat_with_bloc/view/onboarding_views/preference_view.dart';
+import 'package:chat_with_bloc/view/account_creation_view/preference_view.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_event.dart';
 import 'gender_event.dart';

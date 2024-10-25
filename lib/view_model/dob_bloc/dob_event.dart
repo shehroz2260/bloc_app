@@ -4,19 +4,24 @@ abstract class DobEvent {}
 
 
 class DatePickerEvent extends DobEvent {
- final TextEditingController textEditingController;
  final BuildContext context;
   DatePickerEvent({
-    required this.textEditingController,
     required this.context,
   });
 }
 
+class ImagePickerEvent extends DobEvent {
+  final BuildContext context;
+  ImagePickerEvent({required this.context});
+}
+
 class OnNextEvent extends DobEvent {
+  final TextEditingController nameController;
   final BuildContext context;
   final GlobalKey<FormState> formKey;
-  OnNextEvent({
+  OnNextEvent( {
     required this.context,
+    required this.nameController,
     required this.formKey,
   });
 }

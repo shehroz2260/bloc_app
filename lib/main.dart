@@ -1,3 +1,4 @@
+import 'package:chat_with_bloc/view/splash_view/splash_view.dart';
 import 'package:chat_with_bloc/view_model/filter_bloc.dart/filter_bloc.dart';
 import 'package:chat_with_bloc/view_model/home_bloc/home_bloc.dart';
 import 'package:chat_with_bloc/view_model/inbox_bloc/inbox_bloc.dart';
@@ -8,7 +9,6 @@ import 'package:chat_with_bloc/view_model/preference_bloc/preference_bloc.dart';
 import 'package:chat_with_bloc/view_model/sign_in_bloc/sign_in_bloc.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:chat_with_bloc/view_model/sign_up_bloc/sign_up_bloc.dart';
-import 'package:chat_with_bloc/view/splash_view/splash_view.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

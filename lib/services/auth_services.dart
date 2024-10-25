@@ -1,6 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
-import 'package:chat_with_bloc/services/firebase_services_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +11,7 @@ class AuthServices {
     var user = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: userModel.email , password: userModel.password ?? "");
     String uid = user.user?.uid ?? "";
-    final url = await FirebaseStorageService().uploadImage("profile$uid", userModel.profileImage);
- userModel =  userModel.copyWith(uid: uid,profileImage: url);
+ userModel =  userModel.copyWith(uid: uid);
  context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: userModel));
     await FirebaseFirestore.instance
         .collection(UserModel.tableName)

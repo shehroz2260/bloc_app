@@ -1,8 +1,8 @@
 import 'dart:io';
-import 'package:chat_with_bloc/utils/app_funcs.dart';
 import 'package:flutter/material.dart';
 import '../src/app_colors.dart';
 import '../src/app_text_style.dart';
+import '../utils/app_funcs.dart';
 import '../utils/media_type.dart';
 
 class CustomTextField extends StatefulWidget {
@@ -11,9 +11,11 @@ class CustomTextField extends StatefulWidget {
   final String? Function(String?)? validator;
   final String hintText;
   final bool isPasswordField;
+  final FloatingLabelBehavior? floatingLabelBehavior;
   final bool? enabled;
+  final String? labelText;
   const CustomTextField({
-    super.key,this.enabled, this.textEditingController, this.onChange, required this.hintText,this.validator, this.isPasswordField =false
+    super.key,this.enabled, this.textEditingController, this.onChange, required this.hintText,this.validator, this.isPasswordField =false, this.floatingLabelBehavior, this.labelText
   });
 
   @override
@@ -34,38 +36,40 @@ void visiblePassword(){
       enabled: widget.enabled,
       validator: widget.validator,
       controller: widget.textEditingController,
-      cursorColor: AppColors.whiteColor,
+      cursorColor: AppColors.redColor,
       obscureText: isVisible,
-      style: AppTextStyle.font16,
+      style: AppTextStyle.font16.copyWith(color: AppColors.redColor),
       decoration:  InputDecoration(
+        labelText: widget.labelText,
+        floatingLabelBehavior: widget.floatingLabelBehavior,
         suffixIcon:widget.isPasswordField? Padding(padding: const EdgeInsets.all(5),child: GestureDetector(
           onTap: visiblePassword,
           child: Icon(isVisible? Icons.visibility: Icons.visibility_off,color: AppColors.whiteColor,)),):null,
         focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20),
-        borderSide: BorderSide(color: AppColors.whiteColor,width: 1)
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide(color: AppColors.borderGreyColor,width: 1)
         ),
       hintText: widget.hintText,
-      hintStyle: AppTextStyle.font16.copyWith(color: AppColors.whiteColor.withOpacity(0.6)),
+      hintStyle: AppTextStyle.font16.copyWith(color: AppColors.borderGreyColor),
         border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20),
-        borderSide: BorderSide(color: AppColors.whiteColor,width: 1)
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide(color: AppColors.borderGreyColor,width: 1)
         ),
         focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20),
-        borderSide: BorderSide(color: AppColors.whiteColor,width: 1)
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide(color: AppColors.borderGreyColor,width: 1)
         ),
         enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20),
-        borderSide: BorderSide(color: AppColors.whiteColor,width: 1)
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide(color: AppColors.borderGreyColor,width: 1)
         ),
         errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20),
-        borderSide: BorderSide(color: AppColors.whiteColor,width: 1)
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide(color: AppColors.borderGreyColor,width: 1)
         ),
         disabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(20),
-        borderSide: BorderSide(color: AppColors.whiteColor,width: 1)
+        borderRadius: BorderRadius.circular(15),
+        borderSide: BorderSide(color: AppColors.borderGreyColor,width: 1)
         ),
       ),
     );

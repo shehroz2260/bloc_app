@@ -86,7 +86,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(widget.model.userDetail?.name??""),
+                                Text(widget.model.userDetail?.firstName??""),
                               Text(widget.model.userDetail?.email??""),
                               ],
                             ),

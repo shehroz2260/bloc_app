@@ -1,15 +1,14 @@
-// ignore_for_file: use_build_context_synchronously
 import 'dart:async';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/services/auth_services.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/utils/app_funcs.dart';
-import 'package:chat_with_bloc/view/auth_view/sign_in_view.dart';
 import 'package:chat_with_bloc/view/main_view/main_view.dart';
-import 'package:chat_with_bloc/view/onboarding_views/dob_pick_view.dart';
-import 'package:chat_with_bloc/view/onboarding_views/gender_view.dart';
-import 'package:chat_with_bloc/view/onboarding_views/preference_view.dart';
+import 'package:chat_with_bloc/view/account_creation_view/dob_pick_view.dart';
+import 'package:chat_with_bloc/view/account_creation_view/gender_view.dart';
+import 'package:chat_with_bloc/view/account_creation_view/preference_view.dart';
+import 'package:chat_with_bloc/view/on_boarding_view/on_boarding_screen.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_event.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,15 +21,10 @@ import '../view_model/user_base_bloc/user_base_state.dart';
 
 class NetworkService {
  static Future<void> gotoHomeScreen(BuildContext context,[bool isSplash = false]) async {
-  // if(!(FirebaseAuth.instance.currentUser?.emailVerified?? false)){
-  //   // showOkAlertDialog(context: context,message: "Please Verify your mail before login");
-  //   Go.offAll(context, const SignInView());
-  //   return;
-  // }
   var isLoadData = await AuthServices.isLoadData(context);
   if (isSplash &&  
      !isLoadData) {
-      Go.offAll(context, const SignInView());
+      Go.offAll(context, const OnBoardingScreen());
     return;
   }
 StreamSubscription<UserBaseState>? sub;
@@ -40,7 +34,7 @@ await sub?.cancel();
  if(user.dob == DateTime(1800)){
   if(isSplash){
     await FirebaseAuth.instance.signOut();
-    Go.offAll(context, const SignInView());
+    Go.offAll(context, const OnBoardingScreen());
   }else{
     Go.offAll(context, const DobPickView());
   }
@@ -49,7 +43,7 @@ await sub?.cancel();
   if(user.gender ==0){
   if(isSplash){
     await FirebaseAuth.instance.signOut();
-    Go.offAll(context, const SignInView());
+    Go.offAll(context, const OnBoardingScreen());
   }else{
     Go.offAll(context, const GenderView());
   }
@@ -58,7 +52,7 @@ await sub?.cancel();
   if(user.preferGender ==-1){
   if(isSplash){
     await FirebaseAuth.instance.signOut();
-    Go.offAll(context, const SignInView());
+    Go.offAll(context, const OnBoardingScreen());
   }else{
     Go.offAll(context, const PreferenceView());
   }
@@ -104,7 +98,7 @@ await sub?.cancel();
   context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
     if (isMatch) {
       await createNewThread(liker, likee, null);
-      showOkAlertDialog(context: context,message: "Congrats you have new friend ${likee.name}");
+      showOkAlertDialog(context: context,message: "Congrats you have new friend ${likee.firstName}");
       // await sendMatchNotification(liker, likee);
     }
   }

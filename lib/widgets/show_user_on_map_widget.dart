@@ -42,7 +42,7 @@ class ShowUserOnMapWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        userModel.name ,
+                        userModel.firstName ,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style:  TextStyle(fontSize: 15,color: AppColors.whiteColor,fontWeight: FontWeight.w600)

@@ -25,7 +25,7 @@ class ProfilePage extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        user.name,
+                        user.firstName,
                         style: const TextStyle(fontSize: 24,color: Colors.white),
                       ),
                       const SizedBox(height: 10),
@@ -104,7 +104,7 @@ class ProfilePage extends StatelessWidget {
                     background: Colors.green,
                     iconColor: Colors.white,
                   ),
-                  title: Text('Create group with ${user.name}'),
+                  title: Text('Create group with ${user.firstName}'),
                 ),
                 const SizedBox(height: 20),
                 ListTile(
@@ -114,7 +114,7 @@ class ProfilePage extends StatelessWidget {
                     color: Color(0xFFF15C6D),
                   ),
                   title: Text(
-                    'Block ${user.name}',
+                    'Block ${user.firstName}',
                     style: const TextStyle(
                       color: Color(0xFFF15C6D),
                     ),
@@ -127,7 +127,7 @@ class ProfilePage extends StatelessWidget {
                     color: Color(0xFFF15C6D),
                   ),
                   title: Text(
-                    'Report ${user.name}',
+                    'Report ${user.firstName}',
                     style: const TextStyle(
                       color: Color(0xFFF15C6D),
                     ),
@@ -204,7 +204,7 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
               left: currentImagePosition + 50,
               
               child: Text(
-                user.name,
+                user.firstName,
                 style: TextStyle(
                   fontSize: 20,
                   color: Colors.white.withOpacity(percent2),

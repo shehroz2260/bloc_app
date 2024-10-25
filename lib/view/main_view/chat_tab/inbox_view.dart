@@ -55,7 +55,7 @@ InboxBloc ancestorContext = InboxBloc();
                       behavior: HitTestBehavior.opaque,
                       child: ListTile(
                         leading: AppCacheImage(imageUrl: state.threadList[index].userDetail?.profileImage??"",width: 40,height: 40,round: 40),
-                        title: Text(state.threadList[index].userDetail?.name??"",style: AppTextStyle.font16),
+                        title: Text(state.threadList[index].userDetail?.firstName??"",style: AppTextStyle.font16),
                         subtitle: Text(state.threadList[index].userDetail?.email??"",style: AppTextStyle.font16.copyWith(fontSize: 12,color: AppColors.whiteColor.withOpacity(0.7)),),
                       ),
                     );

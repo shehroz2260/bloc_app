@@ -156,7 +156,7 @@ class _HomeViewState extends State<HomeView> {
                               RichText(
                                   text: TextSpan(children: [
                                 TextSpan(
-                                  text: "${user.name},",
+                                  text: "${user.firstName},",
                                   style:  TextStyle(
                                       color: AppColors.whiteColor,
                                       fontSize: 20,

@@ -1,14 +1,14 @@
 import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
-import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/utils/app_validation.dart';
 import 'package:chat_with_bloc/view_model/sign_up_bloc/sign_up_bloc.dart';
 import 'package:chat_with_bloc/view_model/sign_up_bloc/sign_up_event.dart';
-import 'package:chat_with_bloc/view_model/sign_up_bloc/sign_up_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import '../../src/app_assets.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
 
@@ -30,44 +30,25 @@ class _SignUpViewState extends State<SignUpView> {
       key: _formKey,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: AppColors.blackColor,
+        backgroundColor: AppColors.whiteColor,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-              const AppHeight(height: 50),
-              Text(AppStrings.signup, style: AppTextStyle.font25),
-              const AppHeight(height: 30),
-              BlocBuilder<SignUpBloc, SignUpState>(
-                builder: (context, state) {
-                  return Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () => context
-                            .read<SignUpBloc>()
-                            .add(ImagePickerEvent(context: context)),
-                        child: Container(
-                          height: 110,
-                          width: 110,
-                          decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.whiteColor),
-                              shape: BoxShape.circle),
-                          child:state.image != null? ClipRRect(
-                            borderRadius: BorderRadius.circular(110),
-                            child: Image.file(state.image!,fit: BoxFit.cover,)):Icon(Icons.add, color: AppColors.whiteColor),
-                        ),
-                      ),
-                      if(state.borderClr == Colors.red) 
-                      Text("Profile is required",style: AppTextStyle.font16.copyWith(color: Colors.red,fontSize: 12),)
-                    ],
-                  );
-                },
-              ),
+               const Align(
+              alignment: Alignment.centerLeft,
+              child: SafeArea(child: CustomBackButton()),
+            ),
+            const AppHeight(height: 40),
+            SvgPicture.asset(AppAssets.appIcon),
               const AppHeight(height: 20),
+              Text(AppStrings.createAnAccoun, style: AppTextStyle.font25.copyWith(color: AppColors.blackColor)),
+              const AppHeight(height: 30),
+              
                CustomTextField(
-                validator: AppValidation.nameValidation,
+                validator: AppValidation.userNameValidation,
                 textEditingController: _nameController,
-                hintText: AppStrings.enterYourName,
+                hintText: AppStrings.enterUserName,
               ),
               const AppHeight(height: 20),
                CustomTextField(
@@ -83,20 +64,7 @@ class _SignUpViewState extends State<SignUpView> {
                 isPasswordField: true,
               ),
               const AppHeight(height: 20),
-               CustomButton(btnName: AppStrings.signup,onTap: _onSignUp),
-              const AppHeight(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(AppStrings.alreadyHaveAnAccount,
-                      style: AppTextStyle.font20),
-                  GestureDetector(
-                      onTap: () => Go.back(context),
-                      child: Text(AppStrings.signIn,
-                          style: AppTextStyle.font20
-                              .copyWith(color: AppColors.blueColor))),
-                ],
-              )
+              CustomNewButton(btnName: AppStrings.signup,onTap: _onSignUp),
             ],
           ),
         ),

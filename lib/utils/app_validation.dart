@@ -31,6 +31,12 @@ class AppValidation {
     }
     return null;
   }
+   static String? userNameValidation(String? value) {
+    if ((value ?? "").isEmpty) {
+      return ErrorStrings.usernameReq;
+    }
+    return null;
+  }
  static String? dobValidation(String? value) {
     if ((value ?? "").isEmpty) {
       return ErrorStrings.birthDayReq;

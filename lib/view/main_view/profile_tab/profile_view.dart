@@ -37,7 +37,7 @@ class _ProfileViewState extends State<ProfileView> {
             const AppHeight(height: 15),
             AppCacheImage(imageUrl: user.profileImage,height: 110,width: 110,round: 110),
             const AppHeight(height: 10),
-            Text(user.name,style: AppTextStyle.font16),
+            Text(user.firstName,style: AppTextStyle.font16),
             Text(user.email,style: AppTextStyle.font16),
             const AppHeight(height: 30),
             GestureDetector(

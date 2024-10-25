@@ -3,12 +3,6 @@ import 'package:flutter/material.dart';
 
 abstract class SignUpEvent {}
 
-class ImagePickerEvent extends SignUpEvent {
-  final BuildContext context;
-  ImagePickerEvent({required this.context});
-}
-
-class BorderColorChange extends SignUpEvent {}
 
 class OnSignUpEvent extends SignUpEvent {
   final BuildContext context;

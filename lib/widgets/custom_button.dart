@@ -1,9 +1,10 @@
+import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import '../src/app_assets.dart';
 import '../src/app_colors.dart';
-import '../src/app_string.dart';
 import '../src/app_text_style.dart';
-import '../src/width_hieght.dart';
+import '../src/go_file.dart';
 
 class CustomButton extends StatelessWidget {
   final String btnName;
@@ -37,9 +38,13 @@ class CustomButton extends StatelessWidget {
 
 class CustomSigninBtnWithSocial extends StatelessWidget {
   final void Function()? onTap;
+  final bool isApple;
+  final String? icon;
   const CustomSigninBtnWithSocial({
     super.key,
-    this.onTap
+    this.onTap,
+    this.icon,
+    this.isApple = false
   });
 
   @override
@@ -49,22 +54,75 @@ class CustomSigninBtnWithSocial extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: Container(
        decoration: BoxDecoration(
-         borderRadius: BorderRadius.circular(20),
-         border: Border.all(color: AppColors.whiteColor)
+         borderRadius: BorderRadius.circular(15),
+         border: Border.all(color: AppColors.borderGreyColor)
        ),
-       padding: const EdgeInsets.symmetric(
-         vertical: 12,
-         horizontal: 10
-       ),
-       child:  Row(
-         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-         children: [
-           Image.asset(AppAssets.googleIcon,height: 30,width: 30),
-           Text(AppStrings.signInWithGoogle,style: AppTextStyle.font16),
-           const AppWidth(width: 30)
-         ],
-       ),
+       padding: const EdgeInsets.all(15),
+       child:  SvgPicture.asset(icon?? (isApple? AppAssets.appleIcon: AppAssets.googleIcon),height: 30,width: 30),
       ),
+    );
+  }
+}
+
+
+class CustomNewButton extends StatelessWidget {
+  final String btnName;
+  final void Function()? onTap;
+  final bool isFillColor;
+  final Color? btnColor;
+  final bool isRow;
+  const CustomNewButton({
+    super.key, required this.btnName, this.onTap,this.isFillColor = true, this.btnColor, this.isRow = false
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+     onTap: onTap,
+      child: Container(
+       width: double.infinity,
+       decoration: BoxDecoration(
+         color: btnColor?? (isFillColor? AppColors.redColor: null),
+         borderRadius: BorderRadius.circular(15),
+         border: Border.all(
+          color: AppColors.borderColor,
+         )
+       ),
+       padding:  const EdgeInsets.symmetric(vertical: 16),
+       alignment: Alignment.center,
+       child:isRow? Padding(
+         padding: const EdgeInsets.symmetric(horizontal: 20),
+         child: Row(
+          children: [
+            SvgPicture.asset(AppAssets.calenderIcon),
+            const AppWidth(width: 15),
+            Text(btnName,style: AppTextStyle.font16.copyWith(fontWeight: FontWeight.bold,color:   AppColors.redColor))
+          ],
+         ),
+       ):  Text(btnName,style: AppTextStyle.font16.copyWith(fontWeight: FontWeight.bold,color: isFillColor? AppColors.whiteColor: AppColors.redColor)),
+      ),
+    );
+  }
+}
+
+
+
+class CustomBackButton extends StatelessWidget {
+  const CustomBackButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: ()=> Go.back(context),
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          border: Border.all(color: AppColors.borderColor),
+          borderRadius: BorderRadius.circular(10)
+        ),
+        child: Icon(Icons.arrow_back_ios_outlined,color: AppColors.redColor)),
     );
   }
 }

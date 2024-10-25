@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
-  final String name;
+  final String userName;
+  final String firstName;
   final String email;
    String? password;
   final String uid;
@@ -17,10 +18,11 @@ class UserModel {
   final List<String> otherLikes;
   final List<String> otherDislikes;
   final List<String> matches;
-  static const String tableName = "users";
   UserModel({
-    required this.name,
+    required this.userName,
+    required this.firstName,
     required this.email,
+    this.password,
     required this.uid,
     required this.location,
     required this.lat,
@@ -35,12 +37,13 @@ class UserModel {
     required this.otherDislikes,
     required this.matches,
   });
+  static const String tableName = "users";
+ 
 
-static UserModel get emptyModel {
-  return UserModel(name: "", email: "", uid: "", location: "", lat: 0.0, lng: 0.0, gender: 0, preferGender: 0, dob: DateTime(1800), profileImage: "", myLikes: [], myDislikes: [], otherLikes: [], otherDislikes: [], matches: []);
-}
+
   UserModel copyWith({
-    String? name,
+    String? userName,
+    String? firstName,
     String? email,
     String? uid,
     String? location,
@@ -57,7 +60,8 @@ static UserModel get emptyModel {
     List<String>? matches,
   }) {
     return UserModel(
-      name: name ?? this.name,
+      userName: userName ?? this.userName,
+      firstName: firstName ?? this.firstName,
       email: email ?? this.email,
       uid: uid ?? this.uid,
       location: location ?? this.location,
@@ -77,7 +81,8 @@ static UserModel get emptyModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'name': name,
+      'userName': userName,
+      'firstName': firstName,
       'email': email,
       'uid': uid,
       'location': location,
@@ -97,23 +102,25 @@ static UserModel get emptyModel {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      name: map['name'] ??"",
+      userName: map['userName'] ??"",
+      firstName: map['firstName'] ??"",
       email: map['email'] ??"",
       uid: map['uid'] ??"",
       location: map['location'] ??"",
       lat: map['lat'] ??0.0,
       lng: map['lng'] ??0.0,
       gender: map['gender'] ??0,
-      preferGender: map['preferGender'] ??-1,
-      dob: (map['dob'] as Timestamp).toDate() ,
+      preferGender: map['preferGender'] ??0,
+      dob: (map['dob'] as Timestamp).toDate(),
       profileImage: map['profileImage'] ??"",
       myLikes: List<String>.from((map['myLikes'] ??[])),
-      myDislikes: List<String>.from((map['myDislikes'] ??[])),
-      otherLikes: List<String>.from((map['otherLikes'] ??[])),
-      otherDislikes: List<String>.from((map['otherDislikes'] ??[])),
-      matches: List<String>.from((map['matches'] ??[])),
+      myDislikes: List<String>.from((map['myDislikes']  ??[])),
+      otherLikes: List<String>.from((map['otherLikes']  ??[])),
+      otherDislikes: List<String>.from((map['otherDislikes']  ??[])),
+      matches: List<String>.from((map['matches']  ??[])),
     );
   }
+
   int get age {
     return DateTime.now().difference(dob).inDays ~/ 365;
   }
@@ -124,6 +131,9 @@ static UserModel get emptyModel {
 
     return myLikes.contains(uid);
   }
+  static UserModel get emptyModel {
+  return UserModel(userName: "",firstName: "",  email: "", uid: "", location: "", lat: 0.0, lng: 0.0, gender: 0, preferGender: 0, dob: DateTime(1800), profileImage: "", myLikes: [], myDislikes: [], otherLikes: [], otherDislikes: [], matches: []);
+}
 
   bool isDisLiked(String uid) {
     if (myDislikes.isEmpty) {
@@ -131,11 +141,8 @@ static UserModel get emptyModel {
     }
     return myDislikes.contains(uid);
   }
-
-
   @override
   String toString() {
-    return 'UserModel(name: $name, email: $email, uid: $uid, location: $location, lat: $lat, lng: $lng, gender: $gender, preferGender: $preferGender, dob: $dob, profileImage: $profileImage, myLikes: $myLikes, myDislikes: $myDislikes, otherLikes: $otherLikes, otherDislikes: $otherDislikes, matches: $matches)';
+    return 'UserModel(userName: $userName, first1Name: $firstName, email: $email, password: $password, uid: $uid, location: $location, lat: $lat, lng: $lng, gender: $gender, preferGender: $preferGender, dob: $dob, profileImage: $profileImage, myLikes: $myLikes, myDislikes: $myDislikes, otherLikes: $otherLikes, otherDislikes: $otherDislikes, matches: $matches)';
   }
-
 }
