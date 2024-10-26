@@ -10,6 +10,7 @@ import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/utils/custom_image_picker.dart';
 import 'package:chat_with_bloc/utils/media_type.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chat_with_bloc/utils/app_funcs.dart';
@@ -27,14 +28,16 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   Timer? _timer;
     bool isRecordingCompleted = false;
   static late RecorderController recorderController;
+  StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>? threadSnapShot;
   StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? messagesSnapShot;
-  ChatBloc() : super(ChatState(text: "", messageList: [],limit: 20,isLoading: false,messageSending: false,isRecording: false,duration: Duration.zero)) {
+  ChatBloc() : super(ChatState(isFirstMsg: true,text: "", messageList: [],limit: 20,isLoading: false,messageSending: false,isRecording: false,duration: Duration.zero,threadModel: ThreadModel(lastMessage: "", lastMessageTime: DateTime.now(), participantUserList: [], senderId: "", messageCount: 0, threadId: "", isPending: false, isBlocked: false,messageDelete: [],activeUserList: []))) {
     on<LoadChat>(_onChatLoad);
     on<OnChangeTextField>(_onTextFieldChange);
     on<ChatListener>(_messageListener);
     on<SendMessage>(_onSendMessage);
     on<DownloadMedia>(_downloadAndSaveMedia);
     on<StartTimer>(_startTimer);
+    on<OnListenThread>(_onListenThread);
     on<InitiaLizeAudioController>(_onInitializeAudio);
     on<StartOrStopRecording>(_onStartorStopRecording);
     on<UpdateTimer>(_onUpdateTimer);
@@ -69,6 +72,41 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     add(ChatListener(thradId: event.thradId));
   }
 
+  _onListenThread(OnListenThread event , Emitter<ChatState>emit){
+    lastDocument = null;
+      log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+    // lastCount = 20;
+    // isFirstTime = true;
+    // emit(state.copyWith(isFirstMsg: true,limit: 20));
+   threadSnapShot = FirebaseFirestore.instance
+        .collection(ThreadModel.tableName)
+        .doc(event.threadModel.threadId)
+        .snapshots()
+        .listen((e) async {
+      if (e.exists) {
+        // emit(state.copyWith(threadModel: ThreadModel.fromMap(e.data() ?? {})));
+         }
+
+     if (state.isFirstMsg) 
+     {
+      log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+        add(LoadChat(thradId: event.threadModel.threadId));
+        // emit(state.copyWith(isFirstMsg: false));
+        state.threadModel.copyWith(activeUserList: state.threadModel.activeUserList);
+        
+        await FirebaseFirestore.instance
+            .collection(ThreadModel.tableName)
+            .doc(state.threadModel.threadId)
+            .set({
+          "activeUserList":
+              FieldValue.arrayUnion([FirebaseAuth.instance.currentUser?.uid??""]),
+            "messageCount": 0
+        }, SetOptions(merge: true));
+      }
+    });
+
+  }
+
 _onSendMessage(SendMessage event , Emitter<ChatState>emit)async{
   emit(state.copyWith(messageSending: true));
   String? url ;
@@ -83,11 +121,21 @@ if(MediaType.type == MediaType.video && state.pickFile != null && state.thumbnai
 url = await FirebaseStorageService().uploadImage("Chat/Video/${AppFuncs.generateRandomString(10)}", state.pickFile?.path??"");
 thumbUrl = await FirebaseStorageService().uploadImage("Chat/thumbnail/${AppFuncs.generateRandomString(10)}", state.thumbnail?.path??"");
 }
+  ThreadModel threadModel = ThreadModel(lastMessage: event.textEditingController.text.isNotEmpty? event.textEditingController.text: MediaType.type == MediaType.image?"New Image":MediaType.type == MediaType.video? "New video": MediaType.type == MediaType.audio ? "Voice": MediaType.type == MediaType.file? "New document":""  , activeUserList: state.threadModel.activeUserList, lastMessageTime: DateTime.now(), participantUserList: state.threadModel.participantUserList, senderId: FirebaseAuth.instance.currentUser?.uid??"", messageCount: 0, threadId: event.threadId, messageDelete: [], isPending: false, isBlocked: false);
+var thradJsom = threadModel.toMap();
+if(state.threadModel.activeUserList.length ==2){
+  thradJsom["messageCount"] = 1;
+}else{
+  thradJsom["messageCount"] = FieldValue.increment(1);
+}
+
   ChatModel model  = ChatModel(id: AppFuncs.generateRandomString(15), threadId: event.threadId, message: event.textEditingController.text, messageTime: DateTime.now(), senderId: event.context.read<UserBaseBloc>().state.userData.uid, isRead: false,media: (url??"").isEmpty?null: MediaModel(type: MediaType.type, id: AppFuncs.generateRandomString(15), url: url??"", createdAt: DateTime.now(), name: "",thumbnail: thumbUrl));
+  
   if(event.isForVc){
     model = model.copyWith(media: MediaModel(type: 5, id: AppFuncs.generateRandomString(15), url: "url", createdAt: DateTime.now(), name: ""));
   }
   try{
+    await FirebaseFirestore.instance.collection(ThreadModel.tableName).doc(state.threadModel.threadId).set(thradJsom,SetOptions(merge: true));
 await FirebaseFirestore.instance.collection(ThreadModel.tableName).doc(event.threadId).collection(ChatModel.tableName).doc(model.id).set(model.toMap());
 event.textEditingController.clear();
 MediaType.type = 0;
@@ -284,17 +332,19 @@ _onChatListenerStream(ChatListenerStream event , Emitter<ChatState>emit){
   _clearData(ClearData event , Emitter<ChatState>emit)async{
     lastDocument = null;
     await subs?.cancel();
+    await threadSnapShot?.cancel();
+    await FirebaseFirestore.instance.collection(ThreadModel.tableName).doc(state.threadModel.threadId).set({
+      "activeUserList": FieldValue.arrayRemove([FirebaseAuth.instance.currentUser?.uid??""])
+    },SetOptions(merge: true));
     emit(state.copyWith(limit: 20,messageList: [],audioUrl: "",duration: Duration.zero,isLoading: false,isRecording: false,messageSending: false,pickFile: null,text: "",thumbnail: null));
   }
 
   _downloadAndSaveMedia(DownloadMedia event , Emitter<ChatState>emit)async{
-          log("^^^^^^^^^^^^^^^^^^");
 
              await Permission.storage.request();
         final photoStatus  = await Permission.phone.request();
         final videoStatus  = await Permission.videos.request();
         final medialibrary = await Permission.mediaLibrary.request();
-          log("^^^^^^^^^^^^^^^^^^storage$medialibrary");
     if (!medialibrary.isGranted) {
           log("^^^^^^^^^^^^^^^^^^storage$medialibrary");
           log("^^^^^^^^^^^^^^^^^^photo$photoStatus");

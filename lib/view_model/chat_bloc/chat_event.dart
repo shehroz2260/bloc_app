@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:chat_with_bloc/model/char_model.dart';
+import 'package:chat_with_bloc/model/thread_model.dart';
 
 abstract class ChatEvent {}
 
@@ -47,6 +48,7 @@ class StartTimer extends ChatEvent {
 class InitiaLizeAudioController extends ChatEvent {
  
 }
+
 
 class OnChangeTextField extends ChatEvent {
   final String text;
@@ -96,5 +98,15 @@ class DownLoadMediaForApp extends ChatEvent {
   DownLoadMediaForApp({
     required this.context,
     required this.chat
+  });
+}
+
+
+class OnListenThread extends ChatEvent {
+  final ThreadModel threadModel;
+  final BuildContext context;
+  OnListenThread({
+    required this.threadModel,
+    required this.context
   });
 }

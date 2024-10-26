@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:chat_with_bloc/model/char_model.dart';
+import 'package:chat_with_bloc/model/thread_model.dart';
 
 class ChatState {
   final List<ChatModel> messageList;
@@ -9,14 +10,18 @@ class ChatState {
   final bool isLoading;
   final bool messageSending;
   final bool isRecording;
+  final bool isFirstMsg;
   final File? pickFile;
   final File? thumbnail;
   final String? audioUrl;
   final Duration duration;
+  final ThreadModel threadModel;
   final String text;
   ChatState({
     required this.messageList,
     required this.limit,
+    required this.isFirstMsg,
+    required this.threadModel,
     required this.isLoading,
     required this.messageSending,
     required this.isRecording,
@@ -31,6 +36,8 @@ class ChatState {
     List<ChatModel>? messageList,
     int? limit,
     bool? isLoading,
+    bool? isFirstMsg,
+    ThreadModel? threadModel,
     bool? messageSending,
     bool? isRecording,
     File? pickFile,
@@ -42,6 +49,8 @@ class ChatState {
     return ChatState(
       messageList: messageList ?? this.messageList,
       limit: limit ?? this.limit,
+      isFirstMsg: isFirstMsg ?? this.isFirstMsg,
+      threadModel: threadModel ?? this.threadModel,
       isLoading: isLoading ?? this.isLoading,
       messageSending: messageSending ?? this.messageSending,
       isRecording: isRecording ?? this.isRecording,

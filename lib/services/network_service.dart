@@ -112,7 +112,7 @@ await sub?.cancel();
         .doc(threadId)
         .get();
     if (snapShot.exists) return;
- var thread = ThreadModel(lastMessage: message??"", lastMessageTime: DateTime.now(), participantUserList: [liker.uid, likee.uid], senderId: liker.uid, messageCount: 1, threadId: threadId, messageDelete: [], isPending: false, isBlocked: false);
+ var thread = ThreadModel(lastMessage: message??"", lastMessageTime: DateTime.now(), participantUserList: [liker.uid, likee.uid], senderId: liker.uid, messageCount: 1, threadId: threadId, messageDelete: [], isPending: false, isBlocked: false,activeUserList: []);
  
     await FirebaseFirestore.instance
         .collection(ThreadModel.tableName)
