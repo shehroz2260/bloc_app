@@ -50,68 +50,104 @@ class _HomeViewState extends State<HomeView> {
          ),
          child:  Padding(
            padding: const EdgeInsets.symmetric(horizontal: 20),
-           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const AppHeight(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+           child: BlocBuilder<FilterBloc, FilterState>(
+                   builder: (context,state) {
+               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Clear",style: AppTextStyle.font20.copyWith(color: AppColors.whiteColor,fontWeight: FontWeight.bold)),
-                  Text("Filter",style: AppTextStyle.font20.copyWith(color: AppColors.blackColor,fontWeight: FontWeight.bold)),
-                  Text("Clear",style: AppTextStyle.font20.copyWith(color: AppColors.redColor,fontWeight: FontWeight.bold))
-                ],
-              ),
-              const AppHeight(height: 30),
-              Text("Interested in",style: AppTextStyle.font20.copyWith(color: AppColors.blackColor,fontWeight: FontWeight.bold)),
-             const AppHeight(height: 15),
-             const InterestedInWidget(),
-             const AppHeight(height: 30),
-             BlocBuilder<FilterBloc, FilterState>(
-               builder: (context,state) {
-                 return SfRangeSliderTheme(
-                                data: SfRangeSliderThemeData(
-                                    overlayColor: Colors.transparent,
-                                    activeTrackHeight: 2,
-                                    inactiveTrackHeight: 2,
-                                    inactiveTrackColor:
-                                        AppColors.redColor.withOpacity(.5),
-                                    activeTrackColor: AppColors.redColor,
-                                    thumbRadius: 16,
-                                    thumbStrokeWidth: 1.5,
-                                    thumbStrokeColor: AppColors.redColor,
-                                    thumbColor: AppColors.whiteColor),
-                                child: SfRangeSlider(
-                                  values: SfRangeValues(state.minAge.toDouble(),
-                                      state.maxAge.toDouble()),
-                                  onChanged: (value)=> context.read<FilterBloc>().add(ONChangedAges(onChanged: value)),
-                                  max: 100,
-                                  min: 18,
-                                  startThumbIcon: Center(
-                                      child: Text(
-                                    state.minAge.toInt().toString(),
-                                    style:  TextStyle(
-                                        fontSize: 14,
-                                        color: AppColors.redColor),
-                                  )),
-                                  endThumbIcon: Center(
-                                    child: Text(
-                                     state.maxAge == 100? "100+": state.maxAge.toInt().toString(),
-                                      style:  TextStyle(
-                                          fontSize:state.maxAge == 100?11: 14,
-                                          color: AppColors.redColor),
+                  const AppHeight(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Clear",style: AppTextStyle.font20.copyWith(color: AppColors.whiteColor,fontWeight: FontWeight.bold)),
+                       
+                      Text("Filter",style: AppTextStyle.font20.copyWith(color: AppColors.blackColor,fontWeight: FontWeight.bold)),
+                      GestureDetector(
+                        onTap: () {
+                            context.read<FilterBloc>().add(OnChangedGender(gender: 0));
+                              context.read<FilterBloc>().add(ONChangedAges(onChanged: const SfRangeValues(18,50)));
+                        },
+                        child: Text("Clear",style: AppTextStyle.font20.copyWith(color: AppColors.redColor,fontWeight: FontWeight.bold)))
+                    ],
+                  ),
+                  const AppHeight(height: 30),
+                  Text("Interested in",style: AppTextStyle.font20.copyWith(color: AppColors.blackColor,fontWeight: FontWeight.bold)),
+                 const AppHeight(height: 15),
+                 const InterestedInWidget(),
+                 const AppHeight(height: 30),
+                 Row(
+                   children: [
+                     Expanded(child: Text("Age",style: AppTextStyle.font20.copyWith(color: AppColors.blackColor,fontWeight: FontWeight.bold))),
+                  
+                   Text( "${state.minAge.toInt()} - ",style: AppTextStyle.font16.copyWith(color: AppColors.blackColor,fontWeight: FontWeight.bold),),
+                   Text(state.maxAge == 100? "100+": state.maxAge.toInt().toString(),style: AppTextStyle.font16.copyWith(fontWeight: FontWeight.bold,color: AppColors.blackColor)),
+                   const AppWidth(width: 20)
+                   ],
+                 ),
+                 const AppHeight(height: 10),
+                 SfRangeSliderTheme(
+                                    data: SfRangeSliderThemeData(
+                                        overlayColor: Colors.transparent,
+                                        activeTrackHeight: 10,
+                                        inactiveTrackHeight: 10,
+                                        inactiveTrackColor:
+                                            AppColors.redColor.withOpacity(.5),
+                                        activeTrackColor: AppColors.redColor,
+                                        thumbRadius: 16,
+                                        thumbStrokeWidth: 1.5,
+                                        thumbStrokeColor: AppColors.whiteColor,
+                                        thumbColor: AppColors.whiteColor),
+                                    child: SfRangeSlider(
+                                      values: SfRangeValues(state.minAge.toDouble(),
+                                          state.maxAge.toDouble()),
+                                      onChanged: (value)=> context.read<FilterBloc>().add(ONChangedAges(onChanged: value)),
+                                      max: 100,
+                                      min: 18,
+                                      startThumbIcon: Container(
+                                        height: 40,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: AppColors.whiteColor
+                                        ),
+                                        padding: const EdgeInsets.all(4),
+                                        child: Container(
+                                          height: double.infinity,
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                          color: AppColors.redColor
+                                          ),
+                                        ),
+                                      ),
+                                     
+                                      endThumbIcon: Container(
+                                        height: 40,
+                                        width: 40,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: AppColors.whiteColor
+                                        ),
+                                        padding: const EdgeInsets.all(4),
+                                        child: Container(
+                                          height: double.infinity,
+                                          width: double.infinity,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                          color: AppColors.redColor
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-               }
-             ),
-             const AppHeight(height: 30),
-             CustomNewButton(btnName: "Apply",onTap: () {
-                context.read<FilterBloc>().add(OnAppLyFilter(context: context,userBloc: ancestorContext));
-               
-             })
-            ],
+                 const AppHeight(height: 30),
+                 CustomNewButton(btnName: "Apply",onTap: () {
+                    context.read<FilterBloc>().add(OnAppLyFilter(context: context,userBloc: ancestorContext));
+                   
+                 })
+                ],
+               );
+             }
            ),
          ),
       );
