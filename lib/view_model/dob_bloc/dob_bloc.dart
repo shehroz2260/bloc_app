@@ -65,7 +65,7 @@ class DobBloc extends Bloc<DobEvent, DobState> {
     if(!event.formKey.currentState!.validate() || state.image == null || state.dob == null) return;
 LoadingDialog.showProgress(event.context);
     var user = event.context.read<UserBaseBloc>().state.userData;
-    final url =await FirebaseStorageService().uploadImage("profile/${user.uid}", state.image?.path??"");
+    final url =await FirebaseStorageService().uploadImage("profile${user.uid}", state.image?.path??"");
     user = user.copyWith(dob: state.dob,profileImage: url, firstName: event.nameController.text);
      event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
     NetworkService.updateUser(user);

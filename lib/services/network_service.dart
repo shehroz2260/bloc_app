@@ -31,7 +31,7 @@ StreamSubscription<UserBaseState>? sub;
  sub =  context.read<UserBaseBloc>().stream.listen((state)async{
 var user = state.userData;
 await sub?.cancel();
- if(user.dob == DateTime(1800)){
+ if(user.dob == DateTime(1800) || user.profileImage.isEmpty || user.firstName.isEmpty){
   if(isSplash){
     await FirebaseAuth.instance.signOut();
     Go.offAll(context, const OnBoardingScreen());
@@ -49,7 +49,7 @@ await sub?.cancel();
   }
   return;
  }
-  if(user.preferGender ==-1){
+  if(user.preferGender ==-1 || user.myInstrest.isEmpty){
   if(isSplash){
     await FirebaseAuth.instance.signOut();
     Go.offAll(context, const OnBoardingScreen());
@@ -78,7 +78,7 @@ await sub?.cancel();
 
    static Future<void> likeUser(UserModel liker, UserModel likee, BuildContext context) async {
 
-    bool isMatch = likee.myLikes.contains(liker.uid) ;
+    bool isMatch = liker.otherLikes.contains(likee.uid) ;
 
     await FirebaseFirestore.instance
         .collection(UserModel.tableName)

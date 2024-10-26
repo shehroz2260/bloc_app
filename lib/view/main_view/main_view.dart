@@ -15,6 +15,16 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
   @override
+  void initState() {
+    context.read<MainBloc>().add(ListernerChanges(context: context));
+    super.initState();
+  }
+  @override
+  void dispose() {
+  context.read<MainBloc>().add(OnDispose());
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.blackColor,

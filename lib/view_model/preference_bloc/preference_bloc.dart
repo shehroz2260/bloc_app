@@ -48,7 +48,7 @@ class PreferenceBloc extends Bloc<PreferenceEvent, PreferenceState> {
     NetworkService.updateUser(user);
     FilterRepo.setFilter(filterModel, event.context);
     LoadingDialog.hideProgress(event.context);
-    emit(state.copyWith(prefGenders: -1));
+    emit(state.copyWith(prefGenders: -1, intrestList: []));
     Go.offAll(event.context, const MainView());
   }
 }
