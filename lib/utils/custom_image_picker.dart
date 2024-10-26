@@ -141,7 +141,7 @@ class CameraGalleryBottomSheet extends StatelessWidget {
            await   getImage(ImageSource.camera, context);
             },
             leading:
-                 Icon(Icons.camera, size: 30, color: AppColors.blackColor),
+                 Icon(Icons.camera, size: 30, color: AppColors.redColor),
             title:  Text(
               "Camera",
               style: TextStyle(fontSize: 20, color: AppColors.blackColor),
@@ -160,7 +160,7 @@ class CameraGalleryBottomSheet extends StatelessWidget {
             leading:  Icon(
               Icons.browse_gallery,
               size: 30,
-              color: AppColors.blackColor,
+              color: AppColors.redColor,
             ),
             title:  Text(
               "Gallery",

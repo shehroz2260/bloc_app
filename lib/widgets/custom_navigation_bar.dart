@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import '../src/app_colors.dart';
-import '../src/app_text_style.dart';
 
 class CustomNavigationBar extends StatelessWidget {
   const CustomNavigationBar({
@@ -14,28 +14,21 @@ final int currentIndex;
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
     return Container(
-      height: 100,
+      height: 80,
       width: mediaQuery.width,
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(color: AppColors.whiteColor)
-        ),
-        borderRadius: const BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30)),
-        color: AppColors.blackColor.withOpacity(0.6)
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 25),
+     color: AppColors.offWhiteColor,
+      padding: const EdgeInsets.symmetric(horizontal: 35),
       child:  Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: List.generate(iconList.length, (index){
+        children: List.generate(iconLists.length, (index){
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
             onTap: ()=> ontap(index),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(iconList[index],size: 25,color: index == currentIndex?AppColors.whiteColor:AppColors.whiteColor.withOpacity(0.7))
-              ,Text(labelList[index],style: AppTextStyle.font16.copyWith(fontSize: 14,color: index == currentIndex?AppColors.whiteColor:AppColors.whiteColor.withOpacity(0.7)))
+                SvgPicture.asset(index == currentIndex?  iconLists[index]: unSelectedIconLists[index],colorFilter:index ==3 && currentIndex ==3? ColorFilter.mode( AppColors.redColor, BlendMode.srcIn): null,height: 30,width: 30),
               ],
             ),
           );
@@ -45,15 +38,15 @@ final int currentIndex;
   }
 }
 
-List<IconData> iconList = [
-  Icons.home,
-  Icons.map,
-  Icons.message,
-  Icons.person,
+List<String> iconLists = [
+  "assets/images/svg/cards.svg",
+  "assets/images/svg/selectedIndicator.svg",
+  "assets/images/svg/selectedMessage.svg",
+  "assets/images/svg/people.svg"
 ];
-List<String> labelList = [
-  "Home",
-  "Map",
-  "Chat",
-  "Profile",
+List<String> unSelectedIconLists = [
+  "assets/images/svg/unSelectedCard.svg",
+  "assets/images/svg/indicator.svg",
+  "assets/images/svg/message.svg",
+  "assets/images/svg/people.svg"
 ];

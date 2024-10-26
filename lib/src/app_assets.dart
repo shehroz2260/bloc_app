@@ -22,5 +22,6 @@ class AppAssets {
   static const String videoGame = "assets/images/svg/video game.svg";
   static const String voice = "assets/images/svg/voice.svg";
   static const String yoga = "assets/images/svg/yoga.svg";
+  static const String filterIcon = "assets/images/svg/setting-config.svg";
  
 }

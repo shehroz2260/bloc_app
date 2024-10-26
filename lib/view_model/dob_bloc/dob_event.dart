@@ -25,3 +25,6 @@ class OnNextEvent extends DobEvent {
     required this.formKey,
   });
 }
+
+class ClearAllValue extends DobEvent{
+}

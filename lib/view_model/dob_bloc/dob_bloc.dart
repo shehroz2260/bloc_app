@@ -14,9 +14,10 @@ import 'dob_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DobBloc extends Bloc<DobEvent, DobState> {
-  DobBloc() : super(DobState(dateString: "",imgString: "")) {
+  DobBloc() : super(DobState(dateString: "",imgString: "",dob: null,image: null)) {
     on<DatePickerEvent>(_onDatePicker);
     on<OnNextEvent>(_onNext);
+    on<ClearAllValue>(_clearValue);
     on<ImagePickerEvent>(_onImagePickr);
   }
   _onImagePickr(ImagePickerEvent event ,Emitter<DobState>emit)async{
@@ -63,15 +64,18 @@ class DobBloc extends Bloc<DobEvent, DobState> {
       emit(state.copyWith(dateString: "Dob is required"));
     }
     if(!event.formKey.currentState!.validate() || state.image == null || state.dob == null) return;
-LoadingDialog.showProgress(event.context);
+    LoadingDialog.showProgress(event.context);
     var user = event.context.read<UserBaseBloc>().state.userData;
     final url =await FirebaseStorageService().uploadImage("profile${user.uid}", state.image?.path??"");
     user = user.copyWith(dob: state.dob,profileImage: url, firstName: event.nameController.text);
      event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
     NetworkService.updateUser(user);
     event.nameController.clear();
-    emit(state.copyWith(dob: null, image: null));
-LoadingDialog.hideProgress(event.context);
+    add(ClearAllValue());
+     LoadingDialog.hideProgress(event.context);
     Go.to(event.context, const GenderView());
+  }
+  _clearValue(ClearAllValue event , Emitter<DobState>emit){
+emit(state.copyWith(dob: null,image: null));
   }
 }

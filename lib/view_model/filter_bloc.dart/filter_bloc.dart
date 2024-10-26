@@ -36,7 +36,7 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     LoadingDialog.showProgress(event.context);
    FilterModel filterModel = FilterModel(minAge: state.minAge.toInt(), maxAge: state.maxAge.toInt(), intrestedIn: state.gender, distance: state.radius);
 await  FilterRepo.setFilter(filterModel, event.context);
-event.context.read<HomeBloc>().add(ONINITEvent(context: event.context));
+event.context.read<HomeBloc>().add(ONINITEvent(context: event.context,userBaseBloc: event.userBloc));
     LoadingDialog.hideProgress(event.context);
 Go.back(event.context);
   }

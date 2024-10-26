@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/user_model.dart';
@@ -7,8 +8,10 @@ abstract class HomeEvent {}
 
 class ONINITEvent extends HomeEvent {
   final BuildContext context;
+  final UserBaseBloc? userBaseBloc;
   ONINITEvent({
     required this.context,
+    this.userBaseBloc
   });
   
 }

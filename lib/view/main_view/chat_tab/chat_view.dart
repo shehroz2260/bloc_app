@@ -40,7 +40,7 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
   }
   Signaling signaling = Signaling();
-  ChatBloc? ancestorContext;
+  ChatBloc ancestorContext = ChatBloc();
   @override
   void didChangeDependencies() {
    ancestorContext = MyInheritedWidget(bloc: context.read<ChatBloc>(),child: const SizedBox()).bloc;
@@ -48,7 +48,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
   @override
   void dispose() {
-   ancestorContext!.add(ClearData());
+   ancestorContext.add(ClearData());
     super.dispose();
   }
   @override

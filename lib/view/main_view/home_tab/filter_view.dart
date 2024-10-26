@@ -84,7 +84,7 @@ class _FilterViewState extends State<FilterView> {
                           ),
                           const AppHeight(height: 30),
                CustomButton(btnName: "Apply",onTap: () {
-                context.read<FilterBloc>().add(OnAppLyFilter(context: context));
+                // context.read<FilterBloc>().add(OnAppLyFilter(context: context));
               },),
           
             ],

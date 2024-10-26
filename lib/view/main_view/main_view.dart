@@ -27,7 +27,7 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.blackColor,
+      backgroundColor: AppColors.whiteColor,
       body: BlocBuilder<MainBloc, MainState>(
         builder: (context, state) {
           return  Column(

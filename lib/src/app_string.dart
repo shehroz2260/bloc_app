@@ -67,6 +67,7 @@ static const String alreadyHaveAnAccount = "Already have an account?";
 static const String createAnAccoun = "Create an account";
 static const String iAmA = "I am a";
 static const String whatsYourPhoneNumber = "Whats your phone number?";
+static const String discover = "Discover";
 static const String addYourfirst2Photo = "Add your first 2\n photos";
 static const String endLessTatooInspiration = "endless tattoo inspiration";
 static const String wematchYouWithPeople = "We match you with people that have a large array of similar interests.";

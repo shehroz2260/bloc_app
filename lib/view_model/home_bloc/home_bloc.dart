@@ -20,7 +20,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(state.copyWith(userList: [],isLoading: true));
     final userList = await GetAllUsers.getAllUser();
     final filterModel = await FilterRepo.getFilter();
-    final cUser = event.context.read<UserBaseBloc>().state.userData;
+    UserModel cUser = UserModel.emptyModel;
+    if(event.userBaseBloc == null){
+     cUser = event.context.read<UserBaseBloc>().state.userData;
+    }else{
+   cUser = event.userBaseBloc!.state.userData;
+    }
     await emit.forEach(Stream.fromIterable(userList), onData: (value){
        final isUSerMatch = applyFilter(value, filterModel);
        if(!isUSerMatch)return state;
