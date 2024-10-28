@@ -310,8 +310,8 @@ _onChatListenerStream(ChatListenerStream event , Emitter<ChatState>emit){
   _clearData(ClearData event , Emitter<ChatState>emit)async{
     lastDocument = null;
     await subs?.cancel();
-    await threadSnapShot?.cancel();
     emit(state.copyWith(limit: 20,messageList: [],audioUrl: "",duration: Duration.zero,isLoading: false,isRecording: false,messageSending: false,pickFile: null,text: "",thumbnail: null));
+    await threadSnapShot?.cancel();
   }
 
   _downloadAndSaveMedia(DownloadMedia event , Emitter<ChatState>emit)async{

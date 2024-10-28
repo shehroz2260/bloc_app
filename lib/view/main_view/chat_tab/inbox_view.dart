@@ -59,43 +59,63 @@ InboxBloc ancestorContext = InboxBloc();
                         Go.to(context,ChatScreen(model: state.threadList[index]));},
                       behavior: HitTestBehavior.opaque,
                       
-                      child:  Row(
-                        children: [
-                          AppCacheImage(imageUrl: state.threadList[index].userDetail?.profileImage??"",height: 60,width: 60,round: 60),
-                           const AppWidth(width: 10),
-                           Expanded(
-                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                 Text(state.threadList[index].userDetail?.firstName??"",style: AppTextStyle.font16.copyWith(color: AppColors.blackColor,fontWeight: FontWeight.bold),),
-                                Text(state.threadList[index].lastMessage,maxLines: 1,style: AppTextStyle.font16.copyWith(color: AppColors.blackColor)),
-                              ],
-                                                       ),
-                           ),
-                           Column(
-                             children: [
-                               Text(timeago.format(
-                                                    state.threadList[index].lastMessageTime,
-                                                    locale: 'en_short',
-                                                  ),),
-                                                  if(state.threadList[index].senderId != (FirebaseAuth.instance.currentUser?.uid??"") && state.threadList[index].messageCount != 0)
-                                                   Container(
-                                                padding:
-                                                    const EdgeInsets.all(7),
-                                                decoration:  BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: AppColors.redColor,
-                                                ),
-                                                child: Text(
-                                                  state.threadList[index].messageCount.toString(),
-                                                  style:  TextStyle(
-                                                      color: AppColors.whiteColor,
-                                                      fontSize: 10),
-                                                ),
-                                              ),
-                             ],
-                           )
-                        ],
+                      child:  Container(
+                        height: 60,
+                        margin: const EdgeInsets.only(bottom: 25),
+                        child: Row(
+                          children: [
+                            AppCacheImage(imageUrl: state.threadList[index].userDetail?.profileImage??"",height: 60,width: 60,round: 60),
+                             const AppWidth(width: 10),
+                             Expanded(
+                               child: Column(
+                                 children: [
+                                   Row(
+                                     children: [
+                                       Expanded(
+                                         child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                             Text(state.threadList[index].userDetail?.firstName??"",style: AppTextStyle.font16.copyWith(color: AppColors.blackColor,fontWeight: FontWeight.bold),),
+                                            Text(state.threadList[index].lastMessage,maxLines: 1,style: AppTextStyle.font16.copyWith(color: AppColors.blackColor)),
+                                          ],
+                                                                   ),
+                                       ),
+                                       Column(
+                                     children: [
+                                       Text(timeago.format(
+                                                            state.threadList[index].lastMessageTime,
+                                                            locale: 'en_short',
+                                                          ),),
+                                                          if(state.threadList[index].senderId != (FirebaseAuth.instance.currentUser?.uid??"") && state.threadList[index].messageCount != 0)
+                                                           Container(
+                                                        padding:
+                                                            const EdgeInsets.all(7),
+                                                        decoration:  BoxDecoration(
+                                                          shape: BoxShape.circle,
+                                                          color: AppColors.redColor,
+                                                        ),
+                                                        child: Text(
+                                                          state.threadList[index].messageCount.toString(),
+                                                          style:  TextStyle(
+                                                              color: AppColors.whiteColor,
+                                                              fontSize: 10),
+                                                        ),
+                                                      ),
+                                     ],
+                                   )
+                                     ],
+                                   ),
+                              const Spacer(),
+                                   Container(
+                                    height: 1.5,
+                                    color: AppColors.borderGreyColor,
+                                   )
+                                 ],
+                               ),
+                             ),
+                             
+                          ],
+                        ),
                       ),
                     );
                   }),
