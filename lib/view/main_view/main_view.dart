@@ -19,9 +19,15 @@ class _MainViewState extends State<MainView> {
     context.read<MainBloc>().add(ListernerChanges(context: context));
     super.initState();
   }
+  MainBloc ancestorContext = MainBloc();
+  @override
+  void didChangeDependencies() {
+   ancestorContext = MyInheritedWidget(bloc: context.read<MainBloc>(),child: const SizedBox()).bloc;
+    super.didChangeDependencies();
+  }
   @override
   void dispose() {
-  context.read<MainBloc>().add(OnDispose());
+    ancestorContext.add(OnDispose());
     super.dispose();
   }
   @override
@@ -42,5 +48,28 @@ class _MainViewState extends State<MainView> {
   }
   void  _onIndexChange(int index){
      context.read<MainBloc>().add(ChangeIndexEvent(index: index));
+  }
+}
+
+
+
+class MyInheritedWidget extends InheritedWidget {
+  final MainBloc bloc;
+
+  const MyInheritedWidget({
+    super.key,
+    required this.bloc,
+    required super.child,
+  });
+
+  // Access the BLoC from the widget tree.
+  static MyInheritedWidget? of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<MyInheritedWidget>();
+  }
+
+  @override
+  bool updateShouldNotify(covariant MyInheritedWidget oldWidget) {
+    // Notify when the BLoC changes (not needed here because BLoC is the same).
+    return false;
   }
 }

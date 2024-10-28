@@ -146,7 +146,7 @@ class ThreadModel {
   //     //     .doc(threadId)
   //     //     .collection(ChatModel.tableName)
   //     //     .get()
-  //     //     .then((snapshot) {
+  //     //     .then(() {
   //     //   for (DocumentSnapshot ds in snapshot.docs) {
   //     //     ds.reference.delete();
   //     //   }

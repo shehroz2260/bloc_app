@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:chat_with_bloc/model/char_model.dart';
 import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,7 +11,6 @@ import '../../../../view_model/chat_bloc/chat_bloc.dart';
 import '../../../../view_model/chat_bloc/chat_event.dart';
 
 typedef StreamStateCallback = void Function(MediaStream stream);
-
 class Signaling {
   Map<String, dynamic> configuration = {
     'iceServers': [
@@ -28,6 +29,7 @@ class Signaling {
   String? roomId;
   String? currentRoomText;
   StreamStateCallback? onAddRemoteStream;
+StreamSubscription<DocumentSnapshot<Object?>>? sub;
 
   Future<String> createRoom(RTCVideoRenderer remoteRenderer) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
@@ -67,7 +69,7 @@ class Signaling {
     };
 
     // Listening for remote session description below
-    roomRef.snapshots().listen((snapshot) async {
+   sub =  roomRef.snapshots().listen((snapshot) async {
 
       Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
       if (peerConnection?.getRemoteDescription() != null &&
