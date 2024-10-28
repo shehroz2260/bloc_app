@@ -29,12 +29,14 @@ class _ChatScreenState extends State<ChatScreen> {
     void onScroll() {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
+     context.read<ChatBloc>().add(LoadChat(thradId: widget.model.threadId));
      context.read<ChatBloc>().add(OnListenThread(context:context,threadModel: widget.model));
     }
   } 
   @override
   void initState() {
     scrollController.addListener(onScroll);
+     context.read<ChatBloc>().add(LoadChat(thradId: widget.model.threadId));
   context.read<ChatBloc>().add(OnListenThread(threadModel: widget.model,context: context));
   context.read<ChatBloc>().add(InitiaLizeAudioController());
     super.initState();

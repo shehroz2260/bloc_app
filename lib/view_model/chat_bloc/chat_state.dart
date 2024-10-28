@@ -15,13 +15,13 @@ class ChatState {
   final File? thumbnail;
   final String? audioUrl;
   final Duration duration;
-  final ThreadModel threadModel;
+  // final ThreadModel threadModel;
   final String text;
   ChatState({
     required this.messageList,
     required this.limit,
     required this.isFirstMsg,
-    required this.threadModel,
+    // required this.threadModel,
     required this.isLoading,
     required this.messageSending,
     required this.isRecording,
@@ -50,7 +50,7 @@ class ChatState {
       messageList: messageList ?? this.messageList,
       limit: limit ?? this.limit,
       isFirstMsg: isFirstMsg ?? this.isFirstMsg,
-      threadModel: threadModel ?? this.threadModel,
+      // threadModel: threadModel ?? this.threadModel,
       isLoading: isLoading ?? this.isLoading,
       messageSending: messageSending ?? this.messageSending,
       isRecording: isRecording ?? this.isRecording,

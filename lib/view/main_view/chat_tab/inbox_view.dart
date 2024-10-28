@@ -8,9 +8,10 @@ import 'package:chat_with_bloc/view_model/inbox_bloc/inbox_event.dart';
 import 'package:chat_with_bloc/view_model/inbox_bloc/inbox_state.dart';
 import 'package:chat_with_bloc/widgets/app_cache_image.dart';
 import 'package:chat_with_bloc/widgets/custom_text_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:timeago/timeago.dart' as timeago;
 class InboxView extends StatefulWidget {
   const InboxView({super.key});
 
@@ -70,6 +71,29 @@ InboxBloc ancestorContext = InboxBloc();
                                 Text(state.threadList[index].lastMessage,maxLines: 1,style: AppTextStyle.font16.copyWith(color: AppColors.blackColor)),
                               ],
                                                        ),
+                           ),
+                           Column(
+                             children: [
+                               Text(timeago.format(
+                                                    state.threadList[index].lastMessageTime,
+                                                    locale: 'en_short',
+                                                  ),),
+                                                  if(state.threadList[index].senderId != (FirebaseAuth.instance.currentUser?.uid??"") && state.threadList[index].messageCount != 0)
+                                                   Container(
+                                                padding:
+                                                    const EdgeInsets.all(7),
+                                                decoration:  BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: AppColors.redColor,
+                                                ),
+                                                child: Text(
+                                                  state.threadList[index].messageCount.toString(),
+                                                  style:  TextStyle(
+                                                      color: AppColors.whiteColor,
+                                                      fontSize: 10),
+                                                ),
+                                              ),
+                             ],
                            )
                         ],
                       ),

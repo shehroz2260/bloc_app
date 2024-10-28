@@ -1,8 +1,7 @@
-import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'user_model.dart';
 
 class ThreadModel {
@@ -100,16 +99,16 @@ class ThreadModel {
       isBlocked: map['isBlocked'] as bool,
     );
   }
-  void readMessage(BuildContext context) async {
+  void readMessage() async {
     try {
-      if (senderId != context.read<UserBaseBloc>().state.userData.uid) {
+      if (senderId != (FirebaseAuth.instance.currentUser?.uid??"")) {
         await FirebaseFirestore.instance
             .collection(tableName)
             .doc(threadId)
             .update({'messageCount': 0});
       }
     } on FirebaseException catch (e) {
-      showOkAlertDialog(context: context, message: e.message);
+      log("^^${e.message}");
     }
   }
 
