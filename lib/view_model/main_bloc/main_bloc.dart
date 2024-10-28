@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
-import 'package:chat_with_bloc/view/main_view/map_tab/map_view.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_event.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,13 +8,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../model/user_model.dart';
 import '../../view/main_view/chat_tab/inbox_view.dart';
 import '../../view/main_view/home_tab/home_view.dart';
+import '../../view/main_view/match_tab/match_view.dart';
 import '../../view/main_view/profile_tab/profile_view.dart';
+import '../matches_bloc/matches_bloc.dart';
+import '../matches_bloc/matches_event.dart';
 import 'main_event.dart';
 import 'main_state.dart';
 
   List<Widget> _tabList = const [
      HomeView(),
-     MapScreen(),
+    //  MapScreen(),
+     MatchTab(),
      InboxView(),
      ProfileView(),
   ];
@@ -39,7 +41,8 @@ StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>? sub;
         .snapshots()
         .listen((e) async {
       var user = UserModel.fromMap(e.data() ?? {});
-      log("^^^^^^^^^^^^^^^^^^^^$user");
+    event.context.read<MatchesBloc>().add(ONinit(bloc: user));
+
       event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
     });
   }

@@ -5,6 +5,7 @@ import 'package:chat_with_bloc/view_model/inbox_bloc/inbox_bloc.dart';
 import 'package:chat_with_bloc/view_model/main_bloc/main_bloc.dart';
 import 'package:chat_with_bloc/view_model/map_bloc/map_bloc.dart';
 import 'package:chat_with_bloc/view_model/dob_bloc/dob_bloc.dart';
+import 'package:chat_with_bloc/view_model/matches_bloc/matches_bloc.dart';
 import 'package:chat_with_bloc/view_model/preference_bloc/preference_bloc.dart';
 import 'package:chat_with_bloc/view_model/sign_in_bloc/sign_in_bloc.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => PreferenceBloc()),
         BlocProvider(create: (context) => HomeBloc()),
         BlocProvider(create: (context) => FilterBloc()),
+        BlocProvider(create: (context) => MatchesBloc()),
       ],
       child: 
        GestureDetector(
