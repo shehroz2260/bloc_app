@@ -48,13 +48,15 @@ InboxBloc ancestorContext = InboxBloc();
               const AppHeight(height: 60),
               Text("Messages", style: AppTextStyle.font25.copyWith(color: AppColors.blackColor)),
               const AppHeight(height: 10),
-              const CustomTextField(hintText: "Search...",isSowPrefixcon: true),
+               CustomTextField(hintText: "Search...",isSowPrefixcon: true,onChange: (value) {
+                context.read<InboxBloc>().add(OnSearch(value: value));
+              },),
               const AppHeight(height: 15),
               Expanded(
                   child: SingleChildScrollView(
                 child: Column(
                   children: List.generate(state.threadList.length, (index) {
-                    return GestureDetector(
+                    return (state.threadList[index].userDetail?.userName??"").toLowerCase().contains(state.searchText.toLowerCase())    ? GestureDetector(
                       onTap: (){
                         Go.to(context,ChatScreen(model: state.threadList[index]));},
                       behavior: HitTestBehavior.opaque,
@@ -76,7 +78,7 @@ InboxBloc ancestorContext = InboxBloc();
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                              Text(state.threadList[index].userDetail?.firstName??"",style: AppTextStyle.font16.copyWith(color: AppColors.blackColor,fontWeight: FontWeight.bold),),
-                                            Text(state.threadList[index].lastMessage,maxLines: 1,style: AppTextStyle.font16.copyWith(color: AppColors.blackColor)),
+                                            Text(state.threadList[index].lastMessage,maxLines: 1,style: AppTextStyle.font16.copyWith(color: AppColors.blackColor,fontSize: 12)),
                                           ],
                                                                    ),
                                        ),
@@ -117,7 +119,7 @@ InboxBloc ancestorContext = InboxBloc();
                           ],
                         ),
                       ),
-                    );
+                    ): const SizedBox();
                   }),
                 ),
               ))

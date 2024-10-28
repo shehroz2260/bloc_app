@@ -25,3 +25,10 @@ class TreadListenerStream extends InboxEvent {
 class MessageClearList extends InboxEvent{
   
 }
+
+class OnSearch extends InboxEvent {
+  final String value;
+  OnSearch({
+    required this.value,
+  });
+}

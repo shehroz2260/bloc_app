@@ -8,13 +8,17 @@ import 'inbox_event.dart';
 import 'inbox_state.dart';
 
 class InboxBloc extends Bloc<InboxEvent, InboxState> {
-  InboxBloc() : super(InboxState(threadList: [],unreadCount: 0)) {
+  InboxBloc() : super(InboxState(threadList: [],unreadCount: 0,searchText: "")) {
     on<OnDispose>(_onDispose);
     on<ThreadListener>(_messageListener);
     on<TreadListenerStream>(_onChatListenerStream);
     on<MessageClearList>(_treadClearList);
+    on<OnSearch>(_onSearch);
   }
 
+_onSearch(OnSearch event , Emitter<InboxState> emit){
+emit(state.copyWith(searchText: event.value));
+}
 
 _onDispose(OnDispose event , Emitter<InboxState> emit)async{
   emit(state.copyWith(threadList: []));
