@@ -1,6 +1,8 @@
 import 'package:chat_with_bloc/src/app_assets.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/app_string.dart';
+import 'package:chat_with_bloc/src/go_file.dart';
+import 'package:chat_with_bloc/view/main_view/match_tab/user_profile_view/user_profile_view.dart';
 import 'package:chat_with_bloc/view_model/filter_bloc.dart/filter_bloc.dart';
 import 'package:chat_with_bloc/view_model/filter_bloc.dart/filter_state.dart';
 import 'package:chat_with_bloc/view_model/home_bloc/home_bloc.dart';
@@ -247,6 +249,7 @@ class _HomeViewState extends State<HomeView> {
                                           WidgetForLikeorDislike(
                                                                                icon: Icons.info,
                                                                                onTap: () {
+                                                                                Go.to(context, UserProfileView(user: user));
                                                                                 // Get.to(()=> InfoScreen(userModel: controller.users[index]));
                                                                                }
                                                                               ), 

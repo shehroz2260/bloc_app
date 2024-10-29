@@ -76,7 +76,7 @@ class UserProfileView extends StatelessWidget {
                                  
                                ],
                              ),
-                             const Text(" bio")
+                              Text(" ${user.bio}")
                            ],
                          ),
                        ),
@@ -124,7 +124,7 @@ class UserProfileView extends StatelessWidget {
                    ),
                    const AppHeight(height: 30),
                      Text("About",style: AppTextStyle.font20.copyWith(color: AppColors.blackColor,fontWeight: FontWeight.bold),),
-                     const TextWithSeeMore(text: "Abut dsafa"),
+                      TextWithSeeMore(text: user.about),
                      const AppHeight(height: 30),
                      Text("Interests",style: AppTextStyle.font20.copyWith(color: AppColors.blackColor,fontWeight: FontWeight.bold),),
                    const AppHeight(height: 10),
