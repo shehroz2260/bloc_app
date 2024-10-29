@@ -1,3 +1,4 @@
+import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/view/splash_view/splash_view.dart';
 import 'package:chat_with_bloc/view_model/filter_bloc.dart/filter_bloc.dart';
 import 'package:chat_with_bloc/view_model/home_bloc/home_bloc.dart';
@@ -10,6 +11,8 @@ import 'package:chat_with_bloc/view_model/preference_bloc/preference_bloc.dart';
 import 'package:chat_with_bloc/view_model/sign_in_bloc/sign_in_bloc.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:chat_with_bloc/view_model/sign_up_bloc/sign_up_bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,9 +26,34 @@ void main() async{
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+@override
+  void initState() {
+   WidgetsBinding.instance.addObserver(this);
+
+    super.initState();
+  }
+    @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _updateOnLineAndOfflineStatus(true);
+    } else if (state == AppLifecycleState.paused) {
+      _updateOnLineAndOfflineStatus(false);
+    }
+  }
+
+_updateOnLineAndOfflineStatus(bool isOnline)async{
+await FirebaseFirestore.instance.collection(UserModel.tableName).doc(FirebaseAuth.instance.currentUser?.uid??"").set({
+  "isOnline" : isOnline
+},SetOptions(merge: true));
+}
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(

@@ -11,7 +11,11 @@ class UserModel {
   final double lng;
   final int gender;
   final int preferGender;
+  final List<String> galleryImages;
+  final String bio;
+  final String about;
   final DateTime dob;
+  final bool isOnline;
   final String profileImage;
   final List<String> myLikes;
   final List<String> myDislikes;
@@ -20,7 +24,11 @@ class UserModel {
   final List<String> otherDislikes;
   final List<String> matches;
   UserModel({
+    required this.bio,
+    required this.galleryImages,
+    required this.about,
     required this.userName,
+    required this.isOnline,
     required this.myInstrest,
     required this.firstName,
     required this.email,
@@ -48,14 +56,18 @@ class UserModel {
     String? firstName,
     String? email,
     String? uid,
+    String? about,
+    String? bio,
     String? location,
     double? lat,
     double? lng,
     int? gender,
     int? preferGender,
     DateTime? dob,
+    bool? isOnline,
     String? profileImage,
     List<String>? myLikes,
+    List<String>? galleryImages,
     List<int>? myInstrest,
     List<String>? myDislikes,
     List<String>? otherLikes,
@@ -64,6 +76,10 @@ class UserModel {
   }) {
     return UserModel(
       userName: userName ?? this.userName,
+      galleryImages: galleryImages ?? this.galleryImages,
+      bio: bio ?? this.bio,
+      about: about ?? this.about,
+      isOnline: isOnline ?? this.isOnline,
       myInstrest: myInstrest ?? this.myInstrest,
       firstName: firstName ?? this.firstName,
       email: email ?? this.email,
@@ -89,11 +105,15 @@ class UserModel {
       'firstName': firstName,
       'myInstrest': myInstrest,
       'email': email,
+      'isOnline': isOnline,
       'uid': uid,
       'location': location,
       'lat': lat,
       'lng': lng,
       'gender': gender,
+      'galleryImages': galleryImages,
+      'bio': bio,
+      'about': about,
       'preferGender': preferGender,
       'dob': Timestamp.fromDate(dob),
       'profileImage': profileImage,
@@ -108,6 +128,8 @@ class UserModel {
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
       userName: map['userName'] ??"",
+      about: map['about'] ??"",
+      bio: map['bio'] ??"",
       firstName: map['firstName'] ??"",
       email: map['email'] ??"",
       uid: map['uid'] ??"",
@@ -115,9 +137,11 @@ class UserModel {
       lat: map['lat'] ??0.0,
       lng: map['lng'] ??0.0,
       gender: map['gender'] ??0,
+      isOnline: map['isOnline'] ??false,
       preferGender: map['preferGender'] ??0,
       dob: (map['dob'] as Timestamp).toDate(),
       profileImage: map['profileImage'] ??"",
+      galleryImages: List<String>.from((map['galleryImages'] ??[])),
       myLikes: List<String>.from((map['myLikes'] ??[])),
       myInstrest: List<int>.from((map['myInstrest'] ??[])),
       myDislikes: List<String>.from((map['myDislikes']  ??[])),
@@ -138,7 +162,7 @@ class UserModel {
     return myLikes.contains(uid);
   }
   static UserModel get emptyModel {
-  return UserModel(myInstrest: [], userName: "",firstName: "",  email: "", uid: "", location: "", lat: 0.0, lng: 0.0, gender: 0, preferGender: 0, dob: DateTime(1800), profileImage: "", myLikes: [], myDislikes: [], otherLikes: [], otherDislikes: [], matches: []);
+  return UserModel(about: "",bio: "",galleryImages: [], isOnline: false, myInstrest: [], userName: "",firstName: "",  email: "", uid: "", location: "", lat: 0.0, lng: 0.0, gender: 0, preferGender: 0, dob: DateTime(1800), profileImage: "", myLikes: [], myDislikes: [], otherLikes: [], otherDislikes: [], matches: []);
 }
 
   bool isDisLiked(String uid) {
@@ -149,6 +173,6 @@ class UserModel {
   }
   @override
   String toString() {
-    return 'UserModel(myInstrest: $myInstrest, userName: $userName, first1Name: $firstName, email: $email, password: $password, uid: $uid, location: $location, lat: $lat, lng: $lng, gender: $gender, preferGender: $preferGender, dob: $dob, profileImage: $profileImage, myLikes: $myLikes, myDislikes: $myDislikes, otherLikes: $otherLikes, otherDislikes: $otherDislikes, matches: $matches)';
+    return 'UserModel(galleryImages: $galleryImages, bio: $bio, about: $about, isOnline: $isOnline, myInstrest: $myInstrest, userName: $userName, first1Name: $firstName, email: $email, password: $password, uid: $uid, location: $location, lat: $lat, lng: $lng, gender: $gender, preferGender: $preferGender, dob: $dob, profileImage: $profileImage, myLikes: $myLikes, myDislikes: $myDislikes, otherLikes: $otherLikes, otherDislikes: $otherDislikes, matches: $matches)';
   }
 }

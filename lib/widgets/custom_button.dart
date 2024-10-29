@@ -108,8 +108,10 @@ class CustomNewButton extends StatelessWidget {
 
 
 class CustomBackButton extends StatelessWidget {
+  final bool isUSerPRofile;
   const CustomBackButton({
     super.key,
+    this.isUSerPRofile = false
   });
 
   @override
@@ -119,6 +121,7 @@ class CustomBackButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
+          color: isUSerPRofile? AppColors.whiteColor.withOpacity(0.5): null,
           border: Border.all(color: AppColors.borderColor),
           borderRadius: BorderRadius.circular(10)
         ),

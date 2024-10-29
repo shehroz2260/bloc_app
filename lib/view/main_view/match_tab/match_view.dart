@@ -1,6 +1,8 @@
+import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/src/app_assets.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/view/main_view/chat_tab/chat_view.dart';
+import 'package:chat_with_bloc/view/main_view/match_tab/user_profile_view/user_profile_view.dart';
 import 'package:chat_with_bloc/view_model/inbox_bloc/inbox_bloc.dart';
 import 'package:chat_with_bloc/view_model/inbox_bloc/inbox_state.dart';
 import 'package:chat_with_bloc/view_model/matches_bloc/matches_bloc.dart';
@@ -99,7 +101,11 @@ class _MatchTabState extends State<MatchTab> {
                       child: Stack(
                         alignment: Alignment.bottomCenter,
                         children: [
-                          AppCacheImage(imageUrl: state.likesList[index].profileImage,round: 15,width: double.infinity,height: double.infinity,boxFit: BoxFit.cover,),
+                          AppCacheImage(imageUrl: state.likesList[index].profileImage,round: 15,width: double.infinity,height: double.infinity,boxFit: BoxFit.cover,
+                          onTap: () {
+                             Go.to(context,  UserProfileView(user: state.likesList[index]));
+                          },
+                          ),
                        if(state.likesList[index].matches.contains(FirebaseAuth.instance.currentUser?.uid??""))
                             Positioned(
                               top: 10,
@@ -183,7 +189,9 @@ class _MatchTabState extends State<MatchTab> {
                           child: Stack(
                             alignment: Alignment.bottomCenter,
                             children: [
-                              AppCacheImage(imageUrl: inboxState.threadList[index].userDetail?.profileImage??"",round: 15,width: double.infinity,height: double.infinity,boxFit: BoxFit.cover,),
+                              AppCacheImage(imageUrl: inboxState.threadList[index].userDetail?.profileImage??"",round: 15,width: double.infinity,height: double.infinity,boxFit: BoxFit.cover,onTap: () {
+                                Go.to(context,  UserProfileView(user: inboxState.threadList[index].userDetail?? UserModel.emptyModel));
+                              },),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.end,

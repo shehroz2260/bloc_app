@@ -25,5 +25,8 @@ class AppAssets {
   static const String yoga = "assets/images/svg/yoga.svg";
   static const String heart = "assets/images/svg/heart.svg";
   static const String filterIcon = "assets/images/svg/setting-config.svg";
+  static const String filesIcon = "assets/images/svg/files.svg";
+  static const String sendIcon = "assets/images/svg/send.svg";
+  static const String locationICon = "assets/images/svg/locations.svg";
  
 }

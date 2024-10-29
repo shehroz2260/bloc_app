@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:chat_with_bloc/src/app_assets.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../src/app_colors.dart';
 import '../src/app_text_style.dart';
 import '../utils/app_funcs.dart';
@@ -113,35 +115,34 @@ class ChatTextField extends StatelessWidget {
                   borderRadius: BorderRadius.circular(35),
                   child: Image.file(thumbnail!,height: 35,width: 35,fit: BoxFit.cover,)): MediaType.type == MediaType.image && pickFile != null? ClipRRect(
                     borderRadius: BorderRadius.circular(35),
-                    child: Image.file(pickFile!,height: 35,width: 35,fit: BoxFit.cover,)): const Icon(Icons.attachment)),
-              hintText: "Enter message . . .",
+                    child: Image.file(pickFile!,height: 35,width: 35,fit: BoxFit.cover,)): Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SvgPicture.asset(AppAssets.filesIcon,height: 20,width: 20,),
+                    )),
+              hintText: "Your message",
+              hintStyle: TextStyle(color: AppColors.borderGreyColor),
               enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                   color: Colors.black,
-                   width: 1
-                ),
+                borderSide:  BorderSide(
+                   color: AppColors.borderGreyColor,
+                   width: 1),
                 borderRadius: BorderRadius.circular(18)
               ),
               disabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                   color: Colors.black,
-                   width: 1
-                ),
-                
+                borderSide: BorderSide(
+                   color: AppColors.borderGreyColor,
+                   width: 1),
                 borderRadius: BorderRadius.circular(18)
               ),
               focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                   color: Colors.black,
-                   width: 1
-                ),
+                borderSide: BorderSide(
+                   color: AppColors.borderGreyColor,
+                   width: 1),
                 borderRadius: BorderRadius.circular(18)
               ),
               border: OutlineInputBorder(
-                borderSide: const BorderSide(
-                   color: Colors.black,
-                   width: 1
-                ),
+                borderSide: BorderSide(
+                   color: AppColors.borderGreyColor,
+                   width: 1),
                 borderRadius: BorderRadius.circular(18)
               ),
      
@@ -154,10 +155,13 @@ class ChatTextField extends StatelessWidget {
            child: Container(
             padding: const EdgeInsets.all(13),
             decoration:  BoxDecoration(
-              color:isRecording ? Colors.red : Colors.green,
-              shape: BoxShape.circle
+              color:AppColors.whiteColor,
+              borderRadius: BorderRadius.circular(15),
+              border: Border.all(
+                color: AppColors.borderGreyColor
+              )
             ),
-            child:  Icon( isDisable && isRecording?Icons.stop: isDisable && !isRecording? Icons.mic: Icons.send_rounded,color: Colors.white,),
+            child:  Icon( isDisable && isRecording?Icons.stop: isDisable && !isRecording? Icons.mic: Icons.send_rounded,color: AppColors.redColor),
            ),
          ),
                 

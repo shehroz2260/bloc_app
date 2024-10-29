@@ -51,7 +51,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     if (state.limit < 20) {
       return;
     }
-    emit(state.copyWith(isLoading: true));
+    if(state.isFirstMsg){
+      emit(state.copyWith(isLoading: true,isFirstMsg: false));
+    }
      Query<Map<String, dynamic>> snapShotQuery;
     snapShotQuery = ChatRepo.ref(event.thradId)
         .limit(20);
@@ -66,9 +68,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     state.messageList.addAll(messagesLIst);
     emit(state.copyWith(
+      isLoading:  false,
       limit: messagesLIst.length,
       messageList: state.messageList,
-      isLoading: false
     ));
     add(ChatListener(thradId: event.thradId));
   }
@@ -308,10 +310,12 @@ _onChatListenerStream(ChatListenerStream event , Emitter<ChatState>emit){
     }
   }
   _clearData(ClearData event , Emitter<ChatState>emit)async{
+    emit(state.copyWith(limit: 20,messageList: [],audioUrl: "",duration: Duration.zero,isLoading: false,isRecording: false,messageSending: false,pickFile: null,text: "",thumbnail: null,isFirstMsg: true,threadModel: null));
     lastDocument = null;
-    await subs?.cancel();
-    emit(state.copyWith(limit: 20,messageList: [],audioUrl: "",duration: Duration.zero,isLoading: false,isRecording: false,messageSending: false,pickFile: null,text: "",thumbnail: null));
     await threadSnapShot?.cancel();
+    await subs?.cancel();
+ subs = null;
+ threadSnapShot = null;
   }
 
   _downloadAndSaveMedia(DownloadMedia event , Emitter<ChatState>emit)async{
