@@ -32,9 +32,10 @@ class _SignInWithEmailViewState extends State<SignInWithEmailView> {
         resizeToAvoidBottomInset: false,
         backgroundColor: AppColors.whiteColor,
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Column(
             children: [
+              const AppHeight(height: 10),
               const Align(
               alignment: Alignment.centerLeft,
               child: SafeArea(child: CustomBackButton()),

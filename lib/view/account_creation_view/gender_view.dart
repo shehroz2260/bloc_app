@@ -28,7 +28,7 @@ class _GenderViewState extends State<GenderView> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const AppHeight(height: 50),
+                const AppHeight(height: 60),
                 const CustomBackButton(),
                  const AppHeight(height: 30),
                  Text(AppStrings.iAmA,style: AppTextStyle.font30.copyWith(color: AppColors.blackColor)),

@@ -17,8 +17,9 @@ class CustomTextField extends StatefulWidget {
   final bool? enabled;
   final bool isSowPrefixcon;
   final String? labelText;
+  final int maxLines;
   const CustomTextField({
-    super.key,this.enabled, this.textEditingController, this.onChange, required this.hintText,this.validator, this.isPasswordField =false, this.floatingLabelBehavior, this.labelText,  this.isSowPrefixcon = false
+    super.key,this.enabled,this.maxLines = 1, this.textEditingController, this.onChange, required this.hintText,this.validator, this.isPasswordField =false, this.floatingLabelBehavior, this.labelText,  this.isSowPrefixcon = false
   });
 
   @override
@@ -42,6 +43,7 @@ void visiblePassword(){
       cursorColor: AppColors.redColor,
       obscureText: isVisible,
       style: AppTextStyle.font16.copyWith(color: AppColors.redColor),
+      maxLines: widget.maxLines,
       decoration:  InputDecoration(
         prefixIcon: widget.isSowPrefixcon? Icon(Icons.search,color: AppColors.borderGreyColor): null,
         labelText: widget.labelText,

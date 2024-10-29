@@ -52,4 +52,20 @@ class AppValidation {
    
     return null;
   }
+  static  String? bioValidation(String? value) {
+    if ((value ?? "").isEmpty) {
+      
+      return "Bio is required";
+    }
+   
+    return null;
+  }
+  static  String? aboutValidation(String? value) {
+    if ((value ?? "").isEmpty) {
+      
+      return "About is required";
+    }
+   
+    return null;
+  }
 }

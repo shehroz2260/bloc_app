@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:audio_waveforms/audio_waveforms.dart';
+import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/utils/app_funcs.dart';
 import 'package:flutter/material.dart';
 
@@ -7,11 +8,12 @@ class WaveBubble extends StatefulWidget {
   final String path;
   final String id;
   final bool isFromNetwork;
+  final bool isSender;
   const WaveBubble(
       {super.key,
       required this.path,
       this.isFromNetwork = false,
-      required this.id});
+      required this.id, required this.isSender});
 
   @override
   State<WaveBubble> createState() => _WaveBubbleState();
@@ -79,7 +81,7 @@ class _WaveBubbleState extends State<WaveBubble> {
       height: 52,
       margin: const EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.4),
+          color: !widget.isSender? AppColors.redColor.withOpacity(0.15): AppColors.borderGreyColor,
           border: Border.all(
             width: 1,
             color: Colors.white.withOpacity(0.5),

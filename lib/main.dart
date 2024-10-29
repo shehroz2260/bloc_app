@@ -1,5 +1,6 @@
 import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/view/splash_view/splash_view.dart';
+import 'package:chat_with_bloc/view_model/bio_bloc/bio_bloc.dart';
 import 'package:chat_with_bloc/view_model/filter_bloc.dart/filter_bloc.dart';
 import 'package:chat_with_bloc/view_model/home_bloc/home_bloc.dart';
 import 'package:chat_with_bloc/view_model/inbox_bloc/inbox_bloc.dart';
@@ -72,6 +73,7 @@ await FirebaseFirestore.instance.collection(UserModel.tableName).doc(FirebaseAut
         BlocProvider(create: (context) => HomeBloc()),
         BlocProvider(create: (context) => FilterBloc()),
         BlocProvider(create: (context) => MatchesBloc()),
+        BlocProvider(create: (context) => BioBloc()),
       ],
       child: 
        GestureDetector(

@@ -4,6 +4,7 @@ import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/services/auth_services.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/utils/app_funcs.dart';
+import 'package:chat_with_bloc/view/account_creation_view/bio_view.dart';
 import 'package:chat_with_bloc/view/main_view/main_view.dart';
 import 'package:chat_with_bloc/view/account_creation_view/dob_pick_view.dart';
 import 'package:chat_with_bloc/view/account_creation_view/gender_view.dart';
@@ -55,6 +56,15 @@ await sub?.cancel();
     Go.offAll(context, const OnBoardingScreen());
   }else{
     Go.offAll(context, const PreferenceView());
+  }
+  return;
+ }
+  if(user.about.isEmpty || user.bio.isEmpty){
+  if(isSplash){
+    await FirebaseAuth.instance.signOut();
+    Go.offAll(context, const OnBoardingScreen());
+  }else{
+    Go.offAll(context, const BioView());
   }
   return;
  }

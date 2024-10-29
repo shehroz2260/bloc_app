@@ -2,7 +2,7 @@ import 'package:chat_with_bloc/model/filter_model.dart';
 import 'package:chat_with_bloc/repos/filter_repo.dart';
 import 'package:chat_with_bloc/services/network_service.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
-import 'package:chat_with_bloc/view/main_view/main_view.dart';
+import 'package:chat_with_bloc/view/account_creation_view/bio_view.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -49,6 +49,6 @@ class PreferenceBloc extends Bloc<PreferenceEvent, PreferenceState> {
     FilterRepo.setFilter(filterModel, event.context);
     LoadingDialog.hideProgress(event.context);
     emit(state.copyWith(prefGenders: -1, intrestList: []));
-    Go.offAll(event.context, const MainView());
+    Go.to(event.context, const BioView());
   }
 }

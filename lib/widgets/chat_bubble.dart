@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
@@ -58,13 +57,19 @@ final UserModel userModel;
                     data.media != null && (data.media?.type??0) == MediaType.audio?
              Padding(
                padding:  EdgeInsets.only(left: isSender? 70:0,right: isSender ? 0:70 ),
-               child: WaveBubble(isFromNetwork: true, path: data.media?.url??"", id: data.media?.id??""),
+               child: WaveBubble(isFromNetwork: true, path: data.media?.url??"", id: data.media?.id??"",isSender: isSender,),
              ):
              
       Container(
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.black),
-          borderRadius: BorderRadius.circular(15),
+          // border: Border.all(color: Colors.black),
+          color: !isSender? AppColors.redColor.withOpacity(0.15): AppColors.borderGreyColor,
+          borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(12),
+            topRight: const Radius.circular(12),
+            bottomLeft: Radius.circular(isSender?12: 0),
+            bottomRight: Radius.circular(isSender? 0:12)
+          ),
     
         ),
         padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
@@ -80,7 +85,6 @@ final UserModel userModel;
                 },),
                  GestureDetector(
                   onTap: () {
-                    log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
                     context.read<ChatBloc>().add(DownloadMedia(context: context, chat: data));
                   },
                   child: Icon(Icons.download,color: AppColors.blueColor,size: 40)),
@@ -121,7 +125,7 @@ final UserModel userModel;
           SelectableText(data.message),
           ],
         )),
-        Text(DateFormat("hh:mm").format(data.messageTime)),
+        Text(DateFormat("hh:mm a").format(data.messageTime)),
         const SizedBox(height: 7,)
     ],
                       );

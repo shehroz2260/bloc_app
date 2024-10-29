@@ -33,9 +33,13 @@ class _PreferenceViewState extends State<PreferenceView> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const AppHeight(height: 50),
+                const AppHeight(height: 60),
                 const CustomBackButton(),
-                const AppHeight(height: 30),
+                Expanded(child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                    const AppHeight(height: 30),
                 Text("Preference gender",style: AppTextStyle.font25.copyWith(color: AppColors.blackColor)),
                 const AppHeight(height: 10),
                 Row(
@@ -90,11 +94,17 @@ class _PreferenceViewState extends State<PreferenceView> {
                const AppHeight(height: 5),
                 Text("Select a few of your interests and let everyone know what you’re passionate about.",style: AppTextStyle.font16.copyWith(color: AppColors.blackColor)),
                const AppHeight(height: 20),
-                Expanded(child: SingleChildScrollView(
-                child: Wrap(
-                  runSpacing: 15,
-                  spacing: 15,
-                  children: List.generate(interestList.length, (index){
+              GridView.builder(
+                padding: EdgeInsets.zero,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 3,
+                  mainAxisSpacing: 10,
+                  ),
+                  itemCount: interestList.length,
+                  shrinkWrap: true,
+                   itemBuilder: (context,index){
                     return GestureDetector(
                       onTap: () {
                         context.read<PreferenceBloc>().add(SelectInstrest(index: index));
@@ -116,14 +126,16 @@ class _PreferenceViewState extends State<PreferenceView> {
                       ),
                                         ),
                     );
-                  }),
-                ),
-               )),
+                   }),
                const AppHeight(height: 20),
                  CustomNewButton(btnName: AppStrings.next,onTap: () {
                    context.read<PreferenceBloc>().add(OnNextEvent(context: context));
                  },),
                  const AppHeight(height: 30),
+                    ],
+                  ),
+                )),
+               
               ],
             );
           },

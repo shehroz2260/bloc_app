@@ -150,6 +150,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   width: mediaQuery.width,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   child: ListView.builder(
+                    padding: EdgeInsets.zero,
                     itemCount: state.messageList.length,
                     reverse: true,
                     controller: scrollController,
