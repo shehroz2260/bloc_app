@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/model/thread_model.dart';
 import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
@@ -128,8 +129,27 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
              
                        GestureDetector(
-                        onTap: () {
-                         context.read<ChatBloc>().add(ClearChat(context: context));
+                        onTap: () async{
+                       
+                            var result = await showConfirmationDialog(
+                    context: context,
+                    title: "Please select option",
+                    actions: [
+                      const AlertDialogAction(key: "1", label: "Remove Match"),
+                       const AlertDialogAction(key: "2", label: "Clear chat"),
+                       AlertDialogAction(key: "3", label: "Report ${widget.model.userDetail?.firstName??""}"),
+                       AlertDialogAction(key: "4", label: "Block ${widget.model.userDetail?.firstName??""}"),
+                    ]);
+                if (result == null) {
+                  return;
+                }
+
+                if(result =="2"){
+                  var okCancelRes = await showOkCancelAlertDialog(context: context, message: "Do you really want to clear chat",title: "Are you sure!");
+                  if(okCancelRes == OkCancelResult.cancel) return;
+                  
+                  context.read<ChatBloc>().add(ClearChat(context: context));
+                }
                         },
                          child: Container(
                                                height: 60,width: 60,
