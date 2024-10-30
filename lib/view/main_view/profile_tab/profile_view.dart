@@ -46,7 +46,7 @@ class _ProfileViewState extends State<ProfileView> {
                 bottomLeft: Radius.circular(30),
                 bottomRight: Radius.circular(30)
               ),
-              color: AppColors.redColor.withOpacity(0.5),
+              color: AppColors.redColor.withOpacity(0.4),
             
             ),
             height: MediaQuery.of(context).size.height * 0.6,
@@ -112,12 +112,15 @@ class _ProfileViewState extends State<ProfileView> {
          const Spacer(),
            const Padding(
             padding: EdgeInsets.symmetric(horizontal: 40),
-            child: CustomNewButton(btnName: "Delete Account",isFillColor: false),
+            child: CustomNewButton(btnName: "Delete Account"),
           ),
           const AppHeight(height: 20),
            Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: CustomNewButton(btnName: "Logout",onTap: ()async {
+            child: CustomNewButton(
+              isFillColor: false,
+              btnColor: AppColors.redColor.withOpacity(0.3),
+              btnName: "Logout",onTap: ()async {
                var result = await showOkCancelAlertDialog(context: context,message: "Do you really want to logout",title: "Are you really",okLabel: "Yes",cancelLabel: "Not now");
               if(result == OkCancelResult.cancel) return;
               await FirebaseAuth.instance.signOut();
