@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/services/auth_services.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
@@ -18,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../model/char_model.dart';
 import '../model/thread_model.dart';
+import '../view/main_view/home_tab/congrats_message_view.dart';
 import '../view_model/user_base_bloc/user_base_state.dart';
 
 class NetworkService {
@@ -108,8 +108,10 @@ await sub?.cancel();
   context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
     if (isMatch) {
       await createNewThread(liker, likee, null);
-      showOkAlertDialog(context: context,message: "Congrats you have new friend ${likee.firstName}");
+      // showOkAlertDialog(context: context,message: "Congrats you have new friend ${likee.firstName}");
       // await sendMatchNotification(liker, likee);
+    
+                      Go.to(context,  CongratsMessageView(user: likee));
     }
   }
 

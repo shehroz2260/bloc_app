@@ -78,7 +78,6 @@ class _ProfileViewState extends State<ProfileView> {
                     title: "Settings",
                     icon: AppAssets.settingICon,
                     onTap: () {
-                      
                     },
                    ),
                  ),
@@ -146,9 +145,7 @@ class ProfileWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        
-      },
+      onTap: onTap,
       child: Column(
         children: [
           Container(

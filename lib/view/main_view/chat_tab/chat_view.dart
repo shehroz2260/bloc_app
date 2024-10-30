@@ -2,6 +2,7 @@ import 'package:chat_with_bloc/model/thread_model.dart';
 import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
+import 'package:chat_with_bloc/view/main_view/main_view.dart';
 import 'package:chat_with_bloc/view_model/chat_bloc/chat_bloc.dart';
 import 'package:chat_with_bloc/view_model/chat_bloc/chat_event.dart';
 import 'package:chat_with_bloc/view_model/chat_bloc/chat_state.dart';
@@ -17,7 +18,8 @@ import 'video_call/video_calling_page.dart';
 
 class ChatScreen extends StatefulWidget {
   final ThreadModel model;
-  const ChatScreen({super.key, required this.model});
+  final bool isFromCongrats;
+  const ChatScreen({super.key, required this.model,this.isFromCongrats =false});
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
@@ -69,7 +71,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   Row(
                   children: [
                     GestureDetector(
-                      onTap: ()=> Go.back(context),
+                      onTap:widget.isFromCongrats?(){
+                        // context.read<MainBloc>().add(ChangeIndexEvent(index: 2));
+                        Go.offAll(context, const MainView());
+                      }: ()=>  Go.back(context),
                       child: const Icon(Icons.arrow_back_ios_new_outlined)),
                     const AppWidth(width: 10),
                     Container(
