@@ -116,8 +116,7 @@ class ThreadModel {
   }
 
   static Future<void> deleteMessages(ThreadModel threadModel,BuildContext context) async {
-    log("^^^^^^^^^^^^^^^^^^^^^^^^");
-
+threadModel = threadModel.copyWith(lastMessage: "");
     LoadingDialog.showProgress(context);
     int index = -1;
     final cUser = context.read<UserBaseBloc>().state.userData;

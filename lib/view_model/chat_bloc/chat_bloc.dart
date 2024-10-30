@@ -65,14 +65,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
          final deletedAt = event.model.messageDelete
         .where((e) => e.id == (FirebaseAuth.instance.currentUser?.uid??""))
         .toList();
-    snapShotQuery = (deletedAt.isEmpty
+    snapShotQuery = deletedAt.isEmpty
         ? ref
         : ref.where("messageTime",
-            isGreaterThanOrEqualTo: Timestamp.fromDate(deletedAt[0].deleteAt)));
+            isGreaterThan: Timestamp.fromDate(deletedAt[0].deleteAt));
           if (lastDocument != null) {
       snapShotQuery = snapShotQuery.startAfterDocument(lastDocument!);
     }
     var snapShot = await snapShotQuery.get();
+
     var messagesLIst = snapShot.docs.map((e) {
       lastDocument = e;
       return ChatModel.fromMap(e.data());
@@ -112,7 +113,7 @@ if(MediaType.type == MediaType.video && state.pickFile != null && state.thumbnai
 url = await FirebaseStorageService().uploadImage("Chat/Video/${AppFuncs.generateRandomString(10)}", state.pickFile?.path??"");
 thumbUrl = await FirebaseStorageService().uploadImage("Chat/thumbnail/${AppFuncs.generateRandomString(10)}", state.thumbnail?.path??"");
 }
-  ThreadModel threadModel = ThreadModel(lastMessage: event.textEditingController.text.isNotEmpty? event.textEditingController.text: MediaType.type == MediaType.image?"New Image":MediaType.type == MediaType.video? "New video": MediaType.type == MediaType.audio ? "Voice": MediaType.type == MediaType.file? "New document":""  , activeUserList: [], lastMessageTime: DateTime.now(), participantUserList: listenThread?.participantUserList??[], senderId: event.context.read<UserBaseBloc>().state.userData.uid, messageCount: 0, threadId: event.threadId, messageDelete: [], isPending: false, isBlocked: false);
+  ThreadModel threadModel = ThreadModel(lastMessage: event.textEditingController.text.isNotEmpty? event.textEditingController.text: MediaType.type == MediaType.image?"New Image":MediaType.type == MediaType.video? "New video": MediaType.type == MediaType.audio ? "Voice": MediaType.type == MediaType.file? "New document":""  , activeUserList: [], lastMessageTime: DateTime.now(), participantUserList: listenThread?.participantUserList??[], senderId: event.context.read<UserBaseBloc>().state.userData.uid, messageCount: 0, threadId: event.threadId, messageDelete: listenThread?.messageDelete??[], isPending: false, isBlocked: false);
 var thradJsom = threadModel.toMap();
 // thradJsom["senderId"] = FirebaseAuth.instance.currentUser?.uid??"";
 if((listenThread?.senderId??"") != (FirebaseAuth.instance.currentUser?.uid??"")){
@@ -121,15 +122,15 @@ if((listenThread?.senderId??"") != (FirebaseAuth.instance.currentUser?.uid??""))
   thradJsom["messageCount"] = FieldValue.increment(1);
 }
 
-  ChatModel model  = ChatModel(id: AppFuncs.generateRandomString(15), threadId: event.threadId, message: event.textEditingController.text, messageTime: DateTime.now(), senderId: event.context.read<UserBaseBloc>().state.userData.uid, isRead: false,media: (url??"").isEmpty?null: MediaModel(type: MediaType.type, id: AppFuncs.generateRandomString(15), url: url??"", createdAt: DateTime.now(), name: "",thumbnail: thumbUrl));
+  ChatModel model  = ChatModel(id: AppFuncs.generateRandomString(15), threadId: event.threadId, message: event.textEditingController.text, messageTime: DateTime.now(), senderId: FirebaseAuth.instance.currentUser?.uid??"", isRead: false,media: (url??"").isEmpty?null: MediaModel(type: MediaType.type, id: AppFuncs.generateRandomString(15), url: url??"", createdAt: DateTime.now(), name: "",thumbnail: thumbUrl));
   
   if(event.isForVc){
     model = model.copyWith(media: MediaModel(type: 5, id: AppFuncs.generateRandomString(15), url: "url", createdAt: DateTime.now(), name: ""));
   }
   try{
     await FirebaseFirestore.instance.collection(ThreadModel.tableName).doc(event.threadId).set(thradJsom,SetOptions(merge: true));
-await FirebaseFirestore.instance.collection(ThreadModel.tableName).doc(event.threadId).collection(ChatModel.tableName).doc(model.id).set(model.toMap());
-event.textEditingController.clear();
+    await FirebaseFirestore.instance.collection(ThreadModel.tableName).doc(event.threadId).collection(ChatModel.tableName).doc(model.id).set(model.toMap());
+ event.textEditingController.clear();
 MediaType.type = 0;
 emit(state.copyWith(messageSending: false, audioUrl: null,
   pickFile: null,
@@ -398,6 +399,9 @@ _onChatListenerStream(ChatListenerStream event , Emitter<ChatState>emit){
     LoadingDialog.showProgress(event.context);
    await ThreadModel.deleteMessages(listenThread!, event.context);
     emit(state.copyWith(messageList: []));
+       if (lastDocument != null) {
+      lastDocument = null;
+    }
     LoadingDialog.hideProgress(event.context);
   }
 }

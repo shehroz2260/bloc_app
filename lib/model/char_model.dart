@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ChatModel {
   static String tableName = "chats";
   final String id;
@@ -43,7 +45,7 @@ class ChatModel {
       'id': id,
       'threadId': threadId,
       'message': message,
-      'messageTime': messageTime.toIso8601String(),
+      'messageTime': Timestamp.fromDate(messageTime),
       'senderId': senderId,
       'isRead': isRead,
       'media': media?.toMap(),
@@ -55,7 +57,7 @@ class ChatModel {
       id: map['id'] ??"",
       threadId: map["threadId"]??"",
       message: map['message'] ??"",
-      messageTime:DateTime.parse(map['messageTime'] ??""),
+      messageTime: (map['messageTime'] as Timestamp).toDate(),
       senderId: map['senderId'] ??"",
       isRead: map['isRead'] as bool,
       media: map['media'] != null ? MediaModel.fromMap(map['media']) : null,
