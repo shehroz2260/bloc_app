@@ -1,7 +1,10 @@
 import 'dart:developer';
-
+import 'package:chat_with_bloc/utils/loading_dialog.dart';
+import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'user_model.dart';
 
 class ThreadModel {
@@ -112,50 +115,45 @@ class ThreadModel {
     }
   }
 
-  // static void deleteMessages(ThreadModel threadModel, bool isAdmin) async {
-  //   final baseController = Get.put(BaseController(() {}));
-  //   MessageDeleteModel model = MessageDeleteModel(
-  //       id: AdminBaseController.userData.uid, deleteAt: DateTime.now());
-  //   final msgDelete = threadModel.messageDelete
-  //       .where((element) => element.id == AdminBaseController.userData.uid)
-  //       .toList();
-  //   if (msgDelete.isEmpty) {
-  //     threadModel.messageDelete.add(model);
-  //   } else if (threadModel.messageDelete[0].id ==
-  //       AdminBaseController.userData.uid) {
-  //     threadModel.messageDelete[0] =
-  //         msgDelete[0].copyWith(deleteAt: DateTime.now());
-  //   } else {
-  //     threadModel.messageDelete[1] =
-  //         msgDelete[0].copyWith(deleteAt: DateTime.now());
-  //   }
-  //   threadModel = threadModel.copyWith(
-  //       lastMessage: '',
-  //       lastMessageTime: DateTime.now(),
-  //       messageCount: 0,
-  //       messageDelete: threadModel.messageDelete);
+  static Future<void> deleteMessages(ThreadModel threadModel,BuildContext context) async {
+    log("^^^^^^^^^^^^^^^^^^^^^^^^");
 
-  //   try {
-  //     baseController.showProgress();
-  //     FirebaseFirestore.instance
-  //         .collection(isAdmin ? ThreadModel.adminThread : ThreadModel.tableName)
-  //         .doc(threadModel.threadId)
-  //         .update(threadModel.toMap());
-  //     // FirebaseFirestore.instance
-  //     //     .collection(ThreadModel.tableName)
-  //     //     .doc(threadId)
-  //     //     .collection(ChatModel.tableName)
-  //     //     .get()
-  //     //     .then(() {
-  //     //   for (DocumentSnapshot ds in snapshot.docs) {
-  //     //     ds.reference.delete();
-  //     //   }
-  //     // });
-  //     baseController.hideProgress();
-  //   } catch (e) {
-  //     baseController.hideProgress();
-  //   }
-  // }
+    LoadingDialog.showProgress(context);
+    int index = -1;
+    final cUser = context.read<UserBaseBloc>().state.userData;
+    MessageDeleteModel model = MessageDeleteModel(
+        id: cUser.uid, deleteAt: DateTime.now());
+         index = threadModel.messageDelete.indexWhere((e)=> e.id == cUser.uid);
+    if (index != -1) {
+      threadModel.messageDelete[index] = threadModel.messageDelete[index].copyWith(deleteAt: DateTime.now());
+    threadModel =  threadModel.copyWith(messageDelete: threadModel.messageDelete);
+    } else{
+            threadModel.messageDelete.add(model);
+
+    }
+    
+
+    try {
+      FirebaseFirestore.instance
+          .collection( ThreadModel.tableName)
+          .doc(threadModel.threadId)
+          .set(threadModel.toMap(),SetOptions(merge: true));
+      // FirebaseFirestore.instance
+      //     .collection(ThreadModel.tableName)
+      //     .doc(threadId)
+      //     .collection(ChatModel.tableName)
+      //     .get()
+      //     .then(() {
+      //   for (DocumentSnapshot ds in snapshot.docs) {
+      //     ds.reference.delete();
+      //   }
+      // });
+      LoadingDialog.hideProgress(context);
+    } catch (e) {
+            LoadingDialog.hideProgress(context);
+
+    }
+  }
 
   @override
   String toString() {

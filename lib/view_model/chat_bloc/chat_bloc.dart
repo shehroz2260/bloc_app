@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:chat_with_bloc/model/thread_model.dart';
-import 'package:chat_with_bloc/repos/chat_repo.dart';
 import 'package:chat_with_bloc/services/firebase_services_storage.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/utils/custom_image_picker.dart';
+import 'package:chat_with_bloc/utils/loading_dialog.dart';
 import 'package:chat_with_bloc/utils/media_type.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,7 +26,7 @@ import 'package:http/http.dart' as http;
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   DocumentSnapshot? lastDocument;
   Timer? _timer;
-  ThreadModel? listenThread;
+ static ThreadModel? listenThread;
     bool isRecordingCompleted = false;
   static late RecorderController recorderController;
   StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>? threadSnapShot;
@@ -44,6 +44,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<UpdateTimer>(_onUpdateTimer);
     on<PickFileEvent>(_pickFiles);
     on<ClearData>(_clearData);
+    on<ClearChat>(_clearChat);
     on<ChatListenerStream>(_onChatListenerStream);
   }
   //////////////////////////////////////////////////// callabel in view///////////////////////////////////////////////////////
@@ -55,8 +56,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       emit(state.copyWith(isLoading: true,isFirstMsg: false));
     }
      Query<Map<String, dynamic>> snapShotQuery;
-    snapShotQuery = ChatRepo.ref(event.thradId)
+     final ref = FirebaseFirestore.instance
+        .collection(ThreadModel.tableName)
+        .doc(event.thradId)
+        .collection(ChatModel.tableName)
+        .orderBy("messageTime", descending: true)
         .limit(20);
+         final deletedAt = event.model.messageDelete
+        .where((e) => e.id == (FirebaseAuth.instance.currentUser?.uid??""))
+        .toList();
+    snapShotQuery = (deletedAt.isEmpty
+        ? ref
+        : ref.where("messageTime",
+            isGreaterThanOrEqualTo: Timestamp.fromDate(deletedAt[0].deleteAt)));
           if (lastDocument != null) {
       snapShotQuery = snapShotQuery.startAfterDocument(lastDocument!);
     }
@@ -72,7 +84,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       limit: messagesLIst.length,
       messageList: state.messageList,
     ));
-    add(ChatListener(thradId: event.thradId));
+    add(ChatListener(thradId: event.thradId,model: event.model));
   }
 
   _onListenThread(OnListenThread event , Emitter<ChatState>emit)async{
@@ -201,7 +213,20 @@ _onStartorStopRecording(StartOrStopRecording event, Emitter<ChatState>emit)async
 
 StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? subs;
   Stream<ChatState> _chatListenerStream(ChatListener event) async* {
-   subs = ChatRepo.ref(event.thradId).limit(1).snapshots().listen((value){
+    var ref = FirebaseFirestore.instance
+        .collection(ThreadModel.tableName)
+        .doc(event.thradId)
+        .collection(ChatModel.tableName)
+        .orderBy("messageTime", descending: true)
+        .limit(1);
+         final deletedAt = event.model.messageDelete
+        .where((e) => e.id == (FirebaseAuth.instance.currentUser?.uid??""))
+        .toList();
+   subs = (deletedAt.isEmpty
+            ? ref
+            : ref.where("messageTime",
+                isGreaterThanOrEqualTo:
+                    Timestamp.fromDate(deletedAt[0].deleteAt))).snapshots().listen((value){
      if (value.docs.isEmpty) return ;
             var chat = ChatModel.fromMap(value.docs[0].data());
  if(state.messageList.where((e)=> e.id == chat.id).isNotEmpty) return;
@@ -368,5 +393,11 @@ _onChatListenerStream(ChatListenerStream event , Emitter<ChatState>emit){
             showOkAlertDialog(context: event.context,message: e.toString(),title: "Download media");
 
     }
+  }
+  _clearChat(ClearChat event , Emitter<ChatState>emit)async{
+    LoadingDialog.showProgress(event.context);
+   await ThreadModel.deleteMessages(listenThread!, event.context);
+    emit(state.copyWith(messageList: []));
+    LoadingDialog.hideProgress(event.context);
   }
 }

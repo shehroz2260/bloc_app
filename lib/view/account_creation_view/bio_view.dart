@@ -23,6 +23,7 @@ class _BioViewState extends State<BioView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.whiteColor,
       body:  Form(
         key: _formKey,

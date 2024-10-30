@@ -30,14 +30,14 @@ class _ChatScreenState extends State<ChatScreen> {
     void onScroll() {
     if (scrollController.position.pixels ==
         scrollController.position.maxScrollExtent) {
-     context.read<ChatBloc>().add(LoadChat(thradId: widget.model.threadId));
+     context.read<ChatBloc>().add(LoadChat(thradId: widget.model.threadId,model: widget.model));
      context.read<ChatBloc>().add(OnListenThread(context:context,threadModel: widget.model));
     }
   } 
   @override
   void initState() {
     scrollController.addListener(onScroll);
-     context.read<ChatBloc>().add(LoadChat(thradId: widget.model.threadId));
+     context.read<ChatBloc>().add(LoadChat(thradId: widget.model.threadId,model: widget.model));
   context.read<ChatBloc>().add(OnListenThread(threadModel: widget.model,context: context));
   context.read<ChatBloc>().add(InitiaLizeAudioController());
     super.initState();
@@ -127,17 +127,22 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                       ),
              
-                       Container(
-                      height: 60,width: 60,
-                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: AppColors.borderGreyColor
-                      )
-                     ),
-                     alignment: Alignment.center,
-                     child: const Icon(Icons.more_vert),
-                     )
+                       GestureDetector(
+                        onTap: () {
+                         context.read<ChatBloc>().add(ClearChat(context: context));
+                        },
+                         child: Container(
+                                               height: 60,width: 60,
+                                              decoration: BoxDecoration(
+                                               borderRadius: BorderRadius.circular(16),
+                                               border: Border.all(
+                          color: AppColors.borderGreyColor
+                                               )
+                                              ),
+                                              alignment: Alignment.center,
+                                              child: const Icon(Icons.more_vert),
+                                              ),
+                       )
                   ],
                 ),
                 const AppHeight(height: 30),

@@ -50,7 +50,7 @@ void visiblePassword(){
         floatingLabelBehavior: widget.floatingLabelBehavior,
         suffixIcon:widget.isPasswordField? Padding(padding: const EdgeInsets.all(5),child: GestureDetector(
           onTap: visiblePassword,
-          child: Icon(isVisible? Icons.visibility: Icons.visibility_off,color: AppColors.whiteColor,)),):null,
+          child: Icon(isVisible? Icons.visibility: Icons.visibility_off,color: AppColors.redColor,)),):null,
         focusedErrorBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(15),
         borderSide: BorderSide(color: AppColors.borderGreyColor,width: 1)

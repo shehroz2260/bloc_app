@@ -52,6 +52,7 @@ class _SignInWithEmailViewState extends State<SignInWithEmailView> {
               ),
               const AppHeight(height: 20),
               CustomTextField(
+                
                 textEditingController: _passwordController,
                 validator: AppValidation.passwordValidation,
                 hintText: AppStrings.enterPassword,

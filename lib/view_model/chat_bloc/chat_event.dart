@@ -16,14 +16,19 @@ class SendMessage extends ChatEvent {
 
 class LoadChat extends ChatEvent {
   final String thradId;
-  LoadChat({
+  final ThreadModel model;
+  LoadChat( {
     required this.thradId,
+    required this.model,
   });
 }
 class ChatListener extends ChatEvent{
    final String thradId;
+  final ThreadModel model;
   ChatListener({
     required this.thradId,
+    required this.model,
+
   });
 }
 
@@ -108,5 +113,12 @@ class OnListenThread extends ChatEvent {
   OnListenThread({
     required this.threadModel,
     required this.context
+  });
+}
+
+class ClearChat extends ChatEvent {
+  final BuildContext context;
+  ClearChat({
+    required this.context,
   });
 }
