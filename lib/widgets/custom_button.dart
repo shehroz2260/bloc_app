@@ -85,7 +85,7 @@ class CustomNewButton extends StatelessWidget {
          color: btnColor?? (isFillColor? AppColors.redColor: null),
          borderRadius: BorderRadius.circular(15),
          border: Border.all(
-          color: AppColors.borderColor,
+          color: AppColors.borderGreyColor,
          )
        ),
        padding:  const EdgeInsets.symmetric(vertical: 16),

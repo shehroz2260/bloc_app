@@ -85,7 +85,7 @@ InboxBloc ancestorContext = InboxBloc();
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                              Text(state.threadList[index].userDetail?.firstName??"",style: AppTextStyle.font16.copyWith(color: AppColors.blackColor,fontWeight: FontWeight.bold),),
-                                            Text(state.threadList[index].lastMessage,maxLines: 1,style: AppTextStyle.font16.copyWith(color: AppColors.blackColor,fontSize: 12)),
+                                            Text(state.threadList[index].lastMessage.isEmpty? "Send your first message": state.threadList[index].lastMessage,maxLines: 1,style: AppTextStyle.font16.copyWith(color: AppColors.blackColor,fontSize: 12)),
                                           ],
                                                                    ),
                                        ),

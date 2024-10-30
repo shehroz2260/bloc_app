@@ -28,5 +28,7 @@ class AppAssets {
   static const String filesIcon = "assets/images/svg/files.svg";
   static const String sendIcon = "assets/images/svg/send.svg";
   static const String locationICon = "assets/images/svg/locations.svg";
+  static const String pencilICon = "assets/images/svg/pencil.svg";
+  static const String settingICon = "assets/images/svg/Settings.svg";
  
 }
