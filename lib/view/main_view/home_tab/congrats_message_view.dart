@@ -4,7 +4,11 @@ import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../model/user_model.dart';
+import '../../../view_model/inbox_bloc/inbox_bloc.dart';
+import '../../../view_model/inbox_bloc/inbox_state.dart';
+import '../chat_tab/chat_view.dart';
 
 class CongratsMessageView extends StatelessWidget {
   final UserModel user;
@@ -23,20 +27,20 @@ class CongratsMessageView extends StatelessWidget {
           Text("Start a conversation now with each other",
               style: AppTextStyle.font16.copyWith(color: AppColors.blackColor)),
           const AppHeight(height: 20),
-          // BlocBuilder<InboxBloc, InboxState>(
-          //   builder: (context, state) {
-          //     return Padding(
-          //       padding: const EdgeInsets.symmetric(horizontal: 40),
-          //       child: CustomNewButton(
-          //         btnName: "Say, hello",
-          //         onTap: () {
-          //         final model =  state.threadList.where((e)=> e.participantUserList.contains(user.uid)).toList().first;
-          //         Go.to(context, ChatScreen(model: model,isFromCongrats: true));
-          //         },
-          //       ),
-          //     );
-          //   },
-          // ),
+          BlocBuilder<InboxBloc, InboxState>(
+            builder: (context, state) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: CustomNewButton(
+                  btnName: "Say, hello",
+                  onTap: () {
+                  final model =  state.threadList.where((e)=> e.participantUserList.contains(user.uid)).toList().first;
+                  Go.off(context, ChatScreen(model: model));
+                  },
+                ),
+              );
+            },
+          ),
           const AppHeight(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40),
