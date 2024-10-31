@@ -6,6 +6,7 @@ import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
+import 'package:chat_with_bloc/view/main_view/profile_tab/galler_view.dart';
 import 'package:chat_with_bloc/view/splash_view/splash_view.dart';
 import 'package:chat_with_bloc/view_model/main_bloc/main_bloc.dart';
 import 'package:chat_with_bloc/view_model/main_bloc/main_event.dart';
@@ -96,7 +97,7 @@ class _ProfileViewState extends State<ProfileView> {
                     title: "Gallery",
                     icon: '',
                     onTap: () {
-                      
+                      Go.to(context, const GallerView());
                     },
                                      ),
                   ),
