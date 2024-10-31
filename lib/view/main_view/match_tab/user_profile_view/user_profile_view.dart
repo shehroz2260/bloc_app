@@ -2,6 +2,7 @@ import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/src/app_assets.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
+import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/widgets/app_cache_image.dart';
 import 'package:chat_with_bloc/widgets/custom_button.dart';
@@ -9,6 +10,7 @@ import 'package:chat_with_bloc/widgets/see_more_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../account_creation_view/preference_view.dart';
+import 'see_all_gallery_images.dart';
 
 class UserProfileView extends StatelessWidget {
   final UserModel user;
@@ -154,7 +156,7 @@ class UserProfileView extends StatelessWidget {
                    const AppHeight(height: 30),
                    GestureDetector(
                      onTap: () {
-                       
+                       Go.to(context, SeeAllGalleryImages(user: user));
                      },
                      behavior: HitTestBehavior.opaque,
                      child: Row(
@@ -166,6 +168,19 @@ class UserProfileView extends StatelessWidget {
                        ),
                    ),
                    const AppHeight(height: 10),
+                   if(user.galleryImages.isNotEmpty)
+                   AppCacheImage(imageUrl: user.galleryImages[0],height: 200,width: double.infinity),
+                   const AppHeight(height: 10),
+                   if(user.galleryImages.isNotEmpty && user.galleryImages.length > 1)
+                    Row(
+                    children: [
+                       Expanded(child: AppCacheImage(imageUrl: user.galleryImages[1],height: 200)),
+                       if(user.galleryImages.length> 2)
+                       const AppWidth(width: 10),
+                       if(user.galleryImages.length> 2)
+                       Expanded(child: AppCacheImage(imageUrl: user.galleryImages[2],height: 200)),
+                    ],
+                   )
                    
                      ],
                    ),
