@@ -180,8 +180,8 @@ class UserProfileView extends StatelessWidget {
                        if(user.galleryImages.length> 2)
                        Expanded(child: AppCacheImage(imageUrl: user.galleryImages[2],height: 200)),
                     ],
-                   )
-                   
+                   ),
+                   const AppHeight(height: 20)
                      ],
                    ),
                  )

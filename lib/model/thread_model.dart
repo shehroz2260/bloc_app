@@ -12,6 +12,7 @@ class ThreadModel {
   final DateTime lastMessageTime;
   final List<dynamic> participantUserList;
   final List<dynamic> activeUserList;
+  final List<String> blockUserList;
   final String senderId;
   final int messageCount;
   final String threadId;
@@ -23,6 +24,7 @@ class ThreadModel {
   ThreadModel({
     required this.lastMessage,
     required this.activeUserList,
+    required this.blockUserList,
     required this.lastMessageTime,
     required this.participantUserList,
     required this.senderId,
@@ -42,6 +44,7 @@ class ThreadModel {
     DateTime? lastMessageTime,
     List<dynamic>? participantUserList,
     List<dynamic>? activeUserList,
+    List<String>? blockUserList,
     String? senderId,
     int? messageCount,
     String? threadId,
@@ -53,6 +56,7 @@ class ThreadModel {
   }) {
     return ThreadModel(
       messageDelete: messageDelete ?? this.messageDelete,
+      blockUserList: blockUserList ?? this.blockUserList,
       lastMessage: lastMessage ?? this.lastMessage,
       lastMessageTime: lastMessageTime ?? this.lastMessageTime,
       participantUserList: participantUserList ?? this.participantUserList,
@@ -74,6 +78,7 @@ class ThreadModel {
       'lastMessageTime': Timestamp.fromDate(lastMessageTime),
       'participantUserList': participantUserList,
       'activeUserList': activeUserList,
+      'blockUserList': blockUserList,
       'senderId': senderId,
       'messageCount': messageCount,
       'threadId': threadId,
@@ -95,6 +100,7 @@ class ThreadModel {
           List<dynamic>.from((map['participantUserList'] as List<dynamic>)),
       activeUserList:
           List<dynamic>.from((map['activeUserList'] as List<dynamic>)),
+      blockUserList: List<String>.from((map['blockUserList'] ??[])),
       senderId: map['senderId'] as String,
       messageCount: map['messageCount'] as int,
       threadId: map['threadId'] as String,

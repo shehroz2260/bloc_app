@@ -5,6 +5,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:chat_with_bloc/model/thread_model.dart';
 import 'package:chat_with_bloc/services/firebase_services_storage.dart';
+import 'package:chat_with_bloc/services/network_service.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/utils/custom_image_picker.dart';
 import 'package:chat_with_bloc/utils/loading_dialog.dart';
@@ -44,6 +45,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<UpdateTimer>(_onUpdateTimer);
     on<PickFileEvent>(_pickFiles);
     on<ClearData>(_clearData);
+    on<OpenOptions>(_openOptions);
     on<ClearChat>(_clearChat);
     on<ChatListenerStream>(_onChatListenerStream);
   }
@@ -100,7 +102,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
 _onSendMessage(SendMessage event , Emitter<ChatState>emit)async{
+  final cUserId = FirebaseAuth.instance.currentUser?.uid??"";
+  if((listenThread?.blockUserList??[]).contains(cUserId)){
+    var res =await showOkCancelAlertDialog(context: event.context,message: "Please Unblock to send the message",title: "Blocked",okLabel: "Unblock");
+   if(res == OkCancelResult.cancel) return;
+    NetworkService.unblockUser(listenThread!);
+  }
+
+  if((listenThread?.blockUserList??[]).contains(event.threadModel.userDetail?.uid??"")){
+  showOkAlertDialog(context: event.context,message: "You are block by ${event.threadModel.userDetail?.firstName??""}");    
+  return;
+  }
   emit(state.copyWith(messageSending: true));
+
   String? url ;
   String? thumbUrl ;
 if(MediaType.type == MediaType.audio && state.audioUrl != null){
@@ -113,7 +127,7 @@ if(MediaType.type == MediaType.video && state.pickFile != null && state.thumbnai
 url = await FirebaseStorageService().uploadImage("Chat/Video/${AppFuncs.generateRandomString(10)}", state.pickFile?.path??"");
 thumbUrl = await FirebaseStorageService().uploadImage("Chat/thumbnail/${AppFuncs.generateRandomString(10)}", state.thumbnail?.path??"");
 }
-  ThreadModel threadModel = ThreadModel(lastMessage: event.textEditingController.text.isNotEmpty? event.textEditingController.text: MediaType.type == MediaType.image?"New Image":MediaType.type == MediaType.video? "New video": MediaType.type == MediaType.audio ? "Voice": MediaType.type == MediaType.file? "New document":""  , activeUserList: [], lastMessageTime: DateTime.now(), participantUserList: listenThread?.participantUserList??[], senderId: event.context.read<UserBaseBloc>().state.userData.uid, messageCount: 0, threadId: event.threadId, messageDelete: listenThread?.messageDelete??[], isPending: false, isBlocked: false);
+  ThreadModel threadModel = ThreadModel(lastMessage: event.textEditingController.text.isNotEmpty? event.textEditingController.text: MediaType.type == MediaType.image?"New Image":MediaType.type == MediaType.video? "New video": MediaType.type == MediaType.audio ? "Voice": MediaType.type == MediaType.file? "New document":""  , activeUserList: [], lastMessageTime: DateTime.now(), participantUserList: listenThread?.participantUserList??[], senderId: event.context.read<UserBaseBloc>().state.userData.uid, messageCount: 0, threadId: event.threadId, messageDelete: listenThread?.messageDelete??[], isPending: false, isBlocked: false,blockUserList: []);
 var thradJsom = threadModel.toMap();
 // thradJsom["senderId"] = FirebaseAuth.instance.currentUser?.uid??"";
 if((listenThread?.senderId??"") != (FirebaseAuth.instance.currentUser?.uid??"")){
@@ -160,7 +174,7 @@ _onStartorStopRecording(StartOrStopRecording event, Emitter<ChatState>emit)async
           _timer?.cancel();
         const  duration = Duration.zero;
       emit(state.copyWith(duration: duration));
-          add(SendMessage(threadId: event.threadId, context: event.context, textEditingController: TextEditingController()));
+          add(SendMessage(threadModel: event.model,isForVc: false, threadId: event.threadId, context: event.context, textEditingController: TextEditingController()));
         }
       } else {
         await recorderController.record(path: state.audioUrl);
@@ -403,5 +417,36 @@ _onChatListenerStream(ChatListenerStream event , Emitter<ChatState>emit){
       lastDocument = null;
     }
     LoadingDialog.hideProgress(event.context);
+  }
+
+  _openOptions(OpenOptions event, Emitter<ChatState>emit)async{
+              var result = await showConfirmationDialog(
+                    context: event.context,
+                    title: "Please select option",
+                    actions: [
+                       const AlertDialogAction(key: "1", label: "Clear chat"),
+                       AlertDialogAction(key: "2", label: "Report ${event.userModel.firstName}"),
+                       AlertDialogAction(key: "3", label: (listenThread?.blockUserList??[]).contains(FirebaseAuth.instance.currentUser?.uid??"")? "Unblock ${event.userModel.firstName}": "Block ${event.userModel.firstName}"),
+                    ]);
+                if (result == null) {
+                  return;
+                }
+
+                   if(result =="1"){
+                  var okCancelRes = await showOkCancelAlertDialog(context: event.context, message: "Do you really want to clear chat",title: "Are you sure!");
+                  if(okCancelRes == OkCancelResult.cancel) return;
+                  add(ClearChat(context: event.context));
+                }
+                if(result == "3"){
+                  var blockRslt = await showOkCancelAlertDialog(context: event.context, message: "Do you really want to Block ${event.userModel.firstName}",title: "Are you sure!",okLabel:(listenThread?.blockUserList??[]).contains(FirebaseAuth.instance.currentUser?.uid??"")?"Unblock": "Block");
+                  if(blockRslt == OkCancelResult.cancel) return;
+
+                  if((listenThread?.blockUserList??[]).contains(FirebaseAuth.instance.currentUser?.uid??"")){
+                      NetworkService.unblockUser(listenThread!);
+                  }else{ 
+                    NetworkService.blockUser(listenThread!);
+                  }
+
+                }
   }
 }

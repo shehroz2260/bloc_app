@@ -4,14 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:chat_with_bloc/model/char_model.dart';
 import 'package:chat_with_bloc/model/thread_model.dart';
 
+import '../../model/user_model.dart';
+
 abstract class ChatEvent {}
 
 class SendMessage extends ChatEvent {
   final String threadId;
   final bool isForVc;
+  final ThreadModel threadModel;
   final TextEditingController textEditingController;
   final BuildContext context;
-  SendMessage({required this.threadId,required this.context,required this.textEditingController, this.isForVc = false});
+  SendMessage({
+    required this.threadId,
+    required this.isForVc,
+    required this.threadModel,
+    required this.textEditingController,
+    required this.context,
+  });
 }
 
 class LoadChat extends ChatEvent {
@@ -42,9 +51,11 @@ class ShowTime extends ChatEvent {
 class StartOrStopRecording extends ChatEvent {
   final BuildContext context;
   final String threadId;
+  final ThreadModel model;
   StartOrStopRecording({
     required this.context,
     required this.threadId,
+    required this.model,
   });
 }
 class StartTimer extends ChatEvent {
@@ -120,5 +131,18 @@ class ClearChat extends ChatEvent {
   final BuildContext context;
   ClearChat({
     required this.context,
+  });
+}
+
+class BlockUSerEvent extends ChatEvent{
+  
+}
+
+class OpenOptions extends ChatEvent {
+  final BuildContext context;
+  final UserModel userModel;
+  OpenOptions({
+    required this.context,
+    required this.userModel,
   });
 }

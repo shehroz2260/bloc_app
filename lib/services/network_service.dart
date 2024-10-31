@@ -124,7 +124,7 @@ await sub?.cancel();
         .doc(threadId)
         .get();
     if (snapShot.exists) return;
- var thread = ThreadModel(lastMessage: message??"", lastMessageTime: DateTime.now(), participantUserList: [liker.uid, likee.uid], senderId: liker.uid, messageCount: 1, threadId: threadId, messageDelete: [], isPending: false, isBlocked: false,activeUserList: []);
+ var thread = ThreadModel(lastMessage: message??"", lastMessageTime: DateTime.now(), participantUserList: [liker.uid, likee.uid], senderId: liker.uid, messageCount: 1, threadId: threadId, messageDelete: [], isPending: false, isBlocked: false,activeUserList: [],blockUserList: []);
  
     await FirebaseFirestore.instance
         .collection(ThreadModel.tableName)
@@ -182,6 +182,33 @@ await sub?.cancel();
         .then((value) => UserModel.fromMap(value.data() ?? {}));
   }
 
+static Future<void> blockUser( ThreadModel threadModel) async {
+    var uid = FirebaseAuth.instance.currentUser?.uid??"";
+    await FirebaseFirestore.instance
+        .collection(ThreadModel.tableName)
+        .doc(threadModel.threadId)
+        .set({
+      "isBlocked": true,
+      "blockUserList": FieldValue.arrayUnion([uid]),
+      "senderId": uid,
+      "lastMessage": "Blocked",
+      "lastMessageTime": Timestamp.now()
+    }, SetOptions(merge: true));
+  }
+
+  static Future<void> unblockUser(ThreadModel threadModel) async {
+        var uid = FirebaseAuth.instance.currentUser?.uid??"";
+    await FirebaseFirestore.instance
+        .collection(ThreadModel.tableName)
+        .doc(threadModel.threadId)
+        .set({
+      "blockUserList": FieldValue.arrayRemove([uid]),
+      "isBlocked": false,
+      "senderId": uid,
+      "lastMessage": "UnBlocked",
+      "lastMessageTime": Timestamp.now()
+    }, SetOptions(merge: true));
+  }
 
 }
 

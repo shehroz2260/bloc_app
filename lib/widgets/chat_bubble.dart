@@ -2,7 +2,6 @@ import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/utils/app_funcs.dart';
-import 'package:chat_with_bloc/view/main_view/chat_tab/video_call/video_calling_page.dart';
 import 'package:chat_with_bloc/view_model/chat_bloc/chat_bloc.dart';
 import 'package:chat_with_bloc/view_model/chat_bloc/chat_event.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
@@ -115,7 +114,7 @@ final UserModel userModel;
                  TextSpan(
                 text: data.message,
                 recognizer: TapGestureRecognizer()..onTap = (){
-                  Go.to(context, MyHomePage(threadId: "", isCreateRoom: false, roomId: data.message,userModel: userModel,));
+                  // Go.to(context, MyHomePage(threadId: "", isCreateRoom: false, roomId: data.message,userModel: userModel,));
                 },
                 style: TextStyle(color: AppColors.blueColor)
                 ),

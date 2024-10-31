@@ -1,4 +1,3 @@
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/model/thread_model.dart';
 import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
@@ -14,7 +13,6 @@ import '../../../src/app_text_style.dart';
 import '../../../widgets/app_cache_image.dart';
 import '../../../widgets/chat_bubble.dart';
 import '../../../widgets/custom_text_field.dart';
-import 'video_call/video_calling_page.dart';
 
 class ChatScreen extends StatefulWidget {
   final ThreadModel model;
@@ -43,7 +41,7 @@ class _ChatScreenState extends State<ChatScreen> {
   context.read<ChatBloc>().add(InitiaLizeAudioController());
     super.initState();
   }
-  Signaling signaling = Signaling();
+  // Signaling signaling = Signaling();
   ChatBloc ancestorContext = ChatBloc();
   @override
   void didChangeDependencies() {
@@ -130,26 +128,7 @@ class _ChatScreenState extends State<ChatScreen> {
              
                        GestureDetector(
                         onTap: () async{
-                       
-                            var result = await showConfirmationDialog(
-                    context: context,
-                    title: "Please select option",
-                    actions: [
-                      const AlertDialogAction(key: "1", label: "Remove Match"),
-                       const AlertDialogAction(key: "2", label: "Clear chat"),
-                       AlertDialogAction(key: "3", label: "Report ${widget.model.userDetail?.firstName??""}"),
-                       AlertDialogAction(key: "4", label: "Block ${widget.model.userDetail?.firstName??""}"),
-                    ]);
-                if (result == null) {
-                  return;
-                }
-
-                if(result =="2"){
-                  var okCancelRes = await showOkCancelAlertDialog(context: context, message: "Do you really want to clear chat",title: "Are you sure!");
-                  if(okCancelRes == OkCancelResult.cancel) return;
-                  
-                  context.read<ChatBloc>().add(ClearChat(context: context));
-                }
+                context.read<ChatBloc>().add(OpenOptions(context: context, userModel: widget.model.userDetail!));
                         },
                          child: Container(
                                                height: 60,width: 60,
@@ -208,10 +187,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   context.read<ChatBloc>().add(PickFileEvent(context: context));
                 },
                 sendMessage: state.messageSending ? (){}: (){
-                  context.read<ChatBloc>().add(SendMessage(threadId: widget.model.threadId, context: context,textEditingController: _chatController));
+                  context.read<ChatBloc>().add(SendMessage(threadId: widget.model.threadId, context: context,textEditingController: _chatController,threadModel: widget.model,isForVc: false));
                 },
                 startOrStopRecording: (){
-                  context.read<ChatBloc>().add(StartOrStopRecording(context: context, threadId: widget.model.threadId));
+                  context.read<ChatBloc>().add(StartOrStopRecording(context: context, threadId: widget.model.threadId,model: widget.model));
                 },
                 ),
                 const SizedBox(height: 14)
