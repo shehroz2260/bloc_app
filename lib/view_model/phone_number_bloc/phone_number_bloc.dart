@@ -9,21 +9,17 @@ import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_event.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'otp_screen.dart';
+import '../../view/auth_view/otp_screen.dart';
 import 'phone_number_event.dart';
 import 'phone_number_state.dart';
 
 class PhoneNumberBloc extends Bloc<PhoneNumberEvent, PhoneNumberState> {
-  PhoneNumberBloc() : super(PhoneNumberState(cCode: "+1",phoneNumer: "",verificationId: "")) {
+  PhoneNumberBloc() : super(PhoneNumberState(cCode: "+1",verificationId: "")) {
     on<VerifyPhoneNumber>(_verifyPhoneNumber);
     on<OnCountryCodeChange>(_onCangeCountryCode);
-    on<TextFieldOnChanged>(_onCangedTextField);
   }
  _onCangeCountryCode(OnCountryCodeChange event, Emitter<PhoneNumberState>emit){
 emit(state.copyWith(cCode: event.code.dialCode??""));
- }
- _onCangedTextField(TextFieldOnChanged event, Emitter<PhoneNumberState>emit){
-emit(state.copyWith(phoneNumer: event.value));
  }
     _verifyPhoneNumber(VerifyPhoneNumber event , Emitter<PhoneNumberState>emit) async {
     LoadingDialog.showProgress(event.context);
@@ -40,7 +36,7 @@ emit(state.copyWith(phoneNumer: event.value));
           if (!userModel) {
             userM = userM.copyWith(
               uid: user.user?.uid ?? '',
-              phoneNumber: "${state.cCode} ${state.phoneNumer}",
+              phoneNumber: "${state.cCode} ${event.controller.text}",
             );
             event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: userM));
             NetworkService.updateUser(userM);
@@ -70,7 +66,7 @@ emit(state.copyWith(phoneNumer: event.value));
         Go.to( event.context,OtpScreen(
               verificationID: verificationId,
               resendToken: resendToken??0,
-              phoneNumber: "${state.cCode} ${state.phoneNumer}",
+              phoneNumber: "${state.cCode} ${event.controller.text}",
             ));
       },
       codeAutoRetrievalTimeout: (String verificationId) {

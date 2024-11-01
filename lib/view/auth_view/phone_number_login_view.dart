@@ -38,7 +38,6 @@ final _controller = TextEditingController();
             const AppHeight(height: 30),
              CustomTextField(hintText: "30707000000",
              textEditingController: _controller,
-             onChange: (p0) => context.read<PhoneNumberBloc>().add(TextFieldOnChanged(value: p0)),
              keyboardType: TextInputType.phone,
             prefixIcon: SizedBox(
               width: 130,

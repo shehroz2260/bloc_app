@@ -21,12 +21,3 @@ class VerifyPhoneNumber extends PhoneNumberEvent {
     required this.controller,
   });
 }
-
-
-class TextFieldOnChanged extends PhoneNumberEvent {
-  final String value;
-  TextFieldOnChanged({
-    required this.value,
-  });
-  
-}
