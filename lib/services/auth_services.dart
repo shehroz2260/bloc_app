@@ -1,8 +1,10 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../view_model/user_base_bloc/user_base_event.dart';
 import '../model/user_model.dart';
 
@@ -36,4 +38,53 @@ class AuthServices {
       }
       return false;
   }
+
+
+  static Future<bool?> loginWithGoogle(BuildContext context) async {
+    try {
+      final GoogleSignInAccount? account = await GoogleSignIn().signIn();
+      if (account == null) return null;
+
+      final GoogleSignInAuthentication googleAuth =
+          await account.authentication;
+
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+      // if (credential.token == null) return null;
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      await GoogleSignIn().signOut();
+      var user = await FirebaseFirestore.instance
+          .collection(UserModel.tableName)
+          .doc(FirebaseAuth.instance.currentUser?.uid ?? "")
+          .get();
+      if (user.exists) {
+        context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: UserModel.fromMap(user.data()!)));
+        return true;
+      }
+      String uid = userCredential.user?.uid ?? "";
+ UserModel userModel = UserModel.emptyModel;
+ userModel = userModel.copyWith(
+  uid: uid,
+        firstName: userCredential.user?.displayName ?? "",
+        profileImage: userCredential.user?.photoURL ?? "",
+        email: userCredential.user?.email ?? "",
+ );
+      
+      await FirebaseFirestore.instance
+          .collection(UserModel.tableName)
+          .doc(uid)
+          .set(userModel.toMap());
+        context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: UserModel.fromMap(userModel.toMap())));
+      return true;
+    } on FirebaseAuthException catch (error) {
+      showOkAlertDialog(context: context,message: error.message,title: error.code);
+
+      return null;
+    } catch (error) {
+      showOkAlertDialog(context: context,message: error.toString(),title:"Error");
+      return null;
+    }
+  }
+
 }

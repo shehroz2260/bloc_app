@@ -13,6 +13,7 @@ import 'sign_in_state.dart';
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   SignInBloc() : super(SignInState()) {
     on<OnSigninEvent>(_onSignin);
+    on<OnGooglesignin>(_onGoogleSignin);
   }
   _onSignin(OnSigninEvent event , Emitter<SignInState> emit)async{
     if(!event.formKey.currentState!.validate()){
@@ -44,5 +45,32 @@ event.passwordController.clear();
      
     }
 
+  }
+
+  _onGoogleSignin(OnGooglesignin event , Emitter<SignInState>emit)async{
+     try {
+      LoadingDialog.showProgress(event.context);
+      var isUser = await AuthServices.loginWithGoogle(event.context) ?? false;
+
+      LoadingDialog.hideProgress(event.context);
+
+      if (isUser) {
+NetworkService.gotoHomeScreen(event.context);
+      }
+    } on FirebaseAuthException catch (e) {
+      LoadingDialog.hideProgress(event.context);
+        showOkAlertDialog(context: event.context,message: e.message,title: "Error!");
+
+      if (kDebugMode) {
+        print(e);
+      }
+    } on Exception catch (e) {
+      LoadingDialog.hideProgress(event.context);
+
+      if (kDebugMode) {
+        print(e.toString());
+      }
+      showOkAlertDialog(context: event.context,message: e.toString(),title: "Error!");
+    }
   }
 }

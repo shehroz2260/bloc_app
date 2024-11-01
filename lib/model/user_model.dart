@@ -4,6 +4,7 @@ class UserModel {
   final String userName;
   final String firstName;
   final String email;
+  final String phoneNumber;
    String? password;
   final String uid;
   final String location;
@@ -28,6 +29,7 @@ class UserModel {
     required this.galleryImages,
     required this.about,
     required this.userName,
+    required this.phoneNumber,
     required this.isOnline,
     required this.myInstrest,
     required this.firstName,
@@ -56,6 +58,7 @@ class UserModel {
     String? firstName,
     String? email,
     String? uid,
+    String? phoneNumber,
     String? about,
     String? bio,
     String? location,
@@ -76,6 +79,7 @@ class UserModel {
   }) {
     return UserModel(
       userName: userName ?? this.userName,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
       galleryImages: galleryImages ?? this.galleryImages,
       bio: bio ?? this.bio,
       about: about ?? this.about,
@@ -115,6 +119,7 @@ class UserModel {
       'bio': bio,
       'about': about,
       'preferGender': preferGender,
+      'phoneNumber': phoneNumber,
       'dob': Timestamp.fromDate(dob),
       'profileImage': profileImage,
       'myLikes': myLikes,
@@ -129,6 +134,7 @@ class UserModel {
     return UserModel(
       userName: map['userName'] ??"",
       about: map['about'] ??"",
+      phoneNumber: map['phoneNumber'] ??"",
       bio: map['bio'] ??"",
       firstName: map['firstName'] ??"",
       email: map['email'] ??"",
@@ -140,7 +146,8 @@ class UserModel {
       isOnline: map['isOnline'] ??false,
       preferGender: map['preferGender'] ??0,
       dob: (map['dob'] as Timestamp).toDate(),
-      profileImage: map['profileImage'] ??"",
+      profileImage: (map['profileImage'] ??"").isEmpty?
+      "https://ui-avatars.com/api/?background=random&name=${(map['firstName'] ??"")}&size=200":map["profileImage"],
       galleryImages: List<String>.from((map['galleryImages'] ??[])),
       myLikes: List<String>.from((map['myLikes'] ??[])),
       myInstrest: List<int>.from((map['myInstrest'] ??[])),
@@ -162,7 +169,7 @@ class UserModel {
     return myLikes.contains(uid);
   }
   static UserModel get emptyModel {
-  return UserModel(about: "",bio: "",galleryImages: [], isOnline: false, myInstrest: [], userName: "",firstName: "",  email: "", uid: "", location: "", lat: 0.0, lng: 0.0, gender: 0, preferGender: 0, dob: DateTime(1800), profileImage: "", myLikes: [], myDislikes: [], otherLikes: [], otherDislikes: [], matches: []);
+  return UserModel(phoneNumber: "", about: "",bio: "",galleryImages: [], isOnline: false, myInstrest: [], userName: "",firstName: "",  email: "", uid: "", location: "", lat: 0.0, lng: 0.0, gender: 0, preferGender: 0, dob: DateTime(1800), profileImage: "", myLikes: [], myDislikes: [], otherLikes: [], otherDislikes: [], matches: []);
 }
 
   bool isDisLiked(String uid) {
@@ -173,6 +180,6 @@ class UserModel {
   }
   @override
   String toString() {
-    return 'UserModel(galleryImages: $galleryImages, bio: $bio, about: $about, isOnline: $isOnline, myInstrest: $myInstrest, userName: $userName, first1Name: $firstName, email: $email, password: $password, uid: $uid, location: $location, lat: $lat, lng: $lng, gender: $gender, preferGender: $preferGender, dob: $dob, profileImage: $profileImage, myLikes: $myLikes, myDislikes: $myDislikes, otherLikes: $otherLikes, otherDislikes: $otherDislikes, matches: $matches)';
+    return 'UserModel(phoneNumber: $phoneNumber, galleryImages: $galleryImages, bio: $bio, about: $about, isOnline: $isOnline, myInstrest: $myInstrest, userName: $userName, first1Name: $firstName, email: $email, password: $password, uid: $uid, location: $location, lat: $lat, lng: $lng, gender: $gender, preferGender: $preferGender, dob: $dob, profileImage: $profileImage, myLikes: $myLikes, myDislikes: $myDislikes, otherLikes: $otherLikes, otherDislikes: $otherDislikes, matches: $matches)';
   }
 }

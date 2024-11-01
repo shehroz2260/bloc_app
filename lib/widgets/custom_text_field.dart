@@ -16,10 +16,13 @@ class CustomTextField extends StatefulWidget {
   final FloatingLabelBehavior? floatingLabelBehavior;
   final bool? enabled;
   final bool isSowPrefixcon;
+  final Widget? prefixIcon;
   final String? labelText;
+  final int? maxLength;
   final int maxLines;
+  final TextInputType? keyboardType;
   const CustomTextField({
-    super.key,this.enabled,this.maxLines = 1, this.textEditingController, this.onChange, required this.hintText,this.validator, this.isPasswordField =false, this.floatingLabelBehavior, this.labelText,  this.isSowPrefixcon = false
+    super.key,this.prefixIcon,this.keyboardType, this.maxLength, this.enabled,this.maxLines = 1, this.textEditingController, this.onChange, required this.hintText,this.validator, this.isPasswordField =false, this.floatingLabelBehavior, this.labelText,  this.isSowPrefixcon = false
   });
 
   @override
@@ -36,6 +39,8 @@ void visiblePassword(){
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      keyboardType: widget.keyboardType,
+      maxLength: widget.maxLength,
       onChanged: widget.onChange,
       enabled: widget.enabled,
       validator: widget.validator,
@@ -45,7 +50,8 @@ void visiblePassword(){
       style: AppTextStyle.font16.copyWith(color: AppColors.redColor),
       maxLines: widget.maxLines,
       decoration:  InputDecoration(
-        prefixIcon: widget.isSowPrefixcon? Icon(Icons.search,color: AppColors.borderGreyColor): null,
+        
+        prefixIcon:widget.prefixIcon?? (widget.isSowPrefixcon? Icon(Icons.search,color: AppColors.borderGreyColor): null),
         labelText: widget.labelText,
         floatingLabelBehavior: widget.floatingLabelBehavior,
         suffixIcon:widget.isPasswordField? Padding(padding: const EdgeInsets.all(5),child: GestureDetector(

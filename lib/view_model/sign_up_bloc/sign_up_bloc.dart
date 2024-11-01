@@ -27,6 +27,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       LoadingDialog.showProgress(event.context);
     try {
       UserModel user = UserModel(
+        phoneNumber: "",
           userName: event.nameController.text,
           email: event.emailController.text,
           profileImage: "",

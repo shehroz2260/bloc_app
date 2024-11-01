@@ -15,3 +15,11 @@ class OnSigninEvent extends SignInEvent {
     required this.passwordController,
   });
 }
+
+
+class OnGooglesignin extends SignInEvent {
+  final BuildContext context;
+  OnGooglesignin({
+    required this.context,
+  });
+}

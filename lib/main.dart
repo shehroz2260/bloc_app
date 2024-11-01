@@ -9,6 +9,7 @@ import 'package:chat_with_bloc/view_model/main_bloc/main_bloc.dart';
 import 'package:chat_with_bloc/view_model/map_bloc/map_bloc.dart';
 import 'package:chat_with_bloc/view_model/dob_bloc/dob_bloc.dart';
 import 'package:chat_with_bloc/view_model/matches_bloc/matches_bloc.dart';
+import 'package:chat_with_bloc/view_model/phone_number_bloc/phone_number_bloc.dart';
 import 'package:chat_with_bloc/view_model/preference_bloc/preference_bloc.dart';
 import 'package:chat_with_bloc/view_model/sign_in_bloc/sign_in_bloc.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
@@ -75,6 +76,7 @@ await FirebaseFirestore.instance.collection(UserModel.tableName).doc(FirebaseAut
         BlocProvider(create: (context) => FilterBloc()),
         BlocProvider(create: (context) => MatchesBloc()),
         BlocProvider(create: (context) => BioBloc()),
+        BlocProvider(create: (context) => PhoneNumberBloc()),
         BlocProvider(create: (context) => GalleryBloc()),
       ],
       child: 

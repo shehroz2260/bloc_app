@@ -98,4 +98,17 @@ class ErrorStrings {
       "The password must be at least 8 characters";
   static const String passwordContain =
       "contain Capital, small letter & Number & Special";
+
+
+
+
+
+       static const String smsVerificationError = "SMS verification error";
+  static const String youHaveAttemptedTooManyRequestsPleaseTryAgainLater =
+      "You have attempted too many requests.Please try again later";
+  static const String theProvidedPhoneNumberIsNotValid =
+      "The provided phone number is not valid.";
+  static const String invalidPhoneNumber = "invalid-phone-number";
+  static const String tooManyRequests = "too-many-requests";
+  static const String pleaseCheckTheAgreement = "Please check the agreement";
 }
