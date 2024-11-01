@@ -1,9 +1,7 @@
 class PhoneNumberState {
   final String cCode;
-  final String verificationId;
   PhoneNumberState({
     required this.cCode,
-    required this.verificationId,
   });
 
   PhoneNumberState copyWith({
@@ -12,7 +10,6 @@ class PhoneNumberState {
   }) {
     return PhoneNumberState(
       cCode: cCode ?? this.cCode,
-      verificationId: verificationId ?? this.verificationId,
     );
   }
  }

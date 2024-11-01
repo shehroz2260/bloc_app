@@ -37,6 +37,15 @@ final _controller = TextEditingController();
               Text('Please enter your valid phone number. We will send you a 6-digit code to verify your account. ',style: AppTextStyle.font16.copyWith(color: AppColors.blackColor)),
             const AppHeight(height: 30),
              CustomTextField(hintText: "30707000000",
+             validator: (p0) {
+               if((p0??"").isEmpty){
+                return "Phone number is required";
+               }
+               if((p0??"").length < 10){
+                return "Enter valid number";
+               }
+               return null;
+             },
              textEditingController: _controller,
              keyboardType: TextInputType.phone,
             prefixIcon: SizedBox(

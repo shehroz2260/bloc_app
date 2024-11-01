@@ -17,3 +17,23 @@ class VerifyOtp extends OtpEvent {
     required this.otpController,
   });
 }
+
+class ResendCode extends OtpEvent {
+  final int resendToken;
+  final String verificationId;
+  final String phoneNumber;
+  final BuildContext context;
+  ResendCode({
+    required this.resendToken,
+    required this.verificationId,
+    required this.phoneNumber,
+    required this.context,
+  });
+}
+
+class UpdateTimer extends OtpEvent {
+  final int time;
+  UpdateTimer({
+    required this.time,
+  });
+}

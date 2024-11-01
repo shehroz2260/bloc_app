@@ -15,34 +15,15 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
   OtpBloc() : super(OtpState(timer: 59)) {
     on<ScheduleTimer>(_scheduleTime);
     on<VerifyOtp>(_verifyOtp);
+    on<ResendCode>(_resendToken);
+    on<UpdateTimer>(_onUpdateTimer);
   }
 
-  _scheduleTime(ScheduleTimer event , Emitter<OtpState>emit){
-    int timers = state.timer;
-     Timer.periodic(const Duration(seconds: 1), (time) async {
-      if (state.timer == 0) {
-        time.cancel();
-        return;
-      }
-      timers--;
-      emit(state.copyWith(timer: timers));
-    });
-  }
+
 
   _verifyOtp(VerifyOtp event, Emitter<OtpState>emit)async{
  LoadingDialog.showProgress(event.context);
     var auth = FirebaseAuth.instance;
-    // otpString.value =
-    //     otp1.text + otp2.text + otp3.text + otp4.text + otp5.text + otp6.text;
-    // if (_otpController.text.length != 6) {
-    //   _baseController.hideProgress();
-    //   CustomDialogue().customOkDialogue(
-    //     title: AppLanguage.error,
-    //     message: AppLanguage.pleaseEnterValidOtp,
-    //   );
-    //   return;
-    // }
-
     try {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
           verificationId: event.verificationId, smsCode: event.otpController.text);
@@ -67,4 +48,68 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
       showOkAlertDialog(context: event.context,message: e.message,title: ErrorStrings.smsVerificationError);
     }
   }
+
+  _resendToken(ResendCode event , Emitter<OtpState>emit)async{
+
+        if (state.timer != 0) return;
+    FirebaseAuth auth = FirebaseAuth.instance;
+    try {
+      LoadingDialog.showProgress(event.context);
+          emit(state.copyWith(timer: 59));
+      await auth.verifyPhoneNumber(
+        timeout: const Duration(seconds: 60),
+        phoneNumber: event.phoneNumber,
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          LoadingDialog.hideProgress(event.context);
+          await auth.signInWithCredential(credential);
+        },
+        forceResendingToken: event.resendToken,
+        codeAutoRetrievalTimeout: (String codeverificationId) {
+          codeverificationId = event.verificationId;
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          LoadingDialog.hideProgress(event.context);
+
+          if (e.code == ErrorStrings.invalidPhoneNumber) {
+            showOkAlertDialog(context: event.context,message: ErrorStrings.theProvidedPhoneNumberIsNotValid,title: "Error");
+            return;
+          }
+          if (e.code == ErrorStrings.tooManyRequests) {
+            showOkAlertDialog(context: event.context,message: ErrorStrings.youHaveAttemptedTooManyRequestsPleaseTryAgainLater,title: ErrorStrings.smsVerificationError);
+            return;
+          }
+        },
+        codeSent: (String verificationId, int? forceResendingToken) {
+          LoadingDialog.hideProgress(event.context);
+
+          add(ScheduleTimer());
+        },
+      );
+    } on FirebaseException catch (e) {
+          LoadingDialog.hideProgress(event.context);
+  showOkAlertDialog(context: event.context,message: e.message,title: "Error");
+    }
+  }
+
+  ////////////////////////////////////////////////////////////////////
+  _onUpdateTimer(UpdateTimer timer,Emitter<OtpState>emit ){
+    emit(state.copyWith(timer: timer.time));
+  }
+    _scheduleTime(ScheduleTimer event , Emitter<OtpState>emit)async{
+    await emit.forEach(_updateTime(emit), onData: (value){
+      return state.copyWith(timer: value.timer);
+    });
+   
+  }
+    Stream<OtpState> _updateTime(Emitter<OtpState>emit) async* {
+      int timee = state.timer;
+   Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+    if(state.timer == 0){
+      timer.cancel();
+      return;
+    }
+    timee --;
+    add(UpdateTimer(time: timee));
+  });
+}
 }

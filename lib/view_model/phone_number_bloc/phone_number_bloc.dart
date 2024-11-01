@@ -14,7 +14,7 @@ import 'phone_number_event.dart';
 import 'phone_number_state.dart';
 
 class PhoneNumberBloc extends Bloc<PhoneNumberEvent, PhoneNumberState> {
-  PhoneNumberBloc() : super(PhoneNumberState(cCode: "+1",verificationId: "")) {
+  PhoneNumberBloc() : super(PhoneNumberState(cCode: "+1")) {
     on<VerifyPhoneNumber>(_verifyPhoneNumber);
     on<OnCountryCodeChange>(_onCangeCountryCode);
   }
@@ -70,7 +70,6 @@ emit(state.copyWith(cCode: event.code.dialCode??""));
             ));
       },
       codeAutoRetrievalTimeout: (String verificationId) {
-        emit(state.copyWith(verificationId: verificationId));
       },
     );
   }
