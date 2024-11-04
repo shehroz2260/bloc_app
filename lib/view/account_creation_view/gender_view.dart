@@ -10,13 +10,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class GenderView extends StatefulWidget {
-  const GenderView({super.key});
+  final bool isUpdate;
+  const GenderView({super.key, this.isUpdate = false});
 
   @override
   State<GenderView> createState() => _GenderViewState();
 }
 
 class _GenderViewState extends State<GenderView> {
+  @override
+  void initState() {
+   if(widget.isUpdate){
+    context.read<GenderBloc>().add(OninitGender(context: context));
+   }
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,8 +93,8 @@ class _GenderViewState extends State<GenderView> {
                   ),
                 ),
                 const Expanded(child: SizedBox()),
-                 CustomNewButton(btnName: AppStrings.next,onTap: () {
-                   context.read<GenderBloc>().add(OnNextEvent(context: context));
+                 CustomNewButton(btnName:widget.isUpdate?"Update": AppStrings.next,onTap: () {
+                   context.read<GenderBloc>().add(OnNextEvent(context: context,isUpdate: widget.isUpdate));
                  },),
                 const AppHeight(height: 40)
               ],

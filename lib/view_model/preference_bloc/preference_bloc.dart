@@ -16,6 +16,7 @@ class PreferenceBloc extends Bloc<PreferenceEvent, PreferenceState> {
     on<PickGenders>(_onPickGender);
     on<OnNextEvent>(_onNext);
     on<SelectInstrest>(_onSelectIntrst);
+    on<OnInitEdit>(_oninit);
   }
 
   _onSelectIntrst(SelectInstrest event , Emitter<PreferenceState> emit){
@@ -32,23 +33,35 @@ class PreferenceBloc extends Bloc<PreferenceEvent, PreferenceState> {
    emit(state.copyWith(prefGenders: event.gender));
   }
   _onNext(OnNextEvent event , Emitter<PreferenceState>emit){
-    if(state.prefGenders == -1){
+    var user = event.context.read<UserBaseBloc>().state.userData;
+    if(state.prefGenders == -1 && !event.isUpdate){
       showOkAlertDialog(context: event.context, message: "Please select one gender",title: "Error");
       return;
     }
+  
     if(state.intrestList.isEmpty){
       showOkAlertDialog(context: event.context, message: "Please select at least one instrest",title: "Error");
       return;
     }
     LoadingDialog.showProgress(event.context);
-    var user = event.context.read<UserBaseBloc>().state.userData;
-    user = user.copyWith(preferGender: state.prefGenders,myInstrest: state.intrestList);
+    user = user.copyWith(preferGender:event.isUpdate?user.preferGender: state.prefGenders,myInstrest: state.intrestList);
     FilterModel filterModel = FilterModel(minAge: 18, maxAge: 50, intrestedIn: state.prefGenders, distance: 50);
     event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
     NetworkService.updateUser(user);
-    FilterRepo.setFilter(filterModel, event.context);
     LoadingDialog.hideProgress(event.context);
     emit(state.copyWith(prefGenders: -1, intrestList: []));
+     if(!event.isUpdate){
+    FilterRepo.setFilter(filterModel, event.context);
     Go.to(event.context, const BioView());
+    }else{
+      Go.back(event.context);
+    }
+  }
+
+  _oninit(OnInitEdit event ,Emitter<PreferenceState>emit){
+ 
+    emit(state.copyWith(
+      intrestList: event.context.read<UserBaseBloc>().state.userData.myInstrest
+    ));
   }
 }

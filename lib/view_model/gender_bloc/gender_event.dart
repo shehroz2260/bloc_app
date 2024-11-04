@@ -11,7 +11,16 @@ class PickGender extends GenderEvent {
 
 class OnNextEvent extends GenderEvent {
   final BuildContext context;
+  final bool isUpdate;
   OnNextEvent({
+    required this.context,
+    required this.isUpdate,
+  });
+}
+
+class OninitGender extends GenderEvent {
+  final BuildContext context;
+  OninitGender({
     required this.context,
   });
 }

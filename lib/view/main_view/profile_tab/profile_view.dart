@@ -6,12 +6,14 @@ import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
+import 'package:chat_with_bloc/view/main_view/profile_tab/edit_profile.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/galler_view.dart';
 import 'package:chat_with_bloc/view/splash_view/splash_view.dart';
 import 'package:chat_with_bloc/view_model/main_bloc/main_bloc.dart';
 import 'package:chat_with_bloc/view_model/main_bloc/main_event.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_event.dart';
+import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_state.dart';
 import 'package:chat_with_bloc/widgets/app_cache_image.dart';
 import 'package:chat_with_bloc/widgets/custom_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -52,60 +54,64 @@ class _ProfileViewState extends State<ProfileView> {
             ),
             height: MediaQuery.of(context).size.height * 0.6,
             padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.redColor
-                ),
-                padding: const EdgeInsets.all(4),
-                child: AppCacheImage(imageUrl: user.profileImage,height: 180,width: 180,round: 180)),
-              const AppHeight(height: 2),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("${user.firstName}, ",style: AppTextStyle.font25),
-                  Text(user.age.toString(),style: AppTextStyle.font30),
-                ],
-              ),
-               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                 Padding(
-                   padding: const EdgeInsets.only(bottom: 40),
-                   child: ProfileWidget(
-                    title: "Settings",
-                    icon: AppAssets.settingICon,
-                    onTap: () {
-                    },
-                   ),
-                 ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 50),
-                    child: ProfileWidget(
-                    title: "Edit profile",
-                    icon: AppAssets.pencilICon,
-                    onTap: () {
-                      
-                    }, ),
+            child: BlocBuilder<UserBaseBloc, UserBaseState>(
+              builder: (context,state) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.redColor
+                    ),
+                    padding: const EdgeInsets.all(4),
+                    child: AppCacheImage(imageUrl: state.userData.profileImage,height: 180,width: 180,round: 180)),
+                  const AppHeight(height: 2),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("${state.userData.firstName}, ",style: AppTextStyle.font25),
+                      Text(user.age.toString(),style: AppTextStyle.font30),
+                    ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 40),
-                    child: ProfileWidget(
-                    title: "Gallery",
-                    icon: '',
-                    onTap: () {
-                      Go.to(context, const GallerView());
-                    },
-                                     ),
+                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                     Padding(
+                       padding: const EdgeInsets.only(bottom: 40),
+                       child: ProfileWidget(
+                        title: "Settings",
+                        icon: AppAssets.settingICon,
+                        onTap: () {
+                        },
+                       ),
+                     ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 50),
+                        child: ProfileWidget(
+                        title: "Edit profile",
+                        icon: AppAssets.pencilICon,
+                        onTap: () {
+                          Go.to(context, const EditProfile());
+                        }, ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 40),
+                        child: ProfileWidget(
+                        title: "Gallery",
+                        icon: '',
+                        onTap: () {
+                          Go.to(context, const GallerView());
+                        },
+                                         ),
+                      ),
+                   
+                    ],
                   ),
-               
-                ],
-              ),
-              const AppHeight(height: 30)
-              ],
+                  const AppHeight(height: 30)
+                  ],
+                );
+              }
             ),
             ),
           ),

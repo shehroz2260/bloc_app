@@ -19,10 +19,11 @@ class CustomTextField extends StatefulWidget {
   final Widget? prefixIcon;
   final String? labelText;
   final int? maxLength;
+  final bool autofocus;
   final int maxLines;
   final TextInputType? keyboardType;
   const CustomTextField({
-    super.key,this.prefixIcon,this.keyboardType, this.maxLength, this.enabled,this.maxLines = 1, this.textEditingController, this.onChange, required this.hintText,this.validator, this.isPasswordField =false, this.floatingLabelBehavior, this.labelText,  this.isSowPrefixcon = false
+    super.key,this.autofocus = false, this.prefixIcon,this.keyboardType, this.maxLength, this.enabled,this.maxLines = 1, this.textEditingController, this.onChange, required this.hintText,this.validator, this.isPasswordField =false, this.floatingLabelBehavior, this.labelText,  this.isSowPrefixcon = false
   });
 
   @override
@@ -39,6 +40,7 @@ void visiblePassword(){
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autofocus: widget.autofocus,
       keyboardType: widget.keyboardType,
       maxLength: widget.maxLength,
       onChanged: widget.onChange,

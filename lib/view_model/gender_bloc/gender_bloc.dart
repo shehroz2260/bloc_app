@@ -12,6 +12,7 @@ class GenderBloc extends Bloc<GenderEvent, GenderState> {
   GenderBloc() : super(GenderState(gender: 0)) {
     on<PickGender>(_onPickGender);
     on<OnNextEvent>(_onNext);
+    on<OninitGender>(_onint);
   }
   _onPickGender(PickGender event, Emitter<GenderState>emit){
   emit(state.copyWith(gender: event.gender));
@@ -29,6 +30,14 @@ class GenderBloc extends Bloc<GenderEvent, GenderState> {
     NetworkService.updateUser(user);
     LoadingDialog.hideProgress(event.context);
     emit(state.copyWith(gender: 0));
+      if(!event.isUpdate){
     Go.to(event.context,const PreferenceView());
+    }else{
+      Go.back(event.context);
+    }
+  }
+
+  _onint(OninitGender event , Emitter<GenderState>emit){
+    emit(state.copyWith(gender: event.context.read<UserBaseBloc>().state.userData.gender));
   }
 }

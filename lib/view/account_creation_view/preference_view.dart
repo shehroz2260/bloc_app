@@ -15,13 +15,21 @@ import 'package:flutter_svg/svg.dart';
 import '../../view_model/preference_bloc/preference_event.dart';
 
 class PreferenceView extends StatefulWidget {
-  const PreferenceView({super.key});
+  final bool isUpdate;
+  const PreferenceView({super.key,this.isUpdate = false});
 
   @override
   State<PreferenceView> createState() => _PreferenceViewState();
 }
 
 class _PreferenceViewState extends State<PreferenceView> {
+  @override
+  void initState() {
+  if(widget.isUpdate){
+    context.read<PreferenceBloc>().add(OnInitEdit(context: context));
+  }
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,8 +48,11 @@ class _PreferenceViewState extends State<PreferenceView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                     const AppHeight(height: 30),
+                    if(!widget.isUpdate)
                 Text("Preference gender",style: AppTextStyle.font25.copyWith(color: AppColors.blackColor)),
+                 if(!widget.isUpdate)
                 const AppHeight(height: 10),
+                 if(!widget.isUpdate)
                 Row(
                   children: [
                        GestureDetector(
@@ -89,6 +100,7 @@ class _PreferenceViewState extends State<PreferenceView> {
                        ),
                   ],
                 ),
+                 if(!widget.isUpdate)
                const AppHeight(height: 20),
                 Text("Your insterest",style: AppTextStyle.font25.copyWith(color: AppColors.blackColor)),
                const AppHeight(height: 5),
@@ -128,8 +140,8 @@ class _PreferenceViewState extends State<PreferenceView> {
                     );
                    }),
                const AppHeight(height: 20),
-                 CustomNewButton(btnName: AppStrings.next,onTap: () {
-                   context.read<PreferenceBloc>().add(OnNextEvent(context: context));
+                 CustomNewButton(btnName:widget.isUpdate? "Update": AppStrings.next,onTap: () {
+                   context.read<PreferenceBloc>().add(OnNextEvent(context: context,isUpdate: widget.isUpdate));
                  },),
                  const AppHeight(height: 30),
                     ],
