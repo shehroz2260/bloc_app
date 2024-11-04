@@ -28,3 +28,10 @@ class UpdateUser extends EditEvent {
     required this.about,
   });
 }
+
+class OnPickDateTime extends EditEvent {
+  final BuildContext context;
+  OnPickDateTime({
+    required this.context,
+  });
+}

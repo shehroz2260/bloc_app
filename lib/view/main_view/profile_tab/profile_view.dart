@@ -31,7 +31,6 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
-    final user = context.read<UserBaseBloc>().state.userData;
     return  Column(
       crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -71,7 +70,7 @@ class _ProfileViewState extends State<ProfileView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text("${state.userData.firstName}, ",style: AppTextStyle.font25),
-                      Text(user.age.toString(),style: AppTextStyle.font30),
+                      Text(state.userData.age.toString(),style: AppTextStyle.font30),
                     ],
                   ),
                    Row(

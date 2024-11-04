@@ -119,6 +119,7 @@ import 'package:chat_with_bloc/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 
 import '../../account_creation_view/preference_view.dart';
 
@@ -247,6 +248,10 @@ final _aboutController = TextEditingController();
                                         
                                         ),
                                        const AppHeight(height: 20),
+                                         CustomNewButton(btnName: state.dob == DateTime(1800)? userState.userData.age.toString(): DateFormat("dd MMM yyyy").format(state.dob),btnColor: AppColors.redColor.withOpacity(0.1),isRow: true,onTap: () {
+                                    context.read<EditBloc>().add(OnPickDateTime(context: context));
+                                 },),
+                                 const AppHeight(height: 20)
                              ],
                            );
                          }
