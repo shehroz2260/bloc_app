@@ -2,6 +2,9 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
+import 'package:chat_with_bloc/view/main_view/profile_tab/edit_profile.dart';
+import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_state.dart';
+import 'package:chat_with_bloc/widgets/app_cache_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +16,7 @@ import '../../../view_model/user_base_bloc/user_base_bloc.dart';
 import '../../../view_model/user_base_bloc/user_base_event.dart';
 import '../../../widgets/custom_button.dart';
 import '../../splash_view/splash_view.dart';
+import 'change_password_view.dart';
 
 class SettingView extends StatelessWidget {
   const SettingView({super.key});
@@ -28,22 +32,64 @@ class SettingView extends StatelessWidget {
             children: [
               const AppHeight(height: 20),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                            const CustomBackButton(),
-                            const SizedBox(width: 20),
                              Text(
                               'Settings',
                               style: TextStyle(
+                                fontWeight: FontWeight.w700,
                                   color: AppColors.blackColor,
-                                  fontSize: 38),
+                                  fontSize: 30),
                             ),
+                            const SizedBox(width: 60),
+
                           ],
                         ),
-                        const AppHeight(height: 30),
+                        const AppHeight(height: 20),
+                        BlocBuilder<UserBaseBloc, UserBaseState>(
+                          builder: (context,userState) {
+                            return Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: AppColors.borderColor,
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              padding: const EdgeInsets.all(20),
+                              child: Row(
+                                children: [
+                                  AppCacheImage(imageUrl: userState.userData.profileImage,height: 60,width: 60,round: 60),
+                                  const AppWidth(width: 12),
+                                   Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                    Text(userState.userData.firstName,style: AppTextStyle.font20.copyWith(
+                                      color: AppColors.blackColor,
+                                      fontWeight: FontWeight.w700
+                                    ),),
+                                     GestureDetector(
+                                      onTap: () {
+                                        Go.to(context, const EditProfile());
+                                      },
+                                       child: Text("Edit Profile",style: AppTextStyle.font16.copyWith(
+                                        color: AppColors.blueColor,
+                                       
+                                       )),
+                                     ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            );
+                          }
+                        ),
+                        const AppHeight(height: 20),
                          SettiingWidget(
                           color: Colors.blue,
                           icon: Icons.lock_open_outlined,
-                          onTap: () {},
+                          onTap: () {
+                            Go.to(context, const ChangePasswordView());
+                          },
                           title: "Change password",
                          ),
                           SettiingWidget(

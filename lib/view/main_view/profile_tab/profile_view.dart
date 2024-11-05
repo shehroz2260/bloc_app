@@ -29,7 +29,7 @@ class _ProfileViewState extends State<ProfileView> {
         children: [
       
           Material(
-            elevation: 10,
+            elevation: 4,
             borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(30),
                 bottomRight: Radius.circular(30)
@@ -41,10 +41,10 @@ class _ProfileViewState extends State<ProfileView> {
                 bottomLeft: Radius.circular(30),
                 bottomRight: Radius.circular(30)
               ),
-              color: AppColors.redColor.withOpacity(0.4),
+              color: AppColors.borderGreyColor,
             
             ),
-            height: MediaQuery.of(context).size.height * 0.6,
+            height: MediaQuery.of(context).size.height * 0.63,
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: BlocBuilder<UserBaseBloc, UserBaseState>(
               builder: (context,state) {
@@ -62,10 +62,11 @@ class _ProfileViewState extends State<ProfileView> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("${state.userData.firstName}, ",style: AppTextStyle.font25),
-                      Text(state.userData.age.toString(),style: AppTextStyle.font30),
+                      Text("${state.userData.firstName}, ",style: AppTextStyle.font25.copyWith(color: AppColors.blackColor)),
+                      Text(state.userData.age.toString(),style: AppTextStyle.font30.copyWith(color: AppColors.blackColor)),
                     ],
                   ),
+                  const AppHeight(height: 25),
                    Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -151,7 +152,7 @@ class ProfileWidget extends StatelessWidget {
             width: 70,
            decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: icon.isEmpty? AppColors.redColor: AppColors.whiteColor,
+            color:  AppColors.redColor,
             boxShadow: const [
               BoxShadow(
                 color: Colors.black26,
@@ -161,10 +162,10 @@ class ProfileWidget extends StatelessWidget {
             ],
            ),
            padding: const EdgeInsets.all(20),
-           child:icon.isEmpty? Icon(Icons.camera_alt,color: AppColors.whiteColor,size: 32): SvgPicture.asset(icon,colorFilter: ColorFilter.mode(AppColors.redColor, BlendMode.srcIn),),
+           child:icon.isEmpty? Icon(Icons.camera_alt,color: AppColors.whiteColor,size: 32): SvgPicture.asset(icon,colorFilter: ColorFilter.mode(AppColors.whiteColor, BlendMode.srcIn),),
           ),
           const AppHeight(height: 7),
-           Text(title,style: AppTextStyle.font16)
+           Text(title,style: AppTextStyle.font16.copyWith(color: AppColors.blackColor))
         ],
       ),
     );

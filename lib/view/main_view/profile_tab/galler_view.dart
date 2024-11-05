@@ -24,15 +24,17 @@ class GallerView extends StatelessWidget {
                 return Column(
                   children: [
                     Row(
-                      children: [
-                       const CustomBackButton(),
-                        const SizedBox(width: 20),
-                         Text(
-                          'Gallery',
-                          style: TextStyle(
-                              color: AppColors.blackColor,
-                              fontSize: 38),
-                        ),
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                           const CustomBackButton(),
+                             Text(
+                              'Gallery',
+                              style: TextStyle(
+                                fontWeight: FontWeight.w700,
+                                  color: AppColors.blackColor,
+                                  fontSize: 30),
+                            ),
+                            const SizedBox(width: 60),
                       ],
                     ),
                     const SizedBox(height: 30),
