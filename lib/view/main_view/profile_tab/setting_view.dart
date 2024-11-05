@@ -1,15 +1,24 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:chat_with_bloc/model/filter_model.dart';
+import 'package:chat_with_bloc/services/firebase_services_storage.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
+import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
+import 'package:chat_with_bloc/utils/loading_dialog.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/about_us_view.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/edit_profile.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/faqs_view.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_state.dart';
 import 'package:chat_with_bloc/widgets/app_cache_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:pinput/pinput.dart';
+import '../../../model/char_model.dart';
+import '../../../model/thread_model.dart';
 import '../../../model/user_model.dart';
 import '../../../src/go_file.dart';
 import '../../../view_model/main_bloc/main_bloc.dart';
@@ -28,27 +37,7 @@ class SettingView extends StatefulWidget {
 }
 
 class _SettingViewState extends State<SettingView> {
-  String get signinMethod {
-  User? user = FirebaseAuth.instance.currentUser;
-
-  if (user != null) {
-    for (UserInfo userInfo in user.providerData) {
-      switch (userInfo.providerId) {
-        case 'password':
-          return 'password';
-        case 'google.com':
-          return 'google';
-        case 'apple.com':
-          return 'apple';
-        case 'phone':
-          return 'phone number';
-        default:
-          return 'Signed in with ${userInfo.providerId}';
-      }
-    }
-  }
-  return "not signed in";
-}
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,7 +142,7 @@ class _SettingViewState extends State<SettingView> {
                          SettiingWidget(
                           color: Colors.red,
                           icon: Icons.delete_forever,
-                          onTap: () {},
+                          onTap: ()=> _deleteAccount(context),
                           title: "Delete Account",
                          ),
                          SettiingWidget(
@@ -176,6 +165,268 @@ class _SettingViewState extends State<SettingView> {
     );
   }
 }
+
+void _deleteAccount(BuildContext context)async{
+if(signinMethod == "google"){
+gmailAccountDelete(context);
+}
+if(signinMethod == "phone"){
+ await phoneNumberAccountDelete(context);
+
+}
+if(signinMethod == "password"){
+
+}
+}
+
+void gmailAccountDelete(BuildContext context) async {
+  final user = FirebaseAuth.instance.currentUser;
+  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+  if (googleUser == null) return;
+  final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+  final credential = GoogleAuthProvider.credential(
+    accessToken: googleAuth.accessToken,
+    idToken: googleAuth.idToken,
+  );
+  user!.reauthenticateWithCredential(credential).then((value) async {
+    deleteUserData(context);
+  });
+}
+
+Future<void> phoneNumberAccountDelete(BuildContext context) async {
+  String verificationIds = "";
+  final otpController = TextEditingController();
+  var user = FirebaseAuth.instance.currentUser;
+  FirebaseAuth auth = FirebaseAuth.instance;
+
+  await auth.verifyPhoneNumber(
+    timeout: const Duration(seconds: 60),
+    phoneNumber: user!.phoneNumber,
+    verificationCompleted: (PhoneAuthCredential credential) async {},
+    verificationFailed: (FirebaseAuthException e) {
+      LoadingDialog.hideProgress(context);
+      if (e.code == ErrorStrings.invalidPhoneNumber) {
+        showOkAlertDialog(context: context,
+        message: ErrorStrings.theProvidedPhoneNumberIsNotValid,title: "Error"
+        );
+        return;
+      }
+      if (e.code == ErrorStrings.tooManyRequests) {
+        showOkAlertDialog(context: context,
+        message: ErrorStrings.youHaveAttemptedTooManyRequestsPleaseTryAgainLater,
+        title: ErrorStrings.smsVerificationError
+        );
+        return;
+      }
+    },
+    codeSent: (String verificationId, int? resendToken) async {
+      verificationIds = verificationId;
+    },
+    codeAutoRetrievalTimeout: (String verificationId) {},
+  );
+  showDialog(context: context, builder: (context){
+    return AlertDialog(
+    content: SizedBox(
+      height: 60,
+      child: Pinput(
+        controller: otpController,
+        cursor: Container(
+          height: 20,
+          width: 2,
+          color: AppColors.redColor,
+        ),
+        defaultPinTheme: PinTheme(
+            textStyle:  TextStyle(
+              fontSize: 20,
+              color: AppColors.redColor,
+            ),
+            height: 60,
+            width: 40,
+            decoration: BoxDecoration(
+                border: Border.all(color: AppColors.redColor, width: 1),
+                borderRadius: const BorderRadius.all(Radius.circular(3)))),
+        length: 6,
+      ),
+    ),
+    title: const Text("Please enter the otp for confirmation"),
+    actions: [
+      MaterialButton(
+        onPressed: () async {
+          if (otpController.text.length != 6) {
+            showOkAlertDialog(context: context,
+            message: "Please enter valid otp",
+            title: "Error"
+            );
+            return;
+          }
+          AuthCredential authCredential = PhoneAuthProvider.credential(
+              verificationId: verificationIds, smsCode: otpController.text);
+          try {
+            await user
+                .reauthenticateWithCredential(authCredential)
+                .then((value) async {
+              deleteUserData(context);
+            });
+          } on FirebaseAuthException {
+            showOkAlertDialog(context: context,
+            message: "Verifiction code is invalid",
+            title: "Error"
+            );
+          }
+        },
+        child: Container(
+          alignment: Alignment.center,
+          decoration:  BoxDecoration(
+              color: AppColors.redColor,
+              borderRadius: const BorderRadius.all(Radius.circular(3))),
+          height: 30,
+          width: 70,
+          child:  Text(
+            "Confirm",
+            style: TextStyle(color: AppColors.whiteColor, fontSize: 14),
+          ),
+        ),
+      )
+    ],
+  );
+  });
+}
+
+ String get signinMethod {
+  User? user = FirebaseAuth.instance.currentUser;
+
+  if (user != null) {
+    for (UserInfo userInfo in user.providerData) {
+      switch (userInfo.providerId) {
+        case 'password':
+          return 'password';
+        case 'google.com':
+          return 'google';
+        case 'apple.com':
+          return 'apple';
+        case 'phone':
+          return 'phone';
+        default:
+          return 'Signed in with ${userInfo.providerId}';
+      }
+    }
+  }
+  return "not signed in";
+}
+
+// void deleteAppleAccount() async {
+//   var user = FirebaseAuth.instance.currentUser;
+//   String generateNonce([int length = 32]) {
+//     const charset =
+//         '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+//     final random = Random.secure();
+//     return List.generate(length, (_) => charset[random.nextInt(charset.length)])
+//         .join();
+//   }
+
+//   String sha256ofString(String input) {
+//     final bytes = utf8.encode(input);
+//     final digest = sha256.convert(bytes);
+//     return digest.toString();
+//   }
+
+//   final rawNonce = generateNonce();
+//   final nonce = sha256ofString(rawNonce);
+//   final appleCredential = await SignInWithApple.getAppleIDCredential(
+//     scopes: [
+//       AppleIDAuthorizationScopes.email,
+//       AppleIDAuthorizationScopes.fullName,
+//     ],
+//     nonce: nonce,
+//   );
+
+//   final oauthCredential = OAuthProvider("apple.com").credential(
+//     idToken: appleCredential.identityToken,
+//     rawNonce: rawNonce,
+//   );
+
+//   await user!.reauthenticateWithCredential(oauthCredential).then((value) async {
+//     deleteUserData();
+//   });
+// }
+
+
+  Future<void> deleteUserData(BuildContext context) async {
+    final user = context.read<UserBaseBloc>().state.userData;
+      final cUSer =  FirebaseAuth.instance.currentUser;
+if(cUSer == null ) return;
+    await FirebaseFirestore.instance
+        .collection(ThreadModel.tableName)
+        .where("participantUserList", arrayContains: user.uid)
+        .get()
+        .then((value) {
+      if (value.docs.isNotEmpty) {
+        for (final e in value.docs) {
+          final model = ThreadModel.fromMap(e.data());
+          FirebaseFirestore.instance
+              .collection(ThreadModel.tableName)
+              .doc(model.threadId)
+              .collection(ChatModel.tableName)
+              .get()
+              .then((valuess) {
+            if (valuess.docs.isNotEmpty) {
+              for (final db in valuess.docs) {
+                final chatModel = ChatModel.fromMap(db.data());
+                if (chatModel.media != null) {
+                  FirebaseStorageService().deleteFile(chatModel.media?.url??"",context);
+                }
+
+                db.reference.delete();
+              }
+            }
+          });
+          e.reference.delete();
+        }
+      }
+    });
+
+for(final match in user.matches){
+await FirebaseFirestore.instance
+        .collection(UserModel.tableName).doc(match)
+        .get()
+        .then((value) {
+      if (value.exists) {
+        final model = UserModel.fromMap(value.data()!);
+          FirebaseFirestore.instance
+              .collection(UserModel.tableName)
+              .doc(model.uid)
+              .update({
+            "otherLikes": FieldValue.arrayRemove([user.uid]),
+            "myLikes": FieldValue.arrayRemove([user.uid]),
+            "otherDislikes": FieldValue.arrayRemove([user.uid]),
+            "matches": FieldValue.arrayRemove([user.uid]),
+            "myDislikes": FieldValue.arrayRemove([user.uid]),
+          });
+      }
+    });
+}
+    
+    if (user.profileImage.isNotEmpty) {
+      await FirebaseStorageService().deleteFile(user.profileImage,context);
+    }
+    if (user.galleryImages.isNotEmpty) {
+      for (final e in user.galleryImages) {
+        await FirebaseStorageService().deleteFile(e,context);
+      }
+    }
+  
+ await FirebaseFirestore.instance.collection(FilterModel.tableName).doc(user.uid).delete();
+    FirebaseFirestore.instance
+        .collection(UserModel.tableName)
+        .doc(user.uid)
+        .delete();
+        context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: UserModel.emptyModel));
+         cUSer.delete();
+  LoadingDialog.hideProgress(context);
+  Go.offAll(context, const SplashView());
+  }
+
 
 class SettiingWidget extends StatelessWidget {
   final IconData icon;

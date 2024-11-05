@@ -1200,6 +1200,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  sign_in_apple:
+    dependency: "direct main"
+    description:
+      name: sign_in_apple
+      sha256: f2d498a4f49037f21dc897d31ff661930817f5db2ba43eb97029e3e4cb2c8cf2
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   sky_engine:
     dependency: transitive
     description: flutter
