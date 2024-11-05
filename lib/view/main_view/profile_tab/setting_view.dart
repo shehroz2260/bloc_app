@@ -5,12 +5,14 @@ import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
+import 'package:chat_with_bloc/utils/app_validation.dart';
 import 'package:chat_with_bloc/utils/loading_dialog.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/about_us_view.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/edit_profile.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/faqs_view.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_state.dart';
 import 'package:chat_with_bloc/widgets/app_cache_image.dart';
+import 'package:chat_with_bloc/widgets/custom_text_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -175,7 +177,7 @@ if(signinMethod == "phone"){
 
 }
 if(signinMethod == "password"){
-
+emailPassword(context);
 }
 }
 
@@ -193,6 +195,68 @@ void gmailAccountDelete(BuildContext context) async {
     deleteUserData(context);
   });
 }
+
+void emailPassword(BuildContext context) async {
+  final user = FirebaseAuth.instance.currentUser;
+final formKey = GlobalKey<FormState>();
+final passwordController = TextEditingController();
+if(user == null) return;
+
+  showDialog(context: context, builder: (context){
+    return Form(
+      key: formKey,
+      child: AlertDialog(
+      content: const SizedBox(
+        height: 60,
+        child: CustomTextField(hintText: "Enter password",
+        validator: AppValidation.passwordValidation,
+        ),
+      
+      ),
+      title: const Text("Please enter password for confirmation"),
+      actions: [
+        MaterialButton(
+          onPressed: () async {
+            if (!formKey.currentState!.validate()) {
+              return;
+            }
+           
+            try {
+              AuthCredential credential = EmailAuthProvider.credential(
+          email: user.email??"",
+          password: passwordController.text,
+        );
+              await user
+                  .reauthenticateWithCredential(credential)
+                  .then((value) async {
+                deleteUserData(context);
+              });
+            } on FirebaseAuthException catch(e){
+              showOkAlertDialog(context: context,
+              message: e.message,
+              title: "Error"
+              );
+            }
+          },
+          child: Container(
+            alignment: Alignment.center,
+            decoration:  BoxDecoration(
+                color: AppColors.redColor,
+                borderRadius: const BorderRadius.all(Radius.circular(3))),
+            height: 30,
+            width: 70,
+            child:  Text(
+              "Confirm",
+              style: TextStyle(color: AppColors.whiteColor, fontSize: 14),
+            ),
+          ),
+        )
+      ],
+        ),
+    );
+  });
+}
+
 
 Future<void> phoneNumberAccountDelete(BuildContext context) async {
   String verificationIds = "";
