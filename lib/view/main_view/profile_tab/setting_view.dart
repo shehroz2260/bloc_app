@@ -4,6 +4,7 @@ import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/about_us_view.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/edit_profile.dart';
+import 'package:chat_with_bloc/view/main_view/profile_tab/faqs_view.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_state.dart';
 import 'package:chat_with_bloc/widgets/app_cache_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -144,7 +145,9 @@ class _SettingViewState extends State<SettingView> {
                          SettiingWidget(
                           color: Colors.orange,
                           icon: Icons.help_outline,
-                          onTap: () {},
+                          onTap: () {
+                            Go.to(context, const FaqsView());
+                          },
                           title: "FAQs",
                          ),
                          SettiingWidget(
