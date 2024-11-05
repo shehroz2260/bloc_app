@@ -1,6 +1,4 @@
 // // ignore_for_file: use_build_context_synchronously
-import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/src/app_assets.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
@@ -8,15 +6,10 @@ import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/edit_profile.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/galler_view.dart';
-import 'package:chat_with_bloc/view/splash_view/splash_view.dart';
-import 'package:chat_with_bloc/view_model/main_bloc/main_bloc.dart';
-import 'package:chat_with_bloc/view_model/main_bloc/main_event.dart';
+import 'package:chat_with_bloc/view/main_view/profile_tab/setting_view.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
-import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_event.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_state.dart';
 import 'package:chat_with_bloc/widgets/app_cache_image.dart';
-import 'package:chat_with_bloc/widgets/custom_button.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -82,6 +75,7 @@ class _ProfileViewState extends State<ProfileView> {
                         title: "Settings",
                         icon: AppAssets.settingICon,
                         onTap: () {
+                          Go.to(context, const SettingView());
                         },
                        ),
                      ),
@@ -115,26 +109,21 @@ class _ProfileViewState extends State<ProfileView> {
             ),
           ),
           
-         const Spacer(),
-           const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 40),
-            child: CustomNewButton(btnName: "Delete Account"),
-          ),
-          const AppHeight(height: 20),
-           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: CustomNewButton(
-              isFillColor: false,
-              btnColor: AppColors.redColor.withOpacity(0.3),
-              btnName: "Logout",onTap: ()async {
-               var result = await showOkCancelAlertDialog(context: context,message: "Do you really want to logout",title: "Are you really",okLabel: "Yes",cancelLabel: "Not now");
-              if(result == OkCancelResult.cancel) return;
-              await FirebaseAuth.instance.signOut();
-              context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: UserModel.emptyModel));
-              context.read<MainBloc>().add(ChangeIndexEvent(index: 0));
-              Go.offAll(context, const SplashView());
-            },),
-          ),
+        //  const Spacer(),
+        //    const Padding(
+        //     padding: EdgeInsets.symmetric(horizontal: 40),
+        //     child: CustomNewButton(btnName: "Delete Account"),
+        //   ),
+        //   const AppHeight(height: 20),
+        //    Padding(
+        //     padding: const EdgeInsets.symmetric(horizontal: 40),
+        //     child: CustomNewButton(
+        //       isFillColor: false,
+        //       btnColor: AppColors.redColor.withOpacity(0.3),
+        //       btnName: "Logout",onTap: ()async {
+             
+        //     },),
+        //   ),
           const AppHeight(height: 30)
         ],
       );

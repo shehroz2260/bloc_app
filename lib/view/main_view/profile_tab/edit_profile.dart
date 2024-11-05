@@ -248,6 +248,8 @@ final _aboutController = TextEditingController();
                                         
                                         ),
                                        const AppHeight(height: 20),
+                                       Text("Age:",style: AppTextStyle.font20.copyWith(color: AppColors.blackColor),),
+                                       const AppHeight(height: 5),
                                          CustomNewButton(btnName: state.dob == DateTime(1800)? userState.userData.age.toString(): DateFormat("dd MMM yyyy").format(state.dob),btnColor: AppColors.redColor.withOpacity(0.1),isRow: true,onTap: () {
                                     context.read<EditBloc>().add(OnPickDateTime(context: context));
                                  },),
