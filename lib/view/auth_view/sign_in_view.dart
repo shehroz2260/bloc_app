@@ -1,8 +1,10 @@
 import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
+import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/utils/app_validation.dart';
+import 'package:chat_with_bloc/view/auth_view/forgot_password_view.dart';
 import 'package:chat_with_bloc/view_model/sign_in_bloc/sign_in_bloc.dart';
 import 'package:chat_with_bloc/view_model/sign_in_bloc/sign_in_event.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +59,18 @@ class _SignInWithEmailViewState extends State<SignInWithEmailView> {
                 validator: AppValidation.passwordValidation,
                 hintText: AppStrings.enterPassword,
                 isPasswordField: true,
+              ),
+              const AppHeight(height: 5),
+              Align(
+                alignment: Alignment.centerRight,
+                child: GestureDetector(
+                  onTap: () {
+                    Go.to(context, const ForgotPasswordView());
+                  },
+                  child: Text("Forgot password?",style: AppTextStyle.font16.copyWith(
+                    color: AppColors.redColor,
+                  )),
+                ),
               ),
               const AppHeight(height: 20),
               CustomNewButton(btnName: AppStrings.signIn,onTap: _onSignin)
