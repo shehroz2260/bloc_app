@@ -2,6 +2,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
+import 'package:chat_with_bloc/view/main_view/profile_tab/about_us_view.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/edit_profile.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_state.dart';
 import 'package:chat_with_bloc/widgets/app_cache_image.dart';
@@ -18,9 +19,35 @@ import '../../../widgets/custom_button.dart';
 import '../../splash_view/splash_view.dart';
 import 'change_password_view.dart';
 
-class SettingView extends StatelessWidget {
+class SettingView extends StatefulWidget {
   const SettingView({super.key});
 
+  @override
+  State<SettingView> createState() => _SettingViewState();
+}
+
+class _SettingViewState extends State<SettingView> {
+  String get signinMethod {
+  User? user = FirebaseAuth.instance.currentUser;
+
+  if (user != null) {
+    for (UserInfo userInfo in user.providerData) {
+      switch (userInfo.providerId) {
+        case 'password':
+          return 'password';
+        case 'google.com':
+          return 'google';
+        case 'apple.com':
+          return 'apple';
+        case 'phone':
+          return 'phone number';
+        default:
+          return 'Signed in with ${userInfo.providerId}';
+      }
+    }
+  }
+  return "not signed in";
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,6 +111,15 @@ class SettingView extends StatelessWidget {
                           }
                         ),
                         const AppHeight(height: 20),
+                          SettiingWidget(
+                          color: Colors.amber,
+                          icon: Icons.info,
+                          onTap: () {
+                            Go.to(context, const AboutUsView());
+                          },
+                          title: "About us",
+                         ),
+                        if(signinMethod == "password")
                          SettiingWidget(
                           color: Colors.blue,
                           icon: Icons.lock_open_outlined,
@@ -92,12 +128,7 @@ class SettingView extends StatelessWidget {
                           },
                           title: "Change password",
                          ),
-                          SettiingWidget(
-                          color: Colors.orange,
-                          icon: Icons.help_outline,
-                          onTap: () {},
-                          title: "Faqs",
-                         ),
+                          
                          SettiingWidget(
                           color: Colors.green,
                           icon: Icons.message,
@@ -111,6 +142,12 @@ class SettingView extends StatelessWidget {
                           title: "Terms & Conditions",
                          ),
                          SettiingWidget(
+                          color: Colors.orange,
+                          icon: Icons.help_outline,
+                          onTap: () {},
+                          title: "FAQs",
+                         ),
+                         SettiingWidget(
                           color: Colors.red,
                           icon: Icons.delete_forever,
                           onTap: () {},
@@ -122,10 +159,10 @@ class SettingView extends StatelessWidget {
                           onTap: () async{
                               var result = await showOkCancelAlertDialog(context: context,message: "Do you really want to logout",title: "Are you really",okLabel: "Yes",cancelLabel: "Not now");
                                if(result == OkCancelResult.cancel) return;
-              await FirebaseAuth.instance.signOut();
-              context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: UserModel.emptyModel));
-              context.read<MainBloc>().add(ChangeIndexEvent(index: 0));
-              Go.offAll(context, const SplashView());
+                               await FirebaseAuth.instance.signOut();
+                               context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: UserModel.emptyModel));
+                               context.read<MainBloc>().add(ChangeIndexEvent(index: 0));
+                               Go.offAll(context, const SplashView());
                           },
                           title: "Logout",
                          ),
