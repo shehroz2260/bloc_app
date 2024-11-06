@@ -1,6 +1,7 @@
 import 'package:chat_with_bloc/repos/filter_repo.dart';
 import 'package:chat_with_bloc/repos/get_all_users.dart';
 import 'package:chat_with_bloc/services/network_service.dart';
+import 'package:chat_with_bloc/utils/loading_dialog.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../model/filter_model.dart';
@@ -35,6 +36,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       if (cUser.isLiked(value.uid)) {
         return state;
       }
+      if (value.distance(event.context, event.userBaseBloc) >
+              filterModel.distance &&
+          filterModel.distance < 100) {
+        return state;
+      }
       state.userList.add(value);
       return state.copyWith(userList: state.userList);
     });
@@ -57,12 +63,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   _onLikeUser(LikeUser event, Emitter<HomeState> emit) async {
+    LoadingDialog.showProgress(event.context);
     await NetworkService.likeUser(event.liker, event.likee, event.context);
+    LoadingDialog.hideProgress(event.context);
     add(RemoveUserFromList(userModel: event.likee));
   }
 
   _onDisLikeUser(DisLikeUser event, Emitter<HomeState> emit) async {
+    LoadingDialog.showProgress(event.context);
     await NetworkService.disLikeUser(event.liker, event.likee);
+    LoadingDialog.hideProgress(event.context);
     add(RemoveUserFromList(userModel: event.likee));
   }
 }

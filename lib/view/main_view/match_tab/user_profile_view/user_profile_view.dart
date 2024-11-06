@@ -141,7 +141,7 @@ class UserProfileView extends StatelessWidget {
                                   SvgPicture.asset(AppAssets.locationICon),
                                   const AppWidth(width: 5),
                                   Text(
-                                    "${user.distance(context)} km",
+                                    "${user.distance(context, null)} km",
                                     style: AppTextStyle.font16.copyWith(
                                         color: AppColors.redColor,
                                         fontWeight: FontWeight.w600),

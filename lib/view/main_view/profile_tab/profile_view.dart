@@ -25,7 +25,7 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Material(
           elevation: 4,
@@ -110,23 +110,30 @@ class _ProfileViewState extends State<ProfileView> {
             }),
           ),
         ),
-
-        //  const Spacer(),
-        //    const Padding(
-        //     padding: EdgeInsets.symmetric(horizontal: 40),
-        //     child: CustomNewButton(btnName: "Delete Account"),
-        //   ),
-        //   const AppHeight(height: 20),
-        //    Padding(
-        //     padding: const EdgeInsets.symmetric(horizontal: 40),
-        //     child: CustomNewButton(
-        //       isFillColor: false,
-        //       btnColor: AppColors.redColor.withOpacity(0.3),
-        //       btnName: "Logout",onTap: ()async {
-
-        //     },),
-        //   ),
-        const AppHeight(height: 30)
+        Expanded(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  AppAssets.appIcon,
+                  height: 50,
+                ),
+                const AppWidth(width: 10),
+                Text(
+                  "Fiendzy",
+                  style:
+                      AppTextStyle.font30.copyWith(color: AppColors.redColor),
+                )
+              ],
+            ),
+            const AppHeight(height: 10),
+            const Text(
+                "Upgrade to the Friendzy premium to access all features"),
+          ],
+        ))
       ],
     );
   }

@@ -165,8 +165,13 @@ class UserModel {
     return DateTime.now().difference(dob).inDays ~/ 365;
   }
 
-  int distance(BuildContext context) {
-    var user = context.read<UserBaseBloc>().state.userData;
+  int distance(BuildContext context, UserBaseBloc? bloc) {
+    UserModel user = UserModel.emptyModel;
+    if (bloc == null) {
+      user = context.read<UserBaseBloc>().state.userData;
+    } else {
+      user = bloc.state.userData;
+    }
     if (user.lat == 0 || user.lng == 0) {
       return 232323232;
     }

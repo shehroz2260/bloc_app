@@ -11,15 +11,16 @@ import 'filter_state.dart';
 class FilterBloc extends Bloc<FilterEvent, FilterState> {
   FilterBloc()
       : super(FilterState(
-            radius: 0,
+            radius: 100,
             gender: 0,
             maxAge: 0,
             minAge: 0,
             filterModel: FilterModel(
-                distance: 50, intrestedIn: 0, maxAge: 0, minAge: 0))) {
+                distance: 100, intrestedIn: 0, maxAge: 0, minAge: 0))) {
     on<ONChangedAges>(_onChangedAge);
     on<ONInitEvent>(_oninit);
     on<OnAppLyFilter>(_onApplyFilter);
+    on<OnChangeRadisus>(_onChangeDistance);
     on<OnChangedGender>(_onChangeGender);
   }
 
@@ -40,6 +41,10 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
 
   _onChangeGender(OnChangedGender event, Emitter<FilterState> emit) {
     emit(state.copyWith(gender: event.gender));
+  }
+
+  _onChangeDistance(OnChangeRadisus event, Emitter<FilterState> emit) {
+    emit(state.copyWith(radius: event.value.toInt()));
   }
 
   _onApplyFilter(OnAppLyFilter event, Emitter<FilterState> emit) async {
