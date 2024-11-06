@@ -193,27 +193,32 @@ class _HomeViewState extends State<HomeView> {
                       ],
                     ),
                     const AppHeight(height: 10),
-                    SfSlider(
-                      activeColor: AppColors.redColor,
-                      inactiveColor: AppColors.redColor.withOpacity(.2),
-                      value: state.radius,
-                      onChanged: (value) => context
-                          .read<FilterBloc>()
-                          .add(OnChangeRadisus(value: value, context: context)),
-                      max: 100,
-                      thumbIcon: Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.whiteColor),
-                        padding: const EdgeInsets.all(4),
-                        child: Container(
-                          height: double.infinity,
-                          width: double.infinity,
+                    SfSliderTheme(
+                      data: const SfSliderThemeData(
+                          thumbRadius: 16,
+                          activeTrackHeight: 10,
+                          inactiveTrackHeight: 10),
+                      child: SfSlider(
+                        activeColor: AppColors.redColor,
+                        inactiveColor: AppColors.redColor.withOpacity(.5),
+                        value: state.radius,
+                        onChanged: (value) => context.read<FilterBloc>().add(
+                            OnChangeRadisus(value: value, context: context)),
+                        max: 100,
+                        thumbIcon: Container(
+                          height: 40,
+                          width: 40,
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: AppColors.redColor),
+                              color: AppColors.whiteColor),
+                          padding: const EdgeInsets.all(4),
+                          child: Container(
+                            height: double.infinity,
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: AppColors.redColor),
+                          ),
                         ),
                       ),
                     ),
