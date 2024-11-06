@@ -81,6 +81,8 @@ class _HomeViewState extends State<HomeView> {
                                   .add(OnChangedGender(gender: 0));
                               context.read<FilterBloc>().add(ONChangedAges(
                                   onChanged: const SfRangeValues(18, 50)));
+                              context.read<FilterBloc>().add(OnChangeRadisus(
+                                  value: 100, context: context));
                             },
                             child: Text("Clear",
                                 style: AppTextStyle.font20.copyWith(
@@ -89,7 +91,7 @@ class _HomeViewState extends State<HomeView> {
                       ],
                     ),
                     const AppHeight(height: 30),
-                    Text("Interested in",
+                    Text("Show me",
                         style: AppTextStyle.font20.copyWith(
                             color: AppColors.blackColor,
                             fontWeight: FontWeight.bold)),
@@ -335,7 +337,6 @@ class _HomeViewState extends State<HomeView> {
                                                         context,
                                                         UserProfileView(
                                                             user: user));
-                                                    // Get.to(()=> InfoScreen(userModel: controller.users[index]));
                                                   }),
                                               const SizedBox(height: 15),
                                               WidgetForLikeorDislike(
@@ -351,7 +352,6 @@ class _HomeViewState extends State<HomeView> {
                                                                     UserBaseBloc>()
                                                                 .state
                                                                 .userData));
-                                                    //  controller.likeUser(user);
                                                   }),
                                               const SizedBox(height: 15),
                                               WidgetForLikeorDislike(
@@ -367,15 +367,11 @@ class _HomeViewState extends State<HomeView> {
                                                                 .state
                                                                 .userData,
                                                             context: context));
-
-                                                    // controller.disLikeUser(user);
                                                   }),
                                               const SizedBox(height: 15),
                                               WidgetForLikeorDislike(
                                                   icon: Icons.report,
-                                                  onTap: () {
-                                                    //  controller.reportUser(controller.users[index]);
-                                                  }),
+                                                  onTap: () {}),
                                               const SizedBox(height: 15),
                                             ],
                                           ),
@@ -384,25 +380,46 @@ class _HomeViewState extends State<HomeView> {
                                     ),
                                   ),
                                   const SizedBox(height: 13),
-                                  RichText(
-                                      text: TextSpan(children: [
-                                    TextSpan(
-                                      text: "${user.firstName},",
-                                      style: TextStyle(
-                                        color: AppColors.blackColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                    TextSpan(
-                                      text: '${user.age}',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.blackColor,
-                                        fontSize: 24,
-                                      ),
-                                    ),
-                                  ])),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      RichText(
+                                          text: TextSpan(children: [
+                                        TextSpan(
+                                          text: "${user.firstName},",
+                                          style: TextStyle(
+                                            color: AppColors.blackColor,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                        TextSpan(
+                                          text: '${user.age}',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: AppColors.blackColor,
+                                            fontSize: 24,
+                                          ),
+                                        ),
+                                      ])),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: AppColors.redColor
+                                              .withOpacity(0.3),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 10),
+                                        child: Text(
+                                          "${user.distance(context, null)} km",
+                                          style: AppTextStyle.font16.copyWith(
+                                              color: AppColors.blackColor),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                   const SizedBox(height: 15),
                                 ],
                               ),
@@ -484,9 +501,14 @@ class _InterestedInWidgetState extends State<InterestedInWidget> {
                     width: double.infinity,
                     decoration: BoxDecoration(
                         border: Border(
-                            left: BorderSide(color: AppColors.borderGreyColor),
-                            right:
-                                BorderSide(color: AppColors.borderGreyColor))),
+                            left: BorderSide(
+                                color: state.gender == 2
+                                    ? AppColors.redColor
+                                    : AppColors.borderGreyColor),
+                            right: BorderSide(
+                                color: state.gender == 2
+                                    ? AppColors.redColor
+                                    : AppColors.borderGreyColor))),
                     child: Text("Women",
                         style: AppTextStyle.font16.copyWith(
                             color: state.gender == 2

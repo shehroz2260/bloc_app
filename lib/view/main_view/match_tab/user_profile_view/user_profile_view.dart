@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/src/app_assets.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
@@ -89,7 +90,15 @@ class UserProfileView extends StatelessWidget {
                           ),
                           if (!isCUser)
                             GestureDetector(
-                              onTap: () {
+                              onTap: () async {
+                                var res = await showOkCancelAlertDialog(
+                                    context: context,
+                                    title: "Direction",
+                                    okLabel: "Yes",
+                                    cancelLabel: "Not now",
+                                    message: "Do you want to get direction");
+                                if (res == OkCancelResult.cancel) return;
+
                                 _getDirection(user.lat, user.lng);
                               },
                               child: Container(
