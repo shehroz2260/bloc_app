@@ -170,18 +170,18 @@ class _SettingViewState extends State<SettingView> {
 
 void _deleteAccount(BuildContext context)async{
 if(signinMethod == "google"){
-gmailAccountDelete(context);
+await gmailAccountDelete(context);
 }
 if(signinMethod == "phone"){
  await phoneNumberAccountDelete(context);
 
 }
 if(signinMethod == "password"){
-emailPassword(context);
+await emailPassword(context);
 }
 }
 
-void gmailAccountDelete(BuildContext context) async {
+Future<void> gmailAccountDelete(BuildContext context) async {
   final user = FirebaseAuth.instance.currentUser;
   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
@@ -192,11 +192,11 @@ void gmailAccountDelete(BuildContext context) async {
     idToken: googleAuth.idToken,
   );
   user!.reauthenticateWithCredential(credential).then((value) async {
-    deleteUserData(context);
+   await deleteUserData(context);
   });
 }
 
-void emailPassword(BuildContext context) async {
+Future<void> emailPassword(BuildContext context) async {
   final user = FirebaseAuth.instance.currentUser;
 final formKey = GlobalKey<FormState>();
 final passwordController = TextEditingController();
@@ -206,10 +206,11 @@ if(user == null) return;
     return Form(
       key: formKey,
       child: AlertDialog(
-      content: const SizedBox(
+      content:  SizedBox(
         height: 60,
         child: CustomTextField(hintText: "Enter password",
         validator: AppValidation.passwordValidation,
+        textEditingController: passwordController,
         ),
       
       ),
@@ -220,7 +221,7 @@ if(user == null) return;
             if (!formKey.currentState!.validate()) {
               return;
             }
-           
+           LoadingDialog.showProgress(context);
             try {
               AuthCredential credential = EmailAuthProvider.credential(
           email: user.email??"",
@@ -229,9 +230,10 @@ if(user == null) return;
               await user
                   .reauthenticateWithCredential(credential)
                   .then((value) async {
-                deleteUserData(context);
+               await deleteUserData(context);
               });
             } on FirebaseAuthException catch(e){
+          LoadingDialog.hideProgress(context);
               showOkAlertDialog(context: context,
               message: e.message,
               title: "Error"
@@ -324,15 +326,17 @@ Future<void> phoneNumberAccountDelete(BuildContext context) async {
             );
             return;
           }
+          LoadingDialog.showProgress(context);
           AuthCredential authCredential = PhoneAuthProvider.credential(
               verificationId: verificationIds, smsCode: otpController.text);
           try {
             await user
                 .reauthenticateWithCredential(authCredential)
                 .then((value) async {
-              deleteUserData(context);
+             await deleteUserData(context);
             });
           } on FirebaseAuthException {
+          LoadingDialog.hideProgress(context);
             showOkAlertDialog(context: context,
             message: "Verifiction code is invalid",
             title: "Error"
@@ -378,42 +382,6 @@ Future<void> phoneNumberAccountDelete(BuildContext context) async {
   }
   return "not signed in";
 }
-
-// void deleteAppleAccount() async {
-//   var user = FirebaseAuth.instance.currentUser;
-//   String generateNonce([int length = 32]) {
-//     const charset =
-//         '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
-//     final random = Random.secure();
-//     return List.generate(length, (_) => charset[random.nextInt(charset.length)])
-//         .join();
-//   }
-
-//   String sha256ofString(String input) {
-//     final bytes = utf8.encode(input);
-//     final digest = sha256.convert(bytes);
-//     return digest.toString();
-//   }
-
-//   final rawNonce = generateNonce();
-//   final nonce = sha256ofString(rawNonce);
-//   final appleCredential = await SignInWithApple.getAppleIDCredential(
-//     scopes: [
-//       AppleIDAuthorizationScopes.email,
-//       AppleIDAuthorizationScopes.fullName,
-//     ],
-//     nonce: nonce,
-//   );
-
-//   final oauthCredential = OAuthProvider("apple.com").credential(
-//     idToken: appleCredential.identityToken,
-//     rawNonce: rawNonce,
-//   );
-
-//   await user!.reauthenticateWithCredential(oauthCredential).then((value) async {
-//     deleteUserData();
-//   });
-// }
 
 
   Future<void> deleteUserData(BuildContext context) async {
@@ -485,10 +453,11 @@ await FirebaseFirestore.instance
         .collection(UserModel.tableName)
         .doc(user.uid)
         .delete();
-        context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: UserModel.emptyModel));
          cUSer.delete();
-  LoadingDialog.hideProgress(context);
-  Go.offAll(context, const SplashView());
+        context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: UserModel.emptyModel));
+        context.read<MainBloc>().add(ChangeIndexEvent(index: 0));
+        LoadingDialog.hideProgress(context);
+        Go.offAll(context, const SplashView());
   }
 
 
