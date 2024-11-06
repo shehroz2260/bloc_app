@@ -1,4 +1,8 @@
+import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 
 class UserModel {
   final String userName;
@@ -159,6 +163,17 @@ class UserModel {
 
   int get age {
     return DateTime.now().difference(dob).inDays ~/ 365;
+  }
+
+  int distance(BuildContext context) {
+    var user = context.read<UserBaseBloc>().state.userData;
+    if (user.lat == 0 || user.lng == 0) {
+      return 232323232;
+    }
+
+    return ((Geolocator.distanceBetween(lat, lng, user.lat, user.lng)) *
+            0.000621371)
+        .toInt();
   }
 
   bool isLiked(String uid) {

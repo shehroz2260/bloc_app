@@ -1,6 +1,7 @@
 import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/src/app_assets.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
+import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
@@ -9,12 +10,14 @@ import 'package:chat_with_bloc/widgets/custom_button.dart';
 import 'package:chat_with_bloc/widgets/see_more_text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../../../account_creation_view/preference_view.dart';
 import 'see_all_gallery_images.dart';
 
 class UserProfileView extends StatelessWidget {
   final UserModel user;
-  const UserProfileView({super.key, required this.user});
+  final bool isCUser;
+  const UserProfileView({super.key, required this.user, this.isCUser = false});
 
   @override
   Widget build(BuildContext context) {
@@ -84,20 +87,27 @@ class UserProfileView extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Container(
-                            height: 60,
-                            width: 60,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: AppColors.borderGreyColor),
-                                borderRadius: BorderRadius.circular(20)),
-                            padding: const EdgeInsets.all(12),
-                            child: SvgPicture.asset(AppAssets.sendIcon),
-                          )
+                          if (!isCUser)
+                            GestureDetector(
+                              onTap: () {
+                                _getDirection(user.lat, user.lng);
+                              },
+                              child: Container(
+                                height: 60,
+                                width: 60,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: AppColors.borderGreyColor),
+                                    borderRadius: BorderRadius.circular(20)),
+                                padding: const EdgeInsets.all(12),
+                                child: SvgPicture.asset(AppAssets.sendIcon),
+                              ),
+                            )
                         ],
                       ),
                       const AppHeight(height: 30),
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
                             child: Column(
@@ -110,33 +120,35 @@ class UserProfileView extends StatelessWidget {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  "user.location",
+                                  user.location,
                                   style: AppTextStyle.font16
                                       .copyWith(color: AppColors.blackColor),
                                 )
                               ],
                             ),
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: AppColors.redColor.withOpacity(0.15),
-                              borderRadius: BorderRadius.circular(7),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(AppAssets.locationICon),
-                                const AppWidth(width: 10),
-                                Text(
-                                  "1 km",
-                                  style: AppTextStyle.font16.copyWith(
-                                      color: AppColors.redColor,
-                                      fontWeight: FontWeight.w600),
-                                )
-                              ],
-                            ),
-                          )
+                          const AppWidth(width: 5),
+                          if (!isCUser)
+                            Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.redColor.withOpacity(0.15),
+                                borderRadius: BorderRadius.circular(7),
+                              ),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(AppAssets.locationICon),
+                                  const AppWidth(width: 5),
+                                  Text(
+                                    "${user.distance(context)} km",
+                                    style: AppTextStyle.font16.copyWith(
+                                        color: AppColors.redColor,
+                                        fontWeight: FontWeight.w600),
+                                  )
+                                ],
+                              ),
+                            )
                         ],
                       ),
                       const AppHeight(height: 30),
@@ -164,7 +176,7 @@ class UserProfileView extends StatelessWidget {
                                   crossAxisCount: 2,
                                   crossAxisSpacing: 10,
                                   mainAxisSpacing: 10,
-                                  childAspectRatio: 3.3),
+                                  childAspectRatio: 3.4),
                           itemCount: user.myInstrest.length,
                           itemBuilder: (context, index) {
                             final interest = user.myInstrest[index];
@@ -186,6 +198,7 @@ class UserProfileView extends StatelessWidget {
                                   const AppWidth(width: 10),
                                   Text(interestList[interest].name,
                                       style: AppTextStyle.font16.copyWith(
+                                          fontSize: 14,
                                           color: AppColors.whiteColor))
                                 ],
                               ),
@@ -246,5 +259,9 @@ class UserProfileView extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _getDirection(double lat, double lng) async {
+    await launchUrlString("${AppConstant.googleMapsUrl}$lat,$lng");
   }
 }

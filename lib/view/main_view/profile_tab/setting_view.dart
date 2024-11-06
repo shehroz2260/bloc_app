@@ -7,8 +7,8 @@ import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/utils/app_validation.dart';
 import 'package:chat_with_bloc/utils/loading_dialog.dart';
+import 'package:chat_with_bloc/view/main_view/match_tab/user_profile_view/user_profile_view.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/about_us_view.dart';
-import 'package:chat_with_bloc/view/main_view/profile_tab/edit_profile.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/faqs_view.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_state.dart';
 import 'package:chat_with_bloc/widgets/app_cache_image.dart';
@@ -90,11 +90,17 @@ class _SettingViewState extends State<SettingView> {
                                 color: AppColors.blackColor,
                                 fontWeight: FontWeight.w700),
                           ),
+                          const AppHeight(height: 5),
                           GestureDetector(
                             onTap: () {
-                              Go.to(context, const EditProfile());
+                              Go.to(
+                                  context,
+                                  UserProfileView(
+                                    user: userState.userData,
+                                    isCUser: true,
+                                  ));
                             },
-                            child: Text("Edit Profile",
+                            child: Text("See Profile",
                                 style: AppTextStyle.font16.copyWith(
                                   color: AppColors.blueColor,
                                 )),
@@ -146,7 +152,15 @@ class _SettingViewState extends State<SettingView> {
               SettiingWidget(
                 color: Colors.red,
                 icon: Icons.delete_forever,
-                onTap: () => _deleteAccount(context),
+                onTap: () async {
+                  var res = await showOkCancelAlertDialog(
+                      context: context,
+                      message:
+                          "Do you really want to delete your account, This action is permanent and cannot be undo.",
+                      title: "Are you sure!");
+                  if (res == OkCancelResult.cancel) return;
+                  _deleteAccount(context);
+                },
                 title: "Delete Account",
               ),
               SettiingWidget(
@@ -156,7 +170,7 @@ class _SettingViewState extends State<SettingView> {
                   var result = await showOkCancelAlertDialog(
                       context: context,
                       message: "Do you really want to logout",
-                      title: "Are you really",
+                      title: "Are you sure!",
                       okLabel: "Yes",
                       cancelLabel: "Not now");
                   if (result == OkCancelResult.cancel) return;

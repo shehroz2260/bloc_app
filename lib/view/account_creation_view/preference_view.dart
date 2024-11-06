@@ -2,7 +2,6 @@
 import 'package:chat_with_bloc/src/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
@@ -11,7 +10,6 @@ import 'package:chat_with_bloc/view_model/preference_bloc/preference_bloc.dart';
 import 'package:chat_with_bloc/view_model/preference_bloc/preference_state.dart';
 import 'package:chat_with_bloc/widgets/custom_button.dart';
 import 'package:flutter_svg/svg.dart';
-
 import '../../view_model/preference_bloc/preference_event.dart';
 
 class PreferenceView extends StatefulWidget {
@@ -156,7 +154,7 @@ class _PreferenceViewState extends State<PreferenceView> {
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             crossAxisSpacing: 10,
-                            childAspectRatio: 3,
+                            childAspectRatio: 3.4,
                             mainAxisSpacing: 10,
                           ),
                           itemCount: interestList.length,
@@ -192,6 +190,7 @@ class _PreferenceViewState extends State<PreferenceView> {
                                     const AppWidth(width: 10),
                                     Text(interestList[index].name,
                                         style: AppTextStyle.font16.copyWith(
+                                            fontSize: 14,
                                             color: state.intrestList
                                                     .contains(index)
                                                 ? AppColors.whiteColor

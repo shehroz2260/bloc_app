@@ -5,7 +5,8 @@ import '../../view_model/location_permission_bloc/location_bloc.dart';
 import '../../view_model/location_permission_bloc/location_event.dart';
 
 class LocationPermissionScreen extends StatelessWidget {
-  const LocationPermissionScreen({super.key});
+  final bool isFromOnboard;
+  const LocationPermissionScreen({super.key, this.isFromOnboard = false});
 
   @override
   Widget build(BuildContext context) {
@@ -26,9 +27,9 @@ class LocationPermissionScreen extends StatelessWidget {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: CustomButton(
-                  onTap: () => context
-                      .read<LocationBloc>()
-                      .add(OnRequestPermissionEvent(context: context)),
+                  onTap: () => context.read<LocationBloc>().add(
+                      OnRequestPermissionEvent(
+                          context: context, isFromOnboard: isFromOnboard)),
                   btnName: 'Enable Location',
                 ),
               ),

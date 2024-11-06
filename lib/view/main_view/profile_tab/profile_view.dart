@@ -156,7 +156,7 @@ class ProfileWidget extends StatelessWidget {
               color: AppColors.redColor,
               boxShadow: const [
                 BoxShadow(
-                    color: Colors.black26,
+                    color: Colors.black12,
                     offset: Offset(0, 4),
                     blurRadius: 4,
                     spreadRadius: 4)

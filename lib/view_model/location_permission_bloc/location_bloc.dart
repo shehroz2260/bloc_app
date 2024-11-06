@@ -3,6 +3,7 @@ import 'package:chat_with_bloc/services/network_service.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/utils/loading_dialog.dart';
 import 'package:chat_with_bloc/utils/permission_utils.dart';
+import 'package:chat_with_bloc/view/account_creation_view/welcome_view.dart';
 import 'package:chat_with_bloc/view/main_view/main_view.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_event.dart';
@@ -80,8 +81,11 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       NetworkService.updateUser(userModel);
 
       LoadingDialog.hideProgress(event.context);
-
-      Go.offAll(event.context, const MainView());
+      if (event.isFromOnboard) {
+        Go.offAll(event.context, const WelcomeView());
+      } else {
+        Go.offAll(event.context, const MainView());
+      }
     } on FirebaseException catch (e) {
       LoadingDialog.hideProgress(event.context);
       showOkAlertDialog(

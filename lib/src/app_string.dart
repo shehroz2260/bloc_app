@@ -115,3 +115,8 @@ class ErrorStrings {
   static const String tooManyRequests = "too-many-requests";
   static const String pleaseCheckTheAgreement = "Please check the agreement";
 }
+
+class AppConstant {
+  static const String googleMapsUrl =
+      'https://www.google.com/maps/dir/?api=1&destination=';
+}

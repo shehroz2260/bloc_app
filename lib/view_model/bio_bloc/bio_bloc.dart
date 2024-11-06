@@ -1,6 +1,6 @@
 import 'package:chat_with_bloc/services/network_service.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
-import 'package:chat_with_bloc/view/main_view/main_view.dart';
+import 'package:chat_with_bloc/view/account_creation_view/location_view.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +21,8 @@ class BioBloc extends Bloc<BioEvent, BioState> {
     NetworkService.updateUser(user);
     event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
     LoadingDialog.hideProgress(event.context);
-    Go.offAll(event.context, const MainView());
+    Go.offAll(
+        event.context, const LocationPermissionScreen(isFromOnboard: true));
     event.aboutController.clear();
     event.bioController.clear();
   }
