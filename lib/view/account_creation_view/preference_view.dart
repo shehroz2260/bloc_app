@@ -16,7 +16,7 @@ import '../../view_model/preference_bloc/preference_event.dart';
 
 class PreferenceView extends StatefulWidget {
   final bool isUpdate;
-  const PreferenceView({super.key,this.isUpdate = false});
+  const PreferenceView({super.key, this.isUpdate = false});
 
   @override
   State<PreferenceView> createState() => _PreferenceViewState();
@@ -25,11 +25,12 @@ class PreferenceView extends StatefulWidget {
 class _PreferenceViewState extends State<PreferenceView> {
   @override
   void initState() {
-  if(widget.isUpdate){
-    context.read<PreferenceBloc>().add(OnInitEdit(context: context));
-  }
+    if (widget.isUpdate) {
+      context.read<PreferenceBloc>().add(OnInitEdit(context: context));
+    }
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,111 +44,175 @@ class _PreferenceViewState extends State<PreferenceView> {
               children: [
                 const AppHeight(height: 60),
                 const CustomBackButton(),
-                Expanded(child: SingleChildScrollView(
+                Expanded(
+                    child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                    const AppHeight(height: 30),
-                    if(!widget.isUpdate)
-                Text("Preference gender",style: AppTextStyle.font25.copyWith(color: AppColors.blackColor)),
-                 if(!widget.isUpdate)
-                const AppHeight(height: 10),
-                 if(!widget.isUpdate)
-                Row(
-                  children: [
-                       GestureDetector(
-                        onTap: () {
-                          context.read<PreferenceBloc>().add(PickGenders(gender: 0));
-                        },
-                         child: Container(
-                          margin: const EdgeInsets.only(right: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: state.prefGenders == 0? AppColors.redColor: null,
-                            border: state.prefGenders == 0?null: Border.all(color: AppColors.borderGreyColor),
+                      const AppHeight(height: 30),
+                      if (!widget.isUpdate)
+                        Text("Preference gender",
+                            style: AppTextStyle.font25
+                                .copyWith(color: AppColors.blackColor)),
+                      if (!widget.isUpdate) const AppHeight(height: 10),
+                      if (!widget.isUpdate)
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                context
+                                    .read<PreferenceBloc>()
+                                    .add(PickGenders(gender: 0));
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: state.prefGenders == 0
+                                      ? AppColors.redColor
+                                      : null,
+                                  border: state.prefGenders == 0
+                                      ? null
+                                      : Border.all(
+                                          color: AppColors.borderGreyColor),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 10),
+                                child: Text(AppStrings.both,
+                                    style: AppTextStyle.font16.copyWith(
+                                        color: state.prefGenders == 0
+                                            ? AppColors.whiteColor
+                                            : AppColors.redColor)),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                context
+                                    .read<PreferenceBloc>()
+                                    .add(PickGenders(gender: 1));
+                              },
+                              child: Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: state.prefGenders == 1
+                                      ? AppColors.redColor
+                                      : null,
+                                  border: state.prefGenders == 1
+                                      ? null
+                                      : Border.all(
+                                          color: AppColors.borderGreyColor),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 10),
+                                child: Text(AppStrings.men,
+                                    style: AppTextStyle.font16.copyWith(
+                                        color: state.prefGenders == 1
+                                            ? AppColors.whiteColor
+                                            : AppColors.redColor)),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                context
+                                    .read<PreferenceBloc>()
+                                    .add(PickGenders(gender: 2));
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: state.prefGenders == 2
+                                      ? AppColors.redColor
+                                      : null,
+                                  border: state.prefGenders == 2
+                                      ? null
+                                      : Border.all(
+                                          color: AppColors.borderGreyColor),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 10),
+                                child: Text(AppStrings.women,
+                                    style: AppTextStyle.font16.copyWith(
+                                        color: state.prefGenders == 2
+                                            ? AppColors.whiteColor
+                                            : AppColors.redColor)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      if (!widget.isUpdate) const AppHeight(height: 20),
+                      Text("Your insterest",
+                          style: AppTextStyle.font25
+                              .copyWith(color: AppColors.blackColor)),
+                      const AppHeight(height: 5),
+                      Text(
+                          "Select a few of your interests and let everyone know what you’re passionate about.",
+                          style: AppTextStyle.font16
+                              .copyWith(color: AppColors.blackColor)),
+                      const AppHeight(height: 20),
+                      GridView.builder(
+                          padding: EdgeInsets.zero,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 10,
+                            childAspectRatio: 3,
+                            mainAxisSpacing: 10,
                           ),
-                          padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-                         child:  Text(AppStrings.both,style: AppTextStyle.font16.copyWith(color:state.prefGenders ==0? AppColors.whiteColor: AppColors.redColor)),
-                         ),
-                       ),
-                        GestureDetector(
+                          itemCount: interestList.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                context
+                                    .read<PreferenceBloc>()
+                                    .add(SelectInstrest(index: index));
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 12),
+                                decoration: BoxDecoration(
+                                    color: state.intrestList.contains(index)
+                                        ? AppColors.redColor
+                                        : null,
+                                    borderRadius: BorderRadius.circular(15),
+                                    border: Border.all(
+                                        color: state.intrestList.contains(index)
+                                            ? AppColors.redColor
+                                            : AppColors.borderGreyColor)),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SvgPicture.asset(interestList[index].icon,
+                                        colorFilter: ColorFilter.mode(
+                                            state.intrestList.contains(index)
+                                                ? AppColors.whiteColor
+                                                : AppColors.redColor,
+                                            BlendMode.srcIn)),
+                                    const AppWidth(width: 10),
+                                    Text(interestList[index].name,
+                                        style: AppTextStyle.font16.copyWith(
+                                            color: state.intrestList
+                                                    .contains(index)
+                                                ? AppColors.whiteColor
+                                                : AppColors.blackColor))
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                      const AppHeight(height: 20),
+                      CustomNewButton(
+                        btnName: widget.isUpdate ? "Update" : AppStrings.next,
                         onTap: () {
-                          context.read<PreferenceBloc>().add(PickGenders(gender: 1));
+                          context.read<PreferenceBloc>().add(OnNextEvent(
+                              context: context, isUpdate: widget.isUpdate));
                         },
-                         child: Container(
-                          margin: const EdgeInsets.only(right: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: state.prefGenders == 1? AppColors.redColor: null,
-                            border: state.prefGenders == 1?null: Border.all(color: AppColors.borderGreyColor),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-                         child:  Text(AppStrings.men,style: AppTextStyle.font16.copyWith(color:state.prefGenders ==1? AppColors.whiteColor: AppColors.redColor)),
-                         ),
-                       ), GestureDetector(
-                        onTap: () {
-                          context.read<PreferenceBloc>().add(PickGenders(gender: 2));
-                        },
-                         child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: state.prefGenders == 2? AppColors.redColor: null,
-                            border: state.prefGenders == 2?null: Border.all(color: AppColors.borderGreyColor),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
-                         child:  Text(AppStrings.women,style: AppTextStyle.font16.copyWith(color:state.prefGenders ==2? AppColors.whiteColor: AppColors.redColor)),
-                         ),
-                       ),
-                  ],
-                ),
-                 if(!widget.isUpdate)
-               const AppHeight(height: 20),
-                Text("Your insterest",style: AppTextStyle.font25.copyWith(color: AppColors.blackColor)),
-               const AppHeight(height: 5),
-                Text("Select a few of your interests and let everyone know what you’re passionate about.",style: AppTextStyle.font16.copyWith(color: AppColors.blackColor)),
-               const AppHeight(height: 20),
-              GridView.builder(
-                padding: EdgeInsets.zero,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 10,
-                  childAspectRatio: 3,
-                  mainAxisSpacing: 10,
-                  ),
-                  itemCount: interestList.length,
-                  shrinkWrap: true,
-                   itemBuilder: (context,index){
-                    return GestureDetector(
-                      onTap: () {
-                        context.read<PreferenceBloc>().add(SelectInstrest(index: index));
-                      },
-                      child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 12),
-                      decoration: BoxDecoration(
-                        color: state.intrestList.contains(index)? AppColors.redColor: null,
-                        borderRadius: BorderRadius.circular(15),
-                        border:  Border.all(color: state.intrestList.contains(index)?AppColors.redColor: AppColors.borderGreyColor)
                       ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                         SvgPicture.asset(interestList[index].icon,colorFilter: ColorFilter.mode(state.intrestList.contains(index)? AppColors.whiteColor: AppColors.redColor, BlendMode.srcIn)),
-                         const AppWidth(width: 10),
-                         Text(interestList[index].name,style: AppTextStyle.font16.copyWith(color: state.intrestList.contains(index)? AppColors.whiteColor: AppColors.blackColor))
-                        ],
-                      ),
-                                        ),
-                    );
-                   }),
-               const AppHeight(height: 20),
-                 CustomNewButton(btnName:widget.isUpdate? "Update": AppStrings.next,onTap: () {
-                   context.read<PreferenceBloc>().add(OnNextEvent(context: context,isUpdate: widget.isUpdate));
-                 },),
-                 const AppHeight(height: 30),
+                      const AppHeight(height: 30),
                     ],
                   ),
                 )),
-               
               ],
             );
           },

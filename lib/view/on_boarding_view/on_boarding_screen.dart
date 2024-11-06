@@ -17,39 +17,48 @@ class OnBoardingScreen extends StatefulWidget {
 }
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
- 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       backgroundColor: AppColors.whiteColor,
-       body:  Padding(
-         padding: const EdgeInsets.symmetric(horizontal: 20),
-         child: Column(
+      backgroundColor: AppColors.whiteColor,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
           children: [
             const AppHeight(height: 70),
-           Padding(
-             padding: const EdgeInsets.fromLTRB(20,20,0,0),
-             child: Image.asset(AppAssets.onboardingScreen),
-           ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
+              child: Image.asset(AppAssets.onboardingScreen),
+            ),
             const AppHeight(height: 40),
-            Text(AppStrings.appName,style: AppTextStyle.font25.copyWith(color: AppColors.redColor)),
-            Text(AppStrings.wematchYouWithPeople,style: AppTextStyle.font16.copyWith(color: AppColors.blackColor),textAlign: TextAlign.center),
-          const Spacer(),
-             CustomNewButton(btnName: AppStrings.createAnAccoun,onTap:()=> Go.to(context,const SignUpView())),
+            Text(AppStrings.appName,
+                style: AppTextStyle.font25.copyWith(color: AppColors.redColor)),
+            Text(AppStrings.wematchYouWithPeople,
+                style:
+                    AppTextStyle.font16.copyWith(color: AppColors.blackColor),
+                textAlign: TextAlign.center),
+            const Spacer(),
+            CustomNewButton(
+                btnName: AppStrings.createAnAccoun,
+                onTap: () => Go.to(context, const SignUpView())),
             const AppHeight(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(AppStrings.alreadyHaveAnAccount,style: AppTextStyle.font16.copyWith(color: AppColors.blackColor)),
+                Text(AppStrings.alreadyHaveAnAccount,
+                    style: AppTextStyle.font16
+                        .copyWith(color: AppColors.blackColor)),
                 GestureDetector(
-                  onTap: ()=> Go.to(context, const SignOptionsView()),
-                  child: Text(" ${AppStrings.signIn}",style: AppTextStyle.font16.copyWith(color: AppColors.redColor))),
+                    onTap: () => Go.to(context, const SignOptionsView()),
+                    child: Text(" ${AppStrings.signIn}",
+                        style: AppTextStyle.font16
+                            .copyWith(color: AppColors.redColor))),
               ],
             ),
-           const AppHeight(height: 35),
+            const AppHeight(height: 35),
           ],
-         ),
-       ),
+        ),
+      ),
     );
   }
 }

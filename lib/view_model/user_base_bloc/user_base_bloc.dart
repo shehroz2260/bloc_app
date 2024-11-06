@@ -7,7 +7,7 @@ class UserBaseBloc extends Bloc<UserBaseEvent, UserBaseState> {
   UserBaseBloc() : super(UserBaseState(userData: UserModel.emptyModel)) {
     on<UpdateUserEvent>(_onUpdateUser);
   }
-  _onUpdateUser(UpdateUserEvent event , Emitter<UserBaseState>emit){
+  _onUpdateUser(UpdateUserEvent event, Emitter<UserBaseState> emit) {
     emit(state.copyWith(userData: event.userModel));
   }
 }

@@ -1,3 +1,1 @@
-class GalleryState {
- }
-
+class GalleryState {}

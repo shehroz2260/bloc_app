@@ -21,7 +21,7 @@ class AppCacheImage extends StatelessWidget {
       {super.key,
       required this.imageUrl,
       this.width,
-       this.height,
+      this.height,
       this.round,
       this.imageFailWidget,
       this.showNative,

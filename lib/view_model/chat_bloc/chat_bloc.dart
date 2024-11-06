@@ -24,15 +24,25 @@ import '../../model/char_model.dart';
 import 'chat_event.dart';
 import 'chat_state.dart';
 import 'package:http/http.dart' as http;
+
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   DocumentSnapshot? lastDocument;
   Timer? _timer;
- static ThreadModel? listenThread;
-    bool isRecordingCompleted = false;
+  static ThreadModel? listenThread;
+  bool isRecordingCompleted = false;
   static late RecorderController recorderController;
   StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>? threadSnapShot;
   StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? messagesSnapShot;
-  ChatBloc() : super(ChatState(isFirstMsg: true,text: "", messageList: [],limit: 20,isLoading: false,messageSending: false,isRecording: false,duration: Duration.zero)) {
+  ChatBloc()
+      : super(ChatState(
+            isFirstMsg: true,
+            text: "",
+            messageList: [],
+            limit: 20,
+            isLoading: false,
+            messageSending: false,
+            isRecording: false,
+            duration: Duration.zero)) {
     on<LoadChat>(_onChatLoad);
     on<OnChangeTextField>(_onTextFieldChange);
     on<ChatListener>(_messageListener);
@@ -50,28 +60,28 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<ChatListenerStream>(_onChatListenerStream);
   }
   //////////////////////////////////////////////////// callabel in view///////////////////////////////////////////////////////
-  _onChatLoad(LoadChat event, Emitter<ChatState>emit)async{
+  _onChatLoad(LoadChat event, Emitter<ChatState> emit) async {
     if (state.limit < 20) {
       return;
     }
-    if(state.isFirstMsg){
-      emit(state.copyWith(isLoading: true,isFirstMsg: false));
+    if (state.isFirstMsg) {
+      emit(state.copyWith(isLoading: true, isFirstMsg: false));
     }
-     Query<Map<String, dynamic>> snapShotQuery;
-     final ref = FirebaseFirestore.instance
+    Query<Map<String, dynamic>> snapShotQuery;
+    final ref = FirebaseFirestore.instance
         .collection(ThreadModel.tableName)
         .doc(event.thradId)
         .collection(ChatModel.tableName)
         .orderBy("messageTime", descending: true)
         .limit(20);
-         final deletedAt = event.model.messageDelete
-        .where((e) => e.id == (FirebaseAuth.instance.currentUser?.uid??""))
+    final deletedAt = event.model.messageDelete
+        .where((e) => e.id == (FirebaseAuth.instance.currentUser?.uid ?? ""))
         .toList();
     snapShotQuery = deletedAt.isEmpty
         ? ref
         : ref.where("messageTime",
             isGreaterThan: Timestamp.fromDate(deletedAt[0].deleteAt));
-          if (lastDocument != null) {
+    if (lastDocument != null) {
       snapShotQuery = snapShotQuery.startAfterDocument(lastDocument!);
     }
     var snapShot = await snapShotQuery.get();
@@ -83,98 +93,179 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     state.messageList.addAll(messagesLIst);
     emit(state.copyWith(
-      isLoading:  false,
+      isLoading: false,
       limit: messagesLIst.length,
       messageList: state.messageList,
     ));
-    add(ChatListener(thradId: event.thradId,model: event.model));
+    add(ChatListener(thradId: event.thradId, model: event.model));
   }
 
-  _onListenThread(OnListenThread event , Emitter<ChatState>emit)async{
-     threadSnapShot  =  FirebaseFirestore.instance
+  _onListenThread(OnListenThread event, Emitter<ChatState> emit) async {
+    threadSnapShot = FirebaseFirestore.instance
         .collection(ThreadModel.tableName)
         .doc(event.threadModel.threadId)
-        .snapshots().listen((value){
-          listenThread = ThreadModel.fromMap(value.data() as Map<String , dynamic>);
-          if(listenThread == null) return;
-          listenThread!.readMessage();
-        });
+        .snapshots()
+        .listen((value) {
+      listenThread = ThreadModel.fromMap(value.data() as Map<String, dynamic>);
+      if (listenThread == null) return;
+      listenThread!.readMessage();
+    });
   }
 
-_onSendMessage(SendMessage event , Emitter<ChatState>emit)async{
-  final cUserId = FirebaseAuth.instance.currentUser?.uid??"";
-  if((listenThread?.blockUserList??[]).contains(cUserId)){
-    var res =await showOkCancelAlertDialog(context: event.context,message: "Please Unblock to send the message",title: "Blocked",okLabel: "Unblock");
-   if(res == OkCancelResult.cancel) return;
-    NetworkService.unblockUser(listenThread!);
-  }
+  _onSendMessage(SendMessage event, Emitter<ChatState> emit) async {
+    final cUserId = FirebaseAuth.instance.currentUser?.uid ?? "";
+    if ((listenThread?.blockUserList ?? []).contains(cUserId)) {
+      var res = await showOkCancelAlertDialog(
+          context: event.context,
+          message: "Please Unblock to send the message",
+          title: "Blocked",
+          okLabel: "Unblock");
+      if (res == OkCancelResult.cancel) return;
+      NetworkService.unblockUser(listenThread!);
+    }
 
-  if((listenThread?.blockUserList??[]).contains(event.threadModel.userDetail?.uid??"")){
-  showOkAlertDialog(context: event.context,message: "You are block by ${event.threadModel.userDetail?.firstName??""}");    
-  return;
-  }
-  emit(state.copyWith(messageSending: true));
+    if ((listenThread?.blockUserList ?? [])
+        .contains(event.threadModel.userDetail?.uid ?? "")) {
+      showOkAlertDialog(
+          context: event.context,
+          message:
+              "You are block by ${event.threadModel.userDetail?.firstName ?? ""}");
+      return;
+    }
+    emit(state.copyWith(messageSending: true));
 
-  String? url ;
-  String? thumbUrl ;
-if(MediaType.type == MediaType.audio && state.audioUrl != null){
-url = await FirebaseStorageService().uploadImage("Chat/Audio/${AppFuncs.generateRandomString(10)}", state.audioUrl??"");
-}
-if(MediaType.type == MediaType.image && state.pickFile != null){
-url = await FirebaseStorageService().uploadImage("Chat/Audio/${AppFuncs.generateRandomString(10)}", state.pickFile?.path??"");
-}
-if(MediaType.type == MediaType.video && state.pickFile != null && state.thumbnail != null){
-url = await FirebaseStorageService().uploadImage("Chat/Video/${AppFuncs.generateRandomString(10)}", state.pickFile?.path??"");
-thumbUrl = await FirebaseStorageService().uploadImage("Chat/thumbnail/${AppFuncs.generateRandomString(10)}", state.thumbnail?.path??"");
-}
-  ThreadModel threadModel = ThreadModel(lastMessage: event.textEditingController.text.isNotEmpty? event.textEditingController.text: MediaType.type == MediaType.image?"New Image":MediaType.type == MediaType.video? "New video": MediaType.type == MediaType.audio ? "Voice": MediaType.type == MediaType.file? "New document":""  , activeUserList: [], lastMessageTime: DateTime.now(), participantUserList: listenThread?.participantUserList??[], senderId: event.context.read<UserBaseBloc>().state.userData.uid, messageCount: 0, threadId: event.threadId, messageDelete: listenThread?.messageDelete??[], isPending: false, isBlocked: false,blockUserList: []);
-var thradJsom = threadModel.toMap();
+    String? url;
+    String? thumbUrl;
+    if (MediaType.type == MediaType.audio && state.audioUrl != null) {
+      url = await FirebaseStorageService().uploadImage(
+          "Chat/Audio/${AppFuncs.generateRandomString(10)}",
+          state.audioUrl ?? "");
+    }
+    if (MediaType.type == MediaType.image && state.pickFile != null) {
+      url = await FirebaseStorageService().uploadImage(
+          "Chat/Audio/${AppFuncs.generateRandomString(10)}",
+          state.pickFile?.path ?? "");
+    }
+    if (MediaType.type == MediaType.video &&
+        state.pickFile != null &&
+        state.thumbnail != null) {
+      url = await FirebaseStorageService().uploadImage(
+          "Chat/Video/${AppFuncs.generateRandomString(10)}",
+          state.pickFile?.path ?? "");
+      thumbUrl = await FirebaseStorageService().uploadImage(
+          "Chat/thumbnail/${AppFuncs.generateRandomString(10)}",
+          state.thumbnail?.path ?? "");
+    }
+    ThreadModel threadModel = ThreadModel(
+        lastMessage: event.textEditingController.text.isNotEmpty
+            ? event.textEditingController.text
+            : MediaType.type == MediaType.image
+                ? "New Image"
+                : MediaType.type == MediaType.video
+                    ? "New video"
+                    : MediaType.type == MediaType.audio
+                        ? "Voice"
+                        : MediaType.type == MediaType.file
+                            ? "New document"
+                            : "",
+        activeUserList: [],
+        lastMessageTime: DateTime.now(),
+        participantUserList: listenThread?.participantUserList ?? [],
+        senderId: event.context.read<UserBaseBloc>().state.userData.uid,
+        messageCount: 0,
+        threadId: event.threadId,
+        messageDelete: listenThread?.messageDelete ?? [],
+        isPending: false,
+        isBlocked: false,
+        blockUserList: []);
+    var thradJsom = threadModel.toMap();
 // thradJsom["senderId"] = FirebaseAuth.instance.currentUser?.uid??"";
-if((listenThread?.senderId??"") != (FirebaseAuth.instance.currentUser?.uid??"")){
-  thradJsom["messageCount"] = 1;
-}else{
-  thradJsom["messageCount"] = FieldValue.increment(1);
-}
+    if ((listenThread?.senderId ?? "") !=
+        (FirebaseAuth.instance.currentUser?.uid ?? "")) {
+      thradJsom["messageCount"] = 1;
+    } else {
+      thradJsom["messageCount"] = FieldValue.increment(1);
+    }
 
-  ChatModel model  = ChatModel(id: AppFuncs.generateRandomString(15), threadId: event.threadId, message: event.textEditingController.text, messageTime: DateTime.now(), senderId: FirebaseAuth.instance.currentUser?.uid??"", isRead: false,media: (url??"").isEmpty?null: MediaModel(type: MediaType.type, id: AppFuncs.generateRandomString(15), url: url??"", createdAt: DateTime.now(), name: "",thumbnail: thumbUrl));
-  
-  if(event.isForVc){
-    model = model.copyWith(media: MediaModel(type: 5, id: AppFuncs.generateRandomString(15), url: "url", createdAt: DateTime.now(), name: ""));
+    ChatModel model = ChatModel(
+        id: AppFuncs.generateRandomString(15),
+        threadId: event.threadId,
+        message: event.textEditingController.text,
+        messageTime: DateTime.now(),
+        senderId: FirebaseAuth.instance.currentUser?.uid ?? "",
+        isRead: false,
+        media: (url ?? "").isEmpty
+            ? null
+            : MediaModel(
+                type: MediaType.type,
+                id: AppFuncs.generateRandomString(15),
+                url: url ?? "",
+                createdAt: DateTime.now(),
+                name: "",
+                thumbnail: thumbUrl));
+
+    if (event.isForVc) {
+      model = model.copyWith(
+          media: MediaModel(
+              type: 5,
+              id: AppFuncs.generateRandomString(15),
+              url: "url",
+              createdAt: DateTime.now(),
+              name: ""));
+    }
+    try {
+      await FirebaseFirestore.instance
+          .collection(ThreadModel.tableName)
+          .doc(event.threadId)
+          .set(thradJsom, SetOptions(merge: true));
+      await FirebaseFirestore.instance
+          .collection(ThreadModel.tableName)
+          .doc(event.threadId)
+          .collection(ChatModel.tableName)
+          .doc(model.id)
+          .set(model.toMap());
+      event.textEditingController.clear();
+      MediaType.type = 0;
+      emit(state.copyWith(
+        messageSending: false,
+        audioUrl: null,
+        pickFile: null,
+        thumbnail: null,
+      ));
+    } on FirebaseException catch (e) {
+      emit(state.copyWith(messageSending: false));
+      showOkAlertDialog(
+          context: event.context, message: e.message, title: "Error");
+    }
   }
-  try{
-    await FirebaseFirestore.instance.collection(ThreadModel.tableName).doc(event.threadId).set(thradJsom,SetOptions(merge: true));
-    await FirebaseFirestore.instance.collection(ThreadModel.tableName).doc(event.threadId).collection(ChatModel.tableName).doc(model.id).set(model.toMap());
- event.textEditingController.clear();
-MediaType.type = 0;
-emit(state.copyWith(messageSending: false, audioUrl: null,
-  pickFile: null,
-  thumbnail: null,));
-  } on FirebaseException catch (e){
-emit(state.copyWith(messageSending: false));
-showOkAlertDialog(context: event.context,message: e.message,title: "Error");
+
+  _onTextFieldChange(OnChangeTextField event, Emitter<ChatState> emit) async {
+    emit(state.copyWith(text: event.text));
   }
-}
-_onTextFieldChange(OnChangeTextField event ,Emitter<ChatState>emit)async{
-emit(state.copyWith(text: event.text));
-}
 
 /////////////////////////////////////////// start recording  ///////////////////////////////////////////////////////////////////
-_onStartorStopRecording(StartOrStopRecording event, Emitter<ChatState>emit)async{
- if (!await requestMicrophonePermission(event.context)) return;
- emit(state.copyWith(audioUrl: null));
-  try {
+  _onStartorStopRecording(
+      StartOrStopRecording event, Emitter<ChatState> emit) async {
+    if (!await requestMicrophonePermission(event.context)) return;
+    emit(state.copyWith(audioUrl: null));
+    try {
       if (state.isRecording) {
         recorderController.reset();
 
-      final  audioPath = await recorderController.stop(false);
-      emit(state.copyWith(audioUrl: audioPath));
+        final audioPath = await recorderController.stop(false);
+        emit(state.copyWith(audioUrl: audioPath));
         if (audioPath != null) {
           isRecordingCompleted = true;
           MediaType.type = MediaType.audio;
           _timer?.cancel();
-        const  duration = Duration.zero;
-      emit(state.copyWith(duration: duration));
-          add(SendMessage(threadModel: event.model,isForVc: false, threadId: event.threadId, context: event.context, textEditingController: TextEditingController()));
+          const duration = Duration.zero;
+          emit(state.copyWith(duration: duration));
+          add(SendMessage(
+              threadModel: event.model,
+              isForVc: false,
+              threadId: event.threadId,
+              context: event.context,
+              textEditingController: TextEditingController()));
         }
       } else {
         await recorderController.record(path: state.audioUrl);
@@ -183,50 +274,50 @@ _onStartorStopRecording(StartOrStopRecording event, Emitter<ChatState>emit)async
     } catch (e) {
       debugPrint(e.toString());
     } finally {
-    emit(state.copyWith(isRecording: !state.isRecording));
+      emit(state.copyWith(isRecording: !state.isRecording));
     }
-}
-
-
-     _startTimer(StartTimer event, Emitter<ChatState>emit)async {
-      await emit.forEach(_updateTime(event), onData: (value){
-        return state.copyWith(duration: value.duration);
-      });
   }
-  
-  _onInitializeAudio(InitiaLizeAudioController event , Emitter<ChatState>emit){
+
+  _startTimer(StartTimer event, Emitter<ChatState> emit) async {
+    await emit.forEach(_updateTime(event), onData: (value) {
+      return state.copyWith(duration: value.duration);
+    });
+  }
+
+  _onInitializeAudio(InitiaLizeAudioController event, Emitter<ChatState> emit) {
     recorderController = RecorderController()
       ..androidEncoder = AndroidEncoder.aac
       ..androidOutputFormat = AndroidOutputFormat.mpeg4
       ..iosEncoder = IosEncoder.kAudioFormatMPEG4AAC
       ..sampleRate = 44100;
   }
+
   ///////////////////////////////////////// callable here ////////////////////////////////////
   Future<File?> generateThumbNail(String path) async {
-  final uint8list = await VideoThumbnail.thumbnailData(
-    video: path,
-    imageFormat: ImageFormat.JPEG,
-    maxWidth: 390,
-    quality: 60,
-  );
-  final directory = await getTemporaryDirectory();
-  final pathOfImage =
-      await File('${directory.path}/${DateTime.now().toIso8601String()}.jpeg')
-          .create();
+    final uint8list = await VideoThumbnail.thumbnailData(
+      video: path,
+      imageFormat: ImageFormat.JPEG,
+      maxWidth: 390,
+      quality: 60,
+    );
+    final directory = await getTemporaryDirectory();
+    final pathOfImage =
+        await File('${directory.path}/${DateTime.now().toIso8601String()}.jpeg')
+            .create();
 
-  if (uint8list == null) return null;
-  File filed = await pathOfImage.writeAsBytes(uint8list);
-  return filed;
-}
+    if (uint8list == null) return null;
+    File filed = await pathOfImage.writeAsBytes(uint8list);
+    return filed;
+  }
 
   Stream<ChatState> _updateTime(StartTimer event) async* {
-  _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
-    final duration = Duration(seconds: timer.tick);
-    add(UpdateTimer(duration: duration));
-  });
-}
+    _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      final duration = Duration(seconds: timer.tick);
+      add(UpdateTimer(duration: duration));
+    });
+  }
 
-StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? subs;
+  StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? subs;
   Stream<ChatState> _chatListenerStream(ChatListener event) async* {
     var ref = FirebaseFirestore.instance
         .collection(ThreadModel.tableName)
@@ -234,33 +325,37 @@ StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? subs;
         .collection(ChatModel.tableName)
         .orderBy("messageTime", descending: true)
         .limit(1);
-         final deletedAt = event.model.messageDelete
-        .where((e) => e.id == (FirebaseAuth.instance.currentUser?.uid??""))
+    final deletedAt = event.model.messageDelete
+        .where((e) => e.id == (FirebaseAuth.instance.currentUser?.uid ?? ""))
         .toList();
-   subs = (deletedAt.isEmpty
+    subs = (deletedAt.isEmpty
             ? ref
             : ref.where("messageTime",
                 isGreaterThanOrEqualTo:
-                    Timestamp.fromDate(deletedAt[0].deleteAt))).snapshots().listen((value){
-     if (value.docs.isEmpty) return ;
-            var chat = ChatModel.fromMap(value.docs[0].data());
- if(state.messageList.where((e)=> e.id == chat.id).isNotEmpty) return;
- add(ChatListenerStream(model: chat));
-  });
-}
-_onChatListenerStream(ChatListenerStream event , Emitter<ChatState>emit){
-  state.messageList.insert(0, event.model);
-  emit(state.copyWith(messageList: state.messageList));
-}
- _onUpdateTimer(UpdateTimer timer,Emitter<ChatState>emit ){
-    final duration  = timer.duration;
+                    Timestamp.fromDate(deletedAt[0].deleteAt)))
+        .snapshots()
+        .listen((value) {
+      if (value.docs.isEmpty) return;
+      var chat = ChatModel.fromMap(value.docs[0].data());
+      if (state.messageList.where((e) => e.id == chat.id).isNotEmpty) return;
+      add(ChatListenerStream(model: chat));
+    });
+  }
+
+  _onChatListenerStream(ChatListenerStream event, Emitter<ChatState> emit) {
+    state.messageList.insert(0, event.model);
+    emit(state.copyWith(messageList: state.messageList));
+  }
+
+  _onUpdateTimer(UpdateTimer timer, Emitter<ChatState> emit) {
+    final duration = timer.duration;
     emit(state.copyWith(duration: duration));
   }
 
-   Future<bool> requestMicrophonePermission(BuildContext context) async {
+  Future<bool> requestMicrophonePermission(BuildContext context) async {
     PermissionStatus status = await Permission.microphone.request();
 
-      if (status == PermissionStatus.permanentlyDenied) {
+    if (status == PermissionStatus.permanentlyDenied) {
       showOkCancelAlertDialog(
               context: context,
               title: "Audio Permission",
@@ -270,183 +365,230 @@ _onChatListenerStream(ChatListenerStream event , Emitter<ChatState>emit){
               okLabel: "Open setting")
           .then((value) async {
         if (value == OkCancelResult.ok) {
-         openAppSettings();
+          openAppSettings();
         }
       });
       return false;
     }
     return true;
   }
-   _messageListener(ChatListener event , Emitter<ChatState>emit)async{
-  await  emit.forEach(
-     _chatListenerStream(event), onData: (value){
-        return  state.copyWith(messageList: value.messageList);
-        });
+
+  _messageListener(ChatListener event, Emitter<ChatState> emit) async {
+    await emit.forEach(_chatListenerStream(event), onData: (value) {
+      return state.copyWith(messageList: value.messageList);
+    });
   }
 
-  _pickFiles(PickFileEvent event, Emitter<ChatState>emit)async {
-  bool isVideo = false;
-   await showModalBottomSheet(
-      barrierColor: Colors.transparent,
-      context: event.context, builder: (_){
-      return Container(
-        height: 200,
-        width: MediaQuery.of(event.context).size.width,
-        decoration: const BoxDecoration(
-        color: Colors.black45,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30))
-
-        ),
-        padding: const EdgeInsets.only(left: 20),
-        child:  Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            GestureDetector(
-              onTap: () async{
-                Go.back(event.context);
-                 MediaType.type = MediaType.image;
-                 isVideo  = false;
-              },
-              child: const Row(
-                children: [
-                  Icon(Icons.image,size: 60),
-                  SizedBox(width: 10),
-                 Text("Images",style: TextStyle(fontSize: 40),)
-                ],
-              ),
+  _pickFiles(PickFileEvent event, Emitter<ChatState> emit) async {
+    bool isVideo = false;
+    await showModalBottomSheet(
+        barrierColor: Colors.transparent,
+        context: event.context,
+        builder: (_) {
+          return Container(
+            height: 200,
+            width: MediaQuery.of(event.context).size.width,
+            decoration: const BoxDecoration(
+                color: Colors.black45,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30))),
+            padding: const EdgeInsets.only(left: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () async {
+                    Go.back(event.context);
+                    MediaType.type = MediaType.image;
+                    isVideo = false;
+                  },
+                  child: const Row(
+                    children: [
+                      Icon(Icons.image, size: 60),
+                      SizedBox(width: 10),
+                      Text(
+                        "Images",
+                        style: TextStyle(fontSize: 40),
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                GestureDetector(
+                  onTap: () async {
+                    Go.back(event.context);
+                    MediaType.type = MediaType.video;
+                    isVideo = true;
+                  },
+                  child: const Row(
+                    children: [
+                      Icon(Icons.video_camera_back_outlined, size: 60),
+                      SizedBox(width: 10),
+                      Text("Video", style: TextStyle(fontSize: 40))
+                    ],
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 10),
-             GestureDetector(
-              onTap: () async{
-                Go.back(event.context);
-                MediaType.type = MediaType.video;
-                isVideo = true;
-              },
-               child: const Row(
-                children: [
-                  Icon(Icons.video_camera_back_outlined,size: 60),
-                  SizedBox(width: 10),
-                 Text("Video",style: TextStyle(fontSize: 40))
-                ],
-                           ),
-             ),
-          ],
-        ),
-      );
-    });
+          );
+        });
 
-    if(isVideo){
-         final file =  await kVideoPicker(context: event.context);
-               if(file != null){
-                emit(state.copyWith(pickFile: file));
-                 final thumbnail = await generateThumbNail(file.path);
-                emit(state.copyWith( thumbnail: thumbnail));
-               }
-    }else{
-  final file =  await kImagePicker(context: event.context);
-               if(file != null){
-                emit(state.copyWith(pickFile: file));
-               }
+    if (isVideo) {
+      final file = await kVideoPicker(context: event.context);
+      if (file != null) {
+        emit(state.copyWith(pickFile: file));
+        final thumbnail = await generateThumbNail(file.path);
+        emit(state.copyWith(thumbnail: thumbnail));
+      }
+    } else {
+      final file = await kImagePicker(context: event.context);
+      if (file != null) {
+        emit(state.copyWith(pickFile: file));
+      }
     }
   }
-  _clearData(ClearData event , Emitter<ChatState>emit)async{
-    emit(state.copyWith(limit: 20,messageList: [],audioUrl: "",duration: Duration.zero,isLoading: false,isRecording: false,messageSending: false,pickFile: null,text: "",thumbnail: null,isFirstMsg: true,threadModel: null));
+
+  _clearData(ClearData event, Emitter<ChatState> emit) async {
+    emit(state.copyWith(
+        limit: 20,
+        messageList: [],
+        audioUrl: "",
+        duration: Duration.zero,
+        isLoading: false,
+        isRecording: false,
+        messageSending: false,
+        pickFile: null,
+        text: "",
+        thumbnail: null,
+        isFirstMsg: true,
+        threadModel: null));
     lastDocument = null;
     await threadSnapShot?.cancel();
     await subs?.cancel();
- subs = null;
- threadSnapShot = null;
+    subs = null;
+    threadSnapShot = null;
   }
 
-  _downloadAndSaveMedia(DownloadMedia event , Emitter<ChatState>emit)async{
-
-             await Permission.storage.request();
-        final photoStatus  = await Permission.phone.request();
-        final videoStatus  = await Permission.videos.request();
-        final medialibrary = await Permission.mediaLibrary.request();
+  _downloadAndSaveMedia(DownloadMedia event, Emitter<ChatState> emit) async {
+    await Permission.storage.request();
+    final photoStatus = await Permission.phone.request();
+    final videoStatus = await Permission.videos.request();
+    final medialibrary = await Permission.mediaLibrary.request();
     if (!medialibrary.isGranted) {
-          log("^^^^^^^^^^^^^^^^^^storage$medialibrary");
-          log("^^^^^^^^^^^^^^^^^^photo$photoStatus");
-          log("^^^^^^^^^^^^^^^^^^video$videoStatus");
+      log("^^^^^^^^^^^^^^^^^^storage$medialibrary");
+      log("^^^^^^^^^^^^^^^^^^photo$photoStatus");
+      log("^^^^^^^^^^^^^^^^^^video$videoStatus");
 
       return;
     }
-     try {
-      final response = await http.get(Uri.parse(event.chat.media?.url??""));
+    try {
+      final response = await http.get(Uri.parse(event.chat.media?.url ?? ""));
       if (response.statusCode == 200) {
-        if ((event.chat.media?.type??0) == MediaType.image) {
+        if ((event.chat.media?.type ?? 0) == MediaType.image) {
           final result = await ImageGallerySaver.saveImage(
             response.bodyBytes,
             quality: 100,
           );
           if (result != null && result['isSuccess']) {
-            showOkAlertDialog(context: event.context,message: "Image save to gallery",title: "Download media");
+            showOkAlertDialog(
+                context: event.context,
+                message: "Image save to gallery",
+                title: "Download media");
           } else {
-            showOkAlertDialog(context: event.context,message: "Failed to save image",title: "Download media");
-
+            showOkAlertDialog(
+                context: event.context,
+                message: "Failed to save image",
+                title: "Download media");
           }
-        } else if ((event.chat.media?.type??0) == MediaType.video) {
+        } else if ((event.chat.media?.type ?? 0) == MediaType.video) {
           final directory = await getTemporaryDirectory();
-          final filePath = '${directory.path}/${DateTime.now().millisecondsSinceEpoch}.mp4';
+          final filePath =
+              '${directory.path}/${DateTime.now().millisecondsSinceEpoch}.mp4';
           final file = File(filePath);
           await file.writeAsBytes(response.bodyBytes);
 
           final result = await ImageGallerySaver.saveFile(filePath);
           if (result != null && result['isSuccess']) {
-            showOkAlertDialog(context: event.context,message: "Video saved to gallery",title: "Download media");
-
+            showOkAlertDialog(
+                context: event.context,
+                message: "Video saved to gallery",
+                title: "Download media");
           } else {
-            showOkAlertDialog(context: event.context,message: "Failed to save video",title: "Download media");
-
+            showOkAlertDialog(
+                context: event.context,
+                message: "Failed to save video",
+                title: "Download media");
           }
         }
       } else {
-            showOkAlertDialog(context: event.context,message: "Failed to download media",title: "Download media");
-
+        showOkAlertDialog(
+            context: event.context,
+            message: "Failed to download media",
+            title: "Download media");
       }
     } catch (e) {
-            showOkAlertDialog(context: event.context,message: e.toString(),title: "Download media");
-
+      showOkAlertDialog(
+          context: event.context,
+          message: e.toString(),
+          title: "Download media");
     }
   }
-  _clearChat(ClearChat event , Emitter<ChatState>emit)async{
+
+  _clearChat(ClearChat event, Emitter<ChatState> emit) async {
     LoadingDialog.showProgress(event.context);
-   await ThreadModel.deleteMessages(listenThread!, event.context);
+    await ThreadModel.deleteMessages(listenThread!, event.context);
     emit(state.copyWith(messageList: []));
-       if (lastDocument != null) {
+    if (lastDocument != null) {
       lastDocument = null;
     }
     LoadingDialog.hideProgress(event.context);
   }
 
-  _openOptions(OpenOptions event, Emitter<ChatState>emit)async{
-              var result = await showConfirmationDialog(
-                    context: event.context,
-                    title: "Please select option",
-                    actions: [
-                       const AlertDialogAction(key: "1", label: "Clear chat"),
-                       AlertDialogAction(key: "2", label: "Report ${event.userModel.firstName}"),
-                       AlertDialogAction(key: "3", label: (listenThread?.blockUserList??[]).contains(FirebaseAuth.instance.currentUser?.uid??"")? "Unblock ${event.userModel.firstName}": "Block ${event.userModel.firstName}"),
-                    ]);
-                if (result == null) {
-                  return;
-                }
+  _openOptions(OpenOptions event, Emitter<ChatState> emit) async {
+    var result = await showConfirmationDialog(
+        context: event.context,
+        title: "Please select option",
+        actions: [
+          const AlertDialogAction(key: "1", label: "Clear chat"),
+          AlertDialogAction(
+              key: "2", label: "Report ${event.userModel.firstName}"),
+          AlertDialogAction(
+              key: "3",
+              label: (listenThread?.blockUserList ?? [])
+                      .contains(FirebaseAuth.instance.currentUser?.uid ?? "")
+                  ? "Unblock ${event.userModel.firstName}"
+                  : "Block ${event.userModel.firstName}"),
+        ]);
+    if (result == null) {
+      return;
+    }
 
-                   if(result =="1"){
-                  var okCancelRes = await showOkCancelAlertDialog(context: event.context, message: "Do you really want to clear chat",title: "Are you sure!");
-                  if(okCancelRes == OkCancelResult.cancel) return;
-                  add(ClearChat(context: event.context));
-                }
-                if(result == "3"){
-                  var blockRslt = await showOkCancelAlertDialog(context: event.context, message: "Do you really want to Block ${event.userModel.firstName}",title: "Are you sure!",okLabel:(listenThread?.blockUserList??[]).contains(FirebaseAuth.instance.currentUser?.uid??"")?"Unblock": "Block");
-                  if(blockRslt == OkCancelResult.cancel) return;
+    if (result == "1") {
+      var okCancelRes = await showOkCancelAlertDialog(
+          context: event.context,
+          message: "Do you really want to clear chat",
+          title: "Are you sure!");
+      if (okCancelRes == OkCancelResult.cancel) return;
+      add(ClearChat(context: event.context));
+    }
+    if (result == "3") {
+      var blockRslt = await showOkCancelAlertDialog(
+          context: event.context,
+          message: "Do you really want to Block ${event.userModel.firstName}",
+          title: "Are you sure!",
+          okLabel: (listenThread?.blockUserList ?? [])
+                  .contains(FirebaseAuth.instance.currentUser?.uid ?? "")
+              ? "Unblock"
+              : "Block");
+      if (blockRslt == OkCancelResult.cancel) return;
 
-                  if((listenThread?.blockUserList??[]).contains(FirebaseAuth.instance.currentUser?.uid??"")){
-                      NetworkService.unblockUser(listenThread!);
-                  }else{ 
-                    NetworkService.blockUser(listenThread!);
-                  }
-
-                }
+      if ((listenThread?.blockUserList ?? [])
+          .contains(FirebaseAuth.instance.currentUser?.uid ?? "")) {
+        NetworkService.unblockUser(listenThread!);
+      } else {
+        NetworkService.blockUser(listenThread!);
+      }
+    }
   }
 }

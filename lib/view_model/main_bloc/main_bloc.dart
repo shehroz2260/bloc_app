@@ -15,39 +15,44 @@ import '../matches_bloc/matches_event.dart';
 import 'main_event.dart';
 import 'main_state.dart';
 
-  List<Widget> _tabList = const [
-     HomeView(),
-    //  MapScreen(),
-     MatchTab(),
-     InboxView(),
-     ProfileView(),
-  ];
+List<Widget> _tabList = const [
+  HomeView(),
+  //  MapScreen(),
+  MatchTab(),
+  InboxView(),
+  ProfileView(),
+];
+
 class MainBloc extends Bloc<MainEvent, MainState> {
-  MainBloc() : super(MainState(currentBody: IndexedStack(index: 0, children: _tabList),currentIndex: 0)) {
+  MainBloc()
+      : super(MainState(
+            currentBody: IndexedStack(index: 0, children: _tabList),
+            currentIndex: 0)) {
     on<ChangeIndexEvent>(_onUpdateIndex);
     on<ListernerChanges>(_onChangeListener);
     on<OnDispose>(_onDispose);
   }
-  _onUpdateIndex(ChangeIndexEvent event, Emitter<MainState>emit){
-emit(
-  state.copyWith(currentBody: IndexedStack(index: event.index, children: _tabList),currentIndex: event.index)
-);
+  _onUpdateIndex(ChangeIndexEvent event, Emitter<MainState> emit) {
+    emit(state.copyWith(
+        currentBody: IndexedStack(index: event.index, children: _tabList),
+        currentIndex: event.index));
   }
-StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>? sub;
-  _onChangeListener(ListernerChanges event , Emitter<MainState>emit){
-     sub=  FirebaseFirestore.instance
+
+  StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>? sub;
+  _onChangeListener(ListernerChanges event, Emitter<MainState> emit) {
+    sub = FirebaseFirestore.instance
         .collection(UserModel.tableName)
-        .doc(FirebaseAuth.instance.currentUser?.uid??"")
+        .doc(FirebaseAuth.instance.currentUser?.uid ?? "")
         .snapshots()
         .listen((e) async {
       var user = UserModel.fromMap(e.data() ?? {});
-    event.context.read<MatchesBloc>().add(ONinit(bloc: user));
+      event.context.read<MatchesBloc>().add(ONinit(bloc: user));
 
       event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
     });
   }
-   
-   _onDispose(OnDispose event , Emitter<MainState>emit)async{
+
+  _onDispose(OnDispose event, Emitter<MainState> emit) async {
     await sub?.cancel();
-   }
+  }
 }

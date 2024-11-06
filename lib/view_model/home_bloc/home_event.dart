@@ -9,11 +9,7 @@ abstract class HomeEvent {}
 class ONINITEvent extends HomeEvent {
   final BuildContext context;
   final UserBaseBloc? userBaseBloc;
-  ONINITEvent({
-    required this.context,
-    this.userBaseBloc
-  });
-  
+  ONINITEvent({required this.context, this.userBaseBloc});
 }
 
 class RemoveUserFromList extends HomeEvent {
@@ -27,7 +23,7 @@ class LikeUser extends HomeEvent {
   final UserModel liker;
   final UserModel likee;
   final BuildContext context;
-  LikeUser( {
+  LikeUser({
     required this.likee,
     required this.context,
     required this.liker,

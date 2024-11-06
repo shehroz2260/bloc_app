@@ -30,5 +30,4 @@ class AppAssets {
   static const String locationICon = "assets/images/svg/locations.svg";
   static const String pencilICon = "assets/images/svg/pencil.svg";
   static const String settingICon = "assets/images/svg/Settings.svg";
- 
 }

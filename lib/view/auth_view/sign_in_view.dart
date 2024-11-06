@@ -39,13 +39,15 @@ class _SignInWithEmailViewState extends State<SignInWithEmailView> {
             children: [
               const AppHeight(height: 10),
               const Align(
-              alignment: Alignment.centerLeft,
-              child: SafeArea(child: CustomBackButton()),
-            ),
-            const AppHeight(height: 40),
-            SvgPicture.asset(AppAssets.appIcon),
+                alignment: Alignment.centerLeft,
+                child: SafeArea(child: CustomBackButton()),
+              ),
+              const AppHeight(height: 40),
+              SvgPicture.asset(AppAssets.appIcon),
               const AppHeight(height: 20),
-              Text(AppStrings.signInWithEmail, style: AppTextStyle.font25.copyWith(color: AppColors.blackColor)),
+              Text(AppStrings.signInWithEmail,
+                  style: AppTextStyle.font25
+                      .copyWith(color: AppColors.blackColor)),
               const AppHeight(height: 30),
               CustomTextField(
                 textEditingController: _emailController,
@@ -54,7 +56,6 @@ class _SignInWithEmailViewState extends State<SignInWithEmailView> {
               ),
               const AppHeight(height: 20),
               CustomTextField(
-                
                 textEditingController: _passwordController,
                 validator: AppValidation.passwordValidation,
                 hintText: AppStrings.enterPassword,
@@ -67,14 +68,14 @@ class _SignInWithEmailViewState extends State<SignInWithEmailView> {
                   onTap: () {
                     Go.to(context, const ForgotPasswordView());
                   },
-                  child: Text("Forgot password?",style: AppTextStyle.font16.copyWith(
-                    color: AppColors.redColor,
-                  )),
+                  child: Text("Forgot password?",
+                      style: AppTextStyle.font16.copyWith(
+                        color: AppColors.redColor,
+                      )),
                 ),
               ),
               const AppHeight(height: 20),
-              CustomNewButton(btnName: AppStrings.signIn,onTap: _onSignin)
-            
+              CustomNewButton(btnName: AppStrings.signIn, onTap: _onSignin)
             ],
           ),
         ),

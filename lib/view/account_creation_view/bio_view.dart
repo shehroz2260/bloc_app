@@ -25,7 +25,7 @@ class _BioViewState extends State<BioView> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.whiteColor,
-      body:  Form(
+      body: Form(
         key: _formKey,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -35,28 +35,38 @@ class _BioViewState extends State<BioView> {
               const AppHeight(height: 60),
               const CustomBackButton(),
               const AppHeight(height: 30),
-              Text("Bio",style: AppTextStyle.font20.copyWith(color: AppColors.blackColor,fontWeight: FontWeight.bold)),
+              Text("Bio",
+                  style: AppTextStyle.font20.copyWith(
+                      color: AppColors.blackColor,
+                      fontWeight: FontWeight.bold)),
               const AppHeight(height: 10),
-               CustomTextField(
+              CustomTextField(
                 hintText: 'Enter bio',
                 textEditingController: _bioController,
                 validator: AppValidation.bioValidation,
-            
-                ),
+              ),
               const AppHeight(height: 30),
-              Text("About your self",style: AppTextStyle.font20.copyWith(color: AppColors.blackColor,fontWeight: FontWeight.bold)),
+              Text("About your self",
+                  style: AppTextStyle.font20.copyWith(
+                      color: AppColors.blackColor,
+                      fontWeight: FontWeight.bold)),
               const AppHeight(height: 10),
-                CustomTextField(
+              CustomTextField(
                 hintText: 'Enter about your self',
                 maxLines: 7,
                 textEditingController: _aboutController,
                 validator: AppValidation.aboutValidation,
-                ),
+              ),
               const Spacer(),
-               CustomNewButton(btnName: "Continue",onTap: (){
-                if(!_formKey.currentState!.validate())return;
-                context.read<BioBloc>().add(OnContinue(bioController: _bioController, aboutController: _aboutController, context: context));
-               }),
+              CustomNewButton(
+                  btnName: "Continue",
+                  onTap: () {
+                    if (!_formKey.currentState!.validate()) return;
+                    context.read<BioBloc>().add(OnContinue(
+                        bioController: _bioController,
+                        aboutController: _aboutController,
+                        context: context));
+                  }),
               const AppHeight(height: 40)
             ],
           ),

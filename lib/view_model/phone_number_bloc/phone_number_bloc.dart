@@ -18,10 +18,13 @@ class PhoneNumberBloc extends Bloc<PhoneNumberEvent, PhoneNumberState> {
     on<VerifyPhoneNumber>(_verifyPhoneNumber);
     on<OnCountryCodeChange>(_onCangeCountryCode);
   }
- _onCangeCountryCode(OnCountryCodeChange event, Emitter<PhoneNumberState>emit){
-emit(state.copyWith(cCode: event.code.dialCode??""));
- }
-    _verifyPhoneNumber(VerifyPhoneNumber event , Emitter<PhoneNumberState>emit) async {
+  _onCangeCountryCode(
+      OnCountryCodeChange event, Emitter<PhoneNumberState> emit) {
+    emit(state.copyWith(cCode: event.code.dialCode ?? ""));
+  }
+
+  _verifyPhoneNumber(
+      VerifyPhoneNumber event, Emitter<PhoneNumberState> emit) async {
     LoadingDialog.showProgress(event.context);
     FirebaseAuth auth = FirebaseAuth.instance;
     await auth.verifyPhoneNumber(
@@ -32,13 +35,15 @@ emit(state.copyWith(cCode: event.code.dialCode??""));
           var user = await auth.signInWithCredential(credential);
           final userModel = await AuthServices.isLoadData(event.context);
           LoadingDialog.hideProgress(event.context);
-            var userM = event.context.read<UserBaseBloc>().state.userData;
+          var userM = event.context.read<UserBaseBloc>().state.userData;
           if (!userModel) {
             userM = userM.copyWith(
               uid: user.user?.uid ?? '',
               phoneNumber: "${state.cCode} ${event.controller.text}",
             );
-            event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: userM));
+            event.context
+                .read<UserBaseBloc>()
+                .add(UpdateUserEvent(userModel: userM));
             NetworkService.updateUser(userM);
           } else {
             LoadingDialog.hideProgress(event.context);
@@ -50,27 +55,33 @@ emit(state.copyWith(cCode: event.code.dialCode??""));
       verificationFailed: (FirebaseAuthException e) {
         LoadingDialog.hideProgress(event.context);
         if (e.code == ErrorStrings.invalidPhoneNumber) {
-        
-          showOkAlertDialog(context: event.context,message: ErrorStrings.theProvidedPhoneNumberIsNotValid,title: "Error");
+          showOkAlertDialog(
+              context: event.context,
+              message: ErrorStrings.theProvidedPhoneNumberIsNotValid,
+              title: "Error");
           return;
         }
         if (e.code == ErrorStrings.tooManyRequests) {
-          showOkAlertDialog(context: event.context,message: ErrorStrings.youHaveAttemptedTooManyRequestsPleaseTryAgainLater,title: ErrorStrings.smsVerificationError);
+          showOkAlertDialog(
+              context: event.context,
+              message: ErrorStrings
+                  .youHaveAttemptedTooManyRequestsPleaseTryAgainLater,
+              title: ErrorStrings.smsVerificationError);
 
-        
           return;
         }
       },
       codeSent: (String verificationId, int? resendToken) async {
         LoadingDialog.hideProgress(event.context);
-        Go.to( event.context,OtpScreen(
+        Go.to(
+            event.context,
+            OtpScreen(
               verificationID: verificationId,
-              resendToken: resendToken??0,
+              resendToken: resendToken ?? 0,
               phoneNumber: "${state.cCode} ${event.controller.text}",
             ));
       },
-      codeAutoRetrievalTimeout: (String verificationId) {
-      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
     );
   }
 }

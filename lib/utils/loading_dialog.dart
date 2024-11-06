@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 class LoadingDialog {
   static bool isAlreadyShow = false;
 
-
   void dismissKeyBoard() {}
 
   static void showProgress(BuildContext context) {
@@ -49,7 +48,8 @@ class LoadingDialog {
         Navigator.pop(context);
       }
     } catch (e) {
-      showOkAlertDialog(context: context,message: e.toString(),title: "Error");
+      showOkAlertDialog(
+          context: context, message: e.toString(), title: "Error");
     }
   }
 }
@@ -60,9 +60,13 @@ class NativeProgress extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Platform.isAndroid
-        ?  Center(
+        ? Center(
             child: SizedBox(
-                height: 30, width: 30, child: CircularProgressIndicator(color: AppColors.blueColor,)))
+                height: 30,
+                width: 30,
+                child: CircularProgressIndicator(
+                  color: AppColors.blueColor,
+                )))
         : Center(
             child: Theme(
                 data: ThemeData(

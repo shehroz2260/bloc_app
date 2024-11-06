@@ -22,7 +22,7 @@ class SignOptionsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
-      body:  Padding(
+      body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
           children: [
@@ -34,37 +34,60 @@ class SignOptionsView extends StatelessWidget {
             const AppHeight(height: 50),
             SvgPicture.asset(AppAssets.appIcon),
             const AppHeight(height: 80),
-             Text(AppStrings.signInToContinue,style: AppTextStyle.font20.copyWith(color: AppColors.blackColor,fontWeight: FontWeight.bold)),
+            Text(AppStrings.signInToContinue,
+                style: AppTextStyle.font20.copyWith(
+                    color: AppColors.blackColor, fontWeight: FontWeight.bold)),
             const AppHeight(height: 30),
-             CustomNewButton(btnName: AppStrings.continueToEmail,onTap: () => Go.to(context,const SignInWithEmailView())),
+            CustomNewButton(
+                btnName: AppStrings.continueToEmail,
+                onTap: () => Go.to(context, const SignInWithEmailView())),
             const AppHeight(height: 20),
-             CustomNewButton(btnName: AppStrings.usePhoneNumber,isFillColor: false,
-             onTap: () {
-               Go.to(context, const PhoneNumberLoginView());
-             },
-             ),
+            CustomNewButton(
+              btnName: AppStrings.usePhoneNumber,
+              isFillColor: false,
+              onTap: () {
+                Go.to(context, const PhoneNumberLoginView());
+              },
+            ),
             const AppHeight(height: 70),
             Row(
               children: [
-                Expanded(child: Divider(height: 0,color: AppColors.blackColor,endIndent: 15,indent: 15,)),const Text(AppStrings.or),Expanded(child: Divider(indent: 15,endIndent: 15, height: 0,color: AppColors.blackColor,))
+                Expanded(
+                    child: Divider(
+                  height: 0,
+                  color: AppColors.blackColor,
+                  endIndent: 15,
+                  indent: 15,
+                )),
+                const Text(AppStrings.or),
+                Expanded(
+                    child: Divider(
+                  indent: 15,
+                  endIndent: 15,
+                  height: 0,
+                  color: AppColors.blackColor,
+                ))
               ],
             ),
             const AppHeight(height: 30),
-             Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const CustomSigninBtnWithSocial(icon: AppAssets.facebookIcon),
                 const AppWidth(width: 20),
-                 CustomSigninBtnWithSocial(onTap: () {
-                  context.read<SignInBloc>().add(OnGooglesignin(context: context));
-                },),
-                if(Platform.isIOS) const AppWidth(width: 20),
-                if(Platform.isIOS)
-                const CustomSigninBtnWithSocial(isApple: true),
+                CustomSigninBtnWithSocial(
+                  onTap: () {
+                    context
+                        .read<SignInBloc>()
+                        .add(OnGooglesignin(context: context));
+                  },
+                ),
+                if (Platform.isIOS) const AppWidth(width: 20),
+                if (Platform.isIOS)
+                  const CustomSigninBtnWithSocial(isApple: true),
               ],
             ),
             const AppHeight(height: 20),
-
           ],
         ),
       ),

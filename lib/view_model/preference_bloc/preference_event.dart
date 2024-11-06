@@ -12,13 +12,12 @@ class PickGenders extends PreferenceEvent {
 
 class OnNextEvent extends PreferenceEvent {
   final BuildContext context;
- final bool isUpdate;
+  final bool isUpdate;
   OnNextEvent({
     required this.context,
     required this.isUpdate,
   });
 }
-
 
 class SelectInstrest extends PreferenceEvent {
   final int index;

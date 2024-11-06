@@ -14,7 +14,7 @@ class ProfilePage extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverPersistentHeader(
-            delegate: SliverPersistentDelegate(user:  user),
+            delegate: SliverPersistentDelegate(user: user),
             pinned: true,
           ),
           SliverToBoxAdapter(
@@ -26,7 +26,8 @@ class ProfilePage extends StatelessWidget {
                     children: [
                       Text(
                         user.firstName,
-                        style: const TextStyle(fontSize: 24,color: Colors.white),
+                        style:
+                            const TextStyle(fontSize: 24, color: Colors.white),
                       ),
                       const SizedBox(height: 10),
                       Text(
@@ -164,7 +165,6 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-
 class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
   final UserModel user;
 
@@ -202,7 +202,6 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
             Positioned(
               top: MediaQuery.of(context).viewPadding.top + 15,
               left: currentImagePosition + 50,
-              
               child: Text(
                 user.firstName,
                 style: TextStyle(
@@ -214,10 +213,7 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
             Positioned(
               left: 0,
               top: MediaQuery.of(context).viewPadding.top + 5,
-              child: const BackButton(
-                color:
-                    Colors.white
-              ),
+              child: const BackButton(color: Colors.white),
             ),
             Positioned(
               right: 0,
@@ -225,9 +221,7 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
               child: CustomIconButton(
                 onPressed: () {},
                 icon: Icons.more_vert,
-                iconColor: percent2 > .3
-                    ? Colors.white
-                    : Colors.white,
+                iconColor: percent2 > .3 ? Colors.white : Colors.white,
               ),
             ),
             Positioned(
@@ -238,7 +232,8 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
                 tag: 'profile',
                 child: Container(
                   width: currentImageSize,
-                  height: currentImageSize, // Ensure the height matches the width for the circular image
+                  height:
+                      currentImageSize, // Ensure the height matches the width for the circular image
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     image: DecorationImage(
@@ -266,44 +261,6 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
     return oldDelegate is SliverPersistentDelegate && oldDelegate.user != user;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //////////////////////////////////////////////////////////////////////////////////////////
 class CustomListTile extends StatelessWidget {

@@ -19,72 +19,77 @@ class GallerView extends StatelessWidget {
         padding: const EdgeInsets.only(left: 26, top: 20, right: 16),
         child: SafeArea(
           child: BlocBuilder<UserBaseBloc, UserBaseState>(
-            
               builder: (context, state) {
-                return Column(
+            return Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                           const CustomBackButton(),
-                             Text(
-                              'Gallery',
-                              style: TextStyle(
-                                fontWeight: FontWeight.w700,
-                                  color: AppColors.blackColor,
-                                  fontSize: 30),
-                            ),
-                            const SizedBox(width: 60),
-                      ],
+                    const CustomBackButton(),
+                    Text(
+                      'Gallery',
+                      style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.blackColor,
+                          fontSize: 30),
                     ),
-                    const SizedBox(height: 30),
-                    if (state.userData.galleryImages.isNotEmpty)
-                      Wrap(
-                        children: List.generate(
-                            state.userData.galleryImages.length,
-                            (index) => Stack(
-                                  alignment: Alignment.topLeft,
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width / 2.5,
-                                      margin: const EdgeInsets.only(
-                                          right: 10, bottom: 10),
-                                      height: 150,
-                                      child: ClipRRect(
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(20)),
-                                        child: AppCacheImage(
-                                          imageUrl: state.userData.galleryImages[index],
-                                          height: MediaQuery.of(context).size.height,
-                                          width: MediaQuery.of(context).size.width,
-                                          boxFit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () => context.read<GalleryBloc>().add(ClearImage(index: index, context: context)),
-                                      child:  Padding(
-                                        padding: const EdgeInsets.all(5),
-                                        child: Icon(
-                                          Icons.cancel,
-                                          color: AppColors.borderGreyColor,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                )),
-                      ),
-                    const Spacer(),
-                    if (state.userData.galleryImages.length  <
-                        6)
-                      CustomNewButton(
-                        btnName: "Add image",
-                        onTap: ()=> context.read<GalleryBloc>().add(SelectImage(context: context)),
-                      ),
-                    const SizedBox(height: 30)
+                    const SizedBox(width: 60),
                   ],
-                );
-              }),
+                ),
+                const SizedBox(height: 30),
+                if (state.userData.galleryImages.isNotEmpty)
+                  Wrap(
+                    children: List.generate(
+                        state.userData.galleryImages.length,
+                        (index) => Stack(
+                              alignment: Alignment.topLeft,
+                              children: [
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width / 2.5,
+                                  margin: const EdgeInsets.only(
+                                      right: 10, bottom: 10),
+                                  height: 150,
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(20)),
+                                    child: AppCacheImage(
+                                      imageUrl:
+                                          state.userData.galleryImages[index],
+                                      height:
+                                          MediaQuery.of(context).size.height,
+                                      width: MediaQuery.of(context).size.width,
+                                      boxFit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () => context.read<GalleryBloc>().add(
+                                      ClearImage(
+                                          index: index, context: context)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5),
+                                    child: Icon(
+                                      Icons.cancel,
+                                      color: AppColors.borderGreyColor,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )),
+                  ),
+                const Spacer(),
+                if (state.userData.galleryImages.length < 6)
+                  CustomNewButton(
+                    btnName: "Add image",
+                    onTap: () => context
+                        .read<GalleryBloc>()
+                        .add(SelectImage(context: context)),
+                  ),
+                const SizedBox(height: 30)
+              ],
+            );
+          }),
         ),
       ),
     );

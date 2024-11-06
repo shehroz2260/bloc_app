@@ -26,18 +26,18 @@ class SendMessage extends ChatEvent {
 class LoadChat extends ChatEvent {
   final String thradId;
   final ThreadModel model;
-  LoadChat( {
+  LoadChat({
     required this.thradId,
     required this.model,
   });
 }
-class ChatListener extends ChatEvent{
-   final String thradId;
+
+class ChatListener extends ChatEvent {
+  final String thradId;
   final ThreadModel model;
   ChatListener({
     required this.thradId,
     required this.model,
-
   });
 }
 
@@ -58,13 +58,10 @@ class StartOrStopRecording extends ChatEvent {
     required this.model,
   });
 }
-class StartTimer extends ChatEvent {
- 
-}
-class InitiaLizeAudioController extends ChatEvent {
- 
-}
 
+class StartTimer extends ChatEvent {}
+
+class InitiaLizeAudioController extends ChatEvent {}
 
 class OnChangeTextField extends ChatEvent {
   final String text;
@@ -87,9 +84,7 @@ class PickFileEvent extends ChatEvent {
   });
 }
 
-class ClearData extends ChatEvent{
-
-}
+class ClearData extends ChatEvent {}
 
 class ChatListenerStream extends ChatEvent {
   final ChatModel model;
@@ -98,33 +93,22 @@ class ChatListenerStream extends ChatEvent {
   });
 }
 
-
 class DownloadMedia extends ChatEvent {
   final BuildContext context;
   final ChatModel chat;
-  DownloadMedia({
-    required this.context,
-    required this.chat
-  });
+  DownloadMedia({required this.context, required this.chat});
 }
 
 class DownLoadMediaForApp extends ChatEvent {
   final BuildContext context;
   final ChatModel chat;
-  DownLoadMediaForApp({
-    required this.context,
-    required this.chat
-  });
+  DownLoadMediaForApp({required this.context, required this.chat});
 }
-
 
 class OnListenThread extends ChatEvent {
   final ThreadModel threadModel;
   final BuildContext context;
-  OnListenThread({
-    required this.threadModel,
-    required this.context
-  });
+  OnListenThread({required this.threadModel, required this.context});
 }
 
 class ClearChat extends ChatEvent {
@@ -134,9 +118,7 @@ class ClearChat extends ChatEvent {
   });
 }
 
-class BlockUSerEvent extends ChatEvent{
-  
-}
+class BlockUSerEvent extends ChatEvent {}
 
 class OpenOptions extends ChatEvent {
   final BuildContext context;

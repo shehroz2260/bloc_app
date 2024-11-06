@@ -1,4 +1,5 @@
 import '../../model/user_model.dart';
+
 abstract class MatchesEvent {}
 
 class ChangeIndex extends MatchesEvent {

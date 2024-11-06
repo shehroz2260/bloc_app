@@ -19,43 +19,46 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
     on<UpdateTimer>(_onUpdateTimer);
   }
 
-
-
-  _verifyOtp(VerifyOtp event, Emitter<OtpState>emit)async{
- LoadingDialog.showProgress(event.context);
+  _verifyOtp(VerifyOtp event, Emitter<OtpState> emit) async {
+    LoadingDialog.showProgress(event.context);
     var auth = FirebaseAuth.instance;
     try {
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
-          verificationId: event.verificationId, smsCode: event.otpController.text);
+          verificationId: event.verificationId,
+          smsCode: event.otpController.text);
       var user = await auth.signInWithCredential(credential);
-          final userModel = await AuthServices.isLoadData(event.context);
-          LoadingDialog.hideProgress(event.context);
-            var userM = event.context.read<UserBaseBloc>().state.userData;
-          if (!userModel) {
-            userM = userM.copyWith(
-              uid: user.user?.uid ?? '',
-              phoneNumber: event.phoneNumber,
-            );
-            event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: userM));
-            NetworkService.updateUser(userM);
-          } else {
-            LoadingDialog.hideProgress(event.context);
-          }
+      final userModel = await AuthServices.isLoadData(event.context);
+      LoadingDialog.hideProgress(event.context);
+      var userM = event.context.read<UserBaseBloc>().state.userData;
+      if (!userModel) {
+        userM = userM.copyWith(
+          uid: user.user?.uid ?? '',
+          phoneNumber: event.phoneNumber,
+        );
+        event.context
+            .read<UserBaseBloc>()
+            .add(UpdateUserEvent(userModel: userM));
+        NetworkService.updateUser(userM);
+      } else {
+        LoadingDialog.hideProgress(event.context);
+      }
 
-          NetworkService.gotoHomeScreen(event.context);
+      NetworkService.gotoHomeScreen(event.context);
     } on FirebaseException catch (e) {
       LoadingDialog.hideProgress(event.context);
-      showOkAlertDialog(context: event.context,message: e.message,title: ErrorStrings.smsVerificationError);
+      showOkAlertDialog(
+          context: event.context,
+          message: e.message,
+          title: ErrorStrings.smsVerificationError);
     }
   }
 
-  _resendToken(ResendCode event , Emitter<OtpState>emit)async{
-
-        if (state.timer != 0) return;
+  _resendToken(ResendCode event, Emitter<OtpState> emit) async {
+    if (state.timer != 0) return;
     FirebaseAuth auth = FirebaseAuth.instance;
     try {
       LoadingDialog.showProgress(event.context);
-          emit(state.copyWith(timer: 59));
+      emit(state.copyWith(timer: 59));
       await auth.verifyPhoneNumber(
         timeout: const Duration(seconds: 60),
         phoneNumber: event.phoneNumber,
@@ -71,11 +74,18 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
           LoadingDialog.hideProgress(event.context);
 
           if (e.code == ErrorStrings.invalidPhoneNumber) {
-            showOkAlertDialog(context: event.context,message: ErrorStrings.theProvidedPhoneNumberIsNotValid,title: "Error");
+            showOkAlertDialog(
+                context: event.context,
+                message: ErrorStrings.theProvidedPhoneNumberIsNotValid,
+                title: "Error");
             return;
           }
           if (e.code == ErrorStrings.tooManyRequests) {
-            showOkAlertDialog(context: event.context,message: ErrorStrings.youHaveAttemptedTooManyRequestsPleaseTryAgainLater,title: ErrorStrings.smsVerificationError);
+            showOkAlertDialog(
+                context: event.context,
+                message: ErrorStrings
+                    .youHaveAttemptedTooManyRequestsPleaseTryAgainLater,
+                title: ErrorStrings.smsVerificationError);
             return;
           }
         },
@@ -86,30 +96,32 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
         },
       );
     } on FirebaseException catch (e) {
-          LoadingDialog.hideProgress(event.context);
-  showOkAlertDialog(context: event.context,message: e.message,title: "Error");
+      LoadingDialog.hideProgress(event.context);
+      showOkAlertDialog(
+          context: event.context, message: e.message, title: "Error");
     }
   }
 
   ////////////////////////////////////////////////////////////////////
-  _onUpdateTimer(UpdateTimer timer,Emitter<OtpState>emit ){
+  _onUpdateTimer(UpdateTimer timer, Emitter<OtpState> emit) {
     emit(state.copyWith(timer: timer.time));
   }
-    _scheduleTime(ScheduleTimer event , Emitter<OtpState>emit)async{
-    await emit.forEach(_updateTime(emit), onData: (value){
+
+  _scheduleTime(ScheduleTimer event, Emitter<OtpState> emit) async {
+    await emit.forEach(_updateTime(emit), onData: (value) {
       return state.copyWith(timer: value.timer);
     });
-   
   }
-    Stream<OtpState> _updateTime(Emitter<OtpState>emit) async* {
-      int timee = state.timer;
-   Timer.periodic(const Duration(seconds: 1), (Timer timer) {
-    if(state.timer == 0){
-      timer.cancel();
-      return;
-    }
-    timee --;
-    add(UpdateTimer(time: timee));
-  });
-}
+
+  Stream<OtpState> _updateTime(Emitter<OtpState> emit) async* {
+    int timee = state.timer;
+    Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      if (state.timer == 0) {
+        timer.cancel();
+        return;
+      }
+      timee--;
+      add(UpdateTimer(time: timee));
+    });
+  }
 }

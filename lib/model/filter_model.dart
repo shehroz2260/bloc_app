@@ -1,4 +1,3 @@
-
 class FilterModel {
   final int minAge;
   final int maxAge;
@@ -10,7 +9,7 @@ class FilterModel {
     required this.intrestedIn,
     required this.distance,
   });
-static const String tableName = "filter";
+  static const String tableName = "filter";
   FilterModel copyWith({
     int? minAge,
     int? maxAge,
@@ -36,10 +35,10 @@ static const String tableName = "filter";
 
   factory FilterModel.fromMap(Map<String, dynamic> map) {
     return FilterModel(
-      minAge: map['minAge'] ??-1,
-      maxAge: map['maxAge'] ??-1,
-      intrestedIn: map['intrestedIn'] ??-1,
-      distance: map['distance'] ??-1,
+      minAge: map['minAge'] ?? -1,
+      maxAge: map['maxAge'] ?? -1,
+      intrestedIn: map['intrestedIn'] ?? -1,
+      distance: map['distance'] ?? -1,
     );
   }
 

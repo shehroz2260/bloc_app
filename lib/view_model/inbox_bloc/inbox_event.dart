@@ -5,9 +5,7 @@ import 'package:chat_with_bloc/model/thread_model.dart';
 
 abstract class InboxEvent {}
 
-class OnDispose extends InboxEvent {
-  
-}
+class OnDispose extends InboxEvent {}
 
 class ThreadListener extends InboxEvent {
   final BuildContext context;
@@ -15,16 +13,15 @@ class ThreadListener extends InboxEvent {
     required this.context,
   });
 }
- 
+
 class TreadListenerStream extends InboxEvent {
   final ThreadModel model;
   TreadListenerStream({
     required this.model,
   });
 }
-class MessageClearList extends InboxEvent{
-  
-}
+
+class MessageClearList extends InboxEvent {}
 
 class OnSearch extends InboxEvent {
   final String value;

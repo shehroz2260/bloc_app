@@ -9,12 +9,13 @@ import '../view_model/user_base_bloc/user_base_event.dart';
 import '../model/user_model.dart';
 
 class AuthServices {
-     static Future<void> signupUser(UserModel userModel, BuildContext context) async {
+  static Future<void> signupUser(
+      UserModel userModel, BuildContext context) async {
     var user = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: userModel.email , password: userModel.password ?? "");
+        email: userModel.email, password: userModel.password ?? "");
     String uid = user.user?.uid ?? "";
- userModel =  userModel.copyWith(uid: uid);
- context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: userModel));
+    userModel = userModel.copyWith(uid: uid);
+    context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: userModel));
     await FirebaseFirestore.instance
         .collection(UserModel.tableName)
         .doc(uid)
@@ -26,19 +27,23 @@ class AuthServices {
         .signInWithEmailAndPassword(email: email, password: password);
   }
 
-  static Future<bool> isLoadData(BuildContext context)async {
-    final uid = FirebaseAuth.instance.currentUser?.uid??"";
-    if(uid.isEmpty){
+  static Future<bool> isLoadData(BuildContext context) async {
+    final uid = FirebaseAuth.instance.currentUser?.uid ?? "";
+    if (uid.isEmpty) {
       return false;
     }
-      final snapShot = await FirebaseFirestore.instance.collection(UserModel.tableName).doc(uid).get();
-      if(snapShot.exists){
-        context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: UserModel.fromMap(snapShot.data()!)));
-        return true;
-      }
-      return false;
+    final snapShot = await FirebaseFirestore.instance
+        .collection(UserModel.tableName)
+        .doc(uid)
+        .get();
+    if (snapShot.exists) {
+      context
+          .read<UserBaseBloc>()
+          .add(UpdateUserEvent(userModel: UserModel.fromMap(snapShot.data()!)));
+      return true;
+    }
+    return false;
   }
-
 
   static Future<bool?> loginWithGoogle(BuildContext context) async {
     try {
@@ -59,32 +64,36 @@ class AuthServices {
           .doc(FirebaseAuth.instance.currentUser?.uid ?? "")
           .get();
       if (user.exists) {
-        context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: UserModel.fromMap(user.data()!)));
+        context
+            .read<UserBaseBloc>()
+            .add(UpdateUserEvent(userModel: UserModel.fromMap(user.data()!)));
         return true;
       }
       String uid = userCredential.user?.uid ?? "";
- UserModel userModel = UserModel.emptyModel;
- userModel = userModel.copyWith(
-  uid: uid,
+      UserModel userModel = UserModel.emptyModel;
+      userModel = userModel.copyWith(
+        uid: uid,
         firstName: userCredential.user?.displayName ?? "",
         profileImage: userCredential.user?.photoURL ?? "",
         email: userCredential.user?.email ?? "",
- );
-      
+      );
+
       await FirebaseFirestore.instance
           .collection(UserModel.tableName)
           .doc(uid)
           .set(userModel.toMap());
-        context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: UserModel.fromMap(userModel.toMap())));
+      context.read<UserBaseBloc>().add(
+          UpdateUserEvent(userModel: UserModel.fromMap(userModel.toMap())));
       return true;
     } on FirebaseAuthException catch (error) {
-      showOkAlertDialog(context: context,message: error.message,title: error.code);
+      showOkAlertDialog(
+          context: context, message: error.message, title: error.code);
 
       return null;
     } catch (error) {
-      showOkAlertDialog(context: context,message: error.toString(),title:"Error");
+      showOkAlertDialog(
+          context: context, message: error.toString(), title: "Error");
       return null;
     }
   }
-
 }

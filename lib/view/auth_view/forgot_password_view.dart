@@ -36,24 +36,23 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             children: [
               const AppHeight(height: 10),
               const Align(
-              alignment: Alignment.centerLeft,
-              child: SafeArea(child: CustomBackButton()),
-            ),
-            const AppHeight(height: 40),
-            SvgPicture.asset(AppAssets.appIcon),
+                alignment: Alignment.centerLeft,
+                child: SafeArea(child: CustomBackButton()),
+              ),
+              const AppHeight(height: 40),
+              SvgPicture.asset(AppAssets.appIcon),
               const AppHeight(height: 20),
-              Text("Forgot Password", style: AppTextStyle.font25.copyWith(color: AppColors.blackColor)),
+              Text("Forgot Password",
+                  style: AppTextStyle.font25
+                      .copyWith(color: AppColors.blackColor)),
               const AppHeight(height: 30),
               CustomTextField(
                 textEditingController: _emailController,
                 validator: AppValidation.emailValidation,
                 hintText: AppStrings.enterEmailAddress,
               ),
-              
-             
               const AppHeight(height: 20),
-              CustomNewButton(btnName: "Send",onTap: _forgotPassword)
-            
+              CustomNewButton(btnName: "Send", onTap: _forgotPassword)
             ],
           ),
         ),
@@ -61,8 +60,8 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
     );
   }
 
-    _forgotPassword() {
-   if(!_formKey.currentState!.validate())return;
+  _forgotPassword() {
+    if (!_formKey.currentState!.validate()) return;
     LoadingDialog.showProgress(context);
     FirebaseAuth.instance
         .sendPasswordResetEmail(email: _emailController.text)
@@ -74,7 +73,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
           message: "Reset link has been sent to your email");
       Go.back(context);
     }).catchError((e) {
-            LoadingDialog.hideProgress(context);
+      LoadingDialog.hideProgress(context);
       showOkAlertDialog(
           context: context, title: "Error", message: e.toString());
     });

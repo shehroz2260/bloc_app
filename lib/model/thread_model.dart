@@ -100,7 +100,7 @@ class ThreadModel {
           List<dynamic>.from((map['participantUserList'] as List<dynamic>)),
       activeUserList:
           List<dynamic>.from((map['activeUserList'] as List<dynamic>)),
-      blockUserList: List<String>.from((map['blockUserList'] ??[])),
+      blockUserList: List<String>.from((map['blockUserList'] ?? [])),
       senderId: map['senderId'] as String,
       messageCount: map['messageCount'] as int,
       threadId: map['threadId'] as String,
@@ -110,7 +110,7 @@ class ThreadModel {
   }
   void readMessage() async {
     try {
-      if (senderId != (FirebaseAuth.instance.currentUser?.uid??"")) {
+      if (senderId != (FirebaseAuth.instance.currentUser?.uid ?? "")) {
         await FirebaseFirestore.instance
             .collection(tableName)
             .doc(threadId)
@@ -121,28 +121,29 @@ class ThreadModel {
     }
   }
 
-  static Future<void> deleteMessages(ThreadModel threadModel,BuildContext context) async {
-threadModel = threadModel.copyWith(lastMessage: "");
+  static Future<void> deleteMessages(
+      ThreadModel threadModel, BuildContext context) async {
+    threadModel = threadModel.copyWith(lastMessage: "");
     LoadingDialog.showProgress(context);
     int index = -1;
     final cUser = context.read<UserBaseBloc>().state.userData;
-    MessageDeleteModel model = MessageDeleteModel(
-        id: cUser.uid, deleteAt: DateTime.now());
-         index = threadModel.messageDelete.indexWhere((e)=> e.id == cUser.uid);
+    MessageDeleteModel model =
+        MessageDeleteModel(id: cUser.uid, deleteAt: DateTime.now());
+    index = threadModel.messageDelete.indexWhere((e) => e.id == cUser.uid);
     if (index != -1) {
-      threadModel.messageDelete[index] = threadModel.messageDelete[index].copyWith(deleteAt: DateTime.now());
-    threadModel =  threadModel.copyWith(messageDelete: threadModel.messageDelete);
-    } else{
-            threadModel.messageDelete.add(model);
-
+      threadModel.messageDelete[index] =
+          threadModel.messageDelete[index].copyWith(deleteAt: DateTime.now());
+      threadModel =
+          threadModel.copyWith(messageDelete: threadModel.messageDelete);
+    } else {
+      threadModel.messageDelete.add(model);
     }
-    
 
     try {
       FirebaseFirestore.instance
-          .collection( ThreadModel.tableName)
+          .collection(ThreadModel.tableName)
           .doc(threadModel.threadId)
-          .set(threadModel.toMap(),SetOptions(merge: true));
+          .set(threadModel.toMap(), SetOptions(merge: true));
       // FirebaseFirestore.instance
       //     .collection(ThreadModel.tableName)
       //     .doc(threadId)
@@ -155,8 +156,7 @@ threadModel = threadModel.copyWith(lastMessage: "");
       // });
       LoadingDialog.hideProgress(context);
     } catch (e) {
-            LoadingDialog.hideProgress(context);
-
+      LoadingDialog.hideProgress(context);
     }
   }
 

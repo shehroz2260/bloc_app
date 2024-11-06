@@ -13,7 +13,8 @@ class WaveBubble extends StatefulWidget {
       {super.key,
       required this.path,
       this.isFromNetwork = false,
-      required this.id, required this.isSender});
+      required this.id,
+      required this.isSender});
 
   @override
   State<WaveBubble> createState() => _WaveBubbleState();
@@ -40,7 +41,7 @@ class _WaveBubbleState extends State<WaveBubble> {
 
   void _preparePlayer() async {
     if (widget.isFromNetwork) {
-      final file = await AppFuncs.getCacheFile(widget.path, widget.id,context);
+      final file = await AppFuncs.getCacheFile(widget.path, widget.id, context);
       bool exist = await file!.exists();
       if (exist) {
         playerController1.preparePlayer(
@@ -76,12 +77,14 @@ class _WaveBubbleState extends State<WaveBubble> {
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       width: MediaQuery.of(context).size.width,
       height: 52,
       margin: const EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
-          color: !widget.isSender? AppColors.redColor.withOpacity(0.15): AppColors.borderGreyColor,
+          color: !widget.isSender
+              ? AppColors.redColor.withOpacity(0.15)
+              : AppColors.borderGreyColor,
           border: Border.all(
             width: 1,
             color: Colors.white.withOpacity(0.5),
@@ -98,28 +101,30 @@ class _WaveBubbleState extends State<WaveBubble> {
                         finishMode: FinishMode.pause);
               },
               child: Container(
-                height: 24,
-                width: 24,
-                margin: const EdgeInsets.only(left: 20, right: 8.5),
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                    shape: BoxShape.circle, color: Colors.pink),
-                child: playerController1.playerState.isPlaying
-                    ? const Icon(
-                        Icons.pause,
-                        color: Colors.white,
-                        size: 15,
-                      ): const Icon(Icons.play_arrow_sharp,color: Colors.white,size: 15)
-                    // : SvgPicture.asset(
-                    //     AppAssets.playArrowIcon,
-                    //     colorFilter: ColorFilter.mode(
-                    //         AppColors.secondaryColor, BlendMode.srcIn),
-                    //   ),
-              ),
+                  height: 24,
+                  width: 24,
+                  margin: const EdgeInsets.only(left: 20, right: 8.5),
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                      shape: BoxShape.circle, color: Colors.pink),
+                  child: playerController1.playerState.isPlaying
+                      ? const Icon(
+                          Icons.pause,
+                          color: Colors.white,
+                          size: 15,
+                        )
+                      : const Icon(Icons.play_arrow_sharp,
+                          color: Colors.white, size: 15)
+                  // : SvgPicture.asset(
+                  //     AppAssets.playArrowIcon,
+                  //     colorFilter: ColorFilter.mode(
+                  //         AppColors.secondaryColor, BlendMode.srcIn),
+                  //   ),
+                  ),
             ),
           Expanded(
             child: AudioFileWaveforms(
-              size: Size(MediaQuery.of(context).size.width /3, 50),
+              size: Size(MediaQuery.of(context).size.width / 3, 50),
               playerController: playerController1,
               waveformType: WaveformType.long,
               playerWaveStyle: PlayerWaveStyle(
@@ -132,7 +137,8 @@ class _WaveBubbleState extends State<WaveBubble> {
           Padding(
             padding: const EdgeInsets.only(right: 20, left: 8.5),
             child: Text(
-              formatDuration(Duration(milliseconds: playerController1.maxDuration)),
+              formatDuration(
+                  Duration(milliseconds: playerController1.maxDuration)),
               style: const TextStyle(color: Colors.white),
               // style: AppTextStyle.size12.copyWith(color: Colors.white),
             ),

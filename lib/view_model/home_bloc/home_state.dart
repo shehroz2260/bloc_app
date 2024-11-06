@@ -18,4 +18,4 @@ class HomeState {
       isLoading: isLoading ?? this.isLoading,
     );
   }
- }
+}

@@ -22,5 +22,4 @@ class EditState {
       dob: dob ?? this.dob,
     );
   }
- }
-
+}

@@ -29,4 +29,4 @@ class FilterState {
       filterModel: filterModel ?? this.filterModel,
     );
   }
- }
+}

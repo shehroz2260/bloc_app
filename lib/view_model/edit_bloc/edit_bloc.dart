@@ -13,7 +13,8 @@ import 'edit_event.dart';
 import 'edit_state.dart';
 
 class EditBloc extends Bloc<EditEvent, EditState> {
-  EditBloc() : super(EditState(imageFile: null,isEdit: false,dob: DateTime(1800))) {
+  EditBloc()
+      : super(EditState(imageFile: null, isEdit: false, dob: DateTime(1800))) {
     on<ImagesPick>(_onPickImage);
     on<OndisPose>(_onDisPose);
     on<OpenEditTextField>(_onEditOpen);
@@ -21,44 +22,47 @@ class EditBloc extends Bloc<EditEvent, EditState> {
     on<OnPickDateTime>(_onDatePicker);
   }
 
-  _onPickImage(ImagesPick event , Emitter<EditState>emit)async{
-  final file = await kImagePicker(context: event.context);
-  if(file != null){
-    emit(state.copyWith(imageFile: file));
-  }
+  _onPickImage(ImagesPick event, Emitter<EditState> emit) async {
+    final file = await kImagePicker(context: event.context);
+    if (file != null) {
+      emit(state.copyWith(imageFile: file));
+    }
   }
 
-  _onDisPose (OndisPose event , Emitter<EditState>emit )async{
-    emit(state.copyWith(imageFile: File(""),isEdit: false,dob: DateTime(1800)));
+  _onDisPose(OndisPose event, Emitter<EditState> emit) async {
+    emit(state.copyWith(
+        imageFile: File(""), isEdit: false, dob: DateTime(1800)));
   }
-  _onEditOpen(OpenEditTextField event, Emitter<EditState>emit){
+
+  _onEditOpen(OpenEditTextField event, Emitter<EditState> emit) {
     emit(state.copyWith(isEdit: !state.isEdit));
   }
-  _onUpdateUser(UpdateUser event, Emitter<EditState>edit)async{
+
+  _onUpdateUser(UpdateUser event, Emitter<EditState> edit) async {
     var user = event.context.read<UserBaseBloc>().state.userData;
     String url = user.profileImage;
     DateTime date = user.dob;
-  LoadingDialog.showProgress(event.context);
-    if((state.imageFile?.path??"").isNotEmpty){
-      url = await FirebaseStorageService().uploadImage("profile${user.uid}", state.imageFile?.path??"");
+    LoadingDialog.showProgress(event.context);
+    if ((state.imageFile?.path ?? "").isNotEmpty) {
+      url = await FirebaseStorageService()
+          .uploadImage("profile${user.uid}", state.imageFile?.path ?? "");
     }
-    if(state.dob != DateTime(1800)){
+    if (state.dob != DateTime(1800)) {
       date = state.dob;
     }
     user = user.copyWith(
-      about: event.about,
-      bio: event.bio,
-      firstName: event.firstName,
-      profileImage: url,
-      dob:  date
-    );
+        about: event.about,
+        bio: event.bio,
+        firstName: event.firstName,
+        profileImage: url,
+        dob: date);
     NetworkService.updateUser(user);
     LoadingDialog.hideProgress(event.context);
     Go.back(event.context);
   }
 
-  _onDatePicker(OnPickDateTime event, Emitter<EditState>emit)async{
-final date = await showDatePickerDialog(
+  _onDatePicker(OnPickDateTime event, Emitter<EditState> emit) async {
+    final date = await showDatePickerDialog(
       context: event.context,
       initialDate: DateTime(2000, 01, 01),
       minDate: DateTime(1950, 01, 01),
@@ -83,7 +87,7 @@ final date = await showDatePickerDialog(
       splashRadius: 40,
       centerLeadingDate: true,
     );
-    if(date == null) return;
+    if (date == null) return;
     emit(state.copyWith(dob: date));
   }
 }

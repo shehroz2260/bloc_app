@@ -21,53 +21,55 @@ import '../view/main_view/home_tab/congrats_message_view.dart';
 import '../view_model/user_base_bloc/user_base_state.dart';
 
 class NetworkService {
- static Future<void> gotoHomeScreen(BuildContext context,[bool isSplash = false]) async {
-  var isLoadData = await AuthServices.isLoadData(context);
-  if (isSplash &&  
-     !isLoadData) {
+  static Future<void> gotoHomeScreen(BuildContext context,
+      [bool isSplash = false]) async {
+    var isLoadData = await AuthServices.isLoadData(context);
+    if (isSplash && !isLoadData) {
       Go.offAll(context, const OnBoardingScreen());
-    return;
-  }
-StreamSubscription<UserBaseState>? sub;
- sub =  context.read<UserBaseBloc>().stream.listen((state)async{
-var user = state.userData;
-await sub?.cancel();
- if(user.dob == DateTime(1800) || user.profileImage.isEmpty || user.firstName.isEmpty){
-  if(isSplash){
-    await FirebaseAuth.instance.signOut();
-    Go.offAll(context, const OnBoardingScreen());
-  }else{
-    Go.offAll(context, const DobPickView());
-  }
-  return;
- }
-  if(user.gender ==0){
-  if(isSplash){
-    await FirebaseAuth.instance.signOut();
-    Go.offAll(context, const OnBoardingScreen());
-  }else{
-    Go.offAll(context, const GenderView());
-  }
-  return;
- }
-  if(user.preferGender ==-1 || user.myInstrest.isEmpty){
-  if(isSplash){
-    await FirebaseAuth.instance.signOut();
-    Go.offAll(context, const OnBoardingScreen());
-  }else{
-    Go.offAll(context, const PreferenceView());
-  }
-  return;
- }
-  if(user.about.isEmpty || user.bio.isEmpty){
-  if(isSplash){
-    await FirebaseAuth.instance.signOut();
-    Go.offAll(context, const OnBoardingScreen());
-  }else{
-    Go.offAll(context, const BioView());
-  }
-  return;
- }
+      return;
+    }
+    StreamSubscription<UserBaseState>? sub;
+    sub = context.read<UserBaseBloc>().stream.listen((state) async {
+      var user = state.userData;
+      await sub?.cancel();
+      if (user.dob == DateTime(1800) ||
+          user.profileImage.isEmpty ||
+          user.firstName.isEmpty) {
+        if (isSplash) {
+          await FirebaseAuth.instance.signOut();
+          Go.offAll(context, const OnBoardingScreen());
+        } else {
+          Go.offAll(context, const DobPickView());
+        }
+        return;
+      }
+      if (user.gender == 0) {
+        if (isSplash) {
+          await FirebaseAuth.instance.signOut();
+          Go.offAll(context, const OnBoardingScreen());
+        } else {
+          Go.offAll(context, const GenderView());
+        }
+        return;
+      }
+      if (user.preferGender == -1 || user.myInstrest.isEmpty) {
+        if (isSplash) {
+          await FirebaseAuth.instance.signOut();
+          Go.offAll(context, const OnBoardingScreen());
+        } else {
+          Go.offAll(context, const PreferenceView());
+        }
+        return;
+      }
+      if (user.about.isEmpty || user.bio.isEmpty) {
+        if (isSplash) {
+          await FirebaseAuth.instance.signOut();
+          Go.offAll(context, const OnBoardingScreen());
+        } else {
+          Go.offAll(context, const BioView());
+        }
+        return;
+      }
 //   if((!await Permission.location.isGranted) ||
 //           (!await Permission.locationWhenInUse.serviceStatus.isEnabled)|| (user.lat == 0.0 && user.lng == 0.0)){
 //     if(isSplash){
@@ -79,16 +81,20 @@ await sub?.cancel();
 //     }
 //   return;
 //  }
- Go.offAll(context, const MainView());
-  });
-}
-  static void updateUser(UserModel user)async{
-    await FirebaseFirestore.instance.collection(UserModel.tableName).doc(user.uid).set(user.toMap(),SetOptions(merge: true));
+      Go.offAll(context, const MainView());
+    });
   }
 
-   static Future<void> likeUser(UserModel liker, UserModel likee, BuildContext context) async {
+  static void updateUser(UserModel user) async {
+    await FirebaseFirestore.instance
+        .collection(UserModel.tableName)
+        .doc(user.uid)
+        .set(user.toMap(), SetOptions(merge: true));
+  }
 
-    bool isMatch = liker.otherLikes.contains(likee.uid) ;
+  static Future<void> likeUser(
+      UserModel liker, UserModel likee, BuildContext context) async {
+    bool isMatch = liker.otherLikes.contains(likee.uid);
 
     await FirebaseFirestore.instance
         .collection(UserModel.tableName)
@@ -105,16 +111,15 @@ await sub?.cancel();
       if (isMatch) "matches": FieldValue.arrayUnion([liker.uid]),
     });
     var user = context.read<UserBaseBloc>().state.userData;
-  context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
+    context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
     if (isMatch) {
       await createNewThread(liker, likee, null);
       // showOkAlertDialog(context: context,message: "Congrats you have new friend ${likee.firstName}");
       // await sendMatchNotification(liker, likee);
-    
-                      Go.to(context,  CongratsMessageView(user: likee));
+
+      Go.to(context, CongratsMessageView(user: likee));
     }
   }
-
 
   static Future<void> createNewThread(
       UserModel liker, UserModel likee, String? message) async {
@@ -124,8 +129,19 @@ await sub?.cancel();
         .doc(threadId)
         .get();
     if (snapShot.exists) return;
- var thread = ThreadModel(lastMessage: message??"", lastMessageTime: DateTime.now(), participantUserList: [liker.uid, likee.uid], senderId: liker.uid, messageCount: 1, threadId: threadId, messageDelete: [], isPending: false, isBlocked: false,activeUserList: [],blockUserList: []);
- 
+    var thread = ThreadModel(
+        lastMessage: message ?? "",
+        lastMessageTime: DateTime.now(),
+        participantUserList: [liker.uid, likee.uid],
+        senderId: liker.uid,
+        messageCount: 1,
+        threadId: threadId,
+        messageDelete: [],
+        isPending: false,
+        isBlocked: false,
+        activeUserList: [],
+        blockUserList: []);
+
     await FirebaseFirestore.instance
         .collection(ThreadModel.tableName)
         .doc(threadId)
@@ -151,8 +167,7 @@ await sub?.cancel();
         .set(chatModel.toMap(), SetOptions(merge: true));
   }
 
-
-    static Future<void> disLikeUser(UserModel liker, UserModel likee) async {
+  static Future<void> disLikeUser(UserModel liker, UserModel likee) async {
     await FirebaseFirestore.instance
         .collection(UserModel.tableName)
         .doc(liker.uid)
@@ -173,8 +188,7 @@ await sub?.cancel();
     }, SetOptions(merge: true));
   }
 
-
-    static Future<UserModel> getUserDetailById(String uid) {
+  static Future<UserModel> getUserDetailById(String uid) {
     return FirebaseFirestore.instance
         .collection(UserModel.tableName)
         .doc(uid)
@@ -182,8 +196,8 @@ await sub?.cancel();
         .then((value) => UserModel.fromMap(value.data() ?? {}));
   }
 
-static Future<void> blockUser( ThreadModel threadModel) async {
-    var uid = FirebaseAuth.instance.currentUser?.uid??"";
+  static Future<void> blockUser(ThreadModel threadModel) async {
+    var uid = FirebaseAuth.instance.currentUser?.uid ?? "";
     await FirebaseFirestore.instance
         .collection(ThreadModel.tableName)
         .doc(threadModel.threadId)
@@ -197,7 +211,7 @@ static Future<void> blockUser( ThreadModel threadModel) async {
   }
 
   static Future<void> unblockUser(ThreadModel threadModel) async {
-        var uid = FirebaseAuth.instance.currentUser?.uid??"";
+    var uid = FirebaseAuth.instance.currentUser?.uid ?? "";
     await FirebaseFirestore.instance
         .collection(ThreadModel.tableName)
         .doc(threadModel.threadId)
@@ -209,7 +223,6 @@ static Future<void> blockUser( ThreadModel threadModel) async {
       "lastMessageTime": Timestamp.now()
     }, SetOptions(merge: true));
   }
-
 }
 
 String createThreadId(String s1, String s2) {

@@ -10,7 +10,6 @@ class LocationPermissionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -24,12 +23,14 @@ class LocationPermissionScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 20),
               ),
               const Spacer(),
-               Align(
+              Align(
                 alignment: Alignment.bottomCenter,
                 child: CustomButton(
-                    onTap:()=> context.read<LocationBloc>().add(OnRequestPermissionEvent(context: context)),
-                    btnName: 'Enable Location',
-                    ),
+                  onTap: () => context
+                      .read<LocationBloc>()
+                      .add(OnRequestPermissionEvent(context: context)),
+                  btnName: 'Enable Location',
+                ),
               ),
               const SizedBox(height: 30),
             ],

@@ -35,36 +35,37 @@ class _SignUpViewState extends State<SignUpView> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
-               const Align(
-              alignment: Alignment.centerLeft,
-              child: SafeArea(child: CustomBackButton()),
-            ),
-            const AppHeight(height: 40),
-            SvgPicture.asset(AppAssets.appIcon),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: SafeArea(child: CustomBackButton()),
+              ),
+              const AppHeight(height: 40),
+              SvgPicture.asset(AppAssets.appIcon),
               const AppHeight(height: 20),
-              Text(AppStrings.createAnAccoun, style: AppTextStyle.font25.copyWith(color: AppColors.blackColor)),
+              Text(AppStrings.createAnAccoun,
+                  style: AppTextStyle.font25
+                      .copyWith(color: AppColors.blackColor)),
               const AppHeight(height: 30),
-              
-               CustomTextField(
+              CustomTextField(
                 validator: AppValidation.userNameValidation,
                 textEditingController: _nameController,
                 hintText: AppStrings.enterUserName,
               ),
               const AppHeight(height: 20),
-               CustomTextField(
+              CustomTextField(
                 validator: AppValidation.emailValidation,
                 textEditingController: _emailController,
                 hintText: AppStrings.enterEmailAddress,
               ),
               const AppHeight(height: 20),
-               CustomTextField(
+              CustomTextField(
                 validator: AppValidation.passwordValidation,
                 textEditingController: _passwordController,
                 hintText: AppStrings.enterPassword,
                 isPasswordField: true,
               ),
               const AppHeight(height: 20),
-              CustomNewButton(btnName: AppStrings.signup,onTap: _onSignUp),
+              CustomNewButton(btnName: AppStrings.signup, onTap: _onSignUp),
             ],
           ),
         ),
@@ -72,7 +73,12 @@ class _SignUpViewState extends State<SignUpView> {
     );
   }
 
-  _onSignUp(){
-  context.read<SignUpBloc>().add(OnSignUpEvent(context: context, formKey: _formKey, nameController: _nameController, emailController: _emailController, passwordController: _passwordController));
+  _onSignUp() {
+    context.read<SignUpBloc>().add(OnSignUpEvent(
+        context: context,
+        formKey: _formKey,
+        nameController: _nameController,
+        emailController: _emailController,
+        passwordController: _passwordController));
   }
 }

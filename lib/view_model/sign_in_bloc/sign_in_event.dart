@@ -8,14 +8,13 @@ class OnSigninEvent extends SignInEvent {
   final GlobalKey<FormState> formKey;
   final TextEditingController emailController;
   final TextEditingController passwordController;
-  OnSigninEvent( {
+  OnSigninEvent({
     required this.formKey,
     required this.context,
     required this.emailController,
     required this.passwordController,
   });
 }
-
 
 class OnGooglesignin extends SignInEvent {
   final BuildContext context;

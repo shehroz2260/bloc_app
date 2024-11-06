@@ -8,19 +8,23 @@ import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_event.dart';
 import 'gender_event.dart';
 import 'gender_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 class GenderBloc extends Bloc<GenderEvent, GenderState> {
   GenderBloc() : super(GenderState(gender: 0)) {
     on<PickGender>(_onPickGender);
     on<OnNextEvent>(_onNext);
     on<OninitGender>(_onint);
   }
-  _onPickGender(PickGender event, Emitter<GenderState>emit){
-  emit(state.copyWith(gender: event.gender));
+  _onPickGender(PickGender event, Emitter<GenderState> emit) {
+    emit(state.copyWith(gender: event.gender));
   }
 
-  _onNext(OnNextEvent event, Emitter<GenderState>emit){
-      if(state.gender == 0){
-      showOkAlertDialog(context: event.context,message: "Please pick one gender",title: "Error");
+  _onNext(OnNextEvent event, Emitter<GenderState> emit) {
+    if (state.gender == 0) {
+      showOkAlertDialog(
+          context: event.context,
+          message: "Please pick one gender",
+          title: "Error");
       return;
     }
     LoadingDialog.showProgress(event.context);
@@ -30,14 +34,15 @@ class GenderBloc extends Bloc<GenderEvent, GenderState> {
     NetworkService.updateUser(user);
     LoadingDialog.hideProgress(event.context);
     emit(state.copyWith(gender: 0));
-      if(!event.isUpdate){
-    Go.to(event.context,const PreferenceView());
-    }else{
+    if (!event.isUpdate) {
+      Go.to(event.context, const PreferenceView());
+    } else {
       Go.back(event.context);
     }
   }
 
-  _onint(OninitGender event , Emitter<GenderState>emit){
-    emit(state.copyWith(gender: event.context.read<UserBaseBloc>().state.userData.gender));
+  _onint(OninitGender event, Emitter<GenderState> emit) {
+    emit(state.copyWith(
+        gender: event.context.read<UserBaseBloc>().state.userData.gender));
   }
 }

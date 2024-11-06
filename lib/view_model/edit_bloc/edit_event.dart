@@ -10,12 +10,10 @@ class ImagesPick extends EditEvent {
   });
 }
 
-class OndisPose extends EditEvent {
-}
+class OndisPose extends EditEvent {}
 
-class OpenEditTextField extends EditEvent{
+class OpenEditTextField extends EditEvent {}
 
-}
 class UpdateUser extends EditEvent {
   final BuildContext context;
   final String firstName;

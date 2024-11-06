@@ -22,5 +22,4 @@ class MatchesState {
       matchedList: matchedList ?? this.matchedList,
     );
   }
- }
-
+}

@@ -14,20 +14,22 @@ import 'dob_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DobBloc extends Bloc<DobEvent, DobState> {
-  DobBloc() : super(DobState(dateString: "",imgString: "",dob: null,image: null)) {
+  DobBloc()
+      : super(DobState(dateString: "", imgString: "", dob: null, image: null)) {
     on<DatePickerEvent>(_onDatePicker);
     on<OnNextEvent>(_onNext);
     on<ClearAllValue>(_clearValue);
     on<ImagePickerEvent>(_onImagePickr);
   }
-  _onImagePickr(ImagePickerEvent event ,Emitter<DobState>emit)async{
+  _onImagePickr(ImagePickerEvent event, Emitter<DobState> emit) async {
     final file = await kImagePicker(context: event.context);
-    if(file != null){
-      emit(state.copyWith(image: file,imgString: ""));
+    if (file != null) {
+      emit(state.copyWith(image: file, imgString: ""));
     }
   }
-  _onDatePicker(DatePickerEvent event , Emitter<DobState>emit)async{
-     final date = await showDatePickerDialog(
+
+  _onDatePicker(DatePickerEvent event, Emitter<DobState> emit) async {
+    final date = await showDatePickerDialog(
       context: event.context,
       initialDate: DateTime(2000, 01, 01),
       minDate: DateTime(1950, 01, 01),
@@ -52,30 +54,37 @@ class DobBloc extends Bloc<DobEvent, DobState> {
       splashRadius: 40,
       centerLeadingDate: true,
     );
-    if(date == null) return;
-    emit(state.copyWith(dob: date,dateString: ""));
+    if (date == null) return;
+    emit(state.copyWith(dob: date, dateString: ""));
   }
 
-  _onNext(OnNextEvent event, Emitter<DobState>emit)async{
-    if(state.image == null){
+  _onNext(OnNextEvent event, Emitter<DobState> emit) async {
+    if (state.image == null) {
       emit(state.copyWith(imgString: "Image is required"));
     }
-     if(state.dob == null){
+    if (state.dob == null) {
       emit(state.copyWith(dateString: "Dob is required"));
     }
-    if(!event.formKey.currentState!.validate() || state.image == null || state.dob == null) return;
+    if (!event.formKey.currentState!.validate() ||
+        state.image == null ||
+        state.dob == null) return;
     LoadingDialog.showProgress(event.context);
     var user = event.context.read<UserBaseBloc>().state.userData;
-    final url =await FirebaseStorageService().uploadImage("profile${user.uid}", state.image?.path??"");
-    user = user.copyWith(dob: state.dob,profileImage: url, firstName: event.nameController.text);
-     event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
+    final url = await FirebaseStorageService()
+        .uploadImage("profile${user.uid}", state.image?.path ?? "");
+    user = user.copyWith(
+        dob: state.dob,
+        profileImage: url,
+        firstName: event.nameController.text);
+    event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
     NetworkService.updateUser(user);
     event.nameController.clear();
     add(ClearAllValue());
-     LoadingDialog.hideProgress(event.context);
+    LoadingDialog.hideProgress(event.context);
     Go.to(event.context, const GenderView());
   }
-  _clearValue(ClearAllValue event , Emitter<DobState>emit){
-emit(state.copyWith(dob: null,image: null));
+
+  _clearValue(ClearAllValue event, Emitter<DobState> emit) {
+    emit(state.copyWith(dob: null, image: null));
   }
 }

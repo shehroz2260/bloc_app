@@ -5,7 +5,7 @@ class UserModel {
   final String firstName;
   final String email;
   final String phoneNumber;
-   String? password;
+  String? password;
   final String uid;
   final String location;
   final double lat;
@@ -50,8 +50,6 @@ class UserModel {
     required this.matches,
   });
   static const String tableName = "users";
- 
-
 
   UserModel copyWith({
     String? userName,
@@ -132,45 +130,70 @@ class UserModel {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      userName: map['userName'] ??"",
-      about: map['about'] ??"",
-      phoneNumber: map['phoneNumber'] ??"",
-      bio: map['bio'] ??"",
-      firstName: map['firstName'] ??"",
-      email: map['email'] ??"",
-      uid: map['uid'] ??"",
-      location: map['location'] ??"",
-      lat: map['lat'] ??0.0,
-      lng: map['lng'] ??0.0,
-      gender: map['gender'] ??0,
-      isOnline: map['isOnline'] ??false,
-      preferGender: map['preferGender'] ??0,
+      userName: map['userName'] ?? "",
+      about: map['about'] ?? "",
+      phoneNumber: map['phoneNumber'] ?? "",
+      bio: map['bio'] ?? "",
+      firstName: map['firstName'] ?? "",
+      email: map['email'] ?? "",
+      uid: map['uid'] ?? "",
+      location: map['location'] ?? "",
+      lat: map['lat'] ?? 0.0,
+      lng: map['lng'] ?? 0.0,
+      gender: map['gender'] ?? 0,
+      isOnline: map['isOnline'] ?? false,
+      preferGender: map['preferGender'] ?? 0,
       dob: (map['dob'] as Timestamp).toDate(),
-      profileImage: (map['profileImage'] ??"").isEmpty?
-      "https://ui-avatars.com/api/?background=random&name=${(map['firstName'] ??"")}&size=200":map["profileImage"],
-      galleryImages: List<String>.from((map['galleryImages'] ??[])),
-      myLikes: List<String>.from((map['myLikes'] ??[])),
-      myInstrest: List<int>.from((map['myInstrest'] ??[])),
-      myDislikes: List<String>.from((map['myDislikes']  ??[])),
-      otherLikes: List<String>.from((map['otherLikes']  ??[])),
-      otherDislikes: List<String>.from((map['otherDislikes']  ??[])),
-      matches: List<String>.from((map['matches']  ??[])),
+      profileImage: (map['profileImage'] ?? "").isEmpty
+          ? "https://ui-avatars.com/api/?background=random&name=${(map['firstName'] ?? "")}&size=200"
+          : map["profileImage"],
+      galleryImages: List<String>.from((map['galleryImages'] ?? [])),
+      myLikes: List<String>.from((map['myLikes'] ?? [])),
+      myInstrest: List<int>.from((map['myInstrest'] ?? [])),
+      myDislikes: List<String>.from((map['myDislikes'] ?? [])),
+      otherLikes: List<String>.from((map['otherLikes'] ?? [])),
+      otherDislikes: List<String>.from((map['otherDislikes'] ?? [])),
+      matches: List<String>.from((map['matches'] ?? [])),
     );
   }
 
   int get age {
     return DateTime.now().difference(dob).inDays ~/ 365;
   }
-   bool isLiked(String uid) {
+
+  bool isLiked(String uid) {
     if (myLikes.isEmpty) {
       return false;
     }
 
     return myLikes.contains(uid);
   }
+
   static UserModel get emptyModel {
-  return UserModel(phoneNumber: "", about: "",bio: "",galleryImages: [], isOnline: false, myInstrest: [], userName: "",firstName: "",  email: "", uid: "", location: "", lat: 0.0, lng: 0.0, gender: 0, preferGender: 0, dob: DateTime(1800), profileImage: "", myLikes: [], myDislikes: [], otherLikes: [], otherDislikes: [], matches: []);
-}
+    return UserModel(
+        phoneNumber: "",
+        about: "",
+        bio: "",
+        galleryImages: [],
+        isOnline: false,
+        myInstrest: [],
+        userName: "",
+        firstName: "",
+        email: "",
+        uid: "",
+        location: "",
+        lat: 0.0,
+        lng: 0.0,
+        gender: 0,
+        preferGender: 0,
+        dob: DateTime(1800),
+        profileImage: "",
+        myLikes: [],
+        myDislikes: [],
+        otherLikes: [],
+        otherDislikes: [],
+        matches: []);
+  }
 
   bool isDisLiked(String uid) {
     if (myDislikes.isEmpty) {
@@ -178,6 +201,7 @@ class UserModel {
     }
     return myDislikes.contains(uid);
   }
+
   @override
   String toString() {
     return 'UserModel(phoneNumber: $phoneNumber, galleryImages: $galleryImages, bio: $bio, about: $about, isOnline: $isOnline, myInstrest: $myInstrest, userName: $userName, first1Name: $firstName, email: $email, password: $password, uid: $uid, location: $location, lat: $lat, lng: $lng, gender: $gender, preferGender: $preferGender, dob: $dob, profileImage: $profileImage, myLikes: $myLikes, myDislikes: $myDislikes, otherLikes: $otherLikes, otherDislikes: $otherDislikes, matches: $matches)';

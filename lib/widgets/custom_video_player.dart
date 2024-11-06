@@ -33,7 +33,7 @@ class _TKVideoPlayerState extends State<TKVideoPlayer> {
 
   Future<void> initNetworkPlayer() async {
     _controller = VideoPlayerController.network(
-      widget.media.media?.url??"",
+      widget.media.media?.url ?? "",
     )..initialize().then((_) {
         _chewieController = ChewieController(
           videoPlayerController: _controller,
@@ -76,14 +76,14 @@ class _TKVideoPlayerState extends State<TKVideoPlayer> {
       appBar: AppBar(
         backgroundColor: AppColors.blackColor,
         elevation: 0,
-        iconTheme:  IconThemeData(color: AppColors.whiteColor),
+        iconTheme: IconThemeData(color: AppColors.whiteColor),
       ),
       body: SafeArea(
         top: false,
         child: _controller.value.isInitialized
             ? Theme(
                 data: ThemeData(
-                    progressIndicatorTheme:  ProgressIndicatorThemeData(
+                    progressIndicatorTheme: ProgressIndicatorThemeData(
                         color: AppColors.whiteColor)),
                 child: Chewie(controller: _chewieController))
             : SizedBox(
@@ -98,7 +98,7 @@ class _TKVideoPlayerState extends State<TKVideoPlayer> {
                       width: double.infinity,
                       round: 0,
                     ),
-                     CircularProgressIndicator(
+                    CircularProgressIndicator(
                       color: AppColors.whiteColor,
                     ),
                   ],

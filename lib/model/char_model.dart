@@ -9,7 +9,7 @@ class ChatModel {
   final bool isRead;
   final String threadId;
   final MediaModel? media;
-  ChatModel( {
+  ChatModel({
     required this.id,
     required this.threadId,
     required this.message,
@@ -30,14 +30,14 @@ class ChatModel {
     MediaModel? media,
   }) {
     return ChatModel(
-        id: id ?? this.id,
-        threadId: threadId ?? this.threadId,
-        message: message ?? this.message,
-        messageTime: messageTime ?? this.messageTime,
-        senderId: senderId ?? this.senderId,
-        isRead: isRead ?? this.isRead,
-        media: media ?? this.media,
-        );
+      id: id ?? this.id,
+      threadId: threadId ?? this.threadId,
+      message: message ?? this.message,
+      messageTime: messageTime ?? this.messageTime,
+      senderId: senderId ?? this.senderId,
+      isRead: isRead ?? this.isRead,
+      media: media ?? this.media,
+    );
   }
 
   Map<String, dynamic> toMap() {
@@ -54,11 +54,11 @@ class ChatModel {
 
   factory ChatModel.fromMap(Map<String, dynamic> map) {
     return ChatModel(
-      id: map['id'] ??"",
-      threadId: map["threadId"]??"",
-      message: map['message'] ??"",
+      id: map['id'] ?? "",
+      threadId: map["threadId"] ?? "",
+      message: map['message'] ?? "",
       messageTime: (map['messageTime'] as Timestamp).toDate(),
-      senderId: map['senderId'] ??"",
+      senderId: map['senderId'] ?? "",
       isRead: map['isRead'] as bool,
       media: map['media'] != null ? MediaModel.fromMap(map['media']) : null,
     );
@@ -121,7 +121,7 @@ class MediaModel {
       url: map['url'] as String,
       thumbnail: map['thumbnail'] ?? "",
       type: map['type'],
-      createdAt: DateTime.parse(map['createdAt'] ??""),
+      createdAt: DateTime.parse(map['createdAt'] ?? ""),
       name: map['name'] as String,
     );
   }

@@ -28,7 +28,7 @@ class ShowUserOnMapWidget extends StatelessWidget {
           child: Row(
             children: [
               AppCacheImage(
-                imageUrl: userModel.profileImage ,
+                imageUrl: userModel.profileImage,
                 height: 124,
                 width: mediaQuery.width / 3.6,
                 round: 6,
@@ -41,27 +41,25 @@ class ShowUserOnMapWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        userModel.firstName ,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style:  TextStyle(fontSize: 15,color: AppColors.whiteColor,fontWeight: FontWeight.w600)
-                      ),
+                      Text(userModel.firstName,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 15,
+                              color: AppColors.whiteColor,
+                              fontWeight: FontWeight.w600)),
                       const SizedBox(height: 3),
                       Expanded(
-                        child: Text(
-                          userModel.location ,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                         style:  TextStyle(fontSize: 13,color: AppColors.whiteColor)
-                        ),
+                        child: Text(userModel.location,
+                            maxLines: 3,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize: 13, color: AppColors.whiteColor)),
                       ),
-                      
                     ],
                   ),
                 ),
               ),
-             
             ],
           ),
         ),

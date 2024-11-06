@@ -11,5 +11,4 @@ class GenderState {
       gender: gender ?? this.gender,
     );
   }
- }
-
+}

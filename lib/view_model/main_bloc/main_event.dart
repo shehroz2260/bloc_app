@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 abstract class MainEvent {}
 
 class ChangeIndexEvent extends MainEvent {
-final int index;
+  final int index;
   ChangeIndexEvent({
     required this.index,
   });
@@ -17,6 +17,4 @@ class ListernerChanges extends MainEvent {
   });
 }
 
-class OnDispose extends MainEvent {
-  
-}
+class OnDispose extends MainEvent {}

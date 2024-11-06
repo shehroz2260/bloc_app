@@ -17,8 +17,8 @@ class SplashView extends StatefulWidget {
 class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 1),(){
-     NetworkService.gotoHomeScreen(context,true);
+    Future.delayed(const Duration(seconds: 1), () {
+      NetworkService.gotoHomeScreen(context, true);
     });
     super.initState();
   }
@@ -32,9 +32,10 @@ class _SplashViewState extends State<SplashView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset(AppAssets.appIcon,height: 150,width: 150),
+            SvgPicture.asset(AppAssets.appIcon, height: 150, width: 150),
             const SizedBox(height: 20),
-            Text(AppStrings.appName,style: AppTextStyle.font30.copyWith(color: AppColors.redColor)),
+            Text(AppStrings.appName,
+                style: AppTextStyle.font30.copyWith(color: AppColors.redColor)),
             const SizedBox(height: 30),
           ],
         ),

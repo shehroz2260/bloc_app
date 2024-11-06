@@ -11,12 +11,10 @@ class TextWithSeeMore extends StatefulWidget {
 }
 
 class TextWithSeeMoreState extends State<TextWithSeeMore> {
-   bool _isExpanded = false;
-    bool _isTextOverflowing = false;
+  bool _isExpanded = false;
+  bool _isTextOverflowing = false;
   @override
   Widget build(BuildContext context) {
-     
-
     return LayoutBuilder(
       builder: (context, constraints) {
         TextPainter textPainter = TextPainter(
@@ -35,8 +33,9 @@ class TextWithSeeMoreState extends State<TextWithSeeMore> {
             Text(
               widget.text,
               style: const TextStyle(fontSize: 16.0),
-              maxLines: _isExpanded ? null : 3, 
-              overflow: _isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
+              maxLines: _isExpanded ? null : 3,
+              overflow:
+                  _isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
             ),
             if (_isTextOverflowing || _isExpanded)
               InkWell(
@@ -47,7 +46,7 @@ class TextWithSeeMoreState extends State<TextWithSeeMore> {
                 },
                 child: Text(
                   _isExpanded ? 'See less' : 'See more',
-                  style:  TextStyle(color: AppColors.redColor),
+                  style: TextStyle(color: AppColors.redColor),
                 ),
               ),
           ],

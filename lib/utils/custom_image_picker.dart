@@ -8,7 +8,6 @@ import 'package:permission_handler/permission_handler.dart';
 import '../src/app_colors.dart';
 import 'permission_utils.dart';
 
-
 enum ActionStyle { normal, destructive, important, importantDestructive }
 
 class CustomDialog extends StatelessWidget {
@@ -102,16 +101,19 @@ class CustomDialog extends StatelessWidget {
 class CameraGalleryBottomSheet extends StatelessWidget {
   Function? cameraClick;
   Function? galleryClick;
-  final bool isVideo ;
+  final bool isVideo;
   Function(File? file)? onFileSelected;
 
-  CameraGalleryBottomSheet({super.key, this.cameraClick, this.galleryClick,this.isVideo = false});
+  CameraGalleryBottomSheet(
+      {super.key, this.cameraClick, this.galleryClick, this.isVideo = false});
 
   File? file;
   final picker = ImagePicker();
 
   Future getImage(ImageSource imageSource, BuildContext context) async {
-    final pickedFile = isVideo? await picker.pickVideo(source: imageSource): await picker.pickImage(source: imageSource);
+    final pickedFile = isVideo
+        ? await picker.pickVideo(source: imageSource)
+        : await picker.pickImage(source: imageSource);
     if (pickedFile != null) {
       file = File(pickedFile.path);
       // onFileSelected.call(file);
@@ -136,13 +138,12 @@ class CameraGalleryBottomSheet extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ListTile(
-            onTap: ()async {
+            onTap: () async {
               //cameraClick.call();
-           await   getImage(ImageSource.camera, context);
+              await getImage(ImageSource.camera, context);
             },
-            leading:
-                 Icon(Icons.camera, size: 30, color: AppColors.redColor),
-            title:  Text(
+            leading: Icon(Icons.camera, size: 30, color: AppColors.redColor),
+            title: Text(
               "Camera",
               style: TextStyle(fontSize: 20, color: AppColors.blackColor),
             ),
@@ -152,17 +153,17 @@ class CameraGalleryBottomSheet extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: ()async {
+            onTap: () async {
               // galleryClick.call();
-             await getImage(ImageSource.gallery, context);
+              await getImage(ImageSource.gallery, context);
               // Navigator.pop(context);
             },
-            leading:  Icon(
+            leading: Icon(
               Icons.browse_gallery,
               size: 30,
               color: AppColors.redColor,
             ),
-            title:  Text(
+            title: Text(
               "Gallery",
               style: TextStyle(fontSize: 20, color: AppColors.blackColor),
             ),
@@ -178,7 +179,9 @@ class CameraGalleryBottomSheet extends StatelessWidget {
 }
 
 Future<File?> kImagePicker(
-    {String title = "Choose value", String message = "", required BuildContext context}) async {
+    {String title = "Choose value",
+    String message = "",
+    required BuildContext context}) async {
   if (!await PermissionUtils(
           permission: Permission.camera,
           permissionName: "Camera",
@@ -210,11 +213,14 @@ Future<File?> kImagePicker(
       input == "0" ? ImageSource.camera : ImageSource.gallery, context);
 }
 
-Future<File?> _getImage(ImageSource imageSource, BuildContext context, [bool isVideo =false]) async {
+Future<File?> _getImage(ImageSource imageSource, BuildContext context,
+    [bool isVideo = false]) async {
   File file;
   final picker = ImagePicker();
 
-  final pickedFile = isVideo? await picker.pickVideo(source: imageSource): await picker.pickImage(source: imageSource);
+  final pickedFile = isVideo
+      ? await picker.pickVideo(source: imageSource)
+      : await picker.pickImage(source: imageSource);
 
   if (pickedFile != null) {
     file = File(pickedFile.path);
@@ -231,19 +237,20 @@ Future<File?> _getImage(ImageSource imageSource, BuildContext context, [bool isV
   }
 }
 
-
-
 Future<File?> kVideoPicker(
-    {String title = "Choose value", String message = "", required BuildContext context}) async {
+    {String title = "Choose value",
+    String message = "",
+    required BuildContext context}) async {
   if (!await storagePermission(context)) {
     return null;
   }
 
- 
-  
   if (Platform.isAndroid) {
     return await showModalBottomSheet(
-        context: context, builder: (context) => CameraGalleryBottomSheet(isVideo: true,));
+        context: context,
+        builder: (context) => CameraGalleryBottomSheet(
+              isVideo: true,
+            ));
   }
   var input =
       await showModalActionSheet(context: context, title: title, actions: [
@@ -252,33 +259,33 @@ Future<File?> kVideoPicker(
   ]);
   if (input?.isEmpty ?? true) return null;
   return _getImage(
-      input == "0" ? ImageSource.camera : ImageSource.gallery, context,true);
+      input == "0" ? ImageSource.camera : ImageSource.gallery, context, true);
 }
 
-    Future<bool> storagePermission(BuildContext context) async {
-    PermissionStatus photo = await Permission.photos.request();
-    PermissionStatus storage = await Permission.storage.request();
-    PermissionStatus audio = await Permission.audio.request();
-    PermissionStatus mic = await Permission.microphone.request();
-    PermissionStatus camera = await Permission.camera.request();
-    if (mic.isGranted &&
-        camera.isGranted &&
-        ((photo.isGranted && audio.isGranted) || storage.isGranted)) {
-      return true;
-    }
+Future<bool> storagePermission(BuildContext context) async {
+  PermissionStatus photo = await Permission.photos.request();
+  PermissionStatus storage = await Permission.storage.request();
+  PermissionStatus audio = await Permission.audio.request();
+  PermissionStatus mic = await Permission.microphone.request();
+  PermissionStatus camera = await Permission.camera.request();
+  if (mic.isGranted &&
+      camera.isGranted &&
+      ((photo.isGranted && audio.isGranted) || storage.isGranted)) {
+    return true;
+  }
 
-    var result = await showOkCancelAlertDialog(
-        context: context,
-        title: "Permission for video recording",
-        message:
-            "Please Enable Camera, Microphone, Audio and photos from setting",
-        okLabel: "Open setting",
-        cancelLabel: "Later");
+  var result = await showOkCancelAlertDialog(
+      context: context,
+      title: "Permission for video recording",
+      message:
+          "Please Enable Camera, Microphone, Audio and photos from setting",
+      okLabel: "Open setting",
+      cancelLabel: "Later");
 
-    if (result == OkCancelResult.ok) {
-      await openAppSettings();
-      return false;
-    }
-
+  if (result == OkCancelResult.ok) {
+    await openAppSettings();
     return false;
   }
+
+  return false;
+}

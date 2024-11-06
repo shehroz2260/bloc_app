@@ -20,11 +20,12 @@ class GenderView extends StatefulWidget {
 class _GenderViewState extends State<GenderView> {
   @override
   void initState() {
-   if(widget.isUpdate){
-    context.read<GenderBloc>().add(OninitGender(context: context));
-   }
+    if (widget.isUpdate) {
+      context.read<GenderBloc>().add(OninitGender(context: context));
+    }
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,64 +39,82 @@ class _GenderViewState extends State<GenderView> {
               children: [
                 const AppHeight(height: 60),
                 const CustomBackButton(),
-                 const AppHeight(height: 30),
-                 Text(AppStrings.iAmA,style: AppTextStyle.font30.copyWith(color: AppColors.blackColor)),
-                 const AppHeight(height: 80),
+                const AppHeight(height: 30),
+                Text(AppStrings.iAmA,
+                    style: AppTextStyle.font30
+                        .copyWith(color: AppColors.blackColor)),
+                const AppHeight(height: 80),
                 GestureDetector(
                   onTap: () {
-                     context.read<GenderBloc>().add(PickGender(gender: 1));
+                    context.read<GenderBloc>().add(PickGender(gender: 1));
                   },
                   child: Container(
-                     width: double.infinity,
-                     decoration: BoxDecoration(
-                    color: state.gender == 1? AppColors.redColor: null,
-                      borderRadius: BorderRadius.circular(15),
-                      border:state.gender != 1? Border.all(
-                     color: AppColors.borderGreyColor,
-                   ) : null
-                   ),
-                         padding:  const EdgeInsets.symmetric(vertical: 16,horizontal: 20),
-                  
-                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                  Text("Male",style: AppTextStyle.font16.copyWith(fontWeight: FontWeight.bold,color: state.gender == 1? AppColors.whiteColor:  AppColors.redColor)),
-                  if(state.gender == 1)
-                  Icon(Icons.check,color: AppColors.whiteColor)
-                     ],
-                  ),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: state.gender == 1 ? AppColors.redColor : null,
+                        borderRadius: BorderRadius.circular(15),
+                        border: state.gender != 1
+                            ? Border.all(
+                                color: AppColors.borderGreyColor,
+                              )
+                            : null),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 16, horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Male",
+                            style: AppTextStyle.font16.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: state.gender == 1
+                                    ? AppColors.whiteColor
+                                    : AppColors.redColor)),
+                        if (state.gender == 1)
+                          Icon(Icons.check, color: AppColors.whiteColor)
+                      ],
+                    ),
                   ),
                 ),
                 const AppHeight(height: 30),
                 GestureDetector(
                   onTap: () {
-                     context.read<GenderBloc>().add(PickGender(gender: 2));
+                    context.read<GenderBloc>().add(PickGender(gender: 2));
                   },
                   child: Container(
-                     width: double.infinity,
-                     decoration: BoxDecoration(
-                    color: state.gender == 2? AppColors.redColor: null,
-                      borderRadius: BorderRadius.circular(15),
-                      border:state.gender != 2? Border.all(
-                     color: AppColors.borderGreyColor,
-                   ) : null
-                   ),
-                         padding:  const EdgeInsets.symmetric(vertical: 16,horizontal: 20),
-                  
-                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                  Text("Female",style: AppTextStyle.font16.copyWith(fontWeight: FontWeight.bold,color: state.gender == 2? AppColors.whiteColor:  AppColors.redColor)),
-                  if(state.gender == 2)
-                  Icon(Icons.check,color: AppColors.whiteColor)
-                     ],
-                  ),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: state.gender == 2 ? AppColors.redColor : null,
+                        borderRadius: BorderRadius.circular(15),
+                        border: state.gender != 2
+                            ? Border.all(
+                                color: AppColors.borderGreyColor,
+                              )
+                            : null),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 16, horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Female",
+                            style: AppTextStyle.font16.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: state.gender == 2
+                                    ? AppColors.whiteColor
+                                    : AppColors.redColor)),
+                        if (state.gender == 2)
+                          Icon(Icons.check, color: AppColors.whiteColor)
+                      ],
+                    ),
                   ),
                 ),
                 const Expanded(child: SizedBox()),
-                 CustomNewButton(btnName:widget.isUpdate?"Update": AppStrings.next,onTap: () {
-                   context.read<GenderBloc>().add(OnNextEvent(context: context,isUpdate: widget.isUpdate));
-                 },),
+                CustomNewButton(
+                  btnName: widget.isUpdate ? "Update" : AppStrings.next,
+                  onTap: () {
+                    context.read<GenderBloc>().add(OnNextEvent(
+                        context: context, isUpdate: widget.isUpdate));
+                  },
+                ),
                 const AppHeight(height: 40)
               ],
             );

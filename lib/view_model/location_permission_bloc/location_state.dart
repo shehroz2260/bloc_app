@@ -1,2 +1,1 @@
- class LocationState {}
-
+class LocationState {}

@@ -12,5 +12,4 @@ class PhoneNumberState {
       cCode: cCode ?? this.cCode,
     );
   }
- }
-
+}

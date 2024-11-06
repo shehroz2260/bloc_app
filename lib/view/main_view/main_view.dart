@@ -19,39 +19,44 @@ class _MainViewState extends State<MainView> {
     context.read<MainBloc>().add(ListernerChanges(context: context));
     super.initState();
   }
+
   MainBloc ancestorContext = MainBloc();
   @override
   void didChangeDependencies() {
-   ancestorContext = MyInheritedWidget(bloc: context.read<MainBloc>(),child: const SizedBox()).bloc;
+    ancestorContext = MyInheritedWidget(
+            bloc: context.read<MainBloc>(), child: const SizedBox())
+        .bloc;
     super.didChangeDependencies();
   }
+
   @override
   void dispose() {
     ancestorContext.add(OnDispose());
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.whiteColor,
       body: BlocBuilder<MainBloc, MainState>(
         builder: (context, state) {
-          return  Column(
-              children: [
-                Expanded(child: state.currentBody),
-                CustomNavigationBar(ontap: _onIndexChange,currentIndex: state.currentIndex)
-              ],
-            );
+          return Column(
+            children: [
+              Expanded(child: state.currentBody),
+              CustomNavigationBar(
+                  ontap: _onIndexChange, currentIndex: state.currentIndex)
+            ],
+          );
         },
       ),
     );
   }
-  void  _onIndexChange(int index){
-     context.read<MainBloc>().add(ChangeIndexEvent(index: index));
+
+  void _onIndexChange(int index) {
+    context.read<MainBloc>().add(ChangeIndexEvent(index: index));
   }
 }
-
-
 
 class MyInheritedWidget extends InheritedWidget {
   final MainBloc bloc;

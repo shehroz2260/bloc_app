@@ -25,7 +25,8 @@ import 'firebase_options.dart';
 import 'view_model/gender_bloc/gender_bloc.dart';
 import 'view_model/location_permission_bloc/location_bloc.dart';
 import 'view_model/chat_bloc/chat_bloc.dart';
-void main() async{
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
@@ -39,13 +40,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
-@override
+  @override
   void initState() {
-   WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
 
     super.initState();
   }
-    @override
+
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       _updateOnLineAndOfflineStatus(true);
@@ -54,11 +56,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     }
   }
 
-_updateOnLineAndOfflineStatus(bool isOnline)async{
-await FirebaseFirestore.instance.collection(UserModel.tableName).doc(FirebaseAuth.instance.currentUser?.uid??"").set({
-  "isOnline" : isOnline
-},SetOptions(merge: true));
-}
+  _updateOnLineAndOfflineStatus(bool isOnline) async {
+    await FirebaseFirestore.instance
+        .collection(UserModel.tableName)
+        .doc(FirebaseAuth.instance.currentUser?.uid ?? "")
+        .set({"isOnline": isOnline}, SetOptions(merge: true));
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -83,8 +87,7 @@ await FirebaseFirestore.instance.collection(UserModel.tableName).doc(FirebaseAut
         BlocProvider(create: (context) => OtpBloc()),
         BlocProvider(create: (context) => EditBloc()),
       ],
-      child: 
-       GestureDetector(
+      child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
         child: const MaterialApp(
           debugShowCheckedModeBanner: false,

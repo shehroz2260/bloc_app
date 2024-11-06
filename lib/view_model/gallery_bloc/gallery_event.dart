@@ -11,7 +11,7 @@ class SelectImage extends GalleryEvent {
 
 class ClearImage extends GalleryEvent {
   final int index;
-   final BuildContext context;
+  final BuildContext context;
   ClearImage({
     required this.index,
     required this.context,

@@ -1,4 +1,5 @@
 import 'package:chat_with_bloc/model/user_model.dart';
+
 class UserBaseState {
   final UserModel userData;
   UserBaseState({
@@ -12,4 +13,4 @@ class UserBaseState {
       userData: userData ?? this.userData,
     );
   }
- }
+}

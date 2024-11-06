@@ -6,16 +6,15 @@ class DobState {
   final File? image;
   final String imgString;
   final String dateString;
-  DobState({
-     this.dob,
-    this.image,
-    required this.imgString,
-    required this.dateString
-  });
+  DobState(
+      {this.dob,
+      this.image,
+      required this.imgString,
+      required this.dateString});
 
   DobState copyWith({
     DateTime? dob,
-     File? image,
+    File? image,
     String? imgString,
     String? dateString,
   }) {
@@ -26,6 +25,4 @@ class DobState {
       dateString: dateString ?? this.dateString,
     );
   }
- }
-
-  
+}

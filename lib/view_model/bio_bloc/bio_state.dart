@@ -1,1 +1,1 @@
- class BioState {}
+class BioState {}

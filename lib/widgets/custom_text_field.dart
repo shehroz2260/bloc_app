@@ -9,7 +9,7 @@ import '../utils/media_type.dart';
 
 class CustomTextField extends StatefulWidget {
   final TextEditingController? textEditingController;
-  final void Function(String)?  onChange;
+  final void Function(String)? onChange;
   final String? Function(String?)? validator;
   final String hintText;
   final bool isPasswordField;
@@ -23,21 +23,36 @@ class CustomTextField extends StatefulWidget {
   final bool autofocus;
   final int maxLines;
   final TextInputType? keyboardType;
-  const CustomTextField({
-    super.key,this.errorMaxLines, this.autofocus = false, this.prefixIcon,this.keyboardType, this.maxLength, this.enabled,this.maxLines = 1, this.textEditingController, this.onChange, required this.hintText,this.validator, this.isPasswordField =false, this.floatingLabelBehavior, this.labelText,  this.isSowPrefixcon = false
-  });
+  const CustomTextField(
+      {super.key,
+      this.errorMaxLines,
+      this.autofocus = false,
+      this.prefixIcon,
+      this.keyboardType,
+      this.maxLength,
+      this.enabled,
+      this.maxLines = 1,
+      this.textEditingController,
+      this.onChange,
+      required this.hintText,
+      this.validator,
+      this.isPasswordField = false,
+      this.floatingLabelBehavior,
+      this.labelText,
+      this.isSowPrefixcon = false});
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-bool isVisible = false;
-void visiblePassword(){
-  setState(() {
-    isVisible = !isVisible;
-  });
-}
+  bool isVisible = false;
+  void visiblePassword() {
+    setState(() {
+      isVisible = !isVisible;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -52,40 +67,46 @@ void visiblePassword(){
       obscureText: isVisible,
       style: AppTextStyle.font16.copyWith(color: AppColors.redColor),
       maxLines: widget.maxLines,
-      decoration:  InputDecoration(
+      decoration: InputDecoration(
         errorMaxLines: widget.errorMaxLines,
-        prefixIcon:widget.prefixIcon?? (widget.isSowPrefixcon? Icon(Icons.search,color: AppColors.borderGreyColor): null),
+        prefixIcon: widget.prefixIcon ??
+            (widget.isSowPrefixcon
+                ? Icon(Icons.search, color: AppColors.borderGreyColor)
+                : null),
         labelText: widget.labelText,
         floatingLabelBehavior: widget.floatingLabelBehavior,
-        suffixIcon:widget.isPasswordField? Padding(padding: const EdgeInsets.all(5),child: GestureDetector(
-          onTap: visiblePassword,
-          child: Icon(isVisible? Icons.visibility: Icons.visibility_off,color: AppColors.redColor,)),):null,
+        suffixIcon: widget.isPasswordField
+            ? Padding(
+                padding: const EdgeInsets.all(5),
+                child: GestureDetector(
+                    onTap: visiblePassword,
+                    child: Icon(
+                      isVisible ? Icons.visibility : Icons.visibility_off,
+                      color: AppColors.redColor,
+                    )),
+              )
+            : null,
         focusedErrorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(15),
-        borderSide: BorderSide(color: AppColors.borderGreyColor,width: 1)
-        ),
-      hintText: widget.hintText,
-      hintStyle: AppTextStyle.font16.copyWith(color: AppColors.borderGreyColor),
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide(color: AppColors.borderGreyColor, width: 1)),
+        hintText: widget.hintText,
+        hintStyle:
+            AppTextStyle.font16.copyWith(color: AppColors.borderGreyColor),
         border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(15),
-        borderSide: BorderSide(color: AppColors.borderGreyColor,width: 1)
-        ),
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide(color: AppColors.borderGreyColor, width: 1)),
         focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(15),
-        borderSide: BorderSide(color: AppColors.borderGreyColor,width: 1)
-        ),
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide(color: AppColors.borderGreyColor, width: 1)),
         enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(15),
-        borderSide: BorderSide(color: AppColors.borderGreyColor,width: 1)
-        ),
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide(color: AppColors.borderGreyColor, width: 1)),
         errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(15),
-        borderSide: BorderSide(color: AppColors.borderGreyColor,width: 1)
-        ),
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide(color: AppColors.borderGreyColor, width: 1)),
         disabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(15),
-        borderSide: BorderSide(color: AppColors.borderGreyColor,width: 1)
-        ),
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide(color: AppColors.borderGreyColor, width: 1)),
       ),
     );
   }
@@ -94,14 +115,24 @@ void visiblePassword(){
 class ChatTextField extends StatelessWidget {
   const ChatTextField({
     super.key,
-    required this.controller, this.onChanged,required  this.isRecording,required  this.duration, required this.pickFiles, required this.sendMessage, required this.startOrStopRecording, this.thumbnail, this.pickFile, required this.isLoading, required this.isDisable,
+    required this.controller,
+    this.onChanged,
+    required this.isRecording,
+    required this.duration,
+    required this.pickFiles,
+    required this.sendMessage,
+    required this.startOrStopRecording,
+    this.thumbnail,
+    this.pickFile,
+    required this.isLoading,
+    required this.isDisable,
   });
 
   final TextEditingController controller;
   final void Function(String)? onChanged;
   final bool isRecording;
   final Duration duration;
-  final void Function() pickFiles , sendMessage , startOrStopRecording;
+  final void Function() pickFiles, sendMessage, startOrStopRecording;
   final File? thumbnail;
   final File? pickFile;
   final bool isLoading;
@@ -112,70 +143,88 @@ class ChatTextField extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
-          Expanded(child: TextFormField(
+          Expanded(
+              child: TextFormField(
             minLines: 1,
             maxLines: 5,
-            onTapOutside: (event) async{
-            },
-            controller: controller ,
+            onTapOutside: (event) async {},
+            controller: controller,
             onChanged: onChanged,
             decoration: InputDecoration(
-              suffixIcon: isRecording?  Text(AppFuncs.formatDuration(duration)): GestureDetector(
-                onTap: pickFiles,
-                child:MediaType.type == MediaType.video && thumbnail != null? ClipRRect(
-                  borderRadius: BorderRadius.circular(35),
-                  child: Image.file(thumbnail!,height: 35,width: 35,fit: BoxFit.cover,)): MediaType.type == MediaType.image && pickFile != null? ClipRRect(
-                    borderRadius: BorderRadius.circular(35),
-                    child: Image.file(pickFile!,height: 35,width: 35,fit: BoxFit.cover,)): Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SvgPicture.asset(AppAssets.filesIcon,height: 20,width: 20,),
-                    )),
+              suffixIcon: isRecording
+                  ? Text(AppFuncs.formatDuration(duration))
+                  : GestureDetector(
+                      onTap: pickFiles,
+                      child:
+                          MediaType.type == MediaType.video && thumbnail != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(35),
+                                  child: Image.file(
+                                    thumbnail!,
+                                    height: 35,
+                                    width: 35,
+                                    fit: BoxFit.cover,
+                                  ))
+                              : MediaType.type == MediaType.image &&
+                                      pickFile != null
+                                  ? ClipRRect(
+                                      borderRadius: BorderRadius.circular(35),
+                                      child: Image.file(
+                                        pickFile!,
+                                        height: 35,
+                                        width: 35,
+                                        fit: BoxFit.cover,
+                                      ))
+                                  : Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: SvgPicture.asset(
+                                        AppAssets.filesIcon,
+                                        height: 20,
+                                        width: 20,
+                                      ),
+                                    )),
               hintText: "Your message",
               hintStyle: TextStyle(color: AppColors.borderGreyColor),
               enabledBorder: OutlineInputBorder(
-                borderSide:  BorderSide(
-                   color: AppColors.borderGreyColor,
-                   width: 1),
-                borderRadius: BorderRadius.circular(18)
-              ),
+                  borderSide:
+                      BorderSide(color: AppColors.borderGreyColor, width: 1),
+                  borderRadius: BorderRadius.circular(18)),
               disabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                   color: AppColors.borderGreyColor,
-                   width: 1),
-                borderRadius: BorderRadius.circular(18)
-              ),
+                  borderSide:
+                      BorderSide(color: AppColors.borderGreyColor, width: 1),
+                  borderRadius: BorderRadius.circular(18)),
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                   color: AppColors.borderGreyColor,
-                   width: 1),
-                borderRadius: BorderRadius.circular(18)
-              ),
+                  borderSide:
+                      BorderSide(color: AppColors.borderGreyColor, width: 1),
+                  borderRadius: BorderRadius.circular(18)),
               border: OutlineInputBorder(
-                borderSide: BorderSide(
-                   color: AppColors.borderGreyColor,
-                   width: 1),
-                borderRadius: BorderRadius.circular(18)
-              ),
-     
+                  borderSide:
+                      BorderSide(color: AppColors.borderGreyColor, width: 1),
+                  borderRadius: BorderRadius.circular(18)),
             ),
-            
           )),
           const SizedBox(width: 10),
-         GestureDetector(
-          onTap:isLoading? null: isDisable? startOrStopRecording: sendMessage,
-           child: Container(
-            padding: const EdgeInsets.all(13),
-            decoration:  BoxDecoration(
-              color:AppColors.whiteColor,
-              borderRadius: BorderRadius.circular(15),
-              border: Border.all(
-                color: AppColors.borderGreyColor
-              )
+          GestureDetector(
+            onTap: isLoading
+                ? null
+                : isDisable
+                    ? startOrStopRecording
+                    : sendMessage,
+            child: Container(
+              padding: const EdgeInsets.all(13),
+              decoration: BoxDecoration(
+                  color: AppColors.whiteColor,
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: AppColors.borderGreyColor)),
+              child: Icon(
+                  isDisable && isRecording
+                      ? Icons.stop
+                      : isDisable && !isRecording
+                          ? Icons.mic
+                          : Icons.send_rounded,
+                  color: AppColors.redColor),
             ),
-            child:  Icon( isDisable && isRecording?Icons.stop: isDisable && !isRecording? Icons.mic: Icons.send_rounded,color: AppColors.redColor),
-           ),
-         ),
-                
+          ),
         ],
       ),
     );

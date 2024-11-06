@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 abstract class SignUpEvent {}
 
-
 class OnSignUpEvent extends SignUpEvent {
   final BuildContext context;
   final GlobalKey<FormState> formKey;

@@ -7,17 +7,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../utils/loading_dialog.dart';
 import 'bio_event.dart';
 import 'bio_state.dart';
+
 class BioBloc extends Bloc<BioEvent, BioState> {
   BioBloc() : super(BioState()) {
     on<OnContinue>(_onContinue);
   }
 
-  _onContinue(OnContinue event , Emitter<BioState> emit)async{
+  _onContinue(OnContinue event, Emitter<BioState> emit) async {
     LoadingDialog.showProgress(event.context);
-var user = event.context.read<UserBaseBloc>().state.userData;
-user = user.copyWith(bio: event.bioController.text,about: event.aboutController.text);
-NetworkService.updateUser(user);
-event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
+    var user = event.context.read<UserBaseBloc>().state.userData;
+    user = user.copyWith(
+        bio: event.bioController.text, about: event.aboutController.text);
+    NetworkService.updateUser(user);
+    event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
     LoadingDialog.hideProgress(event.context);
     Go.offAll(event.context, const MainView());
     event.aboutController.clear();

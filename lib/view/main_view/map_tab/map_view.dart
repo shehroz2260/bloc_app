@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 // import '../../../view_model/map_bloc/map_state.dart';
 
 class MapScreen extends StatefulWidget {
-   const MapScreen({super.key});
+  const MapScreen({super.key});
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -24,7 +24,7 @@ class _MapScreenState extends State<MapScreen> {
 
   //   context.read<MapBloc>().add(FetchCurrentLocation(context: context));
   //   // context.read<MapBloc>().add(SetPlacesMarker(context: context));
-    
+
   //   });
   //   super.initState();
   // }
@@ -70,7 +70,7 @@ class _MapScreenState extends State<MapScreen> {
       //                   userModel: state.selectedUser,
       //                   onTap: () {
       //                     context.read<MapBloc>().add(HideWidgetEvent());
-                    
+
       //                     Go.to(
       //                         context, ProfilePage(
       //                               user: state.selectedUser,
@@ -86,7 +86,6 @@ class _MapScreenState extends State<MapScreen> {
       //     );
       //   }
       // ),
-     
     );
   }
 }

@@ -17,36 +17,37 @@ class GalleryBloc extends Bloc<GalleryEvent, GalleryState> {
     on<ClearImage>(_onClearImage);
   }
 
-  _onImageSelect(SelectImage event , Emitter<GalleryState>emit)async{
-     var file = await kImagePicker(context: event.context);
+  _onImageSelect(SelectImage event, Emitter<GalleryState> emit) async {
+    var file = await kImagePicker(context: event.context);
     if (file == null) {
       return;
     }
-     UserModel model = event.context.read<UserBaseBloc>().state.userData;
-     if (model.galleryImages.length == 6) {
+    UserModel model = event.context.read<UserBaseBloc>().state.userData;
+    if (model.galleryImages.length == 6) {
       showOkAlertDialog(
           context: event.context,
           message: "Permission Only six images are select");
       return;
     }
     LoadingDialog.showProgress(event.context);
-     final url = await FirebaseStorageService().uploadImage(
-        "gallery/${AppFuncs.generateRandomString(15)}", file.path);
+    final url = await FirebaseStorageService()
+        .uploadImage("gallery/${AppFuncs.generateRandomString(15)}", file.path);
 
-      model.galleryImages.add(url);
-     model = model.copyWith(galleryImages: model.galleryImages);
-      event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: model));
-     NetworkService.updateUser(model);
-       LoadingDialog.hideProgress(event.context);
+    model.galleryImages.add(url);
+    model = model.copyWith(galleryImages: model.galleryImages);
+    event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: model));
+    NetworkService.updateUser(model);
+    LoadingDialog.hideProgress(event.context);
   }
 
-  _onClearImage(ClearImage event , Emitter<GalleryState>emit){
+  _onClearImage(ClearImage event, Emitter<GalleryState> emit) {
     final user = event.context.read<UserBaseBloc>().state.userData;
     if (user.galleryImages.isNotEmpty) {
-      FirebaseStorageService().deleteFile(user.galleryImages[event.index],event.context);
+      FirebaseStorageService()
+          .deleteFile(user.galleryImages[event.index], event.context);
       user.galleryImages.removeAt(event.index);
       event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
-       NetworkService.updateUser(user);
+      NetworkService.updateUser(user);
     }
   }
 }

@@ -9,12 +9,13 @@ class AppHeight extends StatelessWidget {
     return SizedBox(height: height);
   }
 }
+
 class AppWidth extends StatelessWidget {
   final double width;
   const AppWidth({super.key, required this.width});
 
   @override
   Widget build(BuildContext context) {
-    return  SizedBox(width: width);
+    return SizedBox(width: width);
   }
 }

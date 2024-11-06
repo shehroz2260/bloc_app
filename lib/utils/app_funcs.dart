@@ -8,12 +8,13 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:intl/intl.dart';
 
 class AppFuncs {
-static  String generateRandomString(int len) {
-  var r = Random();
-  const chars =
-      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
-  return List.generate(len, (index) => chars[r.nextInt(chars.length)]).join();
-}
+  static String generateRandomString(int len) {
+    var r = Random();
+    const chars =
+        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    return List.generate(len, (index) => chars[r.nextInt(chars.length)]).join();
+  }
+
   static String getFormattedDate(DateTime date) {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
@@ -26,7 +27,9 @@ static  String generateRandomString(int len) {
             : DateFormat("MM/dd/yyyy").format(noTimeDate);
     return formattedDate;
   }
-      static Future<File?> getCacheFile(String url, String id,BuildContext context) async {
+
+  static Future<File?> getCacheFile(
+      String url, String id, BuildContext context) async {
     try {
       var olderFile = await DefaultCacheManager().getFileFromMemory(id);
       if (await olderFile?.file.exists() ?? false) return olderFile?.file;
@@ -38,12 +41,14 @@ static  String generateRandomString(int len) {
         return file;
       }
     } catch (e) {
-      showOkAlertDialog(context: context,message: e.toString(),title: "Error");
+      showOkAlertDialog(
+          context: context, message: e.toString(), title: "Error");
     }
 
     return null;
   }
-  static  String formatDuration(Duration duration) {
+
+  static String formatDuration(Duration duration) {
     String twoDigits(int n) {
       if (n >= 10) return "$n";
       return "0$n";

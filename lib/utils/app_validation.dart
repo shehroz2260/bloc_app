@@ -1,21 +1,20 @@
 import '../src/app_string.dart';
 
 class AppValidation {
-   static String? emailValidation(String? value) {
-   final regex = RegExp(
-            r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
+  static String? emailValidation(String? value) {
+    final regex = RegExp(
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
     if ((value ?? "").isEmpty) {
       return ErrorStrings.emailReq;
     }
-    if (!regex.hasMatch(value??"")) {
-
+    if (!regex.hasMatch(value ?? "")) {
       return ErrorStrings.emailInvalid;
     }
 
     return null;
   }
 
- static String? passwordValidation(String? value) {
+  static String? passwordValidation(String? value) {
     if ((value ?? "").isEmpty) {
       return ErrorStrings.passwordReq;
     }
@@ -25,47 +24,49 @@ class AppValidation {
 
     return null;
   }
- static String? nameValidation(String? value) {
+
+  static String? nameValidation(String? value) {
     if ((value ?? "").isEmpty) {
       return ErrorStrings.nameReq;
     }
     return null;
   }
-   static String? userNameValidation(String? value) {
+
+  static String? userNameValidation(String? value) {
     if ((value ?? "").isEmpty) {
       return ErrorStrings.usernameReq;
     }
     return null;
   }
- static String? dobValidation(String? value) {
+
+  static String? dobValidation(String? value) {
     if ((value ?? "").isEmpty) {
       return ErrorStrings.birthDayReq;
     }
     return null;
   }
 
-  static  String? descValidation(String? value) {
+  static String? descValidation(String? value) {
     if ((value ?? "").isEmpty) {
-      
       return ErrorStrings.descReq;
     }
-   
+
     return null;
   }
-  static  String? bioValidation(String? value) {
+
+  static String? bioValidation(String? value) {
     if ((value ?? "").isEmpty) {
-      
       return "Bio is required";
     }
-   
+
     return null;
   }
-  static  String? aboutValidation(String? value) {
+
+  static String? aboutValidation(String? value) {
     if ((value ?? "").isEmpty) {
-      
       return "About is required";
     }
-   
+
     return null;
   }
 }

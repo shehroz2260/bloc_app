@@ -1,4 +1,3 @@
-
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/services/network_service.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
@@ -32,20 +31,18 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks.first;
 
-      return  
-            '${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.country}';
-    
+        return '${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.country}';
       } else {
-       return  'No address found';
-       
+        return 'No address found';
       }
     } catch (e) {
-   return   'Error: $e';
-      
+      return 'Error: $e';
     }
   }
-_onRequestPermission(OnRequestPermissionEvent event , Emitter<LocationState> emit)async{
-   if (!await PermissionUtils(
+
+  _onRequestPermission(
+      OnRequestPermissionEvent event, Emitter<LocationState> emit) async {
+    if (!await PermissionUtils(
             context: event.context,
             permission: Permission.locationWhenInUse,
             permissionName: "Location")
@@ -66,29 +63,29 @@ _onRequestPermission(OnRequestPermissionEvent event , Emitter<LocationState> emi
       return;
     }
 
-      LoadingDialog.showProgress(event.context);
+    LoadingDialog.showProgress(event.context);
     position = await determinePosition();
-   String address = await getAddressFromLatLng();
-    
-try{
-  var userModel = BlocProvider.of<UserBaseBloc>(event.context).state.userData;
-userModel = userModel.copyWith(
-  lat: position?.latitude??0.0,
-  lng: position?.longitude??0.0,
-  location: address
-);
-event.context.read<UserBaseBloc>().add(UpdateUserEvent( userModel: userModel));
-NetworkService.updateUser(userModel);
+    String address = await getAddressFromLatLng();
 
-   LoadingDialog.hideProgress(event.context);
+    try {
+      var userModel =
+          BlocProvider.of<UserBaseBloc>(event.context).state.userData;
+      userModel = userModel.copyWith(
+          lat: position?.latitude ?? 0.0,
+          lng: position?.longitude ?? 0.0,
+          location: address);
+      event.context
+          .read<UserBaseBloc>()
+          .add(UpdateUserEvent(userModel: userModel));
+      NetworkService.updateUser(userModel);
 
-  Go.offAll(event.context, const MainView());
+      LoadingDialog.hideProgress(event.context);
 
- 
-}on FirebaseException catch (e){
- LoadingDialog.hideProgress(event.context);
-  showOkAlertDialog(context: event.context,message: e.message,title: "Error");
-}
-   
-}
+      Go.offAll(event.context, const MainView());
+    } on FirebaseException catch (e) {
+      LoadingDialog.hideProgress(event.context);
+      showOkAlertDialog(
+          context: event.context, message: e.message, title: "Error");
+    }
+  }
 }

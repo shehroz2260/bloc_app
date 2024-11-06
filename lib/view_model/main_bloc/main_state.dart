@@ -17,5 +17,4 @@ class MainState {
       currentBody: currentBody ?? this.currentBody,
     );
   }
- }
-
+}
