@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/view_model/gallery_bloc/gallery_bloc.dart';
 import 'package:chat_with_bloc/view_model/gallery_bloc/gallery_event.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
@@ -64,14 +65,29 @@ class GallerView extends StatelessWidget {
                                   ),
                                 ),
                                 GestureDetector(
-                                  onTap: () => context.read<GalleryBloc>().add(
-                                      ClearImage(
-                                          index: index, context: context)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5),
-                                    child: Icon(
-                                      Icons.cancel,
-                                      color: AppColors.borderGreyColor,
+                                  onTap: () async {
+                                    var res = await showOkCancelAlertDialog(
+                                        context: context,
+                                        message:
+                                            "Do you really want to delete image, this action is permanent and cannot be undo",
+                                        title: "Are you sure!",
+                                        okLabel: "Yes",
+                                        cancelLabel: "No");
+                                    if (res == OkCancelResult.cancel) return;
+                                    context.read<GalleryBloc>().add(ClearImage(
+                                        index: index, context: context));
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                            color: AppColors.redColor),
+                                        color: AppColors.whiteColor
+                                            .withOpacity(0.6)),
+                                    padding: const EdgeInsets.all(4),
+                                    child: const Icon(
+                                      Icons.close,
+                                      color: Colors.red,
                                     ),
                                   ),
                                 )
