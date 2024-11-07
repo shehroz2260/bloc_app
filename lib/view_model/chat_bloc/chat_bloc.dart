@@ -572,6 +572,17 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       if (okCancelRes == OkCancelResult.cancel) return;
       add(ClearChat(context: event.context));
     }
+    if (result == "2") {
+      var okCanRes = await showOkCancelAlertDialog(
+          context: event.context,
+          message:
+              "Do you really want to report ${event.userModel.firstName}, This action action is permanent and cannot be undo",
+          title: "Report");
+      if (okCanRes == OkCancelResult.cancel) return;
+      final options = await NetworkService.reportUser(
+          event.userModel, event.context, listenThread);
+      if (options.isEmpty) return;
+    }
     if (result == "3") {
       var blockRslt = await showOkCancelAlertDialog(
           context: event.context,

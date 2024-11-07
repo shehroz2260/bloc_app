@@ -179,7 +179,6 @@ class NetworkService {
         .set({
       "myLikes": FieldValue.arrayRemove([likee.uid]),
       "matches": FieldValue.arrayRemove([likee.uid]),
-      "otherLikes": FieldValue.arrayRemove([likee.uid]),
       "myDisLikes": FieldValue.arrayUnion([likee.uid])
     }, SetOptions(merge: true));
     await FirebaseFirestore.instance
@@ -188,7 +187,6 @@ class NetworkService {
         .set({
       "otherLikes": FieldValue.arrayRemove([liker.uid]),
       "matches": FieldValue.arrayRemove([liker.uid]),
-      "myLikes": FieldValue.arrayRemove([liker.uid]),
       "otherDislikes": FieldValue.arrayUnion([liker.uid])
     }, SetOptions(merge: true));
   }
@@ -230,7 +228,7 @@ class NetworkService {
   }
 
   static Future<String> reportUser(
-      UserModel userModel, BuildContext context) async {
+      UserModel userModel, BuildContext context, ThreadModel? model) async {
     var options = await showConfirmationDialog(
         context: context,
         title: AppStrings.pleaseSelectOption,
@@ -256,12 +254,43 @@ class NetworkService {
         senderId: FirebaseAuth.instance.currentUser?.uid ?? "",
         reportedUserId: userModel.uid);
     await reportMessageModel.addreportUser();
-
-    showOkAlertDialog(
+    if (model != null) {
+      await FirebaseFirestore.instance
+          .collection(ThreadModel.tableName)
+          .doc(model.threadId)
+          .set({"is_Reported": true}, SetOptions(merge: true));
+    }
+    await showOkAlertDialog(
         context: context,
         message: AppStrings.userReportedSuccessFully,
         title: AppStrings.reportUser);
+    if (model != null) {
+      Go.back(context);
+    }
     return options ?? "";
+  }
+
+  static Future<void> deleteConversation(
+      ThreadModel threadModel, String threadId) async {
+    await FirebaseFirestore.instance
+        .collection(ThreadModel.tableName)
+        .doc(threadId)
+        .delete();
+    final instance = FirebaseFirestore.instance;
+    final batch = instance.batch();
+    var collection = instance
+        .collection(ThreadModel.tableName)
+        .doc(threadId)
+        .collection(ThreadModel.tableName);
+    var snapshots = await collection.get();
+    for (var doc in snapshots.docs) {
+      batch.delete(doc.reference);
+    }
+    await batch.commit();
+    await FirebaseFirestore.instance
+        .collection(ThreadModel.tableName)
+        .doc(threadId)
+        .delete();
   }
 }
 

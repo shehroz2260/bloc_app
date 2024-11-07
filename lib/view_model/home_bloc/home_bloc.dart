@@ -107,7 +107,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         okLabel: "Report");
     if (res == OkCancelResult.cancel) return;
     String options =
-        await NetworkService.reportUser(event.userModel, event.context);
+        await NetworkService.reportUser(event.userModel, event.context, null);
     if (options.isEmpty) return;
     add(RemoveUserFromList(userModel: event.userModel));
   }
