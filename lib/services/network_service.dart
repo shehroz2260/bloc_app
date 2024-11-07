@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/services/auth_services.dart';
+import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/utils/app_funcs.dart';
+import 'package:chat_with_bloc/utils/loading_dialog.dart';
 import 'package:chat_with_bloc/view/account_creation_view/bio_view.dart';
 import 'package:chat_with_bloc/view/main_view/main_view.dart';
 import 'package:chat_with_bloc/view/account_creation_view/dob_pick_view.dart';
@@ -18,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../model/char_model.dart';
+import '../model/report_user_model.dart';
 import '../model/thread_model.dart';
 import '../view/account_creation_view/location_view.dart';
 import '../view/main_view/home_tab/congrats_message_view.dart';
@@ -117,9 +121,7 @@ class NetworkService {
     context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
     if (isMatch) {
       await createNewThread(liker, likee, null);
-      // showOkAlertDialog(context: context,message: "Congrats you have new friend ${likee.firstName}");
-      // await sendMatchNotification(liker, likee);
-
+      LoadingDialog.hideProgress(context);
       Go.to(context, CongratsMessageView(user: likee));
     }
   }
@@ -225,6 +227,41 @@ class NetworkService {
       "lastMessage": "UnBlocked",
       "lastMessageTime": Timestamp.now()
     }, SetOptions(merge: true));
+  }
+
+  static Future<String> reportUser(
+      UserModel userModel, BuildContext context) async {
+    var options = await showConfirmationDialog(
+        context: context,
+        title: AppStrings.pleaseSelectOption,
+        actions: [
+          const AlertDialogAction(
+              label: AppStrings.option1, key: AppStrings.option1),
+          const AlertDialogAction(
+              label: AppStrings.option2, key: AppStrings.option2),
+          const AlertDialogAction(
+              label: AppStrings.option3, key: AppStrings.option3),
+          const AlertDialogAction(
+              label: AppStrings.option4, key: AppStrings.option4),
+          const AlertDialogAction(
+              label: AppStrings.option5, key: AppStrings.option5),
+        ]);
+    if ((options ?? "").isEmpty) {
+      return "";
+    }
+    ReportUserModel reportMessageModel = ReportUserModel(
+        id: AppFuncs.generateRandomString(15),
+        messages: [options],
+        reportTime: DateTime.now(),
+        senderId: FirebaseAuth.instance.currentUser?.uid ?? "",
+        reportedUserId: userModel.uid);
+    await reportMessageModel.addreportUser();
+
+    showOkAlertDialog(
+        context: context,
+        message: AppStrings.userReportedSuccessFully,
+        title: AppStrings.reportUser);
+    return options ?? "";
   }
 }
 

@@ -67,131 +67,141 @@ class _InboxViewState extends State<InboxView> {
                 },
               ),
               const AppHeight(height: 15),
-              Expanded(
-                  child: SingleChildScrollView(
-                child: Column(
-                  children: List.generate(state.threadList.length, (index) {
-                    return (state.threadList[index].userDetail?.userName ?? "")
-                            .toLowerCase()
-                            .contains(state.searchText.toLowerCase())
-                        ? GestureDetector(
-                            onTap: () {
-                              Go.to(context,
-                                  ChatScreen(model: state.threadList[index]));
-                              // _openChatView(state.threadList[index]);
-                            },
-                            behavior: HitTestBehavior.opaque,
-                            child: Container(
-                              height: 60,
-                              margin: const EdgeInsets.only(bottom: 25),
-                              child: Row(
-                                children: [
-                                  AppCacheImage(
-                                      imageUrl: state.threadList[index]
-                                              .userDetail?.profileImage ??
-                                          "",
-                                      height: 60,
-                                      width: 60,
-                                      round: 60),
-                                  const AppWidth(width: 10),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    state
-                                                            .threadList[index]
-                                                            .userDetail
-                                                            ?.firstName ??
-                                                        "",
-                                                    style: AppTextStyle.font16
-                                                        .copyWith(
-                                                            color: AppColors
-                                                                .blackColor,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold),
-                                                  ),
-                                                  Text(
+              if (state.threadList.isEmpty)
+                const Expanded(
+                    child: Center(child: Text("There is no matched"))),
+              if (state.threadList.isNotEmpty)
+                Expanded(
+                    child: SingleChildScrollView(
+                  child: Column(
+                    children: List.generate(state.threadList.length, (index) {
+                      return (state.threadList[index].userDetail?.userName ??
+                                  "")
+                              .toLowerCase()
+                              .contains(state.searchText.toLowerCase())
+                          ? GestureDetector(
+                              onTap: () {
+                                Go.to(context,
+                                    ChatScreen(model: state.threadList[index]));
+                                // _openChatView(state.threadList[index]);
+                              },
+                              behavior: HitTestBehavior.opaque,
+                              child: Container(
+                                height: 60,
+                                margin: const EdgeInsets.only(bottom: 25),
+                                child: Row(
+                                  children: [
+                                    AppCacheImage(
+                                        imageUrl: state.threadList[index]
+                                                .userDetail?.profileImage ??
+                                            "",
+                                        height: 60,
+                                        width: 60,
+                                        round: 60),
+                                    const AppWidth(width: 10),
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
                                                       state
                                                               .threadList[index]
-                                                              .lastMessage
-                                                              .isEmpty
-                                                          ? "Send your first message"
-                                                          : state
-                                                              .threadList[index]
-                                                              .lastMessage,
-                                                      maxLines: 1,
+                                                              .userDetail
+                                                              ?.firstName ??
+                                                          "",
                                                       style: AppTextStyle.font16
                                                           .copyWith(
                                                               color: AppColors
                                                                   .blackColor,
-                                                              fontSize: 12)),
-                                                ],
-                                              ),
-                                            ),
-                                            Column(
-                                              children: [
-                                                Text(
-                                                  timeago.format(
-                                                    state.threadList[index]
-                                                        .lastMessageTime,
-                                                    locale: 'en_short',
-                                                  ),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                    ),
+                                                    Text(
+                                                        state
+                                                                .threadList[
+                                                                    index]
+                                                                .lastMessage
+                                                                .isEmpty
+                                                            ? "Send your first message"
+                                                            : state
+                                                                .threadList[
+                                                                    index]
+                                                                .lastMessage,
+                                                        maxLines: 1,
+                                                        style: AppTextStyle
+                                                            .font16
+                                                            .copyWith(
+                                                                color: AppColors
+                                                                    .blackColor,
+                                                                fontSize: 12)),
+                                                  ],
                                                 ),
-                                                if (state.threadList[index]
-                                                            .senderId !=
-                                                        (FirebaseAuth
-                                                                .instance
-                                                                .currentUser
-                                                                ?.uid ??
-                                                            "") &&
-                                                    state.threadList[index]
-                                                            .messageCount !=
-                                                        0)
-                                                  Container(
-                                                    padding:
-                                                        const EdgeInsets.all(7),
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: AppColors.redColor,
-                                                    ),
-                                                    child: Text(
+                                              ),
+                                              Column(
+                                                children: [
+                                                  Text(
+                                                    timeago.format(
                                                       state.threadList[index]
-                                                          .messageCount
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                          color: AppColors
-                                                              .whiteColor,
-                                                          fontSize: 10),
+                                                          .lastMessageTime,
+                                                      locale: 'en_short',
                                                     ),
                                                   ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                        const Spacer(),
-                                        Container(
-                                          height: 1.5,
-                                          color: AppColors.borderGreyColor,
-                                        )
-                                      ],
+                                                  if (state.threadList[index]
+                                                              .senderId !=
+                                                          (FirebaseAuth
+                                                                  .instance
+                                                                  .currentUser
+                                                                  ?.uid ??
+                                                              "") &&
+                                                      state.threadList[index]
+                                                              .messageCount !=
+                                                          0)
+                                                    Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              7),
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        color:
+                                                            AppColors.redColor,
+                                                      ),
+                                                      child: Text(
+                                                        state.threadList[index]
+                                                            .messageCount
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            color: AppColors
+                                                                .whiteColor,
+                                                            fontSize: 10),
+                                                      ),
+                                                    ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                          const Spacer(),
+                                          Container(
+                                            height: 1.5,
+                                            color: AppColors.borderGreyColor,
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                          )
-                        : const SizedBox();
-                  }),
-                ),
-              ))
+                            )
+                          : const SizedBox();
+                    }),
+                  ),
+                ))
             ],
           );
         },

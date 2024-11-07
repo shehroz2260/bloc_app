@@ -376,7 +376,13 @@ class _HomeViewState extends State<HomeView> {
                                               const SizedBox(height: 15),
                                               WidgetForLikeorDislike(
                                                   icon: Icons.report,
-                                                  onTap: () {}),
+                                                  onTap: () {
+                                                    context
+                                                        .read<HomeBloc>()
+                                                        .add(OnReportUser(
+                                                            context: context,
+                                                            userModel: user));
+                                                  }),
                                               const SizedBox(height: 15),
                                             ],
                                           ),

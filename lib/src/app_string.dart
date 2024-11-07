@@ -85,6 +85,16 @@ class AppStrings {
       "We are setting up your profile and\nso you can connect with top\n artists today!";
   static const String selectPhotosThatExpressYourPersonality =
       "Select photos that express your personality and show you doing things you love.";
+
+  static const String option1 = "Fake profile";
+  static const String option2 = "Selling/scamming content";
+  static const String option3 = "Nudity/sexual content";
+  static const String option4 = "Abusive/Threatening content";
+  static const String option5 = "Suspect under aged (18)";
+  static const String pleaseSelectOption = "Please select option";
+
+  static const reportUser = "Report User";
+  static const userReportedSuccessFully = "User reported successfully";
 }
 
 class ErrorStrings {

@@ -41,3 +41,12 @@ class DisLikeUser extends HomeEvent {
     required this.context,
   });
 }
+
+class OnReportUser extends HomeEvent {
+  final BuildContext context;
+  final UserModel userModel;
+  OnReportUser({
+    required this.context,
+    required this.userModel,
+  });
+}

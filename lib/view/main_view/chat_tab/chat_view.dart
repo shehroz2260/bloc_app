@@ -107,8 +107,9 @@ class _ChatScreenState extends State<ChatScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(widget.model.userDetail?.firstName ?? "",
-                            style: AppTextStyle.font25
-                                .copyWith(color: AppColors.blackColor)),
+                            style: AppTextStyle.font20.copyWith(
+                                color: AppColors.blackColor,
+                                fontWeight: FontWeight.bold)),
                         StreamBuilder(
                           stream: FirebaseFirestore.instance
                               .collection(UserModel.tableName)

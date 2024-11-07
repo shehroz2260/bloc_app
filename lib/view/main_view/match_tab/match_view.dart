@@ -157,14 +157,12 @@ class _MatchTabState extends State<MatchTab> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
                                     children: [
-                                      Text(
-                                          "${state.likesList[index].firstName}, ",
-                                          style: AppTextStyle.font20.copyWith(
-                                              fontWeight: FontWeight.bold)),
-                                      Text(
-                                          state.likesList[index].age.toString(),
-                                          style: AppTextStyle.font25.copyWith(
-                                              fontWeight: FontWeight.bold)),
+                                      Flexible(
+                                        child: Text(
+                                            state.likesList[index].firstName,
+                                            style: AppTextStyle.font20.copyWith(
+                                                fontWeight: FontWeight.bold)),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -271,17 +269,16 @@ class _MatchTabState extends State<MatchTab> {
                                     padding: const EdgeInsets.all(8.0),
                                     child: Row(
                                       children: [
-                                        Text(
-                                            "${inboxState.threadList[index].userDetail?.firstName ?? ""}, ",
-                                            style: AppTextStyle.font20.copyWith(
-                                                fontWeight: FontWeight.bold)),
-                                        Text(
-                                            inboxState.threadList[index]
-                                                    .userDetail?.age
-                                                    .toString() ??
-                                                "",
-                                            style: AppTextStyle.font25.copyWith(
-                                                fontWeight: FontWeight.bold)),
+                                        Flexible(
+                                          child: Text(
+                                              inboxState.threadList[index]
+                                                      .userDetail?.firstName ??
+                                                  "",
+                                              style: AppTextStyle.font20
+                                                  .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                        ),
                                       ],
                                     ),
                                   ),
