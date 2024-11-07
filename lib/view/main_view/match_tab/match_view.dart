@@ -1,4 +1,6 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/model/user_model.dart';
+import 'package:chat_with_bloc/services/network_service.dart';
 import 'package:chat_with_bloc/src/app_assets.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/view/main_view/chat_tab/chat_view.dart';
@@ -8,6 +10,8 @@ import 'package:chat_with_bloc/view_model/inbox_bloc/inbox_state.dart';
 import 'package:chat_with_bloc/view_model/matches_bloc/matches_bloc.dart';
 import 'package:chat_with_bloc/view_model/matches_bloc/matches_event.dart';
 import 'package:chat_with_bloc/view_model/matches_bloc/matches_state.dart';
+import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
+import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_state.dart';
 import 'package:chat_with_bloc/widgets/app_cache_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -39,67 +43,93 @@ class _MatchTabState extends State<MatchTab> {
                 style:
                     AppTextStyle.font25.copyWith(color: AppColors.blackColor)),
             const AppHeight(height: 20),
-            Row(
-              children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      context.read<MatchesBloc>().add(ChangeIndex(index: 0));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: state.index == 0
-                              ? AppColors.redColor
-                              : AppColors.whiteColor,
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(
+            BlocBuilder<UserBaseBloc, UserBaseState>(
+                builder: (context, userState) {
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        context.read<MatchesBloc>().add(ChangeIndex(index: 0));
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                                color: state.index == 0
+                                    ? AppColors.redColor
+                                    : AppColors.whiteColor,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    color: state.index == 0
+                                        ? AppColors.redColor
+                                        : AppColors.borderGreyColor)),
+                            alignment: Alignment.center,
+                            child: Icon(
+                              Icons.favorite,
                               color: state.index == 0
-                                  ? AppColors.redColor
-                                  : AppColors.borderGreyColor)),
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Likes",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: state.index == 0
-                                ? AppColors.whiteColor
-                                : AppColors.redColor),
+                                  ? AppColors.whiteColor
+                                  : AppColors.redColor,
+                            ),
+                          ),
+                          Text(
+                            "Likes",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: state.index == 0
+                                    ? AppColors.redColor
+                                    : AppColors.blackColor),
+                          ),
+                        ],
                       ),
                     ),
-                  ),
+                    const AppWidth(width: 15),
+                    GestureDetector(
+                      onTap: () {
+                        context.read<MatchesBloc>().add(ChangeIndex(index: 1));
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 60,
+                            width: 60,
+                            decoration: BoxDecoration(
+                                color: state.index == 1
+                                    ? AppColors.redColor
+                                    : AppColors.whiteColor,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                    color: state.index == 1
+                                        ? AppColors.redColor
+                                        : AppColors.borderGreyColor)),
+                            alignment: Alignment.center,
+                            child: SvgPicture.asset(
+                              "assets/images/svg/message.svg",
+                              colorFilter: ColorFilter.mode(
+                                  state.index == 1
+                                      ? AppColors.whiteColor
+                                      : AppColors.redColor,
+                                  BlendMode.srcIn),
+                            ),
+                          ),
+                          Text(
+                            "Connected",
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: state.index == 1
+                                    ? AppColors.redColor
+                                    : AppColors.blackColor),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                const AppWidth(width: 20),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      context.read<MatchesBloc>().add(ChangeIndex(index: 1));
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: state.index == 1
-                              ? AppColors.redColor
-                              : AppColors.whiteColor,
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(
-                              color: state.index == 1
-                                  ? AppColors.redColor
-                                  : AppColors.borderGreyColor)),
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      alignment: Alignment.center,
-                      child: Text(
-                        AppStrings.matches,
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: state.index == 1
-                                ? AppColors.whiteColor
-                                : AppColors.redColor),
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
+              );
+            }),
             if (state.index == 0)
               Expanded(
                 child: GridView.builder(
@@ -163,56 +193,6 @@ class _MatchTabState extends State<MatchTab> {
                                             style: AppTextStyle.font20.copyWith(
                                                 fontWeight: FontWeight.bold)),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                Container(
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      color: Colors.black.withOpacity(0.5),
-                                      borderRadius: const BorderRadius.only(
-                                        bottomLeft: Radius.circular(15),
-                                        bottomRight: Radius.circular(15),
-                                      )),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                          child: GestureDetector(
-                                              behavior: HitTestBehavior.opaque,
-                                              onTap: () {},
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(14),
-                                                child: SvgPicture.asset(
-                                                    AppAssets.cancelICon,
-                                                    height: double.infinity),
-                                              ))),
-                                      if (!state.likesList[index].matches
-                                          .contains(FirebaseAuth
-                                                  .instance.currentUser?.uid ??
-                                              ""))
-                                        Container(
-                                            height: double.infinity,
-                                            width: 2,
-                                            color: AppColors.borderGreyColor),
-                                      if (!state.likesList[index].matches
-                                          .contains(FirebaseAuth
-                                                  .instance.currentUser?.uid ??
-                                              ""))
-                                        Expanded(
-                                            child: GestureDetector(
-                                          onTap: () {},
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(14),
-                                            child: SvgPicture.asset(
-                                              AppAssets.heart,
-                                              height: double.infinity,
-                                              colorFilter: ColorFilter.mode(
-                                                  AppColors.whiteColor,
-                                                  BlendMode.srcIn),
-                                            ),
-                                          ),
-                                        )),
                                     ],
                                   ),
                                 ),
@@ -296,7 +276,34 @@ class _MatchTabState extends State<MatchTab> {
                                             child: GestureDetector(
                                                 behavior:
                                                     HitTestBehavior.opaque,
-                                                onTap: () {},
+                                                onTap: () async {
+                                                  var okCancelResult =
+                                                      await showOkCancelAlertDialog(
+                                                          context: context,
+                                                          message:
+                                                              "Do you really want to remove match, This action is permanent and cannot be undo",
+                                                          title:
+                                                              "Remove match");
+                                                  if (okCancelResult ==
+                                                      OkCancelResult.cancel) {
+                                                    return;
+                                                  }
+                                                  NetworkService
+                                                      .deleteConversation(
+                                                          inboxState.threadList[
+                                                              index],
+                                                          inboxState
+                                                              .threadList[index]
+                                                              .threadId);
+                                                  NetworkService.disLikeUser(
+                                                      context
+                                                          .read<UserBaseBloc>()
+                                                          .state
+                                                          .userData,
+                                                      inboxState
+                                                          .threadList[index]
+                                                          .userDetail!);
+                                                },
                                                 child: Padding(
                                                   padding:
                                                       const EdgeInsets.all(14),

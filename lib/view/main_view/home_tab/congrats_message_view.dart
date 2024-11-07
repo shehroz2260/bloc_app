@@ -23,6 +23,7 @@ class CongratsMessageView extends StatelessWidget {
           const AppHeight(height: 30),
           Image.asset("assets/images/png/match_message_image.png"),
           Text("It’s a match, ${user.firstName}!",
+              textAlign: TextAlign.center,
               style: AppTextStyle.font30.copyWith(color: AppColors.redColor)),
           Text("Start a conversation now with each other",
               style: AppTextStyle.font16.copyWith(color: AppColors.blackColor)),
@@ -34,8 +35,11 @@ class CongratsMessageView extends StatelessWidget {
                 child: CustomNewButton(
                   btnName: "Say, hello",
                   onTap: () {
-                  final model =  state.threadList.where((e)=> e.participantUserList.contains(user.uid)).toList().first;
-                  Go.off(context, ChatScreen(model: model));
+                    final model = state.threadList
+                        .where((e) => e.participantUserList.contains(user.uid))
+                        .toList()
+                        .first;
+                    Go.off(context, ChatScreen(model: model));
                   },
                 ),
               );

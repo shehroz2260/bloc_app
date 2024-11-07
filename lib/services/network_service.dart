@@ -179,6 +179,7 @@ class NetworkService {
         .set({
       "myLikes": FieldValue.arrayRemove([likee.uid]),
       "matches": FieldValue.arrayRemove([likee.uid]),
+      "otherLikes": FieldValue.arrayRemove([likee.uid]),
       "myDisLikes": FieldValue.arrayUnion([likee.uid])
     }, SetOptions(merge: true));
     await FirebaseFirestore.instance
@@ -281,7 +282,7 @@ class NetworkService {
     var collection = instance
         .collection(ThreadModel.tableName)
         .doc(threadId)
-        .collection(ThreadModel.tableName);
+        .collection(ChatModel.tableName);
     var snapshots = await collection.get();
     for (var doc in snapshots.docs) {
       batch.delete(doc.reference);

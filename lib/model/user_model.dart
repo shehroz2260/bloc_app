@@ -176,8 +176,7 @@ class UserModel {
       return 232323232;
     }
 
-    return ((Geolocator.distanceBetween(lat, lng, user.lat, user.lng)) *
-            0.000621371)
+    return ((Geolocator.distanceBetween(lat, lng, user.lat, user.lng)) * 0.001)
         .toInt();
   }
 
