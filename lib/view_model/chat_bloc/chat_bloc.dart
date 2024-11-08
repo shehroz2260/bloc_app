@@ -19,7 +19,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
 import '../../model/char_model.dart';
 import 'chat_event.dart';
 import 'chat_state.dart';
@@ -293,22 +292,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   }
 
   ///////////////////////////////////////// callable here ////////////////////////////////////
-  Future<File?> generateThumbNail(String path) async {
-    final uint8list = await VideoThumbnail.thumbnailData(
-      video: path,
-      imageFormat: ImageFormat.JPEG,
-      maxWidth: 390,
-      quality: 60,
-    );
-    final directory = await getTemporaryDirectory();
-    final pathOfImage =
-        await File('${directory.path}/${DateTime.now().toIso8601String()}.jpeg')
-            .create();
-
-    if (uint8list == null) return null;
-    File filed = await pathOfImage.writeAsBytes(uint8list);
-    return filed;
-  }
 
   Stream<ChatState> _updateTime(StartTimer event) async* {
     _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
@@ -438,7 +421,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       final file = await kVideoPicker(context: event.context);
       if (file != null) {
         emit(state.copyWith(pickFile: file));
-        final thumbnail = await generateThumbNail(file.path);
+        final thumbnail = await AppFuncs.generateThumbNail(file.path);
         emit(state.copyWith(thumbnail: thumbnail));
       }
     } else {

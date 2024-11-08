@@ -55,6 +55,38 @@ class _InboxViewState extends State<InboxView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const AppHeight(height: 60),
+              Text("Stories",
+                  style: AppTextStyle.font25
+                      .copyWith(color: AppColors.blackColor)),
+              const AppHeight(height: 5),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: List.generate(state.threadList.length, (index) {
+                    return Container(
+                      padding: const EdgeInsets.all(3),
+                      margin: const EdgeInsets.only(right: 7),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: AppColors.redColor),
+                      child: Container(
+                        padding: const EdgeInsets.all(3),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.whiteColor),
+                        child: AppCacheImage(
+                          imageUrl: state
+                                  .threadList[index].userDetail?.profileImage ??
+                              "",
+                          height: 50,
+                          width: 50,
+                          round: 50,
+                        ),
+                      ),
+                    );
+                  }),
+                ),
+              ),
+              const AppHeight(height: 5),
               Text("Messages",
                   style: AppTextStyle.font25
                       .copyWith(color: AppColors.blackColor)),

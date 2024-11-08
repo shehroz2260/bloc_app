@@ -1,6 +1,7 @@
 import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/view/splash_view/splash_view.dart';
 import 'package:chat_with_bloc/view_model/bio_bloc/bio_bloc.dart';
+import 'package:chat_with_bloc/view_model/bloc/story_bloc.dart';
 import 'package:chat_with_bloc/view_model/edit_bloc/edit_bloc.dart';
 import 'package:chat_with_bloc/view_model/filter_bloc.dart/filter_bloc.dart';
 import 'package:chat_with_bloc/view_model/gallery_bloc/gallery_bloc.dart';
@@ -86,6 +87,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         BlocProvider(create: (context) => GalleryBloc()),
         BlocProvider(create: (context) => OtpBloc()),
         BlocProvider(create: (context) => EditBloc()),
+        BlocProvider(create: (context) => StoryBloc()),
       ],
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus!.unfocus(),

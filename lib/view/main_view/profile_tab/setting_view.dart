@@ -10,6 +10,7 @@ import 'package:chat_with_bloc/utils/loading_dialog.dart';
 import 'package:chat_with_bloc/view/main_view/match_tab/user_profile_view/user_profile_view.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/about_us_view.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/faqs_view.dart';
+import 'package:chat_with_bloc/view/main_view/profile_tab/story_view.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_state.dart';
 import 'package:chat_with_bloc/widgets/app_cache_image.dart';
 import 'package:chat_with_bloc/widgets/custom_text_field.dart';
@@ -112,6 +113,14 @@ class _SettingViewState extends State<SettingView> {
                 );
               }),
               const AppHeight(height: 20),
+              SettiingWidget(
+                color: Colors.teal.shade300,
+                icon: Icons.camera_alt,
+                onTap: () {
+                  Go.to(context, const StoryView());
+                },
+                title: "Story",
+              ),
               SettiingWidget(
                 color: Colors.amber,
                 icon: Icons.info,
