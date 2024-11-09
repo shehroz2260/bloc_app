@@ -10,6 +10,7 @@ import 'package:chat_with_bloc/view/main_view/profile_tab/setting_view.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_state.dart';
 import 'package:chat_with_bloc/widgets/app_cache_image.dart';
+import 'package:chat_with_bloc/widgets/image_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -55,6 +56,12 @@ class _ProfileViewState extends State<ProfileView> {
                           imageUrl: state.userData.profileImage,
                           height: 180,
                           width: 180,
+                          onTap: () {
+                            Go.to(
+                                context,
+                                ImageView(
+                                    imageUrl: state.userData.profileImage));
+                          },
                           round: 180)),
                   const AppHeight(height: 2),
                   Row(

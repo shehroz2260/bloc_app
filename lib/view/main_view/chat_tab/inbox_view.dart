@@ -6,6 +6,7 @@ import 'package:chat_with_bloc/view_model/inbox_bloc/inbox_event.dart';
 import 'package:chat_with_bloc/view_model/inbox_bloc/inbox_state.dart';
 import 'package:chat_with_bloc/widgets/app_cache_image.dart';
 import 'package:chat_with_bloc/widgets/custom_text_field.dart';
+import 'package:chat_with_bloc/widgets/image_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -92,6 +93,11 @@ class _InboxViewState extends State<InboxView> {
                                 child: Row(
                                   children: [
                                     AppCacheImage(
+                                        onTap: () => _imageView(state
+                                                .threadList[index]
+                                                .userDetail
+                                                ?.profileImage ??
+                                            ""),
                                         imageUrl: state.threadList[index]
                                                 .userDetail?.profileImage ??
                                             "",
@@ -209,6 +215,24 @@ class _InboxViewState extends State<InboxView> {
     );
   }
 
+  void _imageView(String image) async {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            contentPadding: EdgeInsets.zero,
+            content: AppCacheImage(
+              imageUrl: image,
+              height: 400,
+              boxFit: BoxFit.fitWidth,
+              onTap: () {
+                Go.off(context, ImageView(imageUrl: image));
+              },
+              // width: double.infinity,
+            ),
+          );
+        });
+  }
 // void _openChatView(ThreadModel thread)async{
 //   final id = thread.threadId;
 //    scrollController.addListener((){

@@ -14,6 +14,7 @@ import 'package:chat_with_bloc/view/main_view/profile_tab/story_view.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_state.dart';
 import 'package:chat_with_bloc/widgets/app_cache_image.dart';
 import 'package:chat_with_bloc/widgets/custom_text_field.dart';
+import 'package:chat_with_bloc/widgets/image_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -79,6 +80,12 @@ class _SettingViewState extends State<SettingView> {
                       AppCacheImage(
                           imageUrl: userState.userData.profileImage,
                           height: 60,
+                          onTap: () {
+                            Go.to(
+                                context,
+                                ImageView(
+                                    imageUrl: userState.userData.profileImage));
+                          },
                           width: 60,
                           round: 60),
                       const AppWidth(width: 12),
@@ -249,6 +256,22 @@ Future<void> emailPassword(BuildContext context) async {
             ),
             title: const Text("Please enter password for confirmation"),
             actions: [
+              MaterialButton(
+                onPressed: () => Go.back(context),
+                child: Container(
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: AppColors.redColor.withOpacity(0.2),
+                      border: Border.all(color: AppColors.borderGreyColor),
+                      borderRadius: const BorderRadius.all(Radius.circular(3))),
+                  height: 30,
+                  width: 70,
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(color: AppColors.redColor, fontSize: 14),
+                  ),
+                ),
+              ),
               MaterialButton(
                 onPressed: () async {
                   if (!formKey.currentState!.validate()) {

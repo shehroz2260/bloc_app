@@ -167,12 +167,24 @@ class _StoryViewState extends State<StoryView> {
                                 padding: const EdgeInsets.only(bottom: 10),
                                 child: Row(
                                   children: [
-                                    AppCacheImage(
-                                        imageUrl:
-                                            state.otherList[index].userImage,
-                                        height: 50,
-                                        width: 50,
-                                        round: 50),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: AppColors.redColor),
+                                      padding: const EdgeInsets.all(3),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: AppColors.whiteColor),
+                                        padding: const EdgeInsets.all(2),
+                                        child: AppCacheImage(
+                                            imageUrl: state
+                                                .otherList[index].userImage,
+                                            height: 50,
+                                            width: 50,
+                                            round: 50),
+                                      ),
+                                    ),
                                     const AppWidth(width: 10),
                                     Text(state.otherList[index].userName),
                                   ],

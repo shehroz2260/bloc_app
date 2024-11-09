@@ -162,7 +162,6 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
         .collection(StoryModel.tableName)
         .where("createdAt", isGreaterThanOrEqualTo: last24HoursTimestamp)
         .get();
-    // emit(state.copyWith(isLoading: false));
     if (snapShot.docs.isEmpty) return;
     final mediaList =
         snapShot.docs.map((e) => StoryModel.fromMap(e.data())).toList();

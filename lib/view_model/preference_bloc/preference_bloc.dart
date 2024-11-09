@@ -55,7 +55,7 @@ class PreferenceBloc extends Bloc<PreferenceEvent, PreferenceState> {
         preferGender: event.isUpdate ? user.preferGender : state.prefGenders,
         myInstrest: state.intrestList);
     FilterModel filterModel = FilterModel(
-        minAge: 18, maxAge: 50, intrestedIn: state.prefGenders, distance: 50);
+        minAge: 18, maxAge: 50, intrestedIn: state.prefGenders, distance: 100);
     event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
     NetworkService.updateUser(user);
     LoadingDialog.hideProgress(event.context);
