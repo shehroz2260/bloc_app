@@ -162,20 +162,32 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
         .collection(StoryModel.tableName)
         .where("createdAt", isGreaterThanOrEqualTo: last24HoursTimestamp)
         .get();
-    emit(state.copyWith(isLoading: false));
+    // emit(state.copyWith(isLoading: false));
     if (snapShot.docs.isEmpty) return;
     final mediaList =
         snapShot.docs.map((e) => StoryModel.fromMap(e.data())).toList();
-    for (final e in event.userModel.matches) {
-      final list = mediaList.where((media) => media.userId == e).toList();
-      if (list.isEmpty) {
+
+    Map<String, List<StoryModel>> mediaMap = {};
+
+    for (var media in mediaList) {
+      if (mediaMap.containsKey(media.userId)) {
+        mediaMap[media.userId]!.add(media);
+      } else {
+        mediaMap[media.userId] = [media];
+      }
+    }
+
+    for (final id in event.userModel.matches) {
+      final matchingMedia = mediaMap[id];
+      if (matchingMedia == null || matchingMedia.isEmpty) {
         continue;
       }
       state.otherList.add(OtherStoryModel(
-          userName: list[0].userName,
-          userImage: list[0].userImage,
-          list: list));
-      emit(state.copyWith(otherList: state.otherList));
+          userName: matchingMedia[0].userName,
+          userImage: matchingMedia[0].userImage,
+          list: matchingMedia));
     }
+    emit(state.copyWith(isLoading: false));
+    add(GetStory(context: event.context));
   }
 }

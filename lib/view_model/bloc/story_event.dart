@@ -50,7 +50,9 @@ class OnDisposeStory extends StoryEvent {}
 
 class FetchOthetStories extends StoryEvent {
   final UserModel userModel;
+  final BuildContext context;
   FetchOthetStories({
     required this.userModel,
+    required this.context,
   });
 }

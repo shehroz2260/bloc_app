@@ -39,9 +39,9 @@ class _StoryViewState extends State<StoryView> {
 
   @override
   void initState() {
-    context.read<StoryBloc>().add(GetStory(context: context));
     context.read<StoryBloc>().add(FetchOthetStories(
-        userModel: context.read<UserBaseBloc>().state.userData));
+        userModel: context.read<UserBaseBloc>().state.userData,
+        context: context));
     super.initState();
   }
 
@@ -60,127 +60,141 @@ class _StoryViewState extends State<StoryView> {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SafeArea(
           child: BlocBuilder<StoryBloc, StoryState>(builder: (context, state) {
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            return Stack(
               children: [
-                const AppHeight(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const CustomBackButton(),
-                    Text("Story",
-                        style: AppTextStyle.font25
-                            .copyWith(color: AppColors.blackColor)),
-                    const SizedBox(
-                      width: 55,
-                    )
-                  ],
-                ),
-                const AppHeight(height: 20),
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: _openOptions,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            height: 50,
-                            width: 50,
-                            decoration: BoxDecoration(
-                                color: AppColors.redColor,
-                                shape: BoxShape.circle,
-                                border:
-                                    Border.all(color: AppColors.blackColor)),
-                          ),
-                          Icon(
-                            Icons.add,
-                            color: AppColors.whiteColor,
-                          )
-                        ],
-                      ),
+                    const AppHeight(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const CustomBackButton(),
+                        Text("Story",
+                            style: AppTextStyle.font25
+                                .copyWith(color: AppColors.blackColor)),
+                        const SizedBox(
+                          width: 55,
+                        )
+                      ],
                     ),
-                    const AppWidth(width: 10),
-                    if (state.storyList.isNotEmpty)
-                      GestureDetector(
-                        onTap: () {
-                          Go.to(context,
-                              CustomStoryView(mediaList: state.storyList));
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: AppColors.redColor,
-                              shape: BoxShape.circle,
-                              border: Border.all(color: AppColors.redColor)),
-                          padding: const EdgeInsets.all(2),
-                          child: Container(
-                            height: 50,
-                            width: 50,
-                            decoration: BoxDecoration(
-                              color: AppColors.whiteColor,
-                              shape: BoxShape.circle,
-                            ),
-                            padding: const EdgeInsets.all(2),
-                            child: AppCacheImage(
-                              imageUrl:
-                                  state.storyList[0].type == MediaType.image
-                                      ? state.storyList[0].url
-                                      : state.storyList[0].thumbnail,
-                              round: 50,
-                              boxFit: BoxFit.cover,
-                              height: 50,
-                              width: 50,
-                            ),
+                    const AppHeight(height: 20),
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: _openOptions,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                    color: AppColors.redColor,
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: AppColors.blackColor)),
+                              ),
+                              Icon(
+                                Icons.add,
+                                color: AppColors.whiteColor,
+                              )
+                            ],
                           ),
                         ),
-                      ),
-                  ],
-                ),
-                Text(context.read<UserBaseBloc>().state.userData.firstName),
-                const AppHeight(height: 20),
-                const Text("Other Stories"),
-                const AppHeight(height: 10),
-                if (state.isLoading)
-                  Expanded(
-                      child: Center(
-                    child: CircularProgressIndicator(color: AppColors.redColor),
-                  )),
-                if (!state.isLoading && state.otherList.isEmpty)
-                  const Expanded(
-                      child: Center(
-                    child: Text("There is no story"),
-                  )),
-                if (!state.isLoading && state.otherList.isNotEmpty)
-                  Expanded(
-                      child: SingleChildScrollView(
-                    child: Column(
-                      children: List.generate(state.otherList.length, (index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Go.to(
-                                context,
-                                CustomStoryView(
-                                    mediaList: state.otherList[index].list));
-                          },
-                          behavior: HitTestBehavior.opaque,
-                          child: Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: Row(
-                              children: [
-                                AppCacheImage(
-                                    imageUrl: state.otherList[index].userImage,
-                                    height: 50,
-                                    width: 50,
-                                    round: 50),
-                                const AppWidth(width: 10),
-                                Text(state.otherList[index].userName),
-                              ],
+                        const AppWidth(width: 10),
+                        if (state.storyList.isNotEmpty)
+                          GestureDetector(
+                            onTap: () {
+                              Go.to(context,
+                                  CustomStoryView(mediaList: state.storyList));
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: AppColors.redColor,
+                                  shape: BoxShape.circle,
+                                  border:
+                                      Border.all(color: AppColors.redColor)),
+                              padding: const EdgeInsets.all(2),
+                              child: Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  color: AppColors.whiteColor,
+                                  shape: BoxShape.circle,
+                                ),
+                                padding: const EdgeInsets.all(2),
+                                child: AppCacheImage(
+                                  imageUrl:
+                                      state.storyList[0].type == MediaType.image
+                                          ? state.storyList[0].url
+                                          : state.storyList[0].thumbnail,
+                                  round: 50,
+                                  boxFit: BoxFit.cover,
+                                  height: 50,
+                                  width: 50,
+                                ),
+                              ),
                             ),
                           ),
-                        );
-                      }),
+                      ],
                     ),
-                  ))
+                    Text(context.read<UserBaseBloc>().state.userData.firstName),
+                    const AppHeight(height: 20),
+                    const Text("Other Stories"),
+                    const AppHeight(height: 10),
+                    if (state.otherList.isEmpty)
+                      const Expanded(
+                          child: Center(
+                        child: Text("There is no story"),
+                      )),
+                    if (state.otherList.isNotEmpty)
+                      Expanded(
+                          child: SingleChildScrollView(
+                        child: Column(
+                          children:
+                              List.generate(state.otherList.length, (index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Go.to(
+                                    context,
+                                    CustomStoryView(
+                                        mediaList:
+                                            state.otherList[index].list));
+                              },
+                              behavior: HitTestBehavior.opaque,
+                              child: Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: Row(
+                                  children: [
+                                    AppCacheImage(
+                                        imageUrl:
+                                            state.otherList[index].userImage,
+                                        height: 50,
+                                        width: 50,
+                                        round: 50),
+                                    const AppWidth(width: 10),
+                                    Text(state.otherList[index].userName),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                      ))
+                  ],
+                ),
+                if (state.isLoading)
+                  Container(
+                    height: double.infinity,
+                    width: double.infinity,
+                    color: AppColors.whiteColor.withOpacity(0.3),
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: AppColors.redColor,
+                      ),
+                    ),
+                  )
               ],
             );
           }),
