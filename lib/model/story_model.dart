@@ -8,10 +8,12 @@ class StoryModel {
   final int type;
   final String url;
   final String thumbnail;
+  final String userImage;
   final DateTime createdAt;
   StoryModel({
     required this.id,
     required this.userId,
+    required this.userImage,
     required this.thumbnail,
     required this.userName,
     required this.name,
@@ -25,6 +27,7 @@ class StoryModel {
     String? id,
     String? userId,
     String? userName,
+    String? userImage,
     String? name,
     String? thumbnail,
     int? type,
@@ -33,6 +36,7 @@ class StoryModel {
   }) {
     return StoryModel(
       id: id ?? this.id,
+      userImage: userImage ?? this.userImage,
       thumbnail: thumbnail ?? this.thumbnail,
       userId: userId ?? this.userId,
       userName: userName ?? this.userName,
@@ -46,6 +50,7 @@ class StoryModel {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
+      'userImage': userImage,
       'thumbnail': thumbnail,
       'userId': userId,
       'userName': userName,
@@ -59,6 +64,7 @@ class StoryModel {
   factory StoryModel.fromMap(Map<String, dynamic> map) {
     return StoryModel(
       id: map['id'] as String,
+      userImage: map['userImage'] ?? "",
       thumbnail: map['thumbnail'] ?? "",
       userId: map['userId'] as String,
       userName: map['userName'] as String,
@@ -71,6 +77,6 @@ class StoryModel {
 
   @override
   String toString() {
-    return 'StoryModel(thumbnail: $thumbnail, id: $id, userId: $userId, userName: $userName, name: $name, type: $type, url: $url, createdAt: $createdAt)';
+    return 'StoryModel(userImage: $userImage, thumbnail: $thumbnail, id: $id, userId: $userId, userName: $userName, name: $name, type: $type, url: $url, createdAt: $createdAt)';
   }
 }

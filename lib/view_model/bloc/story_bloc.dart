@@ -15,10 +15,15 @@ import 'story_state.dart';
 class StoryBloc extends Bloc<StoryEvent, StoryState> {
   StoryBloc()
       : super(StoryState(
-            file: null, isLoading: false, storyList: [], thumbnail: null)) {
+            file: null,
+            isLoading: false,
+            storyList: [],
+            thumbnail: null,
+            otherList: [])) {
     on<PickFile>(_onPickFile);
     on<GetStory>(_getStory);
     on<UploadStory>(_uploadStory);
+    on<FetchOthetStories>(_fetchOtherStories);
     on<ClearData>(_clearData);
     on<OnDisposeStory>(_onDispose);
     on<StoryListener>(_onChatListenerStream);
@@ -64,6 +69,7 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
 
       StoryModel storyModel = StoryModel(
           thumbnail: thumbnailUrl,
+          userImage: cUser.profileImage,
           id: AppFuncs.generateRandomString(15),
           userId: cUser.uid,
           userName: cUser.firstName,
@@ -84,23 +90,46 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
   }
 
   _getStory(GetStory event, Emitter<StoryState> emit) async {
-    await emit.forEach(_chatListenerStream(), onData: (value) {
+    await emit.forEach(_chatListenerStream(event), onData: (value) {
       return state.copyWith(storyList: value.storyList);
     });
   }
 
   StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? subs;
-  Stream<StoryState> _chatListenerStream() async* {
+  Stream<StoryState> _chatListenerStream(GetStory event) async* {
+    final now = DateTime.now();
+    final last24Hours = now.subtract(const Duration(hours: 24));
+    final last24HoursTimestamp = Timestamp.fromDate(last24Hours);
     var ref = FirebaseFirestore.instance.collection(StoryModel.tableName).where(
-        "userId",
-        isEqualTo: FirebaseAuth.instance.currentUser?.uid ?? "");
+          "userId",
+          isEqualTo: FirebaseAuth.instance.currentUser?.uid ?? "",
+        );
 
-    subs = ref.snapshots().listen((value) {
+    subs = ref
+        .where("createdAt", isGreaterThanOrEqualTo: last24HoursTimestamp)
+        .snapshots()
+        .listen((value) {
       if (value.docs.isEmpty) return;
       add(ClearData());
       for (final e in value.docs) {
         var chat = StoryModel.fromMap(e.data());
         add(StoryListener(model: chat));
+      }
+    });
+    ref
+        .where("createdAt", isLessThan: last24HoursTimestamp)
+        .get()
+        .then((value) async {
+      if (value.docs.isNotEmpty) {
+        for (final e in value.docs) {
+          final model = StoryModel.fromMap(e.data());
+          await FirebaseStorageService().deleteFile(model.url, event.context);
+          if (model.type == MediaType.video) {
+            await FirebaseStorageService()
+                .deleteFile(model.thumbnail, event.context);
+          }
+          e.reference.delete();
+        }
       }
     });
   }
@@ -116,5 +145,37 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
 
   _onDispose(OnDisposeStory event, Emitter<StoryState> emit) async {
     await subs?.cancel();
+    emit(state.copyWith(
+        storyList: [],
+        isLoading: false,
+        file: File(""),
+        otherList: [],
+        thumbnail: File("")));
+  }
+
+  _fetchOtherStories(FetchOthetStories event, Emitter<StoryState> emit) async {
+    emit(state.copyWith(isLoading: true));
+    final now = DateTime.now();
+    final last24Hours = now.subtract(const Duration(hours: 24));
+    final last24HoursTimestamp = Timestamp.fromDate(last24Hours);
+    final snapShot = await FirebaseFirestore.instance
+        .collection(StoryModel.tableName)
+        .where("createdAt", isGreaterThanOrEqualTo: last24HoursTimestamp)
+        .get();
+    emit(state.copyWith(isLoading: false));
+    if (snapShot.docs.isEmpty) return;
+    final mediaList =
+        snapShot.docs.map((e) => StoryModel.fromMap(e.data())).toList();
+    for (final e in event.userModel.matches) {
+      final list = mediaList.where((media) => media.userId == e).toList();
+      if (list.isEmpty) {
+        continue;
+      }
+      state.otherList.add(OtherStoryModel(
+          userName: list[0].userName,
+          userImage: list[0].userImage,
+          list: list));
+      emit(state.copyWith(otherList: state.otherList));
+    }
   }
 }
