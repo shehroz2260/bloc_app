@@ -99,14 +99,14 @@ class _DobPickViewState extends State<DobPickView> {
                   const AppHeight(height: 25),
                   CustomTextField(
                       hintText: AppStrings.enterYourName,
-                      labelText: " First Name ",
+                      labelText: AppStrings.firsyName,
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       textEditingController: _nameController,
                       validator: AppValidation.nameValidation),
                   const AppHeight(height: 20),
                   CustomNewButton(
                     btnName: state.dob == null
-                        ? "Choose birthday date"
+                        ? AppStrings.choosebirthdaydate
                         : DateFormat("dd MMM yyyy").format(state.dob!),
                     btnColor: AppColors.redColor.withOpacity(0.1),
                     isRow: true,

@@ -49,7 +49,7 @@ class _PreferenceViewState extends State<PreferenceView> {
                     children: [
                       const AppHeight(height: 30),
                       if (!widget.isUpdate)
-                        Text("Preference gender",
+                        Text(AppStrings.preferencegender,
                             style: AppTextStyle.font25
                                 .copyWith(color: AppColors.blackColor)),
                       if (!widget.isUpdate) const AppHeight(height: 10),
@@ -139,12 +139,11 @@ class _PreferenceViewState extends State<PreferenceView> {
                           ],
                         ),
                       if (!widget.isUpdate) const AppHeight(height: 20),
-                      Text("Your insterest",
+                      Text(AppStrings.yourInsterest,
                           style: AppTextStyle.font25
                               .copyWith(color: AppColors.blackColor)),
                       const AppHeight(height: 5),
-                      Text(
-                          "Select a few of your interests and let everyone know what you’re passionate about.",
+                      Text(AppStrings.selectAFewfyourinstrest,
                           style: AppTextStyle.font16
                               .copyWith(color: AppColors.blackColor)),
                       const AppHeight(height: 20),
@@ -202,7 +201,9 @@ class _PreferenceViewState extends State<PreferenceView> {
                           }),
                       const AppHeight(height: 20),
                       CustomNewButton(
-                        btnName: widget.isUpdate ? "Update" : AppStrings.next,
+                        btnName: widget.isUpdate
+                            ? AppStrings.update
+                            : AppStrings.next,
                         onTap: () {
                           context.read<PreferenceBloc>().add(OnNextEvent(
                               context: context, isUpdate: widget.isUpdate));

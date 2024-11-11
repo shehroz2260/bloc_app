@@ -68,7 +68,7 @@ class _SignInWithEmailViewState extends State<SignInWithEmailView> {
                   onTap: () {
                     Go.to(context, const ForgotPasswordView());
                   },
-                  child: Text("Forgot password?",
+                  child: Text(AppStrings.forgotPassword,
                       style: AppTextStyle.font16.copyWith(
                         color: AppColors.redColor,
                       )),

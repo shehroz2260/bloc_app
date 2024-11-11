@@ -1,6 +1,7 @@
 // // ignore_for_file: use_build_context_synchronously
 import 'package:chat_with_bloc/src/app_assets.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
+import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
@@ -82,7 +83,7 @@ class _ProfileViewState extends State<ProfileView> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 40),
                         child: ProfileWidget(
-                          title: "Settings",
+                          title: AppStrings.settings,
                           icon: AppAssets.settingICon,
                           onTap: () {
                             Go.to(context, const SettingView());
@@ -92,7 +93,7 @@ class _ProfileViewState extends State<ProfileView> {
                       Padding(
                         padding: const EdgeInsets.only(top: 50),
                         child: ProfileWidget(
-                          title: "Edit profile",
+                          title: AppStrings.editProfile,
                           icon: AppAssets.pencilICon,
                           onTap: () {
                             Go.to(context, const EditProfile());
@@ -102,7 +103,7 @@ class _ProfileViewState extends State<ProfileView> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 40),
                         child: ProfileWidget(
-                          title: "Gallery",
+                          title: AppStrings.gallery,
                           icon: '',
                           onTap: () {
                             Go.to(context, const GallerView());

@@ -63,7 +63,7 @@ class _GenderViewState extends State<GenderView> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Male",
+                        Text(AppStrings.male,
                             style: AppTextStyle.font16.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: state.gender == 1
@@ -95,7 +95,7 @@ class _GenderViewState extends State<GenderView> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Female",
+                        Text(AppStrings.female,
                             style: AppTextStyle.font16.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: state.gender == 2
@@ -109,7 +109,8 @@ class _GenderViewState extends State<GenderView> {
                 ),
                 const Expanded(child: SizedBox()),
                 CustomNewButton(
-                  btnName: widget.isUpdate ? "Update" : AppStrings.next,
+                  btnName:
+                      widget.isUpdate ? AppStrings.update : AppStrings.next,
                   onTap: () {
                     context.read<GenderBloc>().add(OnNextEvent(
                         context: context, isUpdate: widget.isUpdate));

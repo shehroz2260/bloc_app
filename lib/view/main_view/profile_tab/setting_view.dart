@@ -56,7 +56,7 @@ class _SettingViewState extends State<SettingView> {
                 children: [
                   const CustomBackButton(),
                   Text(
-                    'Settings',
+                    AppStrings.settings,
                     style: TextStyle(
                         fontWeight: FontWeight.w700,
                         color: AppColors.blackColor,
@@ -108,7 +108,7 @@ class _SettingViewState extends State<SettingView> {
                                     isCUser: true,
                                   ));
                             },
-                            child: Text("See Profile",
+                            child: Text(AppStrings.seeProfile,
                                 style: AppTextStyle.font16.copyWith(
                                   color: AppColors.blueColor,
                                 )),
@@ -126,7 +126,7 @@ class _SettingViewState extends State<SettingView> {
                 onTap: () {
                   Go.to(context, const StoryView());
                 },
-                title: "Story",
+                title: AppStrings.story,
               ),
               SettiingWidget(
                 color: Colors.amber,
@@ -134,7 +134,7 @@ class _SettingViewState extends State<SettingView> {
                 onTap: () {
                   Go.to(context, const AboutUsView());
                 },
-                title: "About us",
+                title: AppStrings.aboutUs,
               ),
               if (signinMethod == "password")
                 SettiingWidget(
@@ -143,19 +143,19 @@ class _SettingViewState extends State<SettingView> {
                   onTap: () {
                     Go.to(context, const ChangePasswordView());
                   },
-                  title: "Change password",
+                  title: AppStrings.changePassword,
                 ),
               SettiingWidget(
                 color: Colors.green,
                 icon: Icons.message,
                 onTap: () {},
-                title: "Contact us",
+                title: AppStrings.contactUs,
               ),
               SettiingWidget(
                 color: Colors.purple,
                 icon: Icons.policy,
                 onTap: () {},
-                title: "Terms & Conditions",
+                title: AppStrings.tAc,
               ),
               SettiingWidget(
                 color: Colors.orange,
@@ -171,13 +171,12 @@ class _SettingViewState extends State<SettingView> {
                 onTap: () async {
                   var res = await showOkCancelAlertDialog(
                       context: context,
-                      message:
-                          "Do you really want to delete your account, This action is permanent and cannot be undo.",
-                      title: "Are you sure!");
+                      message: AppStrings.doYouReallyWantToDeleteYourAccount,
+                      title: AppStrings.areYouSure);
                   if (res == OkCancelResult.cancel) return;
                   _deleteAccount(context);
                 },
-                title: "Delete Account",
+                title: AppStrings.deleteAccount,
               ),
               SettiingWidget(
                 color: Colors.pinkAccent.shade100,
@@ -185,10 +184,10 @@ class _SettingViewState extends State<SettingView> {
                 onTap: () async {
                   var result = await showOkCancelAlertDialog(
                       context: context,
-                      message: "Do you really want to logout",
-                      title: "Are you sure!",
-                      okLabel: "Yes",
-                      cancelLabel: "Not now");
+                      message: AppStrings.doYouReallyWantToLogout,
+                      title: AppStrings.areYouSure,
+                      okLabel: AppStrings.yes,
+                      cancelLabel: AppStrings.notNow);
                   if (result == OkCancelResult.cancel) return;
                   await FirebaseAuth.instance.signOut();
                   context
@@ -197,7 +196,7 @@ class _SettingViewState extends State<SettingView> {
                   context.read<MainBloc>().add(ChangeIndexEvent(index: 0));
                   Go.offAll(context, const SplashView());
                 },
-                title: "Logout",
+                title: AppStrings.logout,
               ),
             ],
           ),
@@ -249,12 +248,12 @@ Future<void> emailPassword(BuildContext context) async {
             content: SizedBox(
               height: 60,
               child: CustomTextField(
-                hintText: "Enter password",
+                hintText: AppStrings.enterPassword,
                 validator: AppValidation.passwordValidation,
                 textEditingController: passwordController,
               ),
             ),
-            title: const Text("Please enter password for confirmation"),
+            title: const Text(AppStrings.pleaseEnterPasswordForConfirmation),
             actions: [
               MaterialButton(
                 onPressed: () => Go.back(context),
@@ -267,7 +266,7 @@ Future<void> emailPassword(BuildContext context) async {
                   height: 30,
                   width: 70,
                   child: Text(
-                    "Cancel",
+                    AppStrings.cancel,
                     style: TextStyle(color: AppColors.redColor, fontSize: 14),
                   ),
                 ),
@@ -302,7 +301,7 @@ Future<void> emailPassword(BuildContext context) async {
                   height: 30,
                   width: 70,
                   child: Text(
-                    "Confirm",
+                    AppStrings.confirm,
                     style: TextStyle(color: AppColors.whiteColor, fontSize: 14),
                   ),
                 ),
@@ -373,14 +372,14 @@ Future<void> phoneNumberAccountDelete(BuildContext context) async {
               length: 6,
             ),
           ),
-          title: const Text("Please enter the otp for confirmation"),
+          title: const Text(AppStrings.pleaseEnterTheOtpForConfirmation),
           actions: [
             MaterialButton(
               onPressed: () async {
                 if (otpController.text.length != 6) {
                   showOkAlertDialog(
                       context: context,
-                      message: "Please enter valid otp",
+                      message: AppStrings.pleaseEntervalidttp,
                       title: "Error");
                   return;
                 }
@@ -410,7 +409,7 @@ Future<void> phoneNumberAccountDelete(BuildContext context) async {
                 height: 30,
                 width: 70,
                 child: Text(
-                  "Confirm",
+                  AppStrings.confirm,
                   style: TextStyle(color: AppColors.whiteColor, fontSize: 14),
                 ),
               ),

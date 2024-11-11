@@ -1,4 +1,5 @@
 import 'package:chat_with_bloc/src/app_colors.dart';
+import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/view_model/phone_number_bloc/phone_number_bloc.dart';
@@ -33,22 +34,21 @@ class _PhoneNumberLoginViewState extends State<PhoneNumberLoginView> {
               const AppHeight(height: 70),
               const CustomBackButton(),
               const AppHeight(height: 50),
-              Text('Phone Number',
+              Text(AppStrings.phoneNumber,
                   style: AppTextStyle.font30
                       .copyWith(color: AppColors.blackColor)),
-              Text(
-                  'Please enter your valid phone number. We will send you a 6-digit code to verify your account. ',
+              Text(AppStrings.pleaseEnterYourValidPhoneNumber,
                   style: AppTextStyle.font16
                       .copyWith(color: AppColors.blackColor)),
               const AppHeight(height: 30),
               CustomTextField(
-                hintText: "30707000000",
+                hintText: AppStrings.phoneHint,
                 validator: (p0) {
                   if ((p0 ?? "").isEmpty) {
-                    return "Phone number is required";
+                    return ErrorStrings.phoneNumberIsRequired;
                   }
                   if ((p0 ?? "").length < 10) {
-                    return "Enter valid number";
+                    return AppStrings.enterValidNumber;
                   }
                   return null;
                 },
@@ -78,7 +78,7 @@ class _PhoneNumberLoginViewState extends State<PhoneNumberLoginView> {
               ),
               const AppHeight(height: 64),
               CustomNewButton(
-                btnName: "Continue",
+                btnName: AppStrings.continues,
                 onTap: () {
                   if (!_formKey.currentState!.validate()) return;
                   context.read<PhoneNumberBloc>().add(VerifyPhoneNumber(

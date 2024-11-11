@@ -1,5 +1,6 @@
 import 'package:chat_with_bloc/model/thread_model.dart';
 import 'package:chat_with_bloc/model/user_model.dart';
+import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/view_model/chat_bloc/chat_bloc.dart';
@@ -168,7 +169,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 ))),
               if (state.messageList.isEmpty && !state.isLoading)
                 const Expanded(
-                    child: Center(child: Text("Enter your first message"))),
+                    child:
+                        Center(child: Text(AppStrings.enterYourFirstMessage))),
               if (state.messageList.isNotEmpty && !state.isLoading)
                 Expanded(
                     child: Container(

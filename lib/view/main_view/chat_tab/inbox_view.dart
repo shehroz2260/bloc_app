@@ -1,4 +1,5 @@
 import 'package:chat_with_bloc/src/app_colors.dart';
+import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/view_model/inbox_bloc/inbox_bloc.dart';
@@ -135,7 +136,8 @@ class _InboxViewState extends State<InboxView> {
                                                                     index]
                                                                 .lastMessage
                                                                 .isEmpty
-                                                            ? "Send your first message"
+                                                            ? AppStrings
+                                                                .sendYourFirstMessage
                                                             : state
                                                                 .threadList[
                                                                     index]

@@ -66,11 +66,11 @@ class _HomeViewState extends State<HomeView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Clear",
+                        Text(AppStrings.clear,
                             style: AppTextStyle.font20.copyWith(
                                 color: AppColors.whiteColor,
                                 fontWeight: FontWeight.bold)),
-                        Text("Filter",
+                        Text(AppStrings.filter,
                             style: AppTextStyle.font20.copyWith(
                                 color: AppColors.blackColor,
                                 fontWeight: FontWeight.bold)),
@@ -84,14 +84,14 @@ class _HomeViewState extends State<HomeView> {
                               context.read<FilterBloc>().add(OnChangeRadisus(
                                   value: 100, context: context));
                             },
-                            child: Text("Clear",
+                            child: Text(AppStrings.clear,
                                 style: AppTextStyle.font20.copyWith(
                                     color: AppColors.redColor,
                                     fontWeight: FontWeight.bold)))
                       ],
                     ),
                     const AppHeight(height: 30),
-                    Text("Show me",
+                    Text(AppStrings.showMe,
                         style: AppTextStyle.font20.copyWith(
                             color: AppColors.blackColor,
                             fontWeight: FontWeight.bold)),
@@ -101,7 +101,7 @@ class _HomeViewState extends State<HomeView> {
                     Row(
                       children: [
                         Expanded(
-                            child: Text("Age",
+                            child: Text(AppStrings.age,
                                 style: AppTextStyle.font20.copyWith(
                                     color: AppColors.blackColor,
                                     fontWeight: FontWeight.bold))),
@@ -113,7 +113,7 @@ class _HomeViewState extends State<HomeView> {
                         ),
                         Text(
                             state.maxAge == 100
-                                ? "All"
+                                ? AppStrings.all
                                 : state.maxAge.toInt().toString(),
                             style: AppTextStyle.font16.copyWith(
                                 fontWeight: FontWeight.bold,
@@ -178,13 +178,13 @@ class _HomeViewState extends State<HomeView> {
                     Row(
                       children: [
                         Expanded(
-                            child: Text("Distance",
+                            child: Text(AppStrings.distance,
                                 style: AppTextStyle.font20.copyWith(
                                     color: AppColors.blackColor,
                                     fontWeight: FontWeight.bold))),
                         Text(
                             state.radius == 100
-                                ? "All"
+                                ? AppStrings.all
                                 : state.radius.toInt().toString(),
                             style: AppTextStyle.font16.copyWith(
                                 fontWeight: FontWeight.bold,
@@ -224,7 +224,7 @@ class _HomeViewState extends State<HomeView> {
                     ),
                     const AppHeight(height: 30),
                     CustomNewButton(
-                        btnName: "Apply",
+                        btnName: AppStrings.apply,
                         onTap: () {
                           context.read<FilterBloc>().add(OnAppLyFilter(
                               context: context, userBloc: ancestorContext));
@@ -280,7 +280,7 @@ class _HomeViewState extends State<HomeView> {
           if (!state.isLoading && state.userList.isEmpty)
             Expanded(
                 child: Center(
-              child: Text("There is no users",
+              child: Text(AppStrings.thereIsNoUsers,
                   style: AppTextStyle.font16
                       .copyWith(color: AppColors.blackColor)),
             )),
@@ -486,7 +486,7 @@ class _InterestedInWidgetState extends State<InterestedInWidget> {
                     )),
                 padding: const EdgeInsets.symmetric(vertical: 18),
                 alignment: Alignment.center,
-                child: Text("Men",
+                child: Text(AppStrings.men,
                     style: AppTextStyle.font16.copyWith(
                         color: state.gender == 1
                             ? AppColors.whiteColor
@@ -520,7 +520,7 @@ class _InterestedInWidgetState extends State<InterestedInWidget> {
                                 color: state.gender == 2
                                     ? AppColors.redColor
                                     : AppColors.borderGreyColor))),
-                    child: Text("Women",
+                    child: Text(AppStrings.women,
                         style: AppTextStyle.font16.copyWith(
                             color: state.gender == 2
                                 ? AppColors.whiteColor
@@ -546,7 +546,7 @@ class _InterestedInWidgetState extends State<InterestedInWidget> {
                     )),
                 padding: const EdgeInsets.symmetric(vertical: 18),
                 alignment: Alignment.center,
-                child: Text("Both",
+                child: Text(AppStrings.both,
                     style: AppTextStyle.font16.copyWith(
                         color: state.gender == 0
                             ? AppColors.whiteColor

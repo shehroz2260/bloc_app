@@ -1,4 +1,5 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/view_model/gallery_bloc/gallery_bloc.dart';
 import 'package:chat_with_bloc/view_model/gallery_bloc/gallery_event.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
@@ -28,7 +29,7 @@ class GallerView extends StatelessWidget {
                   children: [
                     const CustomBackButton(),
                     Text(
-                      'Gallery',
+                      AppStrings.gallery,
                       style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: AppColors.blackColor,
@@ -68,11 +69,11 @@ class GallerView extends StatelessWidget {
                                   onTap: () async {
                                     var res = await showOkCancelAlertDialog(
                                         context: context,
-                                        message:
-                                            "Do you really want to delete image, this action is permanent and cannot be undo",
-                                        title: "Are you sure!",
-                                        okLabel: "Yes",
-                                        cancelLabel: "No");
+                                        message: AppStrings
+                                            .doYouReallyWantToDeleteImage,
+                                        title: AppStrings.areYouSure,
+                                        okLabel: AppStrings.yes,
+                                        cancelLabel: AppStrings.no);
                                     if (res == OkCancelResult.cancel) return;
                                     context.read<GalleryBloc>().add(ClearImage(
                                         index: index, context: context));
@@ -97,7 +98,7 @@ class GallerView extends StatelessWidget {
                 const Spacer(),
                 if (state.userData.galleryImages.length < 6)
                   CustomNewButton(
-                    btnName: "Add image",
+                    btnName: AppStrings.addImage,
                     onTap: () => context
                         .read<GalleryBloc>()
                         .add(SelectImage(context: context)),

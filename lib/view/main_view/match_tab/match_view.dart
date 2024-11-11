@@ -39,7 +39,7 @@ class _MatchTabState extends State<MatchTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const AppHeight(height: 60),
-            Text(state.index == 0 ? "Likes" : AppStrings.matches,
+            Text(state.index == 0 ? AppStrings.likes : AppStrings.matches,
                 style:
                     AppTextStyle.font25.copyWith(color: AppColors.blackColor)),
             const AppHeight(height: 20),
@@ -76,7 +76,7 @@ class _MatchTabState extends State<MatchTab> {
                             ),
                           ),
                           Text(
-                            "Likes",
+                            AppStrings.likes,
                             style: TextStyle(
                                 fontSize: 16,
                                 color: state.index == 0
@@ -116,7 +116,7 @@ class _MatchTabState extends State<MatchTab> {
                             ),
                           ),
                           Text(
-                            "Connected",
+                            AppStrings.connected,
                             style: TextStyle(
                                 fontSize: 16,
                                 color: state.index == 1
@@ -280,10 +280,10 @@ class _MatchTabState extends State<MatchTab> {
                                                   var okCancelResult =
                                                       await showOkCancelAlertDialog(
                                                           context: context,
-                                                          message:
-                                                              "Do you really want to remove match, This action is permanent and cannot be undo",
-                                                          title:
-                                                              "Remove match");
+                                                          message: AppStrings
+                                                              .doYouReallyWantToRemoveMatch,
+                                                          title: AppStrings
+                                                              .removeMatch);
                                                   if (okCancelResult ==
                                                       OkCancelResult.cancel) {
                                                     return;

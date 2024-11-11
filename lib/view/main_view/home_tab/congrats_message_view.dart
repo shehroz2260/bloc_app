@@ -1,4 +1,5 @@
 import 'package:chat_with_bloc/src/app_colors.dart';
+import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
@@ -25,7 +26,7 @@ class CongratsMessageView extends StatelessWidget {
           Text("It’s a match, ${user.firstName}!",
               textAlign: TextAlign.center,
               style: AppTextStyle.font30.copyWith(color: AppColors.redColor)),
-          Text("Start a conversation now with each other",
+          Text(AppStrings.startAConversationNowWithEachOther,
               style: AppTextStyle.font16.copyWith(color: AppColors.blackColor)),
           const AppHeight(height: 20),
           BlocBuilder<InboxBloc, InboxState>(
@@ -33,7 +34,7 @@ class CongratsMessageView extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: CustomNewButton(
-                  btnName: "Say, hello",
+                  btnName: AppStrings.sayhello,
                   onTap: () {
                     final model = state.threadList
                         .where((e) => e.participantUserList.contains(user.uid))
@@ -50,7 +51,7 @@ class CongratsMessageView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 40),
             child: CustomNewButton(
               onTap: () => Go.back(context),
-              btnName: "Keep swiping",
+              btnName: AppStrings.keepSwiping,
               btnColor: AppColors.redColor.withOpacity(0.2),
               isFillColor: false,
             ),

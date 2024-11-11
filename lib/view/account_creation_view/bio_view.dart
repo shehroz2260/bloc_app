@@ -1,4 +1,5 @@
 import 'package:chat_with_bloc/src/app_colors.dart';
+import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/utils/app_validation.dart';
@@ -35,31 +36,31 @@ class _BioViewState extends State<BioView> {
               const AppHeight(height: 60),
               const CustomBackButton(),
               const AppHeight(height: 30),
-              Text("Bio",
+              Text(AppStrings.bio,
                   style: AppTextStyle.font20.copyWith(
                       color: AppColors.blackColor,
                       fontWeight: FontWeight.bold)),
               const AppHeight(height: 10),
               CustomTextField(
-                hintText: 'Enter bio',
+                hintText: AppStrings.enterbio,
                 textEditingController: _bioController,
                 validator: AppValidation.bioValidation,
               ),
               const AppHeight(height: 30),
-              Text("About your self",
+              Text(AppStrings.aboutyourself,
                   style: AppTextStyle.font20.copyWith(
                       color: AppColors.blackColor,
                       fontWeight: FontWeight.bold)),
               const AppHeight(height: 10),
               CustomTextField(
-                hintText: 'Enter about your self',
+                hintText: AppStrings.enteraboutyourself,
                 maxLines: 7,
                 textEditingController: _aboutController,
                 validator: AppValidation.aboutValidation,
               ),
               const Spacer(),
               CustomNewButton(
-                  btnName: "Continue",
+                  btnName: AppStrings.continues,
                   onTap: () {
                     if (!_formKey.currentState!.validate()) return;
                     context.read<BioBloc>().add(OnContinue(

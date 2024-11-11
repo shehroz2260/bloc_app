@@ -1,5 +1,6 @@
 import 'package:chat_with_bloc/src/app_assets.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
+import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
@@ -23,16 +24,16 @@ class WelcomeView extends StatelessWidget {
             SvgPicture.asset(AppAssets.appIcon),
             const AppHeight(height: 40),
             Text(
-              "Congrats!",
+              AppStrings.congrats,
               style: AppTextStyle.font25.copyWith(color: AppColors.blackColor),
             ),
             Text(
-              "You are all set your profile",
+              AppStrings.youareallsetyourprofile,
               style: AppTextStyle.font20.copyWith(color: AppColors.blackColor),
             ),
             const AppHeight(height: 40),
             Text(
-              "Now you are ready to explore the peoples and make match with your perfect partener",
+              AppStrings.nowYouAreReadyToExplorethepeople,
               style: AppTextStyle.font16.copyWith(color: AppColors.blackColor),
               textAlign: TextAlign.center,
             ),

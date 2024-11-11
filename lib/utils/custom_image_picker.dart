@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:io';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:image_picker/image_picker.dart';
@@ -144,11 +145,11 @@ class CameraGalleryBottomSheet extends StatelessWidget {
             },
             leading: Icon(Icons.camera, size: 30, color: AppColors.redColor),
             title: Text(
-              "Camera",
+              AppStrings.camera,
               style: TextStyle(fontSize: 20, color: AppColors.blackColor),
             ),
             subtitle: const Text(
-              "Pick image from camera",
+              AppStrings.pickImageFromCamera,
               style: TextStyle(color: Colors.grey),
             ),
           ),
@@ -164,11 +165,11 @@ class CameraGalleryBottomSheet extends StatelessWidget {
               color: AppColors.redColor,
             ),
             title: Text(
-              "Gallery",
+              AppStrings.gallery,
               style: TextStyle(fontSize: 20, color: AppColors.blackColor),
             ),
             subtitle: const Text(
-              "Pick image from Gallery",
+              AppStrings.pickImageFromGallery,
               style: TextStyle(color: Colors.grey),
             ),
           )
@@ -179,12 +180,12 @@ class CameraGalleryBottomSheet extends StatelessWidget {
 }
 
 Future<File?> kImagePicker(
-    {String title = "Choose value",
+    {String title = AppStrings.choosevalue,
     String message = "",
     required BuildContext context}) async {
   if (!await PermissionUtils(
           permission: Permission.camera,
-          permissionName: "Camera",
+          permissionName: AppStrings.camera,
           context: context)
       .isAllowed) {
     return null;
@@ -193,7 +194,7 @@ Future<File?> kImagePicker(
   if (Platform.isIOS &&
       !await PermissionUtils(
               permission: Permission.photos,
-              permissionName: "Photos",
+              permissionName: AppStrings.photos,
               context: context)
           .isAllowed) {
     return null;
@@ -205,8 +206,8 @@ Future<File?> kImagePicker(
   }
   var input =
       await showModalActionSheet(context: context, title: title, actions: [
-    const SheetAction(label: "Take Photo", key: "0"),
-    const SheetAction(label: "Choose from library", key: "1")
+    const SheetAction(label: AppStrings.takePhoto, key: "0"),
+    const SheetAction(label: AppStrings.chooseFromLibrary, key: "1")
   ]);
   if (input?.isEmpty ?? true) return null;
   return _getImage(
@@ -238,7 +239,7 @@ Future<File?> _getImage(ImageSource imageSource, BuildContext context,
 }
 
 Future<File?> kVideoPicker(
-    {String title = "Choose value",
+    {String title = AppStrings.choosevalue,
     String message = "",
     required BuildContext context}) async {
   if (!await storagePermission(context)) {
@@ -254,8 +255,8 @@ Future<File?> kVideoPicker(
   }
   var input =
       await showModalActionSheet(context: context, title: title, actions: [
-    const SheetAction(label: "Take Photo", key: "0"),
-    const SheetAction(label: "Choose from library", key: "1")
+    const SheetAction(label: AppStrings.takePhoto, key: "0"),
+    const SheetAction(label: AppStrings.chooseFromLibrary, key: "1")
   ]);
   if (input?.isEmpty ?? true) return null;
   return _getImage(
@@ -276,11 +277,10 @@ Future<bool> storagePermission(BuildContext context) async {
 
   var result = await showOkCancelAlertDialog(
       context: context,
-      title: "Permission for video recording",
-      message:
-          "Please Enable Camera, Microphone, Audio and photos from setting",
-      okLabel: "Open setting",
-      cancelLabel: "Later");
+      title: AppStrings.permissionforvideorecording,
+      message: AppStrings.pleaseEnablecamera,
+      okLabel: AppStrings.openSetting,
+      cancelLabel: AppStrings.later);
 
   if (result == OkCancelResult.ok) {
     await openAppSettings();

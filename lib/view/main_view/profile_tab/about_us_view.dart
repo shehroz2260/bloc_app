@@ -1,4 +1,5 @@
 import 'package:chat_with_bloc/src/app_colors.dart';
+import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,7 @@ class AboutUsView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const CustomBackButton(),
-                Text("About us",
+                Text(AppStrings.aboutUs,
                     style: AppTextStyle.font25
                         .copyWith(color: AppColors.blackColor)),
                 const SizedBox(width: 50),

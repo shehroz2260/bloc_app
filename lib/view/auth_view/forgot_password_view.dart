@@ -42,7 +42,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               const AppHeight(height: 40),
               SvgPicture.asset(AppAssets.appIcon),
               const AppHeight(height: 20),
-              Text("Forgot Password",
+              Text(AppStrings.forgotPasswords,
                   style: AppTextStyle.font25
                       .copyWith(color: AppColors.blackColor)),
               const AppHeight(height: 30),
@@ -52,7 +52,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 hintText: AppStrings.enterEmailAddress,
               ),
               const AppHeight(height: 20),
-              CustomNewButton(btnName: "Send", onTap: _forgotPassword)
+              CustomNewButton(btnName: AppStrings.send, onTap: _forgotPassword)
             ],
           ),
         ),
@@ -69,8 +69,8 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
       LoadingDialog.hideProgress(context);
       await showOkAlertDialog(
           context: context,
-          title: "Success",
-          message: "Reset link has been sent to your email");
+          title: AppStrings.success,
+          message: AppStrings.resetLinkHasBeenSentToYourEmail);
       Go.back(context);
     }).catchError((e) {
       LoadingDialog.hideProgress(context);

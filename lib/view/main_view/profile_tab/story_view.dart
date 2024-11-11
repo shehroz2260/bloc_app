@@ -1,4 +1,5 @@
 import 'package:chat_with_bloc/src/app_colors.dart';
+import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/utils/media_type.dart';
@@ -70,7 +71,7 @@ class _StoryViewState extends State<StoryView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const CustomBackButton(),
-                        Text("Story",
+                        Text(AppStrings.story,
                             style: AppTextStyle.font25
                                 .copyWith(color: AppColors.blackColor)),
                         const SizedBox(
@@ -141,12 +142,12 @@ class _StoryViewState extends State<StoryView> {
                     ),
                     Text(context.read<UserBaseBloc>().state.userData.firstName),
                     const AppHeight(height: 20),
-                    const Text("Other Stories"),
+                    const Text(AppStrings.otherStories),
                     const AppHeight(height: 10),
                     if (state.otherList.isEmpty)
                       const Expanded(
                           child: Center(
-                        child: Text("There is no story"),
+                        child: Text(AppStrings.thereIsNoStory),
                       )),
                     if (state.otherList.isNotEmpty)
                       Expanded(
@@ -230,7 +231,7 @@ class _StoryViewState extends State<StoryView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "Options",
+                  AppStrings.options,
                   style:
                       AppTextStyle.font25.copyWith(color: AppColors.redColor),
                 ),
@@ -252,7 +253,7 @@ class _StoryViewState extends State<StoryView> {
                           color: AppColors.redColor, size: 40),
                       const AppWidth(width: 20),
                       Text(
-                        "Video",
+                        AppStrings.video,
                         style: AppTextStyle.font25
                             .copyWith(color: AppColors.blackColor),
                       )
@@ -276,7 +277,7 @@ class _StoryViewState extends State<StoryView> {
                           color: AppColors.redColor, size: 40),
                       const AppWidth(width: 20),
                       Text(
-                        "Images",
+                        AppStrings.images,
                         style: AppTextStyle.font25
                             .copyWith(color: AppColors.blackColor),
                       )

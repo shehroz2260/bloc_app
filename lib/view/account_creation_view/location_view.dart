@@ -1,4 +1,5 @@
 import 'package:chat_with_bloc/src/app_colors.dart';
+import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class LocationPermissionScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Text(
-              "Need your location",
+              AppStrings.needyourlocation,
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 20,
@@ -35,7 +36,7 @@ class LocationPermissionScreen extends StatelessWidget {
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Text(
-              "Please give us access to your Gps Location for better experience to see user nearby you.",
+              AppStrings.pleaseGiveUSAccesstoYourGps,
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 16,
@@ -49,7 +50,7 @@ class LocationPermissionScreen extends StatelessWidget {
               onTap: () => context.read<LocationBloc>().add(
                   OnRequestPermissionEvent(
                       context: context, isFromOnboard: isFromOnboard)),
-              btnName: 'Enable Location',
+              btnName: AppStrings.enableLocation,
             ),
           ),
           const SizedBox(height: 30),

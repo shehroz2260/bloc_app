@@ -56,7 +56,7 @@ class AppValidation {
 
   static String? bioValidation(String? value) {
     if ((value ?? "").isEmpty) {
-      return "Bio is required";
+      return ErrorStrings.bioIsReq;
     }
 
     return null;
@@ -64,7 +64,7 @@ class AppValidation {
 
   static String? aboutValidation(String? value) {
     if ((value ?? "").isEmpty) {
-      return "About is required";
+      return ErrorStrings.aboutisReq;
     }
 
     return null;
