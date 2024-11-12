@@ -1,7 +1,10 @@
 import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/view/splash_view/splash_view.dart';
 import 'package:chat_with_bloc/view_model/bio_bloc/bio_bloc.dart';
-import 'package:chat_with_bloc/view_model/bloc/story_bloc.dart';
+import 'package:chat_with_bloc/view_model/change_language/change_language_bloc.dart';
+import 'package:chat_with_bloc/view_model/change_language/change_language_event.dart';
+import 'package:chat_with_bloc/view_model/change_language/change_language_state.dart';
+import 'package:chat_with_bloc/view_model/story_bloc/story_bloc.dart';
 import 'package:chat_with_bloc/view_model/edit_bloc/edit_bloc.dart';
 import 'package:chat_with_bloc/view_model/filter_bloc.dart/filter_bloc.dart';
 import 'package:chat_with_bloc/view_model/gallery_bloc/gallery_bloc.dart';
@@ -23,6 +26,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get_storage/get_storage.dart';
 import 'firebase_options.dart';
 import 'view_model/gender_bloc/gender_bloc.dart';
 import 'view_model/location_permission_bloc/location_bloc.dart';
@@ -32,7 +36,33 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  runApp(const MyApp());
+  await GetStorage.init();
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider(create: (_) => UserBaseBloc()),
+      BlocProvider(create: (_) => SignInBloc()),
+      BlocProvider(create: (_) => SignUpBloc()),
+      BlocProvider(create: (_) => MainBloc()),
+      BlocProvider(create: (_) => InboxBloc()),
+      BlocProvider(create: (_) => ChatBloc()),
+      BlocProvider(create: (_) => LocationBloc()),
+      BlocProvider(create: (_) => MapBloc()),
+      BlocProvider(create: (_) => DobBloc()),
+      BlocProvider(create: (_) => GenderBloc()),
+      BlocProvider(create: (_) => PreferenceBloc()),
+      BlocProvider(create: (_) => HomeBloc()),
+      BlocProvider(create: (_) => FilterBloc()),
+      BlocProvider(create: (_) => MatchesBloc()),
+      BlocProvider(create: (_) => BioBloc()),
+      BlocProvider(create: (_) => PhoneNumberBloc()),
+      BlocProvider(create: (_) => GalleryBloc()),
+      BlocProvider(create: (_) => OtpBloc()),
+      BlocProvider(create: (_) => EditBloc()),
+      BlocProvider(create: (_) => StoryBloc()),
+      BlocProvider(create: (_) => ChangeLanguageBloc()),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -43,10 +73,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  BuildContext? ancestorContext;
+
   @override
   void initState() {
+    context.read<ChangeLanguageBloc>().add(OnitLanguage());
     WidgetsBinding.instance.addObserver(this);
-
     super.initState();
   }
 
@@ -68,44 +100,24 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => UserBaseBloc()),
-        BlocProvider(create: (context) => SignInBloc()),
-        BlocProvider(create: (context) => SignUpBloc()),
-        BlocProvider(create: (context) => MainBloc()),
-        BlocProvider(create: (context) => InboxBloc()),
-        BlocProvider(create: (context) => ChatBloc()),
-        BlocProvider(create: (context) => LocationBloc()),
-        BlocProvider(create: (context) => MapBloc()),
-        BlocProvider(create: (context) => DobBloc()),
-        BlocProvider(create: (context) => GenderBloc()),
-        BlocProvider(create: (context) => PreferenceBloc()),
-        BlocProvider(create: (context) => HomeBloc()),
-        BlocProvider(create: (context) => FilterBloc()),
-        BlocProvider(create: (context) => MatchesBloc()),
-        BlocProvider(create: (context) => BioBloc()),
-        BlocProvider(create: (context) => PhoneNumberBloc()),
-        BlocProvider(create: (context) => GalleryBloc()),
-        BlocProvider(create: (context) => OtpBloc()),
-        BlocProvider(create: (context) => EditBloc()),
-        BlocProvider(create: (context) => StoryBloc()),
-      ],
-      child: GestureDetector(
-        onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
-        child: const MaterialApp(
-          localizationsDelegates: [
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
+      child: BlocBuilder<ChangeLanguageBloc, ChangeLanguageState>(
+          builder: (context, state) {
+        ancestorContext = context;
+        return MaterialApp(
+          localizationsDelegates: const [
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
           ],
-          locale: Locale("en"),
+          locale: state.locale,
           supportedLocales: AppLocalizations.supportedLocales,
           debugShowCheckedModeBanner: false,
-          home: SplashView(),
-        ),
-      ),
+          home: const SplashView(),
+        );
+      }),
     );
   }
 }

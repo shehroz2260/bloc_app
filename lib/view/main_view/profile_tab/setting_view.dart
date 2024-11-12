@@ -31,6 +31,7 @@ import '../../../view_model/user_base_bloc/user_base_bloc.dart';
 import '../../../view_model/user_base_bloc/user_base_event.dart';
 import '../../../widgets/custom_button.dart';
 import '../../splash_view/splash_view.dart';
+import 'change_language_view.dart';
 import 'change_password_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -67,141 +68,158 @@ class _SettingViewState extends State<SettingView> {
                 ],
               ),
               const AppHeight(height: 20),
-              BlocBuilder<UserBaseBloc, UserBaseState>(
-                  builder: (context, userState) {
-                return Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: AppColors.borderColor,
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  padding: const EdgeInsets.all(20),
-                  child: Row(
-                    children: [
-                      AppCacheImage(
-                          imageUrl: userState.userData.profileImage,
-                          height: 60,
-                          onTap: () {
-                            Go.to(
-                                context,
-                                ImageView(
-                                    imageUrl: userState.userData.profileImage));
-                          },
-                          width: 60,
-                          round: 60),
-                      const AppWidth(width: 12),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            userState.userData.firstName,
-                            style: AppTextStyle.font20.copyWith(
-                                color: AppColors.blackColor,
-                                fontWeight: FontWeight.w700),
-                          ),
-                          const AppHeight(height: 5),
-                          GestureDetector(
-                            onTap: () {
-                              Go.to(
-                                  context,
-                                  UserProfileView(
-                                    user: userState.userData,
-                                    isCUser: true,
-                                  ));
-                            },
-                            child:
-                                Text(AppLocalizations.of(context)!.seeProfile,
-                                    style: AppTextStyle.font16.copyWith(
-                                      color: AppColors.blueColor,
-                                    )),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                );
-              }),
-              const AppHeight(height: 20),
-              SettiingWidget(
-                color: Colors.teal.shade300,
-                icon: Icons.camera_alt,
-                onTap: () {
-                  Go.to(context, const StoryView());
-                },
-                title: AppLocalizations.of(context)!.story,
-              ),
-              SettiingWidget(
-                color: Colors.amber,
-                icon: Icons.info,
-                onTap: () {
-                  Go.to(context, const AboutUsView());
-                },
-                title: AppLocalizations.of(context)!.aboutUs,
-              ),
-              if (signinMethod == "password")
-                SettiingWidget(
-                  color: Colors.blue,
-                  icon: Icons.lock_open_outlined,
-                  onTap: () {
-                    Go.to(context, const ChangePasswordView());
-                  },
-                  title: AppLocalizations.of(context)!.changePassword,
+              Expanded(
+                  child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    BlocBuilder<UserBaseBloc, UserBaseState>(
+                        builder: (context, userState) {
+                      return Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: AppColors.borderColor,
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        padding: const EdgeInsets.all(20),
+                        child: Row(
+                          children: [
+                            AppCacheImage(
+                                imageUrl: userState.userData.profileImage,
+                                height: 60,
+                                onTap: () {
+                                  Go.to(
+                                      context,
+                                      ImageView(
+                                          imageUrl:
+                                              userState.userData.profileImage));
+                                },
+                                width: 60,
+                                round: 60),
+                            const AppWidth(width: 12),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  userState.userData.firstName,
+                                  style: AppTextStyle.font20.copyWith(
+                                      color: AppColors.blackColor,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                const AppHeight(height: 5),
+                                GestureDetector(
+                                  onTap: () {
+                                    Go.to(
+                                        context,
+                                        UserProfileView(
+                                          user: userState.userData,
+                                          isCUser: true,
+                                        ));
+                                  },
+                                  child: Text(
+                                      AppLocalizations.of(context)!.seeProfile,
+                                      style: AppTextStyle.font16.copyWith(
+                                        color: AppColors.blueColor,
+                                      )),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      );
+                    }),
+                    const AppHeight(height: 20),
+                    SettiingWidget(
+                      color: Colors.teal.shade300,
+                      icon: Icons.camera_alt,
+                      onTap: () {
+                        Go.to(context, const StoryView());
+                      },
+                      title: AppLocalizations.of(context)!.story,
+                    ),
+                    SettiingWidget(
+                      color: Colors.brown.shade400,
+                      icon: Icons.language_sharp,
+                      onTap: () {
+                        Go.to(context, const ChangeLanguageView());
+                      },
+                      title: "Change Language",
+                    ),
+                    SettiingWidget(
+                      color: Colors.amber.shade400,
+                      icon: Icons.info,
+                      onTap: () {
+                        Go.to(context, const AboutUsView());
+                      },
+                      title: AppLocalizations.of(context)!.aboutUs,
+                    ),
+                    if (signinMethod == "password")
+                      SettiingWidget(
+                        color: Colors.blue,
+                        icon: Icons.lock_open_outlined,
+                        onTap: () {
+                          Go.to(context, const ChangePasswordView());
+                        },
+                        title: AppLocalizations.of(context)!.changePassword,
+                      ),
+                    SettiingWidget(
+                      color: Colors.green,
+                      icon: Icons.message,
+                      onTap: () {},
+                      title: AppLocalizations.of(context)!.contactUs,
+                    ),
+                    SettiingWidget(
+                      color: Colors.purple,
+                      icon: Icons.policy,
+                      onTap: () {},
+                      title: AppLocalizations.of(context)!.tAc,
+                    ),
+                    SettiingWidget(
+                      color: Colors.orange,
+                      icon: Icons.help_outline,
+                      onTap: () {
+                        Go.to(context, const FaqsView());
+                      },
+                      title: "FAQs",
+                    ),
+                    SettiingWidget(
+                      color: Colors.red,
+                      icon: Icons.delete_forever,
+                      onTap: () async {
+                        var res = await showOkCancelAlertDialog(
+                            context: context,
+                            message: AppLocalizations.of(context)!
+                                .doYouReallyWantToDeleteYourAccount,
+                            title: AppLocalizations.of(context)!.areYouSure);
+                        if (res == OkCancelResult.cancel) return;
+                        _deleteAccount(context);
+                      },
+                      title: AppLocalizations.of(context)!.deleteAccount,
+                    ),
+                    SettiingWidget(
+                      color: Colors.pinkAccent.shade100,
+                      icon: Icons.logout_outlined,
+                      onTap: () async {
+                        var result = await showOkCancelAlertDialog(
+                            context: context,
+                            message: AppLocalizations.of(context)!
+                                .doYouReallyWantToLogout,
+                            title: AppLocalizations.of(context)!.areYouSure,
+                            okLabel: AppLocalizations.of(context)!.yes,
+                            cancelLabel: AppStrings.notNow);
+                        if (result == OkCancelResult.cancel) return;
+                        await FirebaseAuth.instance.signOut();
+                        context.read<UserBaseBloc>().add(
+                            UpdateUserEvent(userModel: UserModel.emptyModel));
+                        context
+                            .read<MainBloc>()
+                            .add(ChangeIndexEvent(index: 0));
+                        Go.offAll(context, const SplashView());
+                      },
+                      title: AppLocalizations.of(context)!.logout,
+                    ),
+                  ],
                 ),
-              SettiingWidget(
-                color: Colors.green,
-                icon: Icons.message,
-                onTap: () {},
-                title: AppLocalizations.of(context)!.contactUs,
-              ),
-              SettiingWidget(
-                color: Colors.purple,
-                icon: Icons.policy,
-                onTap: () {},
-                title: AppLocalizations.of(context)!.tAc,
-              ),
-              SettiingWidget(
-                color: Colors.orange,
-                icon: Icons.help_outline,
-                onTap: () {
-                  Go.to(context, const FaqsView());
-                },
-                title: "FAQs",
-              ),
-              SettiingWidget(
-                color: Colors.red,
-                icon: Icons.delete_forever,
-                onTap: () async {
-                  var res = await showOkCancelAlertDialog(
-                      context: context,
-                      message: AppLocalizations.of(context)!
-                          .doYouReallyWantToDeleteYourAccount,
-                      title: AppLocalizations.of(context)!.areYouSure);
-                  if (res == OkCancelResult.cancel) return;
-                  _deleteAccount(context);
-                },
-                title: AppLocalizations.of(context)!.deleteAccount,
-              ),
-              SettiingWidget(
-                color: Colors.pinkAccent.shade100,
-                icon: Icons.logout_outlined,
-                onTap: () async {
-                  var result = await showOkCancelAlertDialog(
-                      context: context,
-                      message:
-                          AppLocalizations.of(context)!.doYouReallyWantToLogout,
-                      title: AppLocalizations.of(context)!.areYouSure,
-                      okLabel: AppLocalizations.of(context)!.yes,
-                      cancelLabel: AppStrings.notNow);
-                  if (result == OkCancelResult.cancel) return;
-                  await FirebaseAuth.instance.signOut();
-                  context
-                      .read<UserBaseBloc>()
-                      .add(UpdateUserEvent(userModel: UserModel.emptyModel));
-                  context.read<MainBloc>().add(ChangeIndexEvent(index: 0));
-                  Go.offAll(context, const SplashView());
-                },
-                title: AppLocalizations.of(context)!.logout,
-              ),
+              ))
             ],
           ),
         ),
