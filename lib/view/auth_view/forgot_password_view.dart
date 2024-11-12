@@ -6,12 +6,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../src/app_assets.dart';
 import '../../src/app_colors.dart';
-import '../../src/app_string.dart';
 import '../../src/app_text_style.dart';
 import '../../src/width_hieght.dart';
 import '../../utils/app_validation.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ForgotPasswordView extends StatefulWidget {
   const ForgotPasswordView({super.key});
@@ -42,17 +42,19 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               const AppHeight(height: 40),
               SvgPicture.asset(AppAssets.appIcon),
               const AppHeight(height: 20),
-              Text(AppStrings.forgotPasswords,
+              Text(AppLocalizations.of(context)!.forgotPasswords,
                   style: AppTextStyle.font25
                       .copyWith(color: AppColors.blackColor)),
               const AppHeight(height: 30),
               CustomTextField(
                 textEditingController: _emailController,
                 validator: AppValidation.emailValidation,
-                hintText: AppStrings.enterEmailAddress,
+                hintText: AppLocalizations.of(context)!.enterEmailAddress,
               ),
               const AppHeight(height: 20),
-              CustomNewButton(btnName: AppStrings.send, onTap: _forgotPassword)
+              CustomNewButton(
+                  btnName: AppLocalizations.of(context)!.send,
+                  onTap: _forgotPassword)
             ],
           ),
         ),
@@ -69,8 +71,9 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
       LoadingDialog.hideProgress(context);
       await showOkAlertDialog(
           context: context,
-          title: AppStrings.success,
-          message: AppStrings.resetLinkHasBeenSentToYourEmail);
+          title: AppLocalizations.of(context)!.success,
+          message:
+              AppLocalizations.of(context)!.resetLinkHasBeenSentToYourEmail);
       Go.back(context);
     }).catchError((e) {
       LoadingDialog.hideProgress(context);

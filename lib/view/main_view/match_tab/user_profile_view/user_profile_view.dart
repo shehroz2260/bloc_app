@@ -14,6 +14,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import '../../../account_creation_view/preference_view.dart';
 import 'see_all_gallery_images.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserProfileView extends StatelessWidget {
   final UserModel user;
@@ -94,7 +95,7 @@ class UserProfileView extends StatelessWidget {
                                 var res = await showOkCancelAlertDialog(
                                     context: context,
                                     title: AppStrings.direction,
-                                    okLabel: AppStrings.yes,
+                                    okLabel: AppLocalizations.of(context)!.yes,
                                     cancelLabel: AppStrings.notNow,
                                     message:
                                         AppStrings.doYouWantToGetDirection);
@@ -223,11 +224,11 @@ class UserProfileView extends StatelessWidget {
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(AppStrings.gallery,
+                              Text(AppLocalizations.of(context)!.gallery,
                                   style: AppTextStyle.font20.copyWith(
                                       color: AppColors.blackColor,
                                       fontWeight: FontWeight.bold)),
-                              Text(AppStrings.seeAll,
+                              Text(AppLocalizations.of(context)!.seeAll,
                                   style: AppTextStyle.font16.copyWith(
                                       color: AppColors.redColor,
                                       fontWeight: FontWeight.bold))

@@ -54,19 +54,19 @@ class PhoneNumberBloc extends Bloc<PhoneNumberEvent, PhoneNumberState> {
       },
       verificationFailed: (FirebaseAuthException e) {
         LoadingDialog.hideProgress(event.context);
-        if (e.code == ErrorStrings.invalidPhoneNumber) {
+        if (e.code == AppStrings.invalidPhoneNumber) {
           showOkAlertDialog(
               context: event.context,
-              message: ErrorStrings.theProvidedPhoneNumberIsNotValid,
+              message: AppStrings.theProvidedPhoneNumberIsNotValid,
               title: "Error");
           return;
         }
-        if (e.code == ErrorStrings.tooManyRequests) {
+        if (e.code == AppStrings.tooManyRequests) {
           showOkAlertDialog(
               context: event.context,
-              message: ErrorStrings
-                  .youHaveAttemptedTooManyRequestsPleaseTryAgainLater,
-              title: ErrorStrings.smsVerificationError);
+              message:
+                  AppStrings.youHaveAttemptedTooManyRequestsPleaseTryAgainLater,
+              title: AppStrings.smsVerificationError);
 
           return;
         }

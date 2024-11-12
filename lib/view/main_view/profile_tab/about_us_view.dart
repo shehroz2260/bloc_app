@@ -1,8 +1,7 @@
 import 'package:chat_with_bloc/src/app_colors.dart';
-import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../src/app_text_style.dart';
 import '../../../widgets/custom_button.dart';
 
@@ -24,7 +23,7 @@ class AboutUsView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const CustomBackButton(),
-                Text(AppStrings.aboutUs,
+                Text(AppLocalizations.of(context)!.aboutUs,
                     style: AppTextStyle.font25
                         .copyWith(color: AppColors.blackColor)),
                 const SizedBox(width: 50),

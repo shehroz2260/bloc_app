@@ -1,5 +1,4 @@
 import 'package:chat_with_bloc/src/app_colors.dart';
-import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/view_model/gender_bloc/gender_bloc.dart';
@@ -8,6 +7,7 @@ import 'package:chat_with_bloc/view_model/gender_bloc/gender_state.dart';
 import 'package:chat_with_bloc/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GenderView extends StatefulWidget {
   final bool isUpdate;
@@ -40,7 +40,7 @@ class _GenderViewState extends State<GenderView> {
                 const AppHeight(height: 60),
                 const CustomBackButton(),
                 const AppHeight(height: 30),
-                Text(AppStrings.iAmA,
+                Text(AppLocalizations.of(context)!.iAmA,
                     style: AppTextStyle.font30
                         .copyWith(color: AppColors.blackColor)),
                 const AppHeight(height: 80),
@@ -63,7 +63,7 @@ class _GenderViewState extends State<GenderView> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(AppStrings.male,
+                        Text(AppLocalizations.of(context)!.male,
                             style: AppTextStyle.font16.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: state.gender == 1
@@ -95,7 +95,7 @@ class _GenderViewState extends State<GenderView> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(AppStrings.female,
+                        Text(AppLocalizations.of(context)!.female,
                             style: AppTextStyle.font16.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: state.gender == 2
@@ -109,8 +109,9 @@ class _GenderViewState extends State<GenderView> {
                 ),
                 const Expanded(child: SizedBox()),
                 CustomNewButton(
-                  btnName:
-                      widget.isUpdate ? AppStrings.update : AppStrings.next,
+                  btnName: widget.isUpdate
+                      ? AppLocalizations.of(context)!.update
+                      : AppLocalizations.of(context)!.next,
                   onTap: () {
                     context.read<GenderBloc>().add(OnNextEvent(
                         context: context, isUpdate: widget.isUpdate));

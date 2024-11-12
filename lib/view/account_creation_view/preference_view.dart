@@ -11,6 +11,7 @@ import 'package:chat_with_bloc/view_model/preference_bloc/preference_state.dart'
 import 'package:chat_with_bloc/widgets/custom_button.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../view_model/preference_bloc/preference_event.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PreferenceView extends StatefulWidget {
   final bool isUpdate;
@@ -49,7 +50,7 @@ class _PreferenceViewState extends State<PreferenceView> {
                     children: [
                       const AppHeight(height: 30),
                       if (!widget.isUpdate)
-                        Text(AppStrings.preferencegender,
+                        Text(AppLocalizations.of(context)!.preferencegender,
                             style: AppTextStyle.font25
                                 .copyWith(color: AppColors.blackColor)),
                       if (!widget.isUpdate) const AppHeight(height: 10),
@@ -76,7 +77,7 @@ class _PreferenceViewState extends State<PreferenceView> {
                                 ),
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 10),
-                                child: Text(AppStrings.both,
+                                child: Text(AppLocalizations.of(context)!.both,
                                     style: AppTextStyle.font16.copyWith(
                                         color: state.prefGenders == 0
                                             ? AppColors.whiteColor
@@ -103,7 +104,7 @@ class _PreferenceViewState extends State<PreferenceView> {
                                 ),
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 10),
-                                child: Text(AppStrings.men,
+                                child: Text(AppLocalizations.of(context)!.men,
                                     style: AppTextStyle.font16.copyWith(
                                         color: state.prefGenders == 1
                                             ? AppColors.whiteColor
@@ -129,7 +130,7 @@ class _PreferenceViewState extends State<PreferenceView> {
                                 ),
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15, vertical: 10),
-                                child: Text(AppStrings.women,
+                                child: Text(AppLocalizations.of(context)!.women,
                                     style: AppTextStyle.font16.copyWith(
                                         color: state.prefGenders == 2
                                             ? AppColors.whiteColor
@@ -139,11 +140,12 @@ class _PreferenceViewState extends State<PreferenceView> {
                           ],
                         ),
                       if (!widget.isUpdate) const AppHeight(height: 20),
-                      Text(AppStrings.yourInsterest,
+                      Text(AppLocalizations.of(context)!.yourInsterest,
                           style: AppTextStyle.font25
                               .copyWith(color: AppColors.blackColor)),
                       const AppHeight(height: 5),
-                      Text(AppStrings.selectAFewfyourinstrest,
+                      Text(
+                          AppLocalizations.of(context)!.selectAFewfyourinstrest,
                           style: AppTextStyle.font16
                               .copyWith(color: AppColors.blackColor)),
                       const AppHeight(height: 20),
@@ -202,8 +204,8 @@ class _PreferenceViewState extends State<PreferenceView> {
                       const AppHeight(height: 20),
                       CustomNewButton(
                         btnName: widget.isUpdate
-                            ? AppStrings.update
-                            : AppStrings.next,
+                            ? AppLocalizations.of(context)!.update
+                            : AppLocalizations.of(context)!.next,
                         onTap: () {
                           context.read<PreferenceBloc>().add(OnNextEvent(
                               context: context, isUpdate: widget.isUpdate));

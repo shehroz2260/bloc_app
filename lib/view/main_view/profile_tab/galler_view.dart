@@ -1,5 +1,4 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/view_model/gallery_bloc/gallery_bloc.dart';
 import 'package:chat_with_bloc/view_model/gallery_bloc/gallery_event.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
@@ -9,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../src/app_colors.dart';
 import '../../../widgets/app_cache_image.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GallerView extends StatelessWidget {
   const GallerView({super.key});
@@ -29,7 +29,7 @@ class GallerView extends StatelessWidget {
                   children: [
                     const CustomBackButton(),
                     Text(
-                      AppStrings.gallery,
+                      AppLocalizations.of(context)!.gallery,
                       style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: AppColors.blackColor,
@@ -69,11 +69,14 @@ class GallerView extends StatelessWidget {
                                   onTap: () async {
                                     var res = await showOkCancelAlertDialog(
                                         context: context,
-                                        message: AppStrings
+                                        message: AppLocalizations.of(context)!
                                             .doYouReallyWantToDeleteImage,
-                                        title: AppStrings.areYouSure,
-                                        okLabel: AppStrings.yes,
-                                        cancelLabel: AppStrings.no);
+                                        title: AppLocalizations.of(context)!
+                                            .areYouSure,
+                                        okLabel:
+                                            AppLocalizations.of(context)!.yes,
+                                        cancelLabel:
+                                            AppLocalizations.of(context)!.no);
                                     if (res == OkCancelResult.cancel) return;
                                     context.read<GalleryBloc>().add(ClearImage(
                                         index: index, context: context));
@@ -98,7 +101,7 @@ class GallerView extends StatelessWidget {
                 const Spacer(),
                 if (state.userData.galleryImages.length < 6)
                   CustomNewButton(
-                    btnName: AppStrings.addImage,
+                    btnName: AppLocalizations.of(context)!.addImage,
                     onTap: () => context
                         .read<GalleryBloc>()
                         .add(SelectImage(context: context)),

@@ -9,6 +9,7 @@ import 'package:chat_with_bloc/widgets/custom_text_field.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PhoneNumberLoginView extends StatefulWidget {
   const PhoneNumberLoginView({super.key});
@@ -34,18 +35,19 @@ class _PhoneNumberLoginViewState extends State<PhoneNumberLoginView> {
               const AppHeight(height: 70),
               const CustomBackButton(),
               const AppHeight(height: 50),
-              Text(AppStrings.phoneNumber,
+              Text(AppLocalizations.of(context)!.phoneNumber,
                   style: AppTextStyle.font30
                       .copyWith(color: AppColors.blackColor)),
-              Text(AppStrings.pleaseEnterYourValidPhoneNumber,
+              Text(
+                  AppLocalizations.of(context)!.pleaseEnterYourValidPhoneNumber,
                   style: AppTextStyle.font16
                       .copyWith(color: AppColors.blackColor)),
               const AppHeight(height: 30),
               CustomTextField(
-                hintText: AppStrings.phoneHint,
+                hintText: AppLocalizations.of(context)!.phoneHint,
                 validator: (p0) {
                   if ((p0 ?? "").isEmpty) {
-                    return ErrorStrings.phoneNumberIsRequired;
+                    return AppStrings.phoneNumberIsRequired;
                   }
                   if ((p0 ?? "").length < 10) {
                     return AppStrings.enterValidNumber;
@@ -78,7 +80,7 @@ class _PhoneNumberLoginViewState extends State<PhoneNumberLoginView> {
               ),
               const AppHeight(height: 64),
               CustomNewButton(
-                btnName: AppStrings.continues,
+                btnName: AppLocalizations.of(context)!.continues,
                 onTap: () {
                   if (!_formKey.currentState!.validate()) return;
                   context.read<PhoneNumberBloc>().add(VerifyPhoneNumber(

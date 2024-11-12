@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../src/app_colors.dart';
 import 'permission_utils.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum ActionStyle { normal, destructive, important, importantDestructive }
 
@@ -145,12 +146,12 @@ class CameraGalleryBottomSheet extends StatelessWidget {
             },
             leading: Icon(Icons.camera, size: 30, color: AppColors.redColor),
             title: Text(
-              AppStrings.camera,
+              AppLocalizations.of(context)!.camera,
               style: TextStyle(fontSize: 20, color: AppColors.blackColor),
             ),
-            subtitle: const Text(
-              AppStrings.pickImageFromCamera,
-              style: TextStyle(color: Colors.grey),
+            subtitle: Text(
+              AppLocalizations.of(context)!.pickImageFromCamera,
+              style: const TextStyle(color: Colors.grey),
             ),
           ),
           ListTile(
@@ -165,12 +166,12 @@ class CameraGalleryBottomSheet extends StatelessWidget {
               color: AppColors.redColor,
             ),
             title: Text(
-              AppStrings.gallery,
+              AppLocalizations.of(context)!.gallery,
               style: TextStyle(fontSize: 20, color: AppColors.blackColor),
             ),
-            subtitle: const Text(
-              AppStrings.pickImageFromGallery,
-              style: TextStyle(color: Colors.grey),
+            subtitle: Text(
+              AppLocalizations.of(context)!.pickImageFromGallery,
+              style: const TextStyle(color: Colors.grey),
             ),
           )
         ],
@@ -185,7 +186,7 @@ Future<File?> kImagePicker(
     required BuildContext context}) async {
   if (!await PermissionUtils(
           permission: Permission.camera,
-          permissionName: AppStrings.camera,
+          permissionName: AppLocalizations.of(context)!.camera,
           context: context)
       .isAllowed) {
     return null;
@@ -194,7 +195,7 @@ Future<File?> kImagePicker(
   if (Platform.isIOS &&
       !await PermissionUtils(
               permission: Permission.photos,
-              permissionName: AppStrings.photos,
+              permissionName: AppLocalizations.of(context)!.photos,
               context: context)
           .isAllowed) {
     return null;
@@ -206,8 +207,9 @@ Future<File?> kImagePicker(
   }
   var input =
       await showModalActionSheet(context: context, title: title, actions: [
-    const SheetAction(label: AppStrings.takePhoto, key: "0"),
-    const SheetAction(label: AppStrings.chooseFromLibrary, key: "1")
+    SheetAction(label: AppLocalizations.of(context)!.takePhoto, key: "0"),
+    SheetAction(
+        label: AppLocalizations.of(context)!.chooseFromLibrary, key: "1")
   ]);
   if (input?.isEmpty ?? true) return null;
   return _getImage(
@@ -255,8 +257,9 @@ Future<File?> kVideoPicker(
   }
   var input =
       await showModalActionSheet(context: context, title: title, actions: [
-    const SheetAction(label: AppStrings.takePhoto, key: "0"),
-    const SheetAction(label: AppStrings.chooseFromLibrary, key: "1")
+    SheetAction(label: AppLocalizations.of(context)!.takePhoto, key: "0"),
+    SheetAction(
+        label: AppLocalizations.of(context)!.chooseFromLibrary, key: "1")
   ]);
   if (input?.isEmpty ?? true) return null;
   return _getImage(
@@ -277,10 +280,10 @@ Future<bool> storagePermission(BuildContext context) async {
 
   var result = await showOkCancelAlertDialog(
       context: context,
-      title: AppStrings.permissionforvideorecording,
+      title: AppLocalizations.of(context)!.permissionforvideorecording,
       message: AppStrings.pleaseEnablecamera,
       okLabel: AppStrings.openSetting,
-      cancelLabel: AppStrings.later);
+      cancelLabel: AppLocalizations.of(context)!.later);
 
   if (result == OkCancelResult.ok) {
     await openAppSettings();

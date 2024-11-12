@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:chat_with_bloc/src/app_assets.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
-import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
@@ -12,7 +11,7 @@ import 'package:chat_with_bloc/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../auth_view/phone_number_login_view.dart';
 
 class SignOptionsView extends StatelessWidget {
@@ -34,16 +33,16 @@ class SignOptionsView extends StatelessWidget {
             const AppHeight(height: 50),
             SvgPicture.asset(AppAssets.appIcon),
             const AppHeight(height: 80),
-            Text(AppStrings.signInToContinue,
+            Text(AppLocalizations.of(context)!.signInToContinue,
                 style: AppTextStyle.font20.copyWith(
                     color: AppColors.blackColor, fontWeight: FontWeight.bold)),
             const AppHeight(height: 30),
             CustomNewButton(
-                btnName: AppStrings.continueToEmail,
+                btnName: AppLocalizations.of(context)!.continueToEmail,
                 onTap: () => Go.to(context, const SignInWithEmailView())),
             const AppHeight(height: 20),
             CustomNewButton(
-              btnName: AppStrings.usePhoneNumber,
+              btnName: AppLocalizations.of(context)!.usePhoneNumber,
               isFillColor: false,
               onTap: () {
                 Go.to(context, const PhoneNumberLoginView());
@@ -59,7 +58,7 @@ class SignOptionsView extends StatelessWidget {
                   endIndent: 15,
                   indent: 15,
                 )),
-                const Text(AppStrings.or),
+                Text(AppLocalizations.of(context)!.or),
                 Expanded(
                     child: Divider(
                   indent: 15,

@@ -8,6 +8,7 @@ import 'package:chat_with_bloc/view/auth_view/sign_up_view.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/custom_button.dart';
 import 'sign_options_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
@@ -33,24 +34,24 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             const AppHeight(height: 40),
             Text(AppStrings.appName,
                 style: AppTextStyle.font25.copyWith(color: AppColors.redColor)),
-            Text(AppStrings.wematchYouWithPeople,
+            Text(AppLocalizations.of(context)!.wematchYouWithPeople,
                 style:
                     AppTextStyle.font16.copyWith(color: AppColors.blackColor),
                 textAlign: TextAlign.center),
             const Spacer(),
             CustomNewButton(
-                btnName: AppStrings.createAnAccoun,
+                btnName: AppLocalizations.of(context)!.createAnAccoun,
                 onTap: () => Go.to(context, const SignUpView())),
             const AppHeight(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(AppStrings.alreadyHaveAnAccount,
+                Text(AppLocalizations.of(context)!.alreadyHaveAnAccount,
                     style: AppTextStyle.font16
                         .copyWith(color: AppColors.blackColor)),
                 GestureDetector(
                     onTap: () => Go.to(context, const SignOptionsView()),
-                    child: Text(" ${AppStrings.signIn}",
+                    child: Text(" ${AppLocalizations.of(context)!.signIn}",
                         style: AppTextStyle.font16
                             .copyWith(color: AppColors.redColor))),
               ],

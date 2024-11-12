@@ -10,6 +10,7 @@ import '../../../model/user_model.dart';
 import '../../../view_model/inbox_bloc/inbox_bloc.dart';
 import '../../../view_model/inbox_bloc/inbox_state.dart';
 import '../chat_tab/chat_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CongratsMessageView extends StatelessWidget {
   final UserModel user;
@@ -34,7 +35,7 @@ class CongratsMessageView extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 child: CustomNewButton(
-                  btnName: AppStrings.sayhello,
+                  btnName: AppLocalizations.of(context)!.sayhello,
                   onTap: () {
                     final model = state.threadList
                         .where((e) => e.participantUserList.contains(user.uid))

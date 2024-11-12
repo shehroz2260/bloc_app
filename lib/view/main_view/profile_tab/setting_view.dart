@@ -32,6 +32,7 @@ import '../../../view_model/user_base_bloc/user_base_event.dart';
 import '../../../widgets/custom_button.dart';
 import '../../splash_view/splash_view.dart';
 import 'change_password_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingView extends StatefulWidget {
   const SettingView({super.key});
@@ -56,7 +57,7 @@ class _SettingViewState extends State<SettingView> {
                 children: [
                   const CustomBackButton(),
                   Text(
-                    AppStrings.settings,
+                    AppLocalizations.of(context)!.settings,
                     style: TextStyle(
                         fontWeight: FontWeight.w700,
                         color: AppColors.blackColor,
@@ -108,10 +109,11 @@ class _SettingViewState extends State<SettingView> {
                                     isCUser: true,
                                   ));
                             },
-                            child: Text(AppStrings.seeProfile,
-                                style: AppTextStyle.font16.copyWith(
-                                  color: AppColors.blueColor,
-                                )),
+                            child:
+                                Text(AppLocalizations.of(context)!.seeProfile,
+                                    style: AppTextStyle.font16.copyWith(
+                                      color: AppColors.blueColor,
+                                    )),
                           ),
                         ],
                       )
@@ -126,7 +128,7 @@ class _SettingViewState extends State<SettingView> {
                 onTap: () {
                   Go.to(context, const StoryView());
                 },
-                title: AppStrings.story,
+                title: AppLocalizations.of(context)!.story,
               ),
               SettiingWidget(
                 color: Colors.amber,
@@ -134,7 +136,7 @@ class _SettingViewState extends State<SettingView> {
                 onTap: () {
                   Go.to(context, const AboutUsView());
                 },
-                title: AppStrings.aboutUs,
+                title: AppLocalizations.of(context)!.aboutUs,
               ),
               if (signinMethod == "password")
                 SettiingWidget(
@@ -143,19 +145,19 @@ class _SettingViewState extends State<SettingView> {
                   onTap: () {
                     Go.to(context, const ChangePasswordView());
                   },
-                  title: AppStrings.changePassword,
+                  title: AppLocalizations.of(context)!.changePassword,
                 ),
               SettiingWidget(
                 color: Colors.green,
                 icon: Icons.message,
                 onTap: () {},
-                title: AppStrings.contactUs,
+                title: AppLocalizations.of(context)!.contactUs,
               ),
               SettiingWidget(
                 color: Colors.purple,
                 icon: Icons.policy,
                 onTap: () {},
-                title: AppStrings.tAc,
+                title: AppLocalizations.of(context)!.tAc,
               ),
               SettiingWidget(
                 color: Colors.orange,
@@ -171,12 +173,13 @@ class _SettingViewState extends State<SettingView> {
                 onTap: () async {
                   var res = await showOkCancelAlertDialog(
                       context: context,
-                      message: AppStrings.doYouReallyWantToDeleteYourAccount,
-                      title: AppStrings.areYouSure);
+                      message: AppLocalizations.of(context)!
+                          .doYouReallyWantToDeleteYourAccount,
+                      title: AppLocalizations.of(context)!.areYouSure);
                   if (res == OkCancelResult.cancel) return;
                   _deleteAccount(context);
                 },
-                title: AppStrings.deleteAccount,
+                title: AppLocalizations.of(context)!.deleteAccount,
               ),
               SettiingWidget(
                 color: Colors.pinkAccent.shade100,
@@ -184,9 +187,10 @@ class _SettingViewState extends State<SettingView> {
                 onTap: () async {
                   var result = await showOkCancelAlertDialog(
                       context: context,
-                      message: AppStrings.doYouReallyWantToLogout,
-                      title: AppStrings.areYouSure,
-                      okLabel: AppStrings.yes,
+                      message:
+                          AppLocalizations.of(context)!.doYouReallyWantToLogout,
+                      title: AppLocalizations.of(context)!.areYouSure,
+                      okLabel: AppLocalizations.of(context)!.yes,
                       cancelLabel: AppStrings.notNow);
                   if (result == OkCancelResult.cancel) return;
                   await FirebaseAuth.instance.signOut();
@@ -196,7 +200,7 @@ class _SettingViewState extends State<SettingView> {
                   context.read<MainBloc>().add(ChangeIndexEvent(index: 0));
                   Go.offAll(context, const SplashView());
                 },
-                title: AppStrings.logout,
+                title: AppLocalizations.of(context)!.logout,
               ),
             ],
           ),
@@ -248,12 +252,13 @@ Future<void> emailPassword(BuildContext context) async {
             content: SizedBox(
               height: 60,
               child: CustomTextField(
-                hintText: AppStrings.enterPassword,
+                hintText: AppLocalizations.of(context)!.enterPassword,
                 validator: AppValidation.passwordValidation,
                 textEditingController: passwordController,
               ),
             ),
-            title: const Text(AppStrings.pleaseEnterPasswordForConfirmation),
+            title: Text(AppLocalizations.of(context)!
+                .pleaseEnterPasswordForConfirmation),
             actions: [
               MaterialButton(
                 onPressed: () => Go.back(context),
@@ -266,7 +271,7 @@ Future<void> emailPassword(BuildContext context) async {
                   height: 30,
                   width: 70,
                   child: Text(
-                    AppStrings.cancel,
+                    AppLocalizations.of(context)!.cancel,
                     style: TextStyle(color: AppColors.redColor, fontSize: 14),
                   ),
                 ),
@@ -301,7 +306,7 @@ Future<void> emailPassword(BuildContext context) async {
                   height: 30,
                   width: 70,
                   child: Text(
-                    AppStrings.confirm,
+                    AppLocalizations.of(context)!.confirm,
                     style: TextStyle(color: AppColors.whiteColor, fontSize: 14),
                   ),
                 ),
@@ -324,19 +329,19 @@ Future<void> phoneNumberAccountDelete(BuildContext context) async {
     verificationCompleted: (PhoneAuthCredential credential) async {},
     verificationFailed: (FirebaseAuthException e) {
       LoadingDialog.hideProgress(context);
-      if (e.code == ErrorStrings.invalidPhoneNumber) {
+      if (e.code == AppStrings.invalidPhoneNumber) {
         showOkAlertDialog(
             context: context,
-            message: ErrorStrings.theProvidedPhoneNumberIsNotValid,
+            message: AppStrings.theProvidedPhoneNumberIsNotValid,
             title: "Error");
         return;
       }
-      if (e.code == ErrorStrings.tooManyRequests) {
+      if (e.code == AppStrings.tooManyRequests) {
         showOkAlertDialog(
             context: context,
             message:
-                ErrorStrings.youHaveAttemptedTooManyRequestsPleaseTryAgainLater,
-            title: ErrorStrings.smsVerificationError);
+                AppStrings.youHaveAttemptedTooManyRequestsPleaseTryAgainLater,
+            title: AppStrings.smsVerificationError);
         return;
       }
     },
@@ -372,14 +377,16 @@ Future<void> phoneNumberAccountDelete(BuildContext context) async {
               length: 6,
             ),
           ),
-          title: const Text(AppStrings.pleaseEnterTheOtpForConfirmation),
+          title: Text(
+              AppLocalizations.of(context)!.pleaseEnterTheOtpForConfirmation),
           actions: [
             MaterialButton(
               onPressed: () async {
                 if (otpController.text.length != 6) {
                   showOkAlertDialog(
                       context: context,
-                      message: AppStrings.pleaseEntervalidttp,
+                      message:
+                          AppLocalizations.of(context)!.pleaseEntervalidttp,
                       title: "Error");
                   return;
                 }
@@ -409,7 +416,7 @@ Future<void> phoneNumberAccountDelete(BuildContext context) async {
                 height: 30,
                 width: 70,
                 child: Text(
-                  AppStrings.confirm,
+                  AppLocalizations.of(context)!.confirm,
                   style: TextStyle(color: AppColors.whiteColor, fontSize: 14),
                 ),
               ),

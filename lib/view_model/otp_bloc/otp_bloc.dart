@@ -49,7 +49,7 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
       showOkAlertDialog(
           context: event.context,
           message: e.message,
-          title: ErrorStrings.smsVerificationError);
+          title: AppStrings.smsVerificationError);
     }
   }
 
@@ -73,19 +73,19 @@ class OtpBloc extends Bloc<OtpEvent, OtpState> {
         verificationFailed: (FirebaseAuthException e) {
           LoadingDialog.hideProgress(event.context);
 
-          if (e.code == ErrorStrings.invalidPhoneNumber) {
+          if (e.code == AppStrings.invalidPhoneNumber) {
             showOkAlertDialog(
                 context: event.context,
-                message: ErrorStrings.theProvidedPhoneNumberIsNotValid,
+                message: AppStrings.theProvidedPhoneNumberIsNotValid,
                 title: "Error");
             return;
           }
-          if (e.code == ErrorStrings.tooManyRequests) {
+          if (e.code == AppStrings.tooManyRequests) {
             showOkAlertDialog(
                 context: event.context,
-                message: ErrorStrings
+                message: AppStrings
                     .youHaveAttemptedTooManyRequestsPleaseTryAgainLater,
-                title: ErrorStrings.smsVerificationError);
+                title: AppStrings.smsVerificationError);
             return;
           }
         },

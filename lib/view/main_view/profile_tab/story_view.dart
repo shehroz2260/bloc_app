@@ -1,5 +1,4 @@
 import 'package:chat_with_bloc/src/app_colors.dart';
-import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/utils/media_type.dart';
@@ -13,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../src/app_text_style.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/story_player.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StoryView extends StatefulWidget {
   const StoryView({super.key});
@@ -71,7 +71,7 @@ class _StoryViewState extends State<StoryView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const CustomBackButton(),
-                        Text(AppStrings.story,
+                        Text(AppLocalizations.of(context)!.story,
                             style: AppTextStyle.font25
                                 .copyWith(color: AppColors.blackColor)),
                         const SizedBox(
@@ -142,12 +142,13 @@ class _StoryViewState extends State<StoryView> {
                     ),
                     Text(context.read<UserBaseBloc>().state.userData.firstName),
                     const AppHeight(height: 20),
-                    const Text(AppStrings.otherStories),
+                    Text(AppLocalizations.of(context)!.otherStories),
                     const AppHeight(height: 10),
                     if (state.otherList.isEmpty)
-                      const Expanded(
+                      Expanded(
                           child: Center(
-                        child: Text(AppStrings.thereIsNoStory),
+                        child:
+                            Text(AppLocalizations.of(context)!.thereIsNoStory),
                       )),
                     if (state.otherList.isNotEmpty)
                       Expanded(
@@ -231,7 +232,7 @@ class _StoryViewState extends State<StoryView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  AppStrings.options,
+                  AppLocalizations.of(context)!.options,
                   style:
                       AppTextStyle.font25.copyWith(color: AppColors.redColor),
                 ),
@@ -253,7 +254,7 @@ class _StoryViewState extends State<StoryView> {
                           color: AppColors.redColor, size: 40),
                       const AppWidth(width: 20),
                       Text(
-                        AppStrings.video,
+                        AppLocalizations.of(context)!.video,
                         style: AppTextStyle.font25
                             .copyWith(color: AppColors.blackColor),
                       )
@@ -277,7 +278,7 @@ class _StoryViewState extends State<StoryView> {
                           color: AppColors.redColor, size: 40),
                       const AppWidth(width: 20),
                       Text(
-                        AppStrings.images,
+                        AppLocalizations.of(context)!.images,
                         style: AppTextStyle.font25
                             .copyWith(color: AppColors.blackColor),
                       )

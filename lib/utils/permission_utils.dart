@@ -1,9 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PermissionUtils {
   final Permission permission;
@@ -26,7 +26,7 @@ class PermissionUtils {
     } */
     String messages = "";
     if (permission.value == Permission.location.value) {
-      messages = AppStrings.pleaseturnonpreciselocation;
+      messages = AppLocalizations.of(context)!.pleaseturnonpreciselocation;
     }
     // if (!status.isGranted && (status.isDenied || status.isPermanentlyDenied)) {
     if (/*!status.isGranted || status.isDenied || */ status
@@ -34,11 +34,11 @@ class PermissionUtils {
         waitTime <= 1) {
       var result = await showOkCancelAlertDialog(
           context: context,
-          title: AppStrings.permissionError,
+          title: AppLocalizations.of(context)!.permissionError,
           message:
               "You denied permission. Please allow $permissionName permission from setting.${messages}Open setting now?",
-          okLabel: AppStrings.yes,
-          cancelLabel: AppStrings.no);
+          okLabel: AppLocalizations.of(context)!.yes,
+          cancelLabel: AppLocalizations.of(context)!.no);
       if (result == OkCancelResult.ok) {
         openAppSettings();
       }

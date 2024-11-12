@@ -1,12 +1,12 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
-import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/utils/loading_dialog.dart';
 import 'package:chat_with_bloc/widgets/custom_text_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../../widgets/custom_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChangePasswordView extends StatefulWidget {
   const ChangePasswordView({super.key});
@@ -38,7 +38,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                   children: [
                     const CustomBackButton(),
                     Text(
-                      AppStrings.changePassword,
+                      AppLocalizations.of(context)!.changePassword,
                       style: TextStyle(
                           fontWeight: FontWeight.w700,
                           color: AppColors.blackColor,
@@ -52,55 +52,60 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                     errorMaxLines: 2,
                     validator: (value) {
                       if ((value ?? "").isEmpty) {
-                        return AppStrings.oldPasswordIsReq;
+                        return AppLocalizations.of(context)!.oldPasswordIsReq;
                       }
                       if ((value ?? "").length < 8) {
-                        return AppStrings.passwordMustbe8;
+                        return AppLocalizations.of(context)!.passwordMustbe8;
                       }
                       if ((value ?? "") == _newPasswordController.text) {
-                        return AppStrings.yourNewPasswordCannotBeTheSame;
+                        return AppLocalizations.of(context)!
+                            .yourNewPasswordCannotBeTheSame;
                       }
                       return null;
                     },
-                    hintText: AppStrings.enterOldPassword,
+                    hintText: AppLocalizations.of(context)!.enterOldPassword,
                     textEditingController: _oldPasswordController),
                 const SizedBox(height: 20),
                 CustomTextField(
                     errorMaxLines: 2,
                     validator: (value) {
                       if ((value ?? "").isEmpty) {
-                        return AppStrings.newPasswordIsReq;
+                        return AppLocalizations.of(context)!.newPasswordIsReq;
                       }
                       if ((value ?? "").length < 8) {
-                        return AppStrings.passwordMustbe8;
+                        return AppLocalizations.of(context)!.passwordMustbe8;
                       }
                       if ((value ?? "") == _oldPasswordController.text) {
-                        return AppStrings.yourNewPasswordCannotBeTheSame;
+                        return AppLocalizations.of(context)!
+                            .yourNewPasswordCannotBeTheSame;
                       }
                       return null;
                     },
-                    hintText: AppStrings.enterNewPassword,
+                    hintText: AppLocalizations.of(context)!.enterNewPassword,
                     textEditingController: _newPasswordController),
                 const SizedBox(height: 20),
                 CustomTextField(
                     errorMaxLines: 2,
                     validator: (value) {
                       if ((value ?? "").isEmpty) {
-                        return AppStrings.confirmPasswordIsReq;
+                        return AppLocalizations.of(context)!
+                            .confirmPasswordIsReq;
                       }
                       if ((value ?? "").length < 8) {
-                        return AppStrings.passwordMustbe8;
+                        return AppLocalizations.of(context)!.passwordMustbe8;
                       }
                       if ((value ?? "") != _newPasswordController.text) {
-                        return AppStrings.theConfirmationMessageDoesNotMatch;
+                        return AppLocalizations.of(context)!
+                            .theConfirmationMessageDoesNotMatch;
                       }
                       return null;
                     },
-                    hintText: AppStrings.enterConfirmPassword,
+                    hintText:
+                        AppLocalizations.of(context)!.enterConfirmPassword,
                     textEditingController: _confirmpasswordController),
                 const Spacer(),
                 CustomNewButton(
-                  btnName: AppStrings.updatePassword,
+                  btnName: AppLocalizations.of(context)!.updatePassword,
                   onTap: _updatePassword,
                 ),
                 const SizedBox(height: 40),
@@ -132,8 +137,8 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
         _confirmpasswordController.clear();
         showOkAlertDialog(
             context: context,
-            message: AppStrings.passwordUpdatedSuccessfully,
-            title: AppStrings.congrats);
+            message: AppLocalizations.of(context)!.passwordUpdatedSuccessfully,
+            title: AppLocalizations.of(context)!.congrats);
       } else {
         LoadingDialog.hideProgress(context);
         showOkAlertDialog(

@@ -19,6 +19,7 @@ import '../../../src/width_hieght.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../view_model/filter_bloc.dart/filter_event.dart';
 import '../../../widgets/app_cache_image.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -66,11 +67,11 @@ class _HomeViewState extends State<HomeView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(AppStrings.clear,
+                        Text(AppLocalizations.of(context)!.clear,
                             style: AppTextStyle.font20.copyWith(
                                 color: AppColors.whiteColor,
                                 fontWeight: FontWeight.bold)),
-                        Text(AppStrings.filter,
+                        Text(AppLocalizations.of(context)!.filter,
                             style: AppTextStyle.font20.copyWith(
                                 color: AppColors.blackColor,
                                 fontWeight: FontWeight.bold)),
@@ -84,7 +85,7 @@ class _HomeViewState extends State<HomeView> {
                               context.read<FilterBloc>().add(OnChangeRadisus(
                                   value: 100, context: context));
                             },
-                            child: Text(AppStrings.clear,
+                            child: Text(AppLocalizations.of(context)!.clear,
                                 style: AppTextStyle.font20.copyWith(
                                     color: AppColors.redColor,
                                     fontWeight: FontWeight.bold)))
@@ -101,7 +102,7 @@ class _HomeViewState extends State<HomeView> {
                     Row(
                       children: [
                         Expanded(
-                            child: Text(AppStrings.age,
+                            child: Text(AppLocalizations.of(context)!.age,
                                 style: AppTextStyle.font20.copyWith(
                                     color: AppColors.blackColor,
                                     fontWeight: FontWeight.bold))),
@@ -249,7 +250,7 @@ class _HomeViewState extends State<HomeView> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const SizedBox(width: 50),
-                Text(AppStrings.discover,
+                Text(AppLocalizations.of(context)!.discover,
                     style: AppTextStyle.font25
                         .copyWith(color: AppColors.blackColor)),
                 GestureDetector(
@@ -486,7 +487,7 @@ class _InterestedInWidgetState extends State<InterestedInWidget> {
                     )),
                 padding: const EdgeInsets.symmetric(vertical: 18),
                 alignment: Alignment.center,
-                child: Text(AppStrings.men,
+                child: Text(AppLocalizations.of(context)!.men,
                     style: AppTextStyle.font16.copyWith(
                         color: state.gender == 1
                             ? AppColors.whiteColor
@@ -520,7 +521,7 @@ class _InterestedInWidgetState extends State<InterestedInWidget> {
                                 color: state.gender == 2
                                     ? AppColors.redColor
                                     : AppColors.borderGreyColor))),
-                    child: Text(AppStrings.women,
+                    child: Text(AppLocalizations.of(context)!.women,
                         style: AppTextStyle.font16.copyWith(
                             color: state.gender == 2
                                 ? AppColors.whiteColor
@@ -546,7 +547,7 @@ class _InterestedInWidgetState extends State<InterestedInWidget> {
                     )),
                 padding: const EdgeInsets.symmetric(vertical: 18),
                 alignment: Alignment.center,
-                child: Text(AppStrings.both,
+                child: Text(AppLocalizations.of(context)!.both,
                     style: AppTextStyle.font16.copyWith(
                         color: state.gender == 0
                             ? AppColors.whiteColor

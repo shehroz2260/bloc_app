@@ -1,5 +1,4 @@
 import 'package:chat_with_bloc/src/app_colors.dart';
-import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
@@ -17,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../account_creation_view/preference_view.dart';
 
 class EditProfile extends StatefulWidget {
@@ -74,7 +73,7 @@ class _EditProfileState extends State<EditProfile> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const CustomBackButton(),
-                    Text(AppStrings.editProfile,
+                    Text(AppLocalizations.of(context)!.editProfile,
                         style: AppTextStyle.font25
                             .copyWith(color: AppColors.blackColor)),
                     const SizedBox(width: 50),
@@ -144,45 +143,47 @@ class _EditProfileState extends State<EditProfile> {
                             ),
                             const AppHeight(height: 30),
                             Text(
-                              AppStrings.firstName,
+                              AppLocalizations.of(context)!.firstName,
                               style: AppTextStyle.font20
                                   .copyWith(color: AppColors.blackColor),
                             ),
                             const AppHeight(height: 5),
                             CustomTextField(
-                              hintText: AppStrings.enterFirstName,
+                              hintText:
+                                  AppLocalizations.of(context)!.enterFirstName,
                               textEditingController: _nameController,
                               validator: AppValidation
                                   .nameValidation, //  enabled: state.isEdit,
                             ),
                             const AppHeight(height: 20),
                             Text(
-                              AppStrings.bios,
+                              AppLocalizations.of(context)!.bios,
                               style: AppTextStyle.font20
                                   .copyWith(color: AppColors.blackColor),
                             ),
                             const AppHeight(height: 5),
                             CustomTextField(
-                              hintText: AppStrings.enTerBio,
+                              hintText: AppLocalizations.of(context)!.enTerBio,
                               textEditingController: _bioController,
                               validator: AppValidation
                                   .bioValidation, //  enabled: state.isEdit,
                             ),
                             const AppHeight(height: 20),
                             Text(
-                              AppStrings.aboutWithColon,
+                              AppLocalizations.of(context)!.aboutWithColon,
                               style: AppTextStyle.font20
                                   .copyWith(color: AppColors.blackColor),
                             ),
                             const AppHeight(height: 5),
                             CustomTextField(
-                                hintText: AppStrings.enterAbout,
+                                hintText:
+                                    AppLocalizations.of(context)!.enterAbout,
                                 textEditingController: _aboutController,
                                 maxLines: 4,
                                 validator: AppValidation.aboutValidation),
                             const AppHeight(height: 20),
                             Text(
-                              AppStrings.ageWithColon,
+                              AppLocalizations.of(context)!.ageWithColon,
                               style: AppTextStyle.font20
                                   .copyWith(color: AppColors.blackColor),
                             ),
@@ -211,7 +212,7 @@ class _EditProfileState extends State<EditProfile> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(AppStrings.gender,
+                            Text(AppLocalizations.of(context)!.gender,
                                 style: AppTextStyle.font20
                                     .copyWith(color: AppColors.blackColor)),
                             Text(
@@ -225,8 +226,8 @@ class _EditProfileState extends State<EditProfile> {
                       const AppHeight(height: 5),
                       Text(
                         userState.userData.gender == 1
-                            ? AppStrings.male
-                            : AppStrings.female,
+                            ? AppLocalizations.of(context)!.male
+                            : AppLocalizations.of(context)!.female,
                         style: AppTextStyle.font20
                             .copyWith(color: AppColors.redColor),
                       ),
@@ -244,10 +245,10 @@ class _EditProfileState extends State<EditProfile> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(AppStrings.interested,
+                            Text(AppLocalizations.of(context)!.interested,
                                 style: AppTextStyle.font20
                                     .copyWith(color: AppColors.blackColor)),
-                            Text(AppStrings.edit,
+                            Text(AppLocalizations.of(context)!.edit,
                                 style: AppTextStyle.font16
                                     .copyWith(color: AppColors.redColor)),
                           ],
@@ -297,7 +298,7 @@ class _EditProfileState extends State<EditProfile> {
                 )),
                 const AppHeight(height: 20),
                 CustomNewButton(
-                    btnName: AppStrings.update,
+                    btnName: AppLocalizations.of(context)!.update,
                     onTap: () {
                       if (!_formKey.currentState!.validate()) return;
                       context.read<EditBloc>().add(UpdateUser(

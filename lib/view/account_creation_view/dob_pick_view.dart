@@ -1,6 +1,5 @@
 import 'package:chat_with_bloc/src/app_assets.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
-import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/utils/app_validation.dart';
@@ -13,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import '../../view_model/dob_bloc/dob_event.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DobPickView extends StatefulWidget {
   const DobPickView({super.key});
@@ -39,7 +39,7 @@ class _DobPickViewState extends State<DobPickView> {
                   const AppHeight(height: 120),
                   Align(
                       alignment: Alignment.centerLeft,
-                      child: Text(AppStrings.profiledetails,
+                      child: Text(AppLocalizations.of(context)!.profiledetails,
                           style: AppTextStyle.font25
                               .copyWith(color: AppColors.blackColor))),
                   const AppHeight(height: 50),
@@ -98,15 +98,15 @@ class _DobPickViewState extends State<DobPickView> {
                     ),
                   const AppHeight(height: 25),
                   CustomTextField(
-                      hintText: AppStrings.enterYourName,
-                      labelText: AppStrings.firsyName,
+                      hintText: AppLocalizations.of(context)!.enterYourName,
+                      labelText: AppLocalizations.of(context)!.firsyName,
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       textEditingController: _nameController,
                       validator: AppValidation.nameValidation),
                   const AppHeight(height: 20),
                   CustomNewButton(
                     btnName: state.dob == null
-                        ? AppStrings.choosebirthdaydate
+                        ? AppLocalizations.of(context)!.choosebirthdaydate
                         : DateFormat("dd MMM yyyy").format(state.dob!),
                     btnColor: AppColors.redColor.withOpacity(0.1),
                     isRow: true,
@@ -126,7 +126,7 @@ class _DobPickViewState extends State<DobPickView> {
                         )),
                   const AppHeight(height: 30),
                   CustomNewButton(
-                      btnName: AppStrings.next,
+                      btnName: AppLocalizations.of(context)!.next,
                       onTap: () {
                         context.read<DobBloc>().add(OnNextEvent(
                             context: context,

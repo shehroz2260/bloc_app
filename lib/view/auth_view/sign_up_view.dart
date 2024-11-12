@@ -1,5 +1,4 @@
 import 'package:chat_with_bloc/src/app_colors.dart';
-import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/utils/app_validation.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../src/app_assets.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -42,30 +42,32 @@ class _SignUpViewState extends State<SignUpView> {
               const AppHeight(height: 40),
               SvgPicture.asset(AppAssets.appIcon),
               const AppHeight(height: 20),
-              Text(AppStrings.createAnAccoun,
+              Text(AppLocalizations.of(context)!.createAnAccoun,
                   style: AppTextStyle.font25
                       .copyWith(color: AppColors.blackColor)),
               const AppHeight(height: 30),
               CustomTextField(
                 validator: AppValidation.userNameValidation,
                 textEditingController: _nameController,
-                hintText: AppStrings.enterUserName,
+                hintText: AppLocalizations.of(context)!.enterUserName,
               ),
               const AppHeight(height: 20),
               CustomTextField(
                 validator: AppValidation.emailValidation,
                 textEditingController: _emailController,
-                hintText: AppStrings.enterEmailAddress,
+                hintText: AppLocalizations.of(context)!.enterEmailAddress,
               ),
               const AppHeight(height: 20),
               CustomTextField(
                 validator: AppValidation.passwordValidation,
                 textEditingController: _passwordController,
-                hintText: AppStrings.enterPassword,
+                hintText: AppLocalizations.of(context)!.enterPassword,
                 isPasswordField: true,
               ),
               const AppHeight(height: 20),
-              CustomNewButton(btnName: AppStrings.signup, onTap: _onSignUp),
+              CustomNewButton(
+                  btnName: AppLocalizations.of(context)!.signup,
+                  onTap: _onSignUp),
             ],
           ),
         ),

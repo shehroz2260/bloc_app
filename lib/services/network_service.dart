@@ -26,6 +26,7 @@ import '../model/thread_model.dart';
 import '../view/account_creation_view/location_view.dart';
 import '../view/main_view/home_tab/congrats_message_view.dart';
 import '../view_model/user_base_bloc/user_base_state.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NetworkService {
   static Future<void> gotoHomeScreen(BuildContext context,
@@ -232,18 +233,23 @@ class NetworkService {
       UserModel userModel, BuildContext context, ThreadModel? model) async {
     var options = await showConfirmationDialog(
         context: context,
-        title: AppStrings.pleaseSelectOption,
+        title: AppLocalizations.of(context)!.pleaseSelectOption,
         actions: [
-          const AlertDialogAction(
-              label: AppStrings.option1, key: AppStrings.option1),
-          const AlertDialogAction(
-              label: AppStrings.option2, key: AppStrings.option2),
-          const AlertDialogAction(
-              label: AppStrings.option3, key: AppStrings.option3),
-          const AlertDialogAction(
-              label: AppStrings.option4, key: AppStrings.option4),
-          const AlertDialogAction(
-              label: AppStrings.option5, key: AppStrings.option5),
+          AlertDialogAction(
+              label: AppLocalizations.of(context)!.option1,
+              key: AppLocalizations.of(context)!.option1),
+          AlertDialogAction(
+              label: AppLocalizations.of(context)!.option2,
+              key: AppLocalizations.of(context)!.option2),
+          AlertDialogAction(
+              label: AppLocalizations.of(context)!.option3,
+              key: AppLocalizations.of(context)!.option3),
+          AlertDialogAction(
+              label: AppLocalizations.of(context)!.option4,
+              key: AppLocalizations.of(context)!.option4),
+          AlertDialogAction(
+              label: AppLocalizations.of(context)!.option5,
+              key: AppLocalizations.of(context)!.option5),
         ]);
     if ((options ?? "").isEmpty) {
       return "";
@@ -264,7 +270,7 @@ class NetworkService {
     await showOkAlertDialog(
         context: context,
         message: AppStrings.userReportedSuccessFully,
-        title: AppStrings.reportUser);
+        title: AppLocalizations.of(context)!.reportUser);
     if (model != null) {
       Go.back(context);
     }

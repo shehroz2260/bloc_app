@@ -67,11 +67,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
-  
 
-  # To add assets to your application, add an assets section, like this:
   assets:
-    - lib/l10n/
     - assets/images/png/
     - assets/images/svg/
   

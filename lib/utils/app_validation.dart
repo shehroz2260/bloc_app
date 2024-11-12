@@ -5,10 +5,10 @@ class AppValidation {
     final regex = RegExp(
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
     if ((value ?? "").isEmpty) {
-      return ErrorStrings.emailReq;
+      return AppStrings.emailReq;
     }
     if (!regex.hasMatch(value ?? "")) {
-      return ErrorStrings.emailInvalid;
+      return AppStrings.emailInvalid;
     }
 
     return null;
@@ -16,10 +16,10 @@ class AppValidation {
 
   static String? passwordValidation(String? value) {
     if ((value ?? "").isEmpty) {
-      return ErrorStrings.passwordReq;
+      return AppStrings.passwordReq;
     }
     if ((value ?? "").length < 8) {
-      return ErrorStrings.passwordContain8Char;
+      return AppStrings.passwordContain8Char;
     }
 
     return null;
@@ -27,28 +27,28 @@ class AppValidation {
 
   static String? nameValidation(String? value) {
     if ((value ?? "").isEmpty) {
-      return ErrorStrings.nameReq;
+      return AppStrings.nameReq;
     }
     return null;
   }
 
   static String? userNameValidation(String? value) {
     if ((value ?? "").isEmpty) {
-      return ErrorStrings.usernameReq;
+      return AppStrings.usernameReq;
     }
     return null;
   }
 
   static String? dobValidation(String? value) {
     if ((value ?? "").isEmpty) {
-      return ErrorStrings.birthDayReq;
+      return AppStrings.birthDayReq;
     }
     return null;
   }
 
   static String? descValidation(String? value) {
     if ((value ?? "").isEmpty) {
-      return ErrorStrings.descReq;
+      return AppStrings.descReq;
     }
 
     return null;
@@ -56,7 +56,7 @@ class AppValidation {
 
   static String? bioValidation(String? value) {
     if ((value ?? "").isEmpty) {
-      return ErrorStrings.bioIsReq;
+      return AppStrings.bioIsReq;
     }
 
     return null;
@@ -64,7 +64,7 @@ class AppValidation {
 
   static String? aboutValidation(String? value) {
     if ((value ?? "").isEmpty) {
-      return ErrorStrings.aboutisReq;
+      return AppStrings.aboutisReq;
     }
 
     return null;

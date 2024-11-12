@@ -27,6 +27,7 @@ import 'firebase_options.dart';
 import 'view_model/gender_bloc/gender_bloc.dart';
 import 'view_model/location_permission_bloc/location_bloc.dart';
 import 'view_model/chat_bloc/chat_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -94,10 +95,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         onTap: () => FocusManager.instance.primaryFocus!.unfocus(),
         child: const MaterialApp(
           localizationsDelegates: [
+            AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
           ],
+          locale: Locale("en"),
+          supportedLocales: AppLocalizations.supportedLocales,
           debugShowCheckedModeBanner: false,
           home: SplashView(),
         ),

@@ -18,9 +18,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../../src/app_colors.dart';
-import '../../../src/app_string.dart';
 import '../../../src/app_text_style.dart';
 import '../../../src/width_hieght.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MatchTab extends StatefulWidget {
   const MatchTab({super.key});
@@ -39,7 +39,10 @@ class _MatchTabState extends State<MatchTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const AppHeight(height: 60),
-            Text(state.index == 0 ? AppStrings.likes : AppStrings.matches,
+            Text(
+                state.index == 0
+                    ? AppLocalizations.of(context)!.likes
+                    : AppLocalizations.of(context)!.matches,
                 style:
                     AppTextStyle.font25.copyWith(color: AppColors.blackColor)),
             const AppHeight(height: 20),
@@ -76,7 +79,7 @@ class _MatchTabState extends State<MatchTab> {
                             ),
                           ),
                           Text(
-                            AppStrings.likes,
+                            AppLocalizations.of(context)!.likes,
                             style: TextStyle(
                                 fontSize: 16,
                                 color: state.index == 0
@@ -116,7 +119,7 @@ class _MatchTabState extends State<MatchTab> {
                             ),
                           ),
                           Text(
-                            AppStrings.connected,
+                            AppLocalizations.of(context)!.connected,
                             style: TextStyle(
                                 fontSize: 16,
                                 color: state.index == 1
@@ -280,9 +283,11 @@ class _MatchTabState extends State<MatchTab> {
                                                   var okCancelResult =
                                                       await showOkCancelAlertDialog(
                                                           context: context,
-                                                          message: AppStrings
+                                                          message: AppLocalizations
+                                                                  .of(context)!
                                                               .doYouReallyWantToRemoveMatch,
-                                                          title: AppStrings
+                                                          title: AppLocalizations
+                                                                  .of(context)!
                                                               .removeMatch);
                                                   if (okCancelResult ==
                                                       OkCancelResult.cancel) {
