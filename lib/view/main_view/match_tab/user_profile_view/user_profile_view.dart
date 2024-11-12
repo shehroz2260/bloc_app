@@ -94,11 +94,13 @@ class UserProfileView extends StatelessWidget {
                               onTap: () async {
                                 var res = await showOkCancelAlertDialog(
                                     context: context,
-                                    title: AppStrings.direction,
+                                    title:
+                                        AppLocalizations.of(context)!.direction,
                                     okLabel: AppLocalizations.of(context)!.yes,
-                                    cancelLabel: AppStrings.notNow,
-                                    message:
-                                        AppStrings.doYouWantToGetDirection);
+                                    cancelLabel:
+                                        AppLocalizations.of(context)!.notNow,
+                                    message: AppLocalizations.of(context)!
+                                        .doYouWantToGetDirection);
                                 if (res == OkCancelResult.cancel) return;
 
                                 _getDirection(user.lat, user.lng);
@@ -125,7 +127,7 @@ class UserProfileView extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  AppStrings.location,
+                                  AppLocalizations.of(context)!.location,
                                   style: AppTextStyle.font20.copyWith(
                                       color: AppColors.blackColor,
                                       fontWeight: FontWeight.bold),
@@ -164,7 +166,7 @@ class UserProfileView extends StatelessWidget {
                       ),
                       const AppHeight(height: 30),
                       Text(
-                        AppStrings.about,
+                        AppLocalizations.of(context)!.about,
                         style: AppTextStyle.font20.copyWith(
                             color: AppColors.blackColor,
                             fontWeight: FontWeight.bold),
@@ -172,7 +174,7 @@ class UserProfileView extends StatelessWidget {
                       TextWithSeeMore(text: user.about),
                       const AppHeight(height: 30),
                       Text(
-                        AppStrings.interests,
+                        AppLocalizations.of(context)!.interests,
                         style: AppTextStyle.font20.copyWith(
                             color: AppColors.blackColor,
                             fontWeight: FontWeight.bold),

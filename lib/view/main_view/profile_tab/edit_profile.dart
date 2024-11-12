@@ -152,8 +152,8 @@ class _EditProfileState extends State<EditProfile> {
                               hintText:
                                   AppLocalizations.of(context)!.enterFirstName,
                               textEditingController: _nameController,
-                              validator: AppValidation
-                                  .nameValidation, //  enabled: state.isEdit,
+                              validator: (val) =>
+                                  AppValidation.nameValidation(val, context),
                             ),
                             const AppHeight(height: 20),
                             Text(
@@ -165,8 +165,8 @@ class _EditProfileState extends State<EditProfile> {
                             CustomTextField(
                               hintText: AppLocalizations.of(context)!.enTerBio,
                               textEditingController: _bioController,
-                              validator: AppValidation
-                                  .bioValidation, //  enabled: state.isEdit,
+                              validator: (val) =>
+                                  AppValidation.bioValidation(val, context),
                             ),
                             const AppHeight(height: 20),
                             Text(

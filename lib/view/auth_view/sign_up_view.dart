@@ -47,19 +47,21 @@ class _SignUpViewState extends State<SignUpView> {
                       .copyWith(color: AppColors.blackColor)),
               const AppHeight(height: 30),
               CustomTextField(
-                validator: AppValidation.userNameValidation,
+                validator: (val) =>
+                    AppValidation.userNameValidation(val, context),
                 textEditingController: _nameController,
                 hintText: AppLocalizations.of(context)!.enterUserName,
               ),
               const AppHeight(height: 20),
               CustomTextField(
-                validator: AppValidation.emailValidation,
+                validator: (val) => AppValidation.emailValidation(val, context),
                 textEditingController: _emailController,
                 hintText: AppLocalizations.of(context)!.enterEmailAddress,
               ),
               const AppHeight(height: 20),
               CustomTextField(
-                validator: AppValidation.passwordValidation,
+                validator: (val) =>
+                    AppValidation.passwordValidation(val, context),
                 textEditingController: _passwordController,
                 hintText: AppLocalizations.of(context)!.enterPassword,
                 isPasswordField: true,

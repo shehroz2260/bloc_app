@@ -1,6 +1,5 @@
 import 'package:chat_with_bloc/src/app_assets.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
-import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/view/main_view/match_tab/user_profile_view/user_profile_view.dart';
 import 'package:chat_with_bloc/view_model/filter_bloc.dart/filter_bloc.dart';
@@ -92,7 +91,7 @@ class _HomeViewState extends State<HomeView> {
                       ],
                     ),
                     const AppHeight(height: 30),
-                    Text(AppStrings.showMe,
+                    Text(AppLocalizations.of(context)!.showMe,
                         style: AppTextStyle.font20.copyWith(
                             color: AppColors.blackColor,
                             fontWeight: FontWeight.bold)),
@@ -114,7 +113,7 @@ class _HomeViewState extends State<HomeView> {
                         ),
                         Text(
                             state.maxAge == 100
-                                ? AppStrings.all
+                                ? AppLocalizations.of(context)!.all
                                 : state.maxAge.toInt().toString(),
                             style: AppTextStyle.font16.copyWith(
                                 fontWeight: FontWeight.bold,
@@ -179,13 +178,13 @@ class _HomeViewState extends State<HomeView> {
                     Row(
                       children: [
                         Expanded(
-                            child: Text(AppStrings.distance,
+                            child: Text(AppLocalizations.of(context)!.distance,
                                 style: AppTextStyle.font20.copyWith(
                                     color: AppColors.blackColor,
                                     fontWeight: FontWeight.bold))),
                         Text(
                             state.radius == 100
-                                ? AppStrings.all
+                                ? AppLocalizations.of(context)!.all
                                 : state.radius.toInt().toString(),
                             style: AppTextStyle.font16.copyWith(
                                 fontWeight: FontWeight.bold,
@@ -225,7 +224,7 @@ class _HomeViewState extends State<HomeView> {
                     ),
                     const AppHeight(height: 30),
                     CustomNewButton(
-                        btnName: AppStrings.apply,
+                        btnName: AppLocalizations.of(context)!.apply,
                         onTap: () {
                           context.read<FilterBloc>().add(OnAppLyFilter(
                               context: context, userBloc: ancestorContext));
@@ -281,7 +280,7 @@ class _HomeViewState extends State<HomeView> {
           if (!state.isLoading && state.userList.isEmpty)
             Expanded(
                 child: Center(
-              child: Text(AppStrings.thereIsNoUsers,
+              child: Text(AppLocalizations.of(context)!.thereIsNoUsers,
                   style: AppTextStyle.font16
                       .copyWith(color: AppColors.blackColor)),
             )),

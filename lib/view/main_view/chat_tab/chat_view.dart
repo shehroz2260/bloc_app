@@ -1,6 +1,5 @@
 import 'package:chat_with_bloc/model/thread_model.dart';
 import 'package:chat_with_bloc/model/user_model.dart';
-import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/view_model/chat_bloc/chat_bloc.dart';
@@ -14,6 +13,7 @@ import '../../../src/app_text_style.dart';
 import '../../../widgets/app_cache_image.dart';
 import '../../../widgets/chat_bubble.dart';
 import '../../../widgets/custom_text_field.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatScreen extends StatefulWidget {
   final ThreadModel model;
@@ -168,9 +168,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   color: AppColors.redColor,
                 ))),
               if (state.messageList.isEmpty && !state.isLoading)
-                const Expanded(
-                    child:
-                        Center(child: Text(AppStrings.enterYourFirstMessage))),
+                Expanded(
+                    child: Center(
+                        child: Text(AppLocalizations.of(context)!
+                            .enterYourFirstMessage))),
               if (state.messageList.isNotEmpty && !state.isLoading)
                 Expanded(
                     child: Container(

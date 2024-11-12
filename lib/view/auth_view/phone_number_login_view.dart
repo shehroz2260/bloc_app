@@ -1,5 +1,4 @@
 import 'package:chat_with_bloc/src/app_colors.dart';
-import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/view_model/phone_number_bloc/phone_number_bloc.dart';
@@ -47,10 +46,10 @@ class _PhoneNumberLoginViewState extends State<PhoneNumberLoginView> {
                 hintText: AppLocalizations.of(context)!.phoneHint,
                 validator: (p0) {
                   if ((p0 ?? "").isEmpty) {
-                    return AppStrings.phoneNumberIsRequired;
+                    return AppLocalizations.of(context)!.phoneNumberIsRequired;
                   }
                   if ((p0 ?? "").length < 10) {
-                    return AppStrings.enterValidNumber;
+                    return AppLocalizations.of(context)!.enterValidNumber;
                   }
                   return null;
                 },

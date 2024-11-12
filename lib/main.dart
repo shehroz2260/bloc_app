@@ -112,22 +112,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
             GlobalCupertinoLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
           ],
-          localeResolutionCallback: (locale, supportedLocales) {
-            if (locale != null) {
-              for (var supportedLocale in supportedLocales) {
-                if (supportedLocale.languageCode == locale.languageCode) {
-                  return supportedLocale;
-                }
-              }
-            }
-            return supportedLocales.first;
-          },
           locale: state.locale,
           supportedLocales: AppLocalizations.supportedLocales,
           debugShowCheckedModeBanner: false,
           builder: (context, child) {
             return Directionality(
-              textDirection: TextDirection.ltr, // Force LTR layout
+              textDirection: TextDirection.ltr,
               child: child!,
             );
           },

@@ -205,7 +205,7 @@ class _SettingViewState extends State<SettingView> {
                                 .doYouReallyWantToLogout,
                             title: AppLocalizations.of(context)!.areYouSure,
                             okLabel: AppLocalizations.of(context)!.yes,
-                            cancelLabel: AppStrings.notNow);
+                            cancelLabel: AppLocalizations.of(context)!.notNow);
                         if (result == OkCancelResult.cancel) return;
                         await FirebaseAuth.instance.signOut();
                         context.read<UserBaseBloc>().add(
@@ -271,7 +271,8 @@ Future<void> emailPassword(BuildContext context) async {
               height: 60,
               child: CustomTextField(
                 hintText: AppLocalizations.of(context)!.enterPassword,
-                validator: AppValidation.passwordValidation,
+                validator: (val) =>
+                    AppValidation.passwordValidation(val, context),
                 textEditingController: passwordController,
               ),
             ),

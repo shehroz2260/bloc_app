@@ -1,62 +1,65 @@
+import 'package:flutter/material.dart';
+
 import '../src/app_string.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AppValidation {
-  static String? emailValidation(String? value) {
+  static String? emailValidation(String? value, BuildContext context) {
     final regex = RegExp(
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
     if ((value ?? "").isEmpty) {
-      return AppStrings.emailReq;
+      return AppLocalizations.of(context)!.emailReq;
     }
     if (!regex.hasMatch(value ?? "")) {
-      return AppStrings.emailInvalid;
+      return AppLocalizations.of(context)!.emailInvalid;
     }
 
     return null;
   }
 
-  static String? passwordValidation(String? value) {
+  static String? passwordValidation(String? value, BuildContext context) {
     if ((value ?? "").isEmpty) {
-      return AppStrings.passwordReq;
+      return AppLocalizations.of(context)!.passwordReq;
     }
     if ((value ?? "").length < 8) {
-      return AppStrings.passwordContain8Char;
+      return AppLocalizations.of(context)!.passwordContain8Char;
     }
 
     return null;
   }
 
-  static String? nameValidation(String? value) {
+  static String? nameValidation(String? value, BuildContext context) {
     if ((value ?? "").isEmpty) {
-      return AppStrings.nameReq;
+      return AppLocalizations.of(context)!.nameReq;
     }
     return null;
   }
 
-  static String? userNameValidation(String? value) {
+  static String? userNameValidation(String? value, BuildContext context) {
     if ((value ?? "").isEmpty) {
-      return AppStrings.usernameReq;
+      return AppLocalizations.of(context)!.usernameReq;
     }
     return null;
   }
 
-  static String? dobValidation(String? value) {
+  static String? dobValidation(String? value, BuildContext context) {
     if ((value ?? "").isEmpty) {
-      return AppStrings.birthDayReq;
+      return AppLocalizations.of(context)!.birthDayReq;
     }
     return null;
   }
 
-  static String? descValidation(String? value) {
+  static String? descValidation(String? value, BuildContext context) {
     if ((value ?? "").isEmpty) {
-      return AppStrings.descReq;
+      return AppLocalizations.of(context)!.descReq;
     }
 
     return null;
   }
 
-  static String? bioValidation(String? value) {
+  static String? bioValidation(String? value, BuildContext context) {
     if ((value ?? "").isEmpty) {
-      return AppStrings.bioIsReq;
+      return AppLocalizations.of(context)!.bioIsReq;
     }
 
     return null;

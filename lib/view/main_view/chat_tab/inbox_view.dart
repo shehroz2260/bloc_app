@@ -1,5 +1,4 @@
 import 'package:chat_with_bloc/src/app_colors.dart';
-import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/view_model/inbox_bloc/inbox_bloc.dart';
@@ -14,6 +13,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import '../../../src/go_file.dart';
 import 'chat_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InboxView extends StatefulWidget {
   const InboxView({super.key});
@@ -136,7 +136,9 @@ class _InboxViewState extends State<InboxView> {
                                                                     index]
                                                                 .lastMessage
                                                                 .isEmpty
-                                                            ? AppStrings
+                                                            ? AppLocalizations
+                                                                    .of(
+                                                                        context)!
                                                                 .sendYourFirstMessage
                                                             : state
                                                                 .threadList[

@@ -282,7 +282,7 @@ Future<bool> storagePermission(BuildContext context) async {
       context: context,
       title: AppLocalizations.of(context)!.permissionforvideorecording,
       message: AppStrings.pleaseEnablecamera,
-      okLabel: AppStrings.openSetting,
+      okLabel: AppLocalizations.of(context)!.openSetting,
       cancelLabel: AppLocalizations.of(context)!.later);
 
   if (result == OkCancelResult.ok) {

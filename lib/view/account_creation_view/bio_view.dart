@@ -44,7 +44,7 @@ class _BioViewState extends State<BioView> {
               CustomTextField(
                 hintText: AppLocalizations.of(context)!.enterbio,
                 textEditingController: _bioController,
-                validator: AppValidation.bioValidation,
+                validator: (val) => AppValidation.bioValidation(val, context),
               ),
               const AppHeight(height: 30),
               Text(AppLocalizations.of(context)!.aboutyourself,

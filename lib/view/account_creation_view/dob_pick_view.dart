@@ -102,7 +102,8 @@ class _DobPickViewState extends State<DobPickView> {
                       labelText: AppLocalizations.of(context)!.firsyName,
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       textEditingController: _nameController,
-                      validator: AppValidation.nameValidation),
+                      validator: (val) =>
+                          AppValidation.nameValidation(val, context)),
                   const AppHeight(height: 20),
                   CustomNewButton(
                     btnName: state.dob == null

@@ -48,7 +48,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               const AppHeight(height: 30),
               CustomTextField(
                 textEditingController: _emailController,
-                validator: AppValidation.emailValidation,
+                validator: (val) => AppValidation.emailValidation(val, context),
                 hintText: AppLocalizations.of(context)!.enterEmailAddress,
               ),
               const AppHeight(height: 20),
