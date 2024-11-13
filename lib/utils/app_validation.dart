@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '../src/app_string.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AppValidation {
@@ -65,9 +63,9 @@ class AppValidation {
     return null;
   }
 
-  static String? aboutValidation(String? value) {
+  static String? aboutValidation(String? value, BuildContext context) {
     if ((value ?? "").isEmpty) {
-      return AppStrings.aboutisReq;
+      return AppLocalizations.of(context)!.aboutIsReq;
     }
 
     return null;

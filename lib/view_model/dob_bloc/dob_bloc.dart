@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:chat_with_bloc/services/firebase_services_storage.dart';
 import 'package:chat_with_bloc/services/network_service.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
@@ -59,11 +61,13 @@ class DobBloc extends Bloc<DobEvent, DobState> {
   }
 
   _onNext(OnNextEvent event, Emitter<DobState> emit) async {
-    if (state.image == null) {
-      emit(state.copyWith(imgString: "Image is required"));
+    if ((state.image?.path ?? "").isEmpty) {
+      emit(state.copyWith(
+          imgString: AppLocalizations.of(event.context)!.imageIsReq));
     }
     if (state.dob == null) {
-      emit(state.copyWith(dateString: "Dob is required"));
+      emit(state.copyWith(
+          dateString: AppLocalizations.of(event.context)!.dobIsReq));
     }
     if (!event.formKey.currentState!.validate() ||
         state.image == null ||
@@ -85,6 +89,6 @@ class DobBloc extends Bloc<DobEvent, DobState> {
   }
 
   _clearValue(ClearAllValue event, Emitter<DobState> emit) {
-    emit(state.copyWith(dob: null, image: null));
+    emit(state.copyWith(dob: null, image: File("")));
   }
 }

@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../src/app_text_style.dart';
 import '../../../view_model/change_language/change_language_event.dart';
 import '../../../widgets/custom_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChangeLanguageView extends StatelessWidget {
   const ChangeLanguageView({super.key});
@@ -27,7 +28,7 @@ class ChangeLanguageView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const CustomBackButton(),
-                    Text("Change Languages",
+                    Text(AppLocalizations.of(context)!.changeLanguage,
                         style: AppTextStyle.font25
                             .copyWith(color: AppColors.blackColor)),
                     const SizedBox(

@@ -35,6 +35,7 @@ class _SignUpViewState extends State<SignUpView> {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             children: [
+              const AppHeight(height: 12),
               const Align(
                 alignment: Alignment.centerLeft,
                 child: SafeArea(child: CustomBackButton()),

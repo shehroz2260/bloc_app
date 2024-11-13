@@ -180,7 +180,9 @@ class _EditProfileState extends State<EditProfile> {
                                     AppLocalizations.of(context)!.enterAbout,
                                 textEditingController: _aboutController,
                                 maxLines: 4,
-                                validator: AppValidation.aboutValidation),
+                                validator: (val) =>
+                                    AppValidation.aboutValidation(
+                                        val, context)),
                             const AppHeight(height: 20),
                             Text(
                               AppLocalizations.of(context)!.ageWithColon,
@@ -216,7 +218,7 @@ class _EditProfileState extends State<EditProfile> {
                                 style: AppTextStyle.font20
                                     .copyWith(color: AppColors.blackColor)),
                             Text(
-                              "Edit",
+                              AppLocalizations.of(context)!.edit,
                               style: AppTextStyle.font16
                                   .copyWith(color: AppColors.redColor),
                             ),

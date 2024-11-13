@@ -39,7 +39,7 @@ class WelcomeView extends StatelessWidget {
             ),
             const AppHeight(height: 40),
             CustomNewButton(
-              btnName: "Get into App",
+              btnName: AppLocalizations.of(context)!.getintoApp,
               onTap: () {
                 Go.offAll(context, const MainView());
               },

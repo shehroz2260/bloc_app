@@ -57,12 +57,12 @@ class _InboxViewState extends State<InboxView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const AppHeight(height: 60),
-              Text("Messages",
+              Text(AppLocalizations.of(context)!.messages,
                   style: AppTextStyle.font25
                       .copyWith(color: AppColors.blackColor)),
               const AppHeight(height: 10),
               CustomTextField(
-                hintText: "Search...",
+                hintText: AppLocalizations.of(context)!.search,
                 isSowPrefixcon: true,
                 onChange: (value) {
                   context.read<InboxBloc>().add(OnSearch(value: value));
@@ -70,8 +70,10 @@ class _InboxViewState extends State<InboxView> {
               ),
               const AppHeight(height: 15),
               if (state.threadList.isEmpty)
-                const Expanded(
-                    child: Center(child: Text("There is no matched"))),
+                Expanded(
+                    child: Center(
+                        child: Text(
+                            AppLocalizations.of(context)!.thereIsNoMatched))),
               if (state.threadList.isNotEmpty)
                 Expanded(
                     child: SingleChildScrollView(

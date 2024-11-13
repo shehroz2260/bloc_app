@@ -154,39 +154,45 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
   }
 
   _fetchOtherStories(FetchOthetStories event, Emitter<StoryState> emit) async {
-    emit(state.copyWith(isLoading: true));
-    final now = DateTime.now();
-    final last24Hours = now.subtract(const Duration(hours: 24));
-    final last24HoursTimestamp = Timestamp.fromDate(last24Hours);
-    final snapShot = await FirebaseFirestore.instance
-        .collection(StoryModel.tableName)
-        .where("createdAt", isGreaterThanOrEqualTo: last24HoursTimestamp)
-        .get();
-    if (snapShot.docs.isEmpty) return;
-    final mediaList =
-        snapShot.docs.map((e) => StoryModel.fromMap(e.data())).toList();
+    try {
+      emit(state.copyWith(isLoading: true));
+      final now = DateTime.now();
+      final last24Hours = now.subtract(const Duration(hours: 24));
+      final last24HoursTimestamp = Timestamp.fromDate(last24Hours);
+      final snapShot = await FirebaseFirestore.instance
+          .collection(StoryModel.tableName)
+          .where("createdAt", isGreaterThanOrEqualTo: last24HoursTimestamp)
+          .get();
+      if (snapShot.docs.isEmpty) return;
+      final mediaList =
+          snapShot.docs.map((e) => StoryModel.fromMap(e.data())).toList();
 
-    Map<String, List<StoryModel>> mediaMap = {};
+      Map<String, List<StoryModel>> mediaMap = {};
 
-    for (var media in mediaList) {
-      if (mediaMap.containsKey(media.userId)) {
-        mediaMap[media.userId]!.add(media);
-      } else {
-        mediaMap[media.userId] = [media];
+      for (var media in mediaList) {
+        if (mediaMap.containsKey(media.userId)) {
+          mediaMap[media.userId]!.add(media);
+        } else {
+          mediaMap[media.userId] = [media];
+        }
       }
-    }
 
-    for (final id in event.userModel.matches) {
-      final matchingMedia = mediaMap[id];
-      if (matchingMedia == null || matchingMedia.isEmpty) {
-        continue;
+      for (final id in event.userModel.matches) {
+        final matchingMedia = mediaMap[id];
+        if (matchingMedia == null || matchingMedia.isEmpty) {
+          continue;
+        }
+        state.otherList.add(OtherStoryModel(
+            userName: matchingMedia[0].userName,
+            userImage: matchingMedia[0].userImage,
+            list: matchingMedia));
       }
-      state.otherList.add(OtherStoryModel(
-          userName: matchingMedia[0].userName,
-          userImage: matchingMedia[0].userImage,
-          list: matchingMedia));
+      emit(state.copyWith(isLoading: false));
+      add(GetStory(context: event.context));
+    } on FirebaseException catch (e) {
+      emit(state.copyWith(isLoading: false));
+      showOkAlertDialog(
+          context: event.context, message: e.message, title: "Error");
     }
-    emit(state.copyWith(isLoading: false));
-    add(GetStory(context: event.context));
   }
 }

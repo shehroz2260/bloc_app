@@ -10,6 +10,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/utils/loading_dialog.dart';
 import 'preference_event.dart';
 import 'preference_state.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PreferenceBloc extends Bloc<PreferenceEvent, PreferenceState> {
   PreferenceBloc() : super(PreferenceState(prefGenders: -1, intrestList: [])) {
@@ -38,7 +39,7 @@ class PreferenceBloc extends Bloc<PreferenceEvent, PreferenceState> {
     if (state.prefGenders == -1 && !event.isUpdate) {
       showOkAlertDialog(
           context: event.context,
-          message: "Please select one gender",
+          message: AppLocalizations.of(event.context)!.pickOneGender,
           title: "Error");
       return;
     }
@@ -46,7 +47,7 @@ class PreferenceBloc extends Bloc<PreferenceEvent, PreferenceState> {
     if (state.intrestList.isEmpty) {
       showOkAlertDialog(
           context: event.context,
-          message: "Please select at least one instrest",
+          message: AppLocalizations.of(event.context)!.pleasSelctAtoneInsterext,
           title: "Error");
       return;
     }

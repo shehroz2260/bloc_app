@@ -56,7 +56,7 @@ class _BioViewState extends State<BioView> {
                 hintText: AppLocalizations.of(context)!.enteraboutyourself,
                 maxLines: 7,
                 textEditingController: _aboutController,
-                validator: AppValidation.aboutValidation,
+                validator: (val) => AppValidation.aboutValidation(val, context),
               ),
               const Spacer(),
               CustomNewButton(

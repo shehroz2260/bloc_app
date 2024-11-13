@@ -59,7 +59,7 @@ class _DobPickViewState extends State<DobPickView> {
                               border:
                                   Border.all(color: AppColors.borderGreyColor),
                               borderRadius: BorderRadius.circular(30)),
-                          child: state.image != null
+                          child: (state.image?.path ?? "").isNotEmpty
                               ? ClipRRect(
                                   borderRadius: BorderRadius.circular(30),
                                   child: Image.file(

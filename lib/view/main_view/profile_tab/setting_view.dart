@@ -142,7 +142,7 @@ class _SettingViewState extends State<SettingView> {
                       onTap: () {
                         Go.to(context, const ChangeLanguageView());
                       },
-                      title: "Change Language",
+                      title: AppLocalizations.of(context)!.changeLanguage,
                     ),
                     SettiingWidget(
                       color: Colors.amber.shade400,
@@ -179,7 +179,7 @@ class _SettingViewState extends State<SettingView> {
                       onTap: () {
                         Go.to(context, const FaqsView());
                       },
-                      title: "FAQs",
+                      title: AppLocalizations.of(context)!.faqs,
                     ),
                     SettiingWidget(
                       color: Colors.red,

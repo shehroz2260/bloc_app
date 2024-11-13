@@ -8,6 +8,7 @@ import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_event.dart';
 import 'gender_event.dart';
 import 'gender_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GenderBloc extends Bloc<GenderEvent, GenderState> {
   GenderBloc() : super(GenderState(gender: 0)) {
@@ -23,7 +24,7 @@ class GenderBloc extends Bloc<GenderEvent, GenderState> {
     if (state.gender == 0) {
       showOkAlertDialog(
           context: event.context,
-          message: "Please pick one gender",
+          message: AppLocalizations.of(event.context)!.pickOneGender,
           title: "Error");
       return;
     }
