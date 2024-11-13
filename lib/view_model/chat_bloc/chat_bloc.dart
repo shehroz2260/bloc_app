@@ -23,6 +23,7 @@ import '../../model/char_model.dart';
 import 'chat_event.dart';
 import 'chat_state.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
   DocumentSnapshot? lastDocument;
@@ -531,17 +532,20 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   _openOptions(OpenOptions event, Emitter<ChatState> emit) async {
     var result = await showConfirmationDialog(
         context: event.context,
-        title: "Please select option",
+        title: AppLocalizations.of(event.context)!.pleaseSelectOption,
         actions: [
-          const AlertDialogAction(key: "1", label: "Clear chat"),
           AlertDialogAction(
-              key: "2", label: "Report ${event.userModel.firstName}"),
+              key: "1", label: AppLocalizations.of(event.context)!.clearChat),
+          AlertDialogAction(
+              key: "2",
+              label:
+                  "${AppLocalizations.of(event.context)!.report} ${event.userModel.firstName}"),
           AlertDialogAction(
               key: "3",
               label: (listenThread?.blockUserList ?? [])
                       .contains(FirebaseAuth.instance.currentUser?.uid ?? "")
-                  ? "Unblock ${event.userModel.firstName}"
-                  : "Block ${event.userModel.firstName}"),
+                  ? "${AppLocalizations.of(event.context)!.unBlock} ${event.userModel.firstName}"
+                  : "${AppLocalizations.of(event.context)!.block} ${event.userModel.firstName}"),
         ]);
     if (result == null) {
       return;
@@ -550,8 +554,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     if (result == "1") {
       var okCancelRes = await showOkCancelAlertDialog(
           context: event.context,
-          message: "Do you really want to clear chat",
-          title: "Are you sure!");
+          message:
+              AppLocalizations.of(event.context)!.doyouReallyWanttoclearChat,
+          title: AppLocalizations.of(event.context)!.areYouSure);
       if (okCancelRes == OkCancelResult.cancel) return;
       add(ClearChat(context: event.context));
     }
@@ -559,8 +564,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       var okCanRes = await showOkCancelAlertDialog(
           context: event.context,
           message:
-              "Do you really want to report ${event.userModel.firstName}, This action action is permanent and cannot be undo",
-          title: "Report");
+              "${AppLocalizations.of(event.context)!.doyouReallywantToreport} ${event.userModel.firstName}${AppLocalizations.of(event.context)!.thisActionisPermanent}",
+          title: AppLocalizations.of(event.context)!.report);
       if (okCanRes == OkCancelResult.cancel) return;
       final options = await NetworkService.reportUser(
           event.userModel, event.context, listenThread);
@@ -569,12 +574,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     if (result == "3") {
       var blockRslt = await showOkCancelAlertDialog(
           context: event.context,
-          message: "Do you really want to Block ${event.userModel.firstName}",
-          title: "Are you sure!",
+          message:
+              "${AppLocalizations.of(event.context)!.doyouReallyWanttoblock} ${event.userModel.firstName}",
+          title: AppLocalizations.of(event.context)!.areYouSure,
           okLabel: (listenThread?.blockUserList ?? [])
                   .contains(FirebaseAuth.instance.currentUser?.uid ?? "")
-              ? "Unblock"
-              : "Block");
+              ? AppLocalizations.of(event.context)!.unBlock
+              : AppLocalizations.of(event.context)!.block);
       if (blockRslt == OkCancelResult.cancel) return;
 
       if ((listenThread?.blockUserList ?? [])

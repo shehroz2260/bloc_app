@@ -18,7 +18,6 @@ class AppStrings {
   static const String userReportedSuccessFully = "User reported successfully";
   static const String pleaseEnablecamera =
       "Please Enable Camera, Microphone, Audio and photos from setting";
-  static const String aboutisReq = "About is required";
   static const String smsVerificationError = "SMS verification error";
   static const String youHaveAttemptedTooManyRequestsPleaseTryAgainLater =
       "You have attempted too many requests.Please try again later";
@@ -26,7 +25,6 @@ class AppStrings {
       "The provided phone number is not valid.";
   static const String invalidPhoneNumber = "invalid-phone-number";
   static const String tooManyRequests = "too-many-requests";
-  static const String pleaseCheckTheAgreement = "Please check the agreement";
 }
 
 class AppConstant {
