@@ -163,7 +163,11 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
           .collection(StoryModel.tableName)
           .where("createdAt", isGreaterThanOrEqualTo: last24HoursTimestamp)
           .get();
-      if (snapShot.docs.isEmpty) return;
+      if (snapShot.docs.isEmpty) {
+        emit(state.copyWith(isLoading: false));
+
+        return;
+      }
       final mediaList =
           snapShot.docs.map((e) => StoryModel.fromMap(e.data())).toList();
 
@@ -177,6 +181,10 @@ class StoryBloc extends Bloc<StoryEvent, StoryState> {
         }
       }
 
+      if (mediaMap.isEmpty) {
+        emit(state.copyWith(isLoading: false));
+        return;
+      }
       for (final id in event.userModel.matches) {
         final matchingMedia = mediaMap[id];
         if (matchingMedia == null || matchingMedia.isEmpty) {
