@@ -6,6 +6,7 @@ import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:chat_with_bloc/model/thread_model.dart';
 import 'package:chat_with_bloc/services/firebase_services_storage.dart';
 import 'package:chat_with_bloc/services/network_service.dart';
+import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/utils/custom_image_picker.dart';
 import 'package:chat_with_bloc/utils/loading_dialog.dart';
@@ -365,6 +366,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   _pickFiles(PickFileEvent event, Emitter<ChatState> emit) async {
     bool isVideo = false;
+    bool isImage = false;
     await showModalBottomSheet(
         barrierColor: Colors.transparent,
         context: event.context,
@@ -372,9 +374,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           return Container(
             height: 200,
             width: MediaQuery.of(event.context).size.width,
-            decoration: const BoxDecoration(
-                color: Colors.black45,
-                borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+                color: AppColors.borderGreyColor,
+                borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(30),
                     topRight: Radius.circular(30))),
             padding: const EdgeInsets.only(left: 20),
@@ -385,15 +387,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                   onTap: () async {
                     Go.back(event.context);
                     MediaType.type = MediaType.image;
-                    isVideo = false;
+                    isImage = true;
                   },
-                  child: const Row(
+                  child: Row(
                     children: [
-                      Icon(Icons.image, size: 60),
-                      SizedBox(width: 10),
+                      Icon(Icons.image, size: 40, color: AppColors.redColor),
+                      const SizedBox(width: 10),
                       Text(
-                        "Images",
-                        style: TextStyle(fontSize: 40),
+                        AppLocalizations.of(event.context)!.image,
+                        style: const TextStyle(fontSize: 30),
                       )
                     ],
                   ),
@@ -405,11 +407,16 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                     MediaType.type = MediaType.video;
                     isVideo = true;
                   },
-                  child: const Row(
+                  child: Row(
                     children: [
-                      Icon(Icons.video_camera_back_outlined, size: 60),
-                      SizedBox(width: 10),
-                      Text("Video", style: TextStyle(fontSize: 40))
+                      Icon(
+                        Icons.video_camera_back_outlined,
+                        size: 40,
+                        color: AppColors.redColor,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(AppLocalizations.of(event.context)!.video,
+                          style: const TextStyle(fontSize: 30))
                     ],
                   ),
                 ),
@@ -425,7 +432,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         final thumbnail = await AppFuncs.generateThumbNail(file.path);
         emit(state.copyWith(thumbnail: thumbnail));
       }
-    } else {
+    }
+    if (isImage) {
       final file = await kImagePicker(context: event.context);
       if (file != null) {
         emit(state.copyWith(pickFile: file));

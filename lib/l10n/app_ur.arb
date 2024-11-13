@@ -183,6 +183,8 @@
   "firstName" : "پہلا نام",
   "bios" : "بایو",
   "block" : "بلاک",
+  "video" : "ویڈیو",
+  "image" : "تصویر",
   "doyouReallyWanttoblock" : "کیا آپ واقعی بلاک کرنا چاہتے ہیں",
   "thisActionisPermanent" : " ، یہ ایکشن ایکشن مستقل ہے اور اسے کالعدم نہیں کیا جا سکتا",
   "doyouReallywantToreport" : "کیا آپ واقعی رپورٹ کرنا چاہتے ہیں",
