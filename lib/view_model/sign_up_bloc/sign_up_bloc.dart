@@ -34,6 +34,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         firstName: "",
         isOnline: false,
         location: "",
+        cusId: "",
         lat: 0,
         lng: 0,
         gender: 0,

@@ -19,6 +19,7 @@ class UserModel {
   final List<String> galleryImages;
   final String bio;
   final String about;
+  final String cusId;
   final DateTime dob;
   final bool isOnline;
   final String profileImage;
@@ -31,8 +32,9 @@ class UserModel {
   UserModel({
     required this.bio,
     required this.galleryImages,
-    required this.about,
     required this.userName,
+    required this.about,
+    required this.cusId,
     required this.phoneNumber,
     required this.isOnline,
     required this.myInstrest,
@@ -60,9 +62,10 @@ class UserModel {
     String? firstName,
     String? email,
     String? uid,
-    String? phoneNumber,
     String? about,
     String? bio,
+    String? phoneNumber,
+    String? cusId,
     String? location,
     double? lat,
     double? lng,
@@ -84,6 +87,7 @@ class UserModel {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       galleryImages: galleryImages ?? this.galleryImages,
       bio: bio ?? this.bio,
+      cusId: cusId ?? this.cusId,
       about: about ?? this.about,
       isOnline: isOnline ?? this.isOnline,
       myInstrest: myInstrest ?? this.myInstrest,
@@ -112,6 +116,7 @@ class UserModel {
       'myInstrest': myInstrest,
       'email': email,
       'isOnline': isOnline,
+      'cusId': cusId,
       'uid': uid,
       'location': location,
       'lat': lat,
@@ -137,6 +142,7 @@ class UserModel {
       userName: map['userName'] ?? "",
       about: map['about'] ?? "",
       phoneNumber: map['phoneNumber'] ?? "",
+      cusId: map['cusId'] ?? "",
       bio: map['bio'] ?? "",
       firstName: map['firstName'] ?? "",
       email: map['email'] ?? "",
@@ -198,6 +204,7 @@ class UserModel {
         myInstrest: [],
         userName: "",
         firstName: "",
+        cusId: "",
         email: "",
         uid: "",
         location: "",
@@ -223,6 +230,6 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(phoneNumber: $phoneNumber, galleryImages: $galleryImages, bio: $bio, about: $about, isOnline: $isOnline, myInstrest: $myInstrest, userName: $userName, first1Name: $firstName, email: $email, password: $password, uid: $uid, location: $location, lat: $lat, lng: $lng, gender: $gender, preferGender: $preferGender, dob: $dob, profileImage: $profileImage, myLikes: $myLikes, myDislikes: $myDislikes, otherLikes: $otherLikes, otherDislikes: $otherDislikes, matches: $matches)';
+    return 'UserModel(cusId: $cusId, phoneNumber: $phoneNumber, galleryImages: $galleryImages, bio: $bio, about: $about, isOnline: $isOnline, myInstrest: $myInstrest, userName: $userName, first1Name: $firstName, email: $email, password: $password, uid: $uid, location: $location, lat: $lat, lng: $lng, gender: $gender, preferGender: $preferGender, dob: $dob, profileImage: $profileImage, myLikes: $myLikes, myDislikes: $myDislikes, otherLikes: $otherLikes, otherDislikes: $otherDislikes, matches: $matches)';
   }
 }

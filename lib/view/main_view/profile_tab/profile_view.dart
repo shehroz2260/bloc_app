@@ -1,20 +1,31 @@
 // // ignore_for_file: use_build_context_synchronously
+import 'dart:developer';
+
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/src/app_assets.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
+import 'package:chat_with_bloc/utils/loading_dialog.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/edit_profile.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/galler_view.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/setting_view.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
+import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_event.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_state.dart';
 import 'package:chat_with_bloc/widgets/app_cache_image.dart';
+import 'package:chat_with_bloc/widgets/custom_button.dart';
 import 'package:chat_with_bloc/widgets/image_view.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../../model/user_model.dart';
+import '../../../services/stripe_payment.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -55,15 +66,15 @@ class _ProfileViewState extends State<ProfileView> {
                       padding: const EdgeInsets.all(4),
                       child: AppCacheImage(
                           imageUrl: state.userData.profileImage,
-                          height: 180,
-                          width: 180,
+                          height: 180.h,
+                          width: 180.h,
                           onTap: () {
                             Go.to(
                                 context,
                                 ImageView(
                                     imageUrl: state.userData.profileImage));
                           },
-                          round: 180)),
+                          round: 180.r)),
                   const AppHeight(height: 2),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -76,12 +87,12 @@ class _ProfileViewState extends State<ProfileView> {
                               .copyWith(color: AppColors.blackColor)),
                     ],
                   ),
-                  const AppHeight(height: 25),
+                  AppHeight(height: 25.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 40),
+                        padding: EdgeInsets.only(bottom: 40.h),
                         child: ProfileWidget(
                           title: AppLocalizations.of(context)!.settings,
                           icon: AppAssets.settingICon,
@@ -91,7 +102,7 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(top: 50),
+                        padding: EdgeInsets.only(top: 50.h),
                         child: ProfileWidget(
                           title: AppLocalizations.of(context)!.editProfile,
                           icon: AppAssets.pencilICon,
@@ -101,7 +112,7 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 40),
+                        padding: EdgeInsets.only(bottom: 40.h),
                         child: ProfileWidget(
                           title: AppLocalizations.of(context)!.gallery,
                           icon: '',
@@ -112,7 +123,7 @@ class _ProfileViewState extends State<ProfileView> {
                       ),
                     ],
                   ),
-                  const AppHeight(height: 30)
+                  AppHeight(height: 30.h)
                 ],
               );
             }),
@@ -140,6 +151,110 @@ class _ProfileViewState extends State<ProfileView> {
             const AppHeight(height: 10),
             const Text(
                 "Upgrade to the Friendzy premium to access all features"),
+            const AppHeight(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: CustomNewButton(
+                  btnName: "Go with premium",
+                  onTap: () async {
+                    try {
+                      LoadingDialog.showProgress(context);
+                      var userBloc = context.read<UserBaseBloc>();
+                      var myModel = userBloc.state.userData;
+                      var cusId = myModel.cusId;
+                      if (cusId.isEmpty) {
+                        var email = myModel.email;
+                        var uid = myModel.uid;
+                        final stripeCustomer = StripCustomer(uid, email);
+                        var customer = await stripeCustomer.getCustomer();
+                        cusId = customer['id'];
+                        myModel = myModel.copyWith(cusId: cusId);
+                        userBloc.add(UpdateUserEvent(userModel: myModel));
+                        await FirebaseFirestore.instance
+                            .collection(UserModel.tableName)
+                            .doc(myModel.uid)
+                            .set(myModel.toMap(), SetOptions(merge: true));
+                      }
+                      var card = StripCard(cusId);
+                      var map = await card.getMyCards();
+                      LoadingDialog.hideProgress(context);
+                      if ((map['data'] as List).isEmpty) {
+                        var stripePayment = StripSetupIntent(cusId, context);
+                        await stripePayment.makeDefaultCard();
+                      } else {
+                        var list = map["data"] as List;
+                        log("^^^^^^^^^^^^^^^^^^^^^${list.length}");
+                        log("^^^^^^^^^^^^^^^^^^^^^$list");
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return Container(
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                    color: AppColors.whiteColor,
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(30),
+                                      topRight: Radius.circular(30),
+                                    )),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 20),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    ...List.generate(list.length, (index) {
+                                      return Text(
+                                          list[index]["card"]["last4"] ?? "");
+                                    }),
+                                    CustomNewButton(
+                                      btnName: "+ New card add",
+                                      onTap: () async {
+                                        var userBloc =
+                                            context.read<UserBaseBloc>();
+                                        var myModel = userBloc.state.userData;
+                                        var cusId = myModel.cusId;
+                                        if (cusId.isEmpty) {
+                                          var email = myModel.email;
+                                          var uid = myModel.uid;
+                                          final stripeCustomer =
+                                              StripCustomer(uid, email);
+                                          var customer = await stripeCustomer
+                                              .getCustomer();
+                                          cusId = customer['id'];
+                                          myModel =
+                                              myModel.copyWith(cusId: cusId);
+                                          userBloc.add(UpdateUserEvent(
+                                              userModel: myModel));
+                                          await FirebaseFirestore.instance
+                                              .collection(UserModel.tableName)
+                                              .doc(myModel.uid)
+                                              .set(myModel.toMap(),
+                                                  SetOptions(merge: true));
+                                        }
+                                        var stripePayment =
+                                            StripSetupIntent(cusId, context);
+                                        await stripePayment.makeDefaultCard();
+                                        Go.back(context);
+                                      },
+                                    )
+                                  ],
+                                ),
+                              );
+                            });
+                      }
+                    } on FirebaseException catch (e) {
+                      LoadingDialog.hideProgress(context);
+                      showOkAlertDialog(
+                          context: context, message: e.message, title: "Error");
+                    } catch (e) {
+                      LoadingDialog.hideProgress(context);
+                      showOkAlertDialog(
+                          context: context,
+                          message: e.toString(),
+                          title: "Error");
+                    }
+                  }),
+            )
           ],
         ))
       ],

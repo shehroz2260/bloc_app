@@ -19,7 +19,10 @@ class LocationPermissionScreen extends StatelessWidget {
           Image.asset("assets/images/png/pngwing 3.png"),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Image.asset("assets/images/png/address (1).png"),
+            child: Image.asset(
+              "assets/images/png/address (1).png",
+              height: MediaQuery.of(context).size.height * 0.4,
+            ),
           ),
           const AppHeight(height: 20),
           Padding(

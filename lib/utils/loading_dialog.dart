@@ -22,6 +22,7 @@ class LoadingDialog {
           return const Padding(
             padding: EdgeInsets.all(20.0),
             child: AlertDialog(
+                backgroundColor: Colors.transparent,
                 contentPadding: EdgeInsets.zero,
                 titlePadding: EdgeInsets.symmetric(vertical: 15),
                 insetPadding: EdgeInsets.zero,
@@ -29,11 +30,11 @@ class LoadingDialog {
                 title: Padding(
                   padding: EdgeInsets.symmetric(horizontal: 25),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       NativeProgress(),
-                      SizedBox(width: 20),
-                      Text("Loading....")
+                      // SizedBox(width: 20),
+                      // Text("Loading....")
                     ],
                   ),
                 )),
@@ -65,7 +66,7 @@ class NativeProgress extends StatelessWidget {
                 height: 30,
                 width: 30,
                 child: CircularProgressIndicator(
-                  color: AppColors.blueColor,
+                  color: AppColors.redColor,
                 )))
         : Center(
             child: Theme(
@@ -74,7 +75,9 @@ class NativeProgress extends StatelessWidget {
                         brightness: Brightness.light,
                         primaryColor: Colors.white,
                         barBackgroundColor: Colors.white)),
-                child: const CupertinoActivityIndicator()),
+                child: CupertinoActivityIndicator(
+                  color: AppColors.redColor,
+                )),
           );
   }
 }
