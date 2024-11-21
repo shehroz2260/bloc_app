@@ -79,7 +79,7 @@ class _InboxViewState extends State<InboxView> {
                     child: SingleChildScrollView(
                   child: Column(
                     children: List.generate(state.threadList.length, (index) {
-                      return (state.threadList[index].userDetail?.userName ??
+                      return (state.threadList[index].userDetail?.firstName ??
                                   "")
                               .toLowerCase()
                               .contains(state.searchText.toLowerCase())
@@ -87,7 +87,6 @@ class _InboxViewState extends State<InboxView> {
                               onTap: () {
                                 Go.to(context,
                                     ChatScreen(model: state.threadList[index]));
-                                // _openChatView(state.threadList[index]);
                               },
                               behavior: HitTestBehavior.opaque,
                               child: Container(

@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chat_with_bloc/src/go_file.dart';
+import 'package:chat_with_bloc/widgets/image_view.dart';
 import 'package:flutter/material.dart';
 import '../model/user_model.dart';
 
@@ -193,58 +195,62 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
       size.width / 2 - 65,
     );
 
-    return Container(
-      color: Colors.black,
+    return GestureDetector(
+      onTap: () {
+        Go.to(context, ImageView(imageUrl: user.profileImage));
+      },
       child: Container(
         color: Colors.black,
-        child: Stack(
-          children: [
-            Positioned(
-              top: MediaQuery.of(context).viewPadding.top + 15,
-              left: currentImagePosition + 50,
-              child: Text(
-                user.firstName,
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white.withOpacity(percent2),
+        child: Container(
+          color: Colors.black,
+          child: Stack(
+            children: [
+              Positioned(
+                top: MediaQuery.of(context).viewPadding.top + 15,
+                left: currentImagePosition + 50,
+                child: Text(
+                  user.firstName,
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white.withOpacity(percent2),
+                  ),
                 ),
               ),
-            ),
-            Positioned(
-              left: 0,
-              top: MediaQuery.of(context).viewPadding.top + 5,
-              child: const BackButton(color: Colors.white),
-            ),
-            Positioned(
-              right: 0,
-              top: MediaQuery.of(context).viewPadding.top + 5,
-              child: CustomIconButton(
-                onPressed: () {},
-                icon: Icons.more_vert,
-                iconColor: percent2 > .3 ? Colors.white : Colors.white,
+              Positioned(
+                left: 0,
+                top: MediaQuery.of(context).viewPadding.top + 5,
+                child: const BackButton(color: Colors.white),
               ),
-            ),
-            Positioned(
-              left: currentImagePosition,
-              top: MediaQuery.of(context).viewPadding.top + 5,
-              bottom: 0,
-              child: Hero(
-                tag: 'profile',
-                child: Container(
-                  width: currentImageSize,
-                  height:
-                      currentImageSize, // Ensure the height matches the width for the circular image
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: CachedNetworkImageProvider(user.profileImage),
-                      fit: BoxFit.cover,
+              Positioned(
+                right: 0,
+                top: MediaQuery.of(context).viewPadding.top + 5,
+                child: CustomIconButton(
+                  onPressed: () {},
+                  icon: Icons.more_vert,
+                  iconColor: percent2 > .3 ? Colors.white : Colors.white,
+                ),
+              ),
+              Positioned(
+                left: currentImagePosition,
+                top: MediaQuery.of(context).viewPadding.top + 5,
+                bottom: 0,
+                child: Hero(
+                  tag: 'profile',
+                  child: Container(
+                    width: currentImageSize,
+                    height: currentImageSize,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: CachedNetworkImageProvider(user.profileImage),
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

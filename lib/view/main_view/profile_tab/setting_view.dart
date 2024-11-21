@@ -9,8 +9,11 @@ import 'package:chat_with_bloc/utils/app_validation.dart';
 import 'package:chat_with_bloc/utils/loading_dialog.dart';
 import 'package:chat_with_bloc/view/main_view/match_tab/user_profile_view/user_profile_view.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/about_us_view.dart';
+import 'package:chat_with_bloc/view/main_view/profile_tab/change_theme_view.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/faqs_view.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/story_view.dart';
+import 'package:chat_with_bloc/view_model/change_theme_bloc/change_theme_bloc.dart';
+import 'package:chat_with_bloc/view_model/change_theme_bloc/change_theme_state.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_state.dart';
 import 'package:chat_with_bloc/widgets/app_cache_image.dart';
 import 'package:chat_with_bloc/widgets/custom_text_field.dart';
@@ -144,6 +147,19 @@ class _SettingViewState extends State<SettingView> {
                       },
                       title: AppLocalizations.of(context)!.changeLanguage,
                     ),
+                    BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
+                        builder: (context, state) {
+                      return SettiingWidget(
+                        color: Colors.lightBlueAccent.shade100,
+                        icon: state.currentTheme.brightness == Brightness.dark
+                            ? Icons.dark_mode
+                            : Icons.light_mode_rounded,
+                        onTap: () {
+                          Go.to(context, const ChangeThemeView());
+                        },
+                        title: AppLocalizations.of(context)!.changeTheme,
+                      );
+                    }),
                     SettiingWidget(
                       color: Colors.amber.shade400,
                       icon: Icons.info,

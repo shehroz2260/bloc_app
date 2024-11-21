@@ -4,6 +4,10 @@ import 'package:chat_with_bloc/view_model/bio_bloc/bio_bloc.dart';
 import 'package:chat_with_bloc/view_model/change_language/change_language_bloc.dart';
 import 'package:chat_with_bloc/view_model/change_language/change_language_event.dart';
 import 'package:chat_with_bloc/view_model/change_language/change_language_state.dart';
+import 'package:chat_with_bloc/view_model/change_theme_bloc/change_theme_bloc.dart';
+import 'package:chat_with_bloc/view_model/change_theme_bloc/change_theme_event.dart';
+import 'package:chat_with_bloc/view_model/change_theme_bloc/change_theme_state.dart';
+import 'package:chat_with_bloc/view_model/profile_bloc/profile_bloc.dart';
 import 'package:chat_with_bloc/view_model/story_bloc/story_bloc.dart';
 import 'package:chat_with_bloc/view_model/edit_bloc/edit_bloc.dart';
 import 'package:chat_with_bloc/view_model/filter_bloc.dart/filter_bloc.dart';
@@ -66,8 +70,10 @@ void main() async {
       BlocProvider(create: (_) => PhoneNumberBloc()),
       BlocProvider(create: (_) => GalleryBloc()),
       BlocProvider(create: (_) => OtpBloc()),
+      BlocProvider(create: (_) => ChangeThemeBloc()),
       BlocProvider(create: (_) => EditBloc()),
       BlocProvider(create: (_) => StoryBloc()),
+      BlocProvider(create: (_) => ProfileBloc()),
       BlocProvider(create: (_) => ChangeLanguageBloc()),
     ],
     child: const MyApp(),
@@ -89,6 +95,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     context.read<ChangeLanguageBloc>().add(OnitLanguage());
+    context.read<ChangeThemeBloc>().add(OninitTheme());
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -116,30 +123,34 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       child: BlocBuilder<ChangeLanguageBloc, ChangeLanguageState>(
           builder: (context, state) {
         ancestorContext = context;
-        return ScreenUtilInit(
-            designSize: const Size(375, 812),
-            minTextAdapt: true,
-            splitScreenMode: true,
-            builder: (context, child) {
-              return MaterialApp(
-                localizationsDelegates: const [
-                  AppLocalizations.delegate,
-                  GlobalMaterialLocalizations.delegate,
-                  GlobalCupertinoLocalizations.delegate,
-                  GlobalWidgetsLocalizations.delegate,
-                ],
-                locale: state.locale,
-                supportedLocales: AppLocalizations.supportedLocales,
-                debugShowCheckedModeBanner: false,
-                builder: (context, child) {
-                  return Directionality(
-                    textDirection: TextDirection.ltr,
-                    child: child!,
-                  );
-                },
-                home: const SplashView(),
-              );
-            });
+        return BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
+            builder: (context, themeState) {
+          return ScreenUtilInit(
+              designSize: const Size(375, 812),
+              minTextAdapt: true,
+              splitScreenMode: true,
+              builder: (context, child) {
+                return MaterialApp(
+                  localizationsDelegates: const [
+                    AppLocalizations.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                  ],
+                  theme: themeState.currentTheme,
+                  locale: state.locale,
+                  supportedLocales: AppLocalizations.supportedLocales,
+                  debugShowCheckedModeBanner: false,
+                  builder: (context, child) {
+                    return Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: child!,
+                    );
+                  },
+                  home: const SplashView(),
+                );
+              });
+        });
       }),
     );
   }

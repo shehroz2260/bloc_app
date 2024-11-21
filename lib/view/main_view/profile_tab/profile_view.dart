@@ -1,6 +1,4 @@
 // // ignore_for_file: use_build_context_synchronously
-import 'dart:developer';
-
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/src/app_assets.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
@@ -23,7 +21,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import '../../../model/user_model.dart';
 import '../../../services/stripe_payment.dart';
 
@@ -182,9 +179,11 @@ class _ProfileViewState extends State<ProfileView> {
                         var stripePayment = StripSetupIntent(cusId, context);
                         await stripePayment.makeDefaultCard();
                       } else {
-                        var list = map["data"] as List;
-                        log("^^^^^^^^^^^^^^^^^^^^^${list.length}");
-                        log("^^^^^^^^^^^^^^^^^^^^^$list");
+                        var cardList = map["data"] as List;
+                        //  const customer = await Stripe.customer
+                        var defaultPaymentMethodId =
+                            cardList[0]["card"]["id"] ?? '';
+
                         showModalBottomSheet(
                             context: context,
                             builder: (context) {
@@ -202,45 +201,136 @@ class _ProfileViewState extends State<ProfileView> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    ...List.generate(list.length, (index) {
-                                      return Text(
-                                          list[index]["card"]["last4"] ?? "");
+                                    ...List.generate(cardList.length + 1, (i) {
+                                      if (cardList.length == i) {
+                                        return GestureDetector(
+                                          behavior: HitTestBehavior.opaque,
+                                          onTap: () async {
+                                            var userBloc =
+                                                context.read<UserBaseBloc>();
+                                            var myModel =
+                                                userBloc.state.userData;
+                                            var cusId = myModel.cusId;
+                                            if (cusId.isEmpty) {
+                                              var email = myModel.email;
+                                              var uid = myModel.uid;
+                                              final stripeCustomer =
+                                                  StripCustomer(uid, email);
+                                              var customer =
+                                                  await stripeCustomer
+                                                      .getCustomer();
+                                              cusId = customer['id'];
+                                              myModel = myModel.copyWith(
+                                                  cusId: cusId);
+                                              userBloc.add(UpdateUserEvent(
+                                                  userModel: myModel));
+                                              await FirebaseFirestore.instance
+                                                  .collection(
+                                                      UserModel.tableName)
+                                                  .doc(myModel.uid)
+                                                  .set(myModel.toMap(),
+                                                      SetOptions(merge: true));
+                                            }
+                                            var stripePayment =
+                                                StripSetupIntent(
+                                                    cusId, context);
+                                            await stripePayment
+                                                .makeDefaultCard();
+                                            Go.back(context);
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 4,
+                                                        vertical: 2),
+                                                decoration: BoxDecoration(
+                                                    color: AppColors
+                                                        .borderGreyColor,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5)),
+                                                child: const Icon(Icons.add),
+                                              ),
+                                              const SizedBox(width: 10),
+                                              const Text(
+                                                "Add card",
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontFamily: 'inter',
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              )
+                                            ],
+                                          ),
+                                        );
+                                      }
+                                      return GestureDetector(
+                                        onTap: () {
+                                          setState(() {});
+                                          defaultPaymentMethodId =
+                                              cardList[i]["card"]["id"];
+                                        },
+                                        child: Container(
+                                          width: double.infinity,
+                                          margin:
+                                              const EdgeInsets.only(bottom: 10),
+                                          padding: const EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                              color: AppColors.whiteColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              border: Border.all(
+                                                  color: AppColors
+                                                      .borderGreyColor)),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                  '${cardList[i]["card"]['brand']} **** **** **** ${cardList[i]["card"]['last4']}',
+                                                  style: const TextStyle(
+                                                      fontSize: 15,
+                                                      fontFamily: 'inter',
+                                                      fontWeight:
+                                                          FontWeight.w400)),
+                                              Container(
+                                                height: 20,
+                                                width: 20,
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color:
+                                                          AppColors.redColor),
+                                                  borderRadius:
+                                                      BorderRadius.circular(49),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: cardList[i]["card"]
+                                                                  ['id'] ==
+                                                              defaultPaymentMethodId
+                                                          ? AppColors.redColor
+                                                          : Colors.transparent,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
                                     }),
-                                    CustomNewButton(
-                                      btnName: "+ New card add",
-                                      onTap: () async {
-                                        var userBloc =
-                                            context.read<UserBaseBloc>();
-                                        var myModel = userBloc.state.userData;
-                                        var cusId = myModel.cusId;
-                                        if (cusId.isEmpty) {
-                                          var email = myModel.email;
-                                          var uid = myModel.uid;
-                                          final stripeCustomer =
-                                              StripCustomer(uid, email);
-                                          var customer = await stripeCustomer
-                                              .getCustomer();
-                                          cusId = customer['id'];
-                                          myModel =
-                                              myModel.copyWith(cusId: cusId);
-                                          userBloc.add(UpdateUserEvent(
-                                              userModel: myModel));
-                                          await FirebaseFirestore.instance
-                                              .collection(UserModel.tableName)
-                                              .doc(myModel.uid)
-                                              .set(myModel.toMap(),
-                                                  SetOptions(merge: true));
-                                        }
-                                        var stripePayment =
-                                            StripSetupIntent(cusId, context);
-                                        await stripePayment.makeDefaultCard();
-                                        Go.back(context);
-                                      },
-                                    )
                                   ],
                                 ),
                               );
                             });
+                        // log("^^^^^^^^^^^^^^^^^^^^^${list.length}");
+                        // log("^^^^^^^^^^^^^^^^^^^^^$list");
                       }
                     } on FirebaseException catch (e) {
                       LoadingDialog.hideProgress(context);

@@ -5,6 +5,7 @@ import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/view_model/chat_bloc/chat_bloc.dart';
 import 'package:chat_with_bloc/view_model/chat_bloc/chat_event.dart';
 import 'package:chat_with_bloc/view_model/chat_bloc/chat_state.dart';
+import 'package:chat_with_bloc/widgets/user_detail_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -85,21 +86,32 @@ class _ChatScreenState extends State<ChatScreen> {
                       onTap: () => Go.back(context),
                       child: const Icon(Icons.arrow_back_ios_new_outlined)),
                   const AppWidth(width: 10),
-                  Container(
-                    height: 60,
-                    width: 60,
-                    decoration: BoxDecoration(
-                        color: AppColors.redColor, shape: BoxShape.circle),
-                    padding: const EdgeInsets.all(3),
+                  GestureDetector(
+                    onTap: () {
+                      Go.to(
+                          context,
+                          ProfilePage(
+                              user: widget.model.userDetail ??
+                                  UserModel.emptyModel));
+                    },
                     child: Container(
+                      height: 60,
+                      width: 60,
                       decoration: BoxDecoration(
-                          color: AppColors.whiteColor, shape: BoxShape.circle),
+                          color: AppColors.redColor, shape: BoxShape.circle),
                       padding: const EdgeInsets.all(3),
-                      child: AppCacheImage(
-                          imageUrl: widget.model.userDetail?.profileImage ?? "",
-                          height: 60,
-                          width: 60,
-                          round: 60),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: AppColors.whiteColor,
+                            shape: BoxShape.circle),
+                        padding: const EdgeInsets.all(3),
+                        child: AppCacheImage(
+                            imageUrl:
+                                widget.model.userDetail?.profileImage ?? "",
+                            height: 60,
+                            width: 60,
+                            round: 60),
+                      ),
                     ),
                   ),
                   const AppWidth(width: 10),
