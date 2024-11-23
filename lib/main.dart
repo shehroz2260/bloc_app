@@ -8,6 +8,7 @@ import 'package:chat_with_bloc/view_model/change_theme_bloc/change_theme_bloc.da
 import 'package:chat_with_bloc/view_model/change_theme_bloc/change_theme_event.dart';
 import 'package:chat_with_bloc/view_model/change_theme_bloc/change_theme_state.dart';
 import 'package:chat_with_bloc/view_model/profile_bloc/profile_bloc.dart';
+import 'package:chat_with_bloc/view_model/setting_bloc/setting_bloc.dart';
 import 'package:chat_with_bloc/view_model/story_bloc/story_bloc.dart';
 import 'package:chat_with_bloc/view_model/edit_bloc/edit_bloc.dart';
 import 'package:chat_with_bloc/view_model/filter_bloc.dart/filter_bloc.dart';
@@ -36,6 +37,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get_storage/get_storage.dart';
 import 'firebase_options.dart';
+import 'utils/notification_utils.dart';
 import 'view_model/gender_bloc/gender_bloc.dart';
 import 'view_model/location_permission_bloc/location_bloc.dart';
 import 'view_model/chat_bloc/chat_bloc.dart';
@@ -45,6 +47,7 @@ const testStripePublishKey = '';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await NotificationUtils.init();
   Stripe.publishableKey = testStripePublishKey;
   Stripe.merchantIdentifier = Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();
@@ -73,6 +76,7 @@ void main() async {
       BlocProvider(create: (_) => ChangeThemeBloc()),
       BlocProvider(create: (_) => EditBloc()),
       BlocProvider(create: (_) => StoryBloc()),
+      BlocProvider(create: (_) => SettingBloc()),
       BlocProvider(create: (_) => ProfileBloc()),
       BlocProvider(create: (_) => ChangeLanguageBloc()),
     ],

@@ -98,7 +98,7 @@ class StripSetupIntent extends GetConnect implements GetxService {
         throw Exception(error);
       });
     } on StripeException catch (e) {
-      print('Error is:---> $e');
+      log("^^^^^^^^^^^^^^^^^^^^^^${e.toString()}");
       const AlertDialog(
         content: Column(
           mainAxisSize: MainAxisSize.min,

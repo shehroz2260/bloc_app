@@ -8,6 +8,7 @@ class UserModel {
   final String userName;
   final String firstName;
   final String email;
+  final String fcmToken;
   final String phoneNumber;
   String? password;
   final String uid;
@@ -22,6 +23,7 @@ class UserModel {
   final String cusId;
   final DateTime dob;
   final bool isOnline;
+  final bool isOnNotification;
   final String profileImage;
   final List<String> myLikes;
   final List<String> myDislikes;
@@ -31,9 +33,11 @@ class UserModel {
   final List<String> matches;
   UserModel({
     required this.bio,
+    required this.isOnNotification,
     required this.galleryImages,
     required this.userName,
     required this.about,
+    required this.fcmToken,
     required this.cusId,
     required this.phoneNumber,
     required this.isOnline,
@@ -63,6 +67,7 @@ class UserModel {
     String? email,
     String? uid,
     String? about,
+    String? fcmToken,
     String? bio,
     String? phoneNumber,
     String? cusId,
@@ -73,6 +78,7 @@ class UserModel {
     int? preferGender,
     DateTime? dob,
     bool? isOnline,
+    bool? isOnNotification,
     String? profileImage,
     List<String>? myLikes,
     List<String>? galleryImages,
@@ -87,6 +93,8 @@ class UserModel {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       galleryImages: galleryImages ?? this.galleryImages,
       bio: bio ?? this.bio,
+      fcmToken: fcmToken ?? this.fcmToken,
+      isOnNotification: isOnNotification ?? this.isOnNotification,
       cusId: cusId ?? this.cusId,
       about: about ?? this.about,
       isOnline: isOnline ?? this.isOnline,
@@ -118,6 +126,7 @@ class UserModel {
       'isOnline': isOnline,
       'cusId': cusId,
       'uid': uid,
+      'fcmToken': fcmToken,
       'location': location,
       'lat': lat,
       'lng': lng,
@@ -133,6 +142,7 @@ class UserModel {
       'myDislikes': myDislikes,
       'otherLikes': otherLikes,
       'otherDislikes': otherDislikes,
+      'isOnNotification': isOnNotification,
       'matches': matches,
     };
   }
@@ -141,6 +151,7 @@ class UserModel {
     return UserModel(
       userName: map['userName'] ?? "",
       about: map['about'] ?? "",
+      fcmToken: map['fcmToken'] ?? "",
       phoneNumber: map['phoneNumber'] ?? "",
       cusId: map['cusId'] ?? "",
       bio: map['bio'] ?? "",
@@ -152,6 +163,7 @@ class UserModel {
       lng: map['lng'] ?? 0.0,
       gender: map['gender'] ?? 0,
       isOnline: map['isOnline'] ?? false,
+      isOnNotification: map['isOnNotification'] ?? false,
       preferGender: map['preferGender'] ?? 0,
       dob: (map['dob'] as Timestamp).toDate(),
       profileImage: (map['profileImage'] ?? "").isEmpty
@@ -201,9 +213,11 @@ class UserModel {
         bio: "",
         galleryImages: [],
         isOnline: false,
+        isOnNotification: false,
         myInstrest: [],
         userName: "",
         firstName: "",
+        fcmToken: "",
         cusId: "",
         email: "",
         uid: "",
@@ -230,6 +244,6 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(cusId: $cusId, phoneNumber: $phoneNumber, galleryImages: $galleryImages, bio: $bio, about: $about, isOnline: $isOnline, myInstrest: $myInstrest, userName: $userName, first1Name: $firstName, email: $email, password: $password, uid: $uid, location: $location, lat: $lat, lng: $lng, gender: $gender, preferGender: $preferGender, dob: $dob, profileImage: $profileImage, myLikes: $myLikes, myDislikes: $myDislikes, otherLikes: $otherLikes, otherDislikes: $otherDislikes, matches: $matches)';
+    return 'UserModel(fcmToken: $fcmToken, isOnNotification: $isOnNotification, cusId: $cusId, phoneNumber: $phoneNumber, galleryImages: $galleryImages, bio: $bio, about: $about, isOnline: $isOnline, myInstrest: $myInstrest, userName: $userName, first1Name: $firstName, email: $email, password: $password, uid: $uid, location: $location, lat: $lat, lng: $lng, gender: $gender, preferGender: $preferGender, dob: $dob, profileImage: $profileImage, myLikes: $myLikes, myDislikes: $myDislikes, otherLikes: $otherLikes, otherDislikes: $otherDislikes, matches: $matches)';
   }
 }

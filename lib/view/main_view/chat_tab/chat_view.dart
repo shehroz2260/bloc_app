@@ -45,6 +45,9 @@ class _ChatScreenState extends State<ChatScreen> {
     scrollController.addListener(onScroll);
     context
         .read<ChatBloc>()
+        .add(ListenUserEvent(id: widget.model.userDetail?.uid ?? ""));
+    context
+        .read<ChatBloc>()
         .add(LoadChat(thradId: widget.model.threadId, model: widget.model));
     context
         .read<ChatBloc>()

@@ -14,6 +14,9 @@ import 'package:chat_with_bloc/view/main_view/profile_tab/faqs_view.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/story_view.dart';
 import 'package:chat_with_bloc/view_model/change_theme_bloc/change_theme_bloc.dart';
 import 'package:chat_with_bloc/view_model/change_theme_bloc/change_theme_state.dart';
+import 'package:chat_with_bloc/view_model/setting_bloc/setting_bloc.dart';
+import 'package:chat_with_bloc/view_model/setting_bloc/setting_event.dart';
+import 'package:chat_with_bloc/view_model/setting_bloc/setting_state.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_state.dart';
 import 'package:chat_with_bloc/widgets/app_cache_image.dart';
 import 'package:chat_with_bloc/widgets/custom_text_field.dart';
@@ -46,6 +49,12 @@ class SettingView extends StatefulWidget {
 }
 
 class _SettingViewState extends State<SettingView> {
+  @override
+  void initState() {
+    context.read<SettingBloc>().add(OninitSetting(context: context));
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -160,6 +169,15 @@ class _SettingViewState extends State<SettingView> {
                         title: AppLocalizations.of(context)!.changeTheme,
                       );
                     }),
+                    SettiingWidget(
+                      color: Colors.purpleAccent.shade200,
+                      icon: Icons.notifications,
+                      isNotification: true,
+                      onTap: () {
+                        Go.to(context, const AboutUsView());
+                      },
+                      title: AppLocalizations.of(context)!.notification,
+                    ),
                     SettiingWidget(
                       color: Colors.amber.shade400,
                       icon: Icons.info,
@@ -571,8 +589,10 @@ class SettiingWidget extends StatelessWidget {
   final String title;
   final void Function() onTap;
   final Color color;
+  final bool isNotification;
   const SettiingWidget({
     super.key,
+    this.isNotification = false,
     required this.icon,
     required this.title,
     required this.onTap,
@@ -598,7 +618,17 @@ class SettiingWidget extends StatelessWidget {
                 child: Text(title,
                     style: AppTextStyle.font20
                         .copyWith(color: AppColors.blackColor))),
-            const Icon(Icons.arrow_forward_ios_outlined)
+            isNotification
+                ? BlocBuilder<SettingBloc, SettingState>(
+                    builder: (context, state) {
+                    return Switch(
+                        value: state.isOnNotification,
+                        onChanged: (val) {
+                          context.read<SettingBloc>().add(
+                              OnNotificationEvent(isOn: val, context: context));
+                        });
+                  })
+                : const Icon(Icons.arrow_forward_ios_outlined)
           ],
         ),
       ),

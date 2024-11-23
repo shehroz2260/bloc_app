@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:audio_waveforms/audio_waveforms.dart';
 import 'package:chat_with_bloc/model/thread_model.dart';
+import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/services/firebase_services_storage.dart';
 import 'package:chat_with_bloc/services/network_service.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
@@ -21,6 +22,7 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../model/char_model.dart';
+import '../../services/notification_service.dart';
 import 'chat_event.dart';
 import 'chat_state.dart';
 import 'package:http/http.dart' as http;
@@ -30,10 +32,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   DocumentSnapshot? lastDocument;
   Timer? _timer;
   static ThreadModel? listenThread;
+  static UserModel? listenUser;
   bool isRecordingCompleted = false;
   static late RecorderController recorderController;
   StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>? threadSnapShot;
   StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? messagesSnapShot;
+  StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>? userSnapShot;
   ChatBloc()
       : super(ChatState(
             isFirstMsg: true,
@@ -56,6 +60,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     on<UpdateTimer>(_onUpdateTimer);
     on<PickFileEvent>(_pickFiles);
     on<ClearData>(_clearData);
+    on<ListenUserEvent>(_listenUserEvent);
     on<OpenOptions>(_openOptions);
     on<ClearChat>(_clearChat);
     on<ChatListenerStream>(_onChatListenerStream);
@@ -99,6 +104,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       messageList: state.messageList,
     ));
     add(ChatListener(thradId: event.thradId, model: event.model));
+  }
+
+  _listenUserEvent(ListenUserEvent event, Emitter<ChatState> emit) {
+    userSnapShot = FirebaseFirestore.instance
+        .collection(UserModel.tableName)
+        .doc(event.id)
+        .snapshots()
+        .listen((value) {
+      if (value.exists) {
+        listenUser = UserModel.fromMap(value.data()!);
+      }
+    });
   }
 
   _onListenThread(OnListenThread event, Emitter<ChatState> emit) async {
@@ -224,7 +241,23 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           .doc(event.threadId)
           .collection(ChatModel.tableName)
           .doc(model.id)
-          .set(model.toMap());
+          .set(model.toMap())
+          .then((value) {
+        if (listenUser?.isOnNotification ?? false) {
+          NotificationService().sendNotification(
+              titleNotification:
+                  event.context.read<UserBaseBloc>().state.userData.firstName,
+              bodyNotification: model.media != null
+                  ? model.media!.type == MediaType.video
+                      ? "Sent you a video"
+                      : model.media!.type == MediaType.image
+                          ? "Sent you a photo"
+                          : "Sent you a file"
+                  : "Sent you a message",
+              type: model.media != null ? "media" : "chat",
+              fcmToken: listenUser?.fcmToken ?? "");
+        }
+      });
       event.textEditingController.clear();
       MediaType.type = 0;
       emit(state.copyWith(
@@ -458,6 +491,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     lastDocument = null;
     await threadSnapShot?.cancel();
     await subs?.cancel();
+    await userSnapShot?.cancel();
     subs = null;
     threadSnapShot = null;
   }

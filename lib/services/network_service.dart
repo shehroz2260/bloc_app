@@ -23,6 +23,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../model/char_model.dart';
 import '../model/report_user_model.dart';
 import '../model/thread_model.dart';
+import '../utils/notification_utils.dart';
 import '../view/account_creation_view/location_view.dart';
 import '../view/main_view/home_tab/congrats_message_view.dart';
 import '../view_model/user_base_bloc/user_base_state.dart';
@@ -89,6 +90,7 @@ class NetworkService {
         }
         return;
       }
+      await NotificationUtils.fcmSubscribe(context);
       Go.offAll(context, const MainView());
     });
   }

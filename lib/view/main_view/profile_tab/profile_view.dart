@@ -1,4 +1,3 @@
-// // ignore_for_file: use_build_context_synchronously
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/src/app_assets.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
@@ -93,7 +92,7 @@ class _ProfileViewState extends State<ProfileView> {
                         child: ProfileWidget(
                           title: AppLocalizations.of(context)!.settings,
                           icon: AppAssets.settingICon,
-                          onTap: () {
+                          onTap: () async {
                             Go.to(context, const SettingView());
                           },
                         ),

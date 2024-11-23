@@ -120,6 +120,13 @@ class ClearChat extends ChatEvent {
 
 class BlockUSerEvent extends ChatEvent {}
 
+class ListenUserEvent extends ChatEvent {
+  final String id;
+  ListenUserEvent({
+    required this.id,
+  });
+}
+
 class OpenOptions extends ChatEvent {
   final BuildContext context;
   final UserModel userModel;

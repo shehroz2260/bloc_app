@@ -12,6 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../../utils/notification_utils.dart';
 import 'location_event.dart';
 import 'location_state.dart';
 
@@ -81,6 +82,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       NetworkService.updateUser(userModel);
 
       LoadingDialog.hideProgress(event.context);
+      await NotificationUtils.fcmSubscribe(event.context);
       if (event.isFromOnboard) {
         Go.offAll(event.context, const WelcomeView());
       } else {
