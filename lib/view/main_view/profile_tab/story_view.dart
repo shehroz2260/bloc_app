@@ -54,9 +54,10 @@ class _StoryViewState extends State<StoryView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Scaffold(
       key: scaffoldMessengerKey,
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: theme.bgColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SafeArea(
@@ -73,7 +74,7 @@ class _StoryViewState extends State<StoryView> {
                         const CustomBackButton(),
                         Text(AppLocalizations.of(context)!.story,
                             style: AppTextStyle.font25
-                                .copyWith(color: AppColors.blackColor)),
+                                .copyWith(color: theme.textColor)),
                         const SizedBox(
                           width: 55,
                         )
@@ -93,8 +94,7 @@ class _StoryViewState extends State<StoryView> {
                                 decoration: BoxDecoration(
                                     color: AppColors.redColor,
                                     shape: BoxShape.circle,
-                                    border: Border.all(
-                                        color: AppColors.blackColor)),
+                                    border: Border.all(color: theme.textColor)),
                               ),
                               Icon(
                                 Icons.add,
@@ -188,7 +188,9 @@ class _StoryViewState extends State<StoryView> {
                                       ),
                                     ),
                                     const AppWidth(width: 10),
-                                    Text(state.otherList[index].userName),
+                                    Text(state.otherList[index].userName,
+                                        style:
+                                            TextStyle(color: theme.textColor)),
                                   ],
                                 ),
                               ),

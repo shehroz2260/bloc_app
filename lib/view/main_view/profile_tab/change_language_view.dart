@@ -14,8 +14,9 @@ class ChangeLanguageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: theme.bgColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -30,7 +31,7 @@ class ChangeLanguageView extends StatelessWidget {
                     const CustomBackButton(),
                     Text(AppLocalizations.of(context)!.changeLanguage,
                         style: AppTextStyle.font25
-                            .copyWith(color: AppColors.blackColor)),
+                            .copyWith(color: theme.textColor)),
                     const SizedBox(
                       width: 55,
                     )
@@ -69,7 +70,7 @@ class ChangeLanguageView extends StatelessWidget {
                         Text(
                           "English",
                           style: AppTextStyle.font20.copyWith(
-                              color: AppColors.blackColor,
+                              color: theme.textColor,
                               fontWeight: FontWeight.w500),
                         )
                       ],
@@ -109,7 +110,7 @@ class ChangeLanguageView extends StatelessWidget {
                         Text(
                           "Urdu",
                           style: AppTextStyle.font20.copyWith(
-                              color: AppColors.blackColor,
+                              color: theme.textColor,
                               fontWeight: FontWeight.w500),
                         )
                       ],

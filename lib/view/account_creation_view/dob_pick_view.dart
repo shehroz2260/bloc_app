@@ -26,10 +26,11 @@ class _DobPickViewState extends State<DobPickView> {
   final _nameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Form(
       key: _formKey,
       child: Scaffold(
-        backgroundColor: AppColors.whiteColor,
+        backgroundColor: theme.bgColor,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: BlocBuilder<DobBloc, DobState>(builder: (context, state) {
@@ -41,7 +42,7 @@ class _DobPickViewState extends State<DobPickView> {
                       alignment: Alignment.centerLeft,
                       child: Text(AppLocalizations.of(context)!.profiledetails,
                           style: AppTextStyle.font25
-                              .copyWith(color: AppColors.blackColor))),
+                              .copyWith(color: theme.textColor))),
                   const AppHeight(height: 50),
                   GestureDetector(
                     onTap: () => context

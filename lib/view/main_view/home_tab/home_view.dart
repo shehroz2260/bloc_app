@@ -239,6 +239,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return BlocBuilder<HomeBloc, HomeState>(
       builder: (context, state) {
         return Column(children: [
@@ -250,8 +251,8 @@ class _HomeViewState extends State<HomeView> {
               children: [
                 const SizedBox(width: 50),
                 Text(AppLocalizations.of(context)!.discover,
-                    style: AppTextStyle.font25
-                        .copyWith(color: AppColors.blackColor)),
+                    style:
+                        AppTextStyle.font25.copyWith(color: theme.textColor)),
                 GestureDetector(
                   onTap: () {
                     _openFilterDialog();
@@ -400,7 +401,7 @@ class _HomeViewState extends State<HomeView> {
                                         TextSpan(
                                           text: "${user.firstName},",
                                           style: TextStyle(
-                                            color: AppColors.blackColor,
+                                            color: theme.textColor,
                                             fontWeight: FontWeight.bold,
                                             fontSize: 20,
                                           ),
@@ -409,7 +410,7 @@ class _HomeViewState extends State<HomeView> {
                                           text: '${user.age}',
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                            color: AppColors.blackColor,
+                                            color: theme.textColor,
                                             fontSize: 24,
                                           ),
                                         ),
@@ -425,8 +426,8 @@ class _HomeViewState extends State<HomeView> {
                                             horizontal: 20, vertical: 10),
                                         child: Text(
                                           "${user.distance(context, null)} km",
-                                          style: AppTextStyle.font16.copyWith(
-                                              color: AppColors.blackColor),
+                                          style: AppTextStyle.font16
+                                              .copyWith(color: theme.textColor),
                                         ),
                                       )
                                     ],

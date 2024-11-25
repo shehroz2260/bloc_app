@@ -28,8 +28,9 @@ class _GenderViewState extends State<GenderView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: theme.bgColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40),
         child: BlocBuilder<GenderBloc, GenderState>(
@@ -41,8 +42,8 @@ class _GenderViewState extends State<GenderView> {
                 const CustomBackButton(),
                 const AppHeight(height: 30),
                 Text(AppLocalizations.of(context)!.iAmA,
-                    style: AppTextStyle.font30
-                        .copyWith(color: AppColors.blackColor)),
+                    style:
+                        AppTextStyle.font30.copyWith(color: theme.textColor)),
                 const AppHeight(height: 80),
                 GestureDetector(
                   onTap: () {

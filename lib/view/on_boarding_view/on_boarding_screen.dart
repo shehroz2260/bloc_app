@@ -20,8 +20,9 @@ class OnBoardingScreen extends StatefulWidget {
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: theme.bgColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -35,8 +36,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             Text(AppStrings.appName,
                 style: AppTextStyle.font25.copyWith(color: AppColors.redColor)),
             Text(AppLocalizations.of(context)!.wematchYouWithPeople,
-                style:
-                    AppTextStyle.font16.copyWith(color: AppColors.blackColor),
+                style: AppTextStyle.font16.copyWith(color: theme.textColor),
                 textAlign: TextAlign.center),
             const Spacer(),
             CustomNewButton(
@@ -47,8 +47,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(AppLocalizations.of(context)!.alreadyHaveAnAccount,
-                    style: AppTextStyle.font16
-                        .copyWith(color: AppColors.blackColor)),
+                    style:
+                        AppTextStyle.font16.copyWith(color: theme.textColor)),
                 GestureDetector(
                     onTap: () => Go.to(context, const SignOptionsView()),
                     child: Text(" ${AppLocalizations.of(context)!.signIn}",

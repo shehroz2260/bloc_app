@@ -1,4 +1,5 @@
 import 'package:chat_with_bloc/model/user_model.dart';
+import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/view/splash_view/splash_view.dart';
 import 'package:chat_with_bloc/view_model/bio_bloc/bio_bloc.dart';
 import 'package:chat_with_bloc/view_model/change_language/change_language_bloc.dart';
@@ -53,6 +54,7 @@ void main() async {
   await Stripe.instance.applySettings();
   await dotenv.load();
   await GetStorage.init();
+  AppTheme.initThemeMode();
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(create: (_) => UserBaseBloc()),
@@ -134,25 +136,36 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
               minTextAdapt: true,
               splitScreenMode: true,
               builder: (context, child) {
-                return MaterialApp(
-                  localizationsDelegates: const [
-                    AppLocalizations.delegate,
-                    GlobalMaterialLocalizations.delegate,
-                    GlobalCupertinoLocalizations.delegate,
-                    GlobalWidgetsLocalizations.delegate,
-                  ],
-                  theme: themeState.currentTheme,
-                  locale: state.locale,
-                  supportedLocales: AppLocalizations.supportedLocales,
-                  debugShowCheckedModeBanner: false,
-                  builder: (context, child) {
-                    return Directionality(
-                      textDirection: TextDirection.ltr,
-                      child: child!,
-                    );
-                  },
-                  home: const SplashView(),
-                );
+                return ValueListenableBuilder(
+                    valueListenable: AppTheme.themeNotifier,
+                    builder: (_, ThemeMode currentMode, __) {
+                      SystemChrome.setSystemUIOverlayStyle(
+                        AppTheme.themeMode == ThemeMode.light
+                            ? SystemUiOverlayStyle.dark
+                            : SystemUiOverlayStyle.light,
+                      );
+                      return MaterialApp(
+                        localizationsDelegates: const [
+                          AppLocalizations.delegate,
+                          GlobalMaterialLocalizations.delegate,
+                          GlobalCupertinoLocalizations.delegate,
+                          GlobalWidgetsLocalizations.delegate,
+                        ],
+                        themeMode: AppTheme.themeNotifier.value,
+                        theme: AppTheme.lightTheme,
+                        darkTheme: AppTheme.darkTheme,
+                        locale: state.locale,
+                        supportedLocales: AppLocalizations.supportedLocales,
+                        debugShowCheckedModeBanner: false,
+                        builder: (context, child) {
+                          return Directionality(
+                            textDirection: TextDirection.ltr,
+                            child: child!,
+                          );
+                        },
+                        home: const SplashView(),
+                      );
+                    });
               });
         });
       }),

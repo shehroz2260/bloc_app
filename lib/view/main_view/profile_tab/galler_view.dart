@@ -15,8 +15,9 @@ class GallerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: theme.bgColor,
       body: Padding(
         padding: const EdgeInsets.only(left: 26, top: 20, right: 16),
         child: SafeArea(
@@ -32,7 +33,7 @@ class GallerView extends StatelessWidget {
                       AppLocalizations.of(context)!.gallery,
                       style: TextStyle(
                           fontWeight: FontWeight.w700,
-                          color: AppColors.blackColor,
+                          color: theme.textColor,
                           fontSize: 30),
                     ),
                     const SizedBox(width: 60),

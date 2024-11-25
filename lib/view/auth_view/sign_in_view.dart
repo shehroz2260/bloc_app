@@ -28,11 +28,12 @@ class _SignInWithEmailViewState extends State<SignInWithEmailView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Form(
       key: _formKey,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: AppColors.whiteColor,
+        backgroundColor: theme.bgColor,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
           child: Column(
@@ -46,8 +47,7 @@ class _SignInWithEmailViewState extends State<SignInWithEmailView> {
               SvgPicture.asset(AppAssets.appIcon),
               const AppHeight(height: 20),
               Text(AppLocalizations.of(context)!.signInWithEmail,
-                  style: AppTextStyle.font25
-                      .copyWith(color: AppColors.blackColor)),
+                  style: AppTextStyle.font25.copyWith(color: theme.textColor)),
               const AppHeight(height: 30),
               CustomTextField(
                 textEditingController: _emailController,

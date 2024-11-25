@@ -57,8 +57,9 @@ class _SettingViewState extends State<SettingView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: theme.bgColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SafeArea(
@@ -73,7 +74,7 @@ class _SettingViewState extends State<SettingView> {
                     AppLocalizations.of(context)!.settings,
                     style: TextStyle(
                         fontWeight: FontWeight.w700,
-                        color: AppColors.blackColor,
+                        color: theme.textColor,
                         fontSize: 30),
                   ),
                   const SizedBox(width: 60),
@@ -160,7 +161,7 @@ class _SettingViewState extends State<SettingView> {
                         builder: (context, state) {
                       return SettiingWidget(
                         color: Colors.lightBlueAccent.shade100,
-                        icon: state.currentTheme.brightness == Brightness.dark
+                        icon: state.currentTheme == ThemeMode.dark
                             ? Icons.dark_mode
                             : Icons.light_mode_rounded,
                         onTap: () {
@@ -601,6 +602,7 @@ class SettiingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: GestureDetector(
@@ -616,8 +618,8 @@ class SettiingWidget extends StatelessWidget {
             const AppWidth(width: 12),
             Expanded(
                 child: Text(title,
-                    style: AppTextStyle.font20
-                        .copyWith(color: AppColors.blackColor))),
+                    style:
+                        AppTextStyle.font20.copyWith(color: theme.textColor))),
             isNotification
                 ? BlocBuilder<SettingBloc, SettingState>(
                     builder: (context, state) {

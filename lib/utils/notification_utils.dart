@@ -11,7 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
+// import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 
 class NotificationUtils {
   static final FirebaseMessaging _firebaseMessaging =
@@ -155,6 +155,6 @@ class NotificationUtils {
     await _firebaseMessaging.unsubscribeFromTopic(topic);
   }
 
-  static Debouncer deBouncer =
-      Debouncer(delay: const Duration(milliseconds: 1000));
+  // static Debouncer deBouncer =
+  //     Debouncer(delay: const Duration(milliseconds: 1000));
 }

@@ -32,6 +32,7 @@ class MatchTab extends StatefulWidget {
 class _MatchTabState extends State<MatchTab> {
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return BlocBuilder<MatchesBloc, MatchesState>(builder: (context, state) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -43,8 +44,7 @@ class _MatchTabState extends State<MatchTab> {
                 state.index == 0
                     ? AppLocalizations.of(context)!.likes
                     : AppLocalizations.of(context)!.matches,
-                style:
-                    AppTextStyle.font25.copyWith(color: AppColors.blackColor)),
+                style: AppTextStyle.font25.copyWith(color: theme.textColor)),
             const AppHeight(height: 20),
             BlocBuilder<UserBaseBloc, UserBaseState>(
                 builder: (context, userState) {

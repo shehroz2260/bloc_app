@@ -32,8 +32,9 @@ class _PreferenceViewState extends State<PreferenceView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: theme.bgColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40),
         child: BlocBuilder<PreferenceBloc, PreferenceState>(
@@ -52,7 +53,7 @@ class _PreferenceViewState extends State<PreferenceView> {
                       if (!widget.isUpdate)
                         Text(AppLocalizations.of(context)!.preferencegender,
                             style: AppTextStyle.font25
-                                .copyWith(color: AppColors.blackColor)),
+                                .copyWith(color: theme.textColor)),
                       if (!widget.isUpdate) const AppHeight(height: 10),
                       if (!widget.isUpdate)
                         Row(
@@ -142,12 +143,12 @@ class _PreferenceViewState extends State<PreferenceView> {
                       if (!widget.isUpdate) const AppHeight(height: 20),
                       Text(AppLocalizations.of(context)!.yourInsterest,
                           style: AppTextStyle.font25
-                              .copyWith(color: AppColors.blackColor)),
+                              .copyWith(color: theme.textColor)),
                       const AppHeight(height: 5),
                       Text(
                           AppLocalizations.of(context)!.selectAFewfyourinstrest,
                           style: AppTextStyle.font16
-                              .copyWith(color: AppColors.blackColor)),
+                              .copyWith(color: theme.textColor)),
                       const AppHeight(height: 20),
                       GridView.builder(
                           padding: EdgeInsets.zero,
@@ -195,7 +196,7 @@ class _PreferenceViewState extends State<PreferenceView> {
                                             color: state.intrestList
                                                     .contains(index)
                                                 ? AppColors.whiteColor
-                                                : AppColors.blackColor))
+                                                : theme.textColor))
                                   ],
                                 ),
                               ),

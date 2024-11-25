@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 class ChangeThemeState {
-  final ThemeData currentTheme;
+  final ThemeMode currentTheme;
   ChangeThemeState({
     required this.currentTheme,
   });
 
   ChangeThemeState copyWith({
-    ThemeData? currentTheme,
+    ThemeMode? currentTheme,
   }) {
     return ChangeThemeState(
       currentTheme: currentTheme ?? this.currentTheme,

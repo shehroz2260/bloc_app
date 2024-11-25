@@ -13,7 +13,9 @@ class LocationPermissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Scaffold(
+      backgroundColor: theme.bgColor,
       body: Column(
         children: [
           Image.asset("assets/images/png/pngwing 3.png"),
@@ -41,7 +43,8 @@ class LocationPermissionScreen extends StatelessWidget {
             child: Text(
               AppLocalizations.of(context)!.pleaseGiveUSAccesstoYourGps,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
+                color: theme.textColor,
                 fontSize: 16,
               ),
             ),

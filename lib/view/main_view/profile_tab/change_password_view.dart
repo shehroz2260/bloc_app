@@ -22,9 +22,10 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: theme.bgColor,
       body: Form(
         key: _formKey,
         child: Padding(
@@ -41,7 +42,7 @@ class _ChangePasswordViewState extends State<ChangePasswordView> {
                       AppLocalizations.of(context)!.changePassword,
                       style: TextStyle(
                           fontWeight: FontWeight.w700,
-                          color: AppColors.blackColor,
+                          color: theme.textColor,
                           fontSize: 30),
                     ),
                     const SizedBox(width: 50),

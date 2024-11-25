@@ -23,9 +23,10 @@ class _BioViewState extends State<BioView> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: theme.bgColor,
       body: Form(
         key: _formKey,
         child: Padding(
@@ -38,8 +39,7 @@ class _BioViewState extends State<BioView> {
               const AppHeight(height: 30),
               Text(AppLocalizations.of(context)!.bio,
                   style: AppTextStyle.font20.copyWith(
-                      color: AppColors.blackColor,
-                      fontWeight: FontWeight.bold)),
+                      color: theme.textColor, fontWeight: FontWeight.bold)),
               const AppHeight(height: 10),
               CustomTextField(
                 hintText: AppLocalizations.of(context)!.enterbio,
@@ -49,8 +49,7 @@ class _BioViewState extends State<BioView> {
               const AppHeight(height: 30),
               Text(AppLocalizations.of(context)!.aboutyourself,
                   style: AppTextStyle.font20.copyWith(
-                      color: AppColors.blackColor,
-                      fontWeight: FontWeight.bold)),
+                      color: theme.textColor, fontWeight: FontWeight.bold)),
               const AppHeight(height: 10),
               CustomTextField(
                 hintText: AppLocalizations.of(context)!.enteraboutyourself,

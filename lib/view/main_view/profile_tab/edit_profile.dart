@@ -57,10 +57,11 @@ class _EditProfileState extends State<EditProfile> {
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Form(
       key: _formKey,
       child: Scaffold(
-        backgroundColor: AppColors.whiteColor,
+        backgroundColor: theme.bgColor,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
           child: BlocBuilder<UserBaseBloc, UserBaseState>(
@@ -145,7 +146,7 @@ class _EditProfileState extends State<EditProfile> {
                             Text(
                               AppLocalizations.of(context)!.firstName,
                               style: AppTextStyle.font20
-                                  .copyWith(color: AppColors.blackColor),
+                                  .copyWith(color: theme.textColor),
                             ),
                             const AppHeight(height: 5),
                             CustomTextField(
@@ -159,7 +160,7 @@ class _EditProfileState extends State<EditProfile> {
                             Text(
                               AppLocalizations.of(context)!.bios,
                               style: AppTextStyle.font20
-                                  .copyWith(color: AppColors.blackColor),
+                                  .copyWith(color: theme.textColor),
                             ),
                             const AppHeight(height: 5),
                             CustomTextField(
@@ -172,7 +173,7 @@ class _EditProfileState extends State<EditProfile> {
                             Text(
                               AppLocalizations.of(context)!.aboutWithColon,
                               style: AppTextStyle.font20
-                                  .copyWith(color: AppColors.blackColor),
+                                  .copyWith(color: theme.textColor),
                             ),
                             const AppHeight(height: 5),
                             CustomTextField(
@@ -187,7 +188,7 @@ class _EditProfileState extends State<EditProfile> {
                             Text(
                               AppLocalizations.of(context)!.ageWithColon,
                               style: AppTextStyle.font20
-                                  .copyWith(color: AppColors.blackColor),
+                                  .copyWith(color: theme.textColor),
                             ),
                             const AppHeight(height: 5),
                             CustomNewButton(
@@ -216,7 +217,7 @@ class _EditProfileState extends State<EditProfile> {
                           children: [
                             Text(AppLocalizations.of(context)!.gender,
                                 style: AppTextStyle.font20
-                                    .copyWith(color: AppColors.blackColor)),
+                                    .copyWith(color: theme.textColor)),
                             Text(
                               AppLocalizations.of(context)!.edit,
                               style: AppTextStyle.font16
@@ -249,7 +250,7 @@ class _EditProfileState extends State<EditProfile> {
                           children: [
                             Text(AppLocalizations.of(context)!.interested,
                                 style: AppTextStyle.font20
-                                    .copyWith(color: AppColors.blackColor)),
+                                    .copyWith(color: theme.textColor)),
                             Text(AppLocalizations.of(context)!.edit,
                                 style: AppTextStyle.font16
                                     .copyWith(color: AppColors.redColor)),

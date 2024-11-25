@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 abstract class ChangeThemeEvent {}
 
 class ChangeThemeMode extends ChangeThemeEvent {
-  final ThemeData theme;
+  final ThemeMode theme;
   ChangeThemeMode({
     required this.theme,
   });

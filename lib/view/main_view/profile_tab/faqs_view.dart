@@ -11,8 +11,9 @@ class FaqsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: theme.bgColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SafeArea(
@@ -25,8 +26,8 @@ class FaqsView extends StatelessWidget {
               children: [
                 const CustomBackButton(),
                 Text(AppLocalizations.of(context)!.faqs,
-                    style: AppTextStyle.font25
-                        .copyWith(color: AppColors.blackColor)),
+                    style:
+                        AppTextStyle.font25.copyWith(color: theme.textColor)),
                 const SizedBox(width: 50),
               ],
             ),

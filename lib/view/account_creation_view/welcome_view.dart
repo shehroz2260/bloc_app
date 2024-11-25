@@ -14,8 +14,9 @@ class WelcomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: theme.bgColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
@@ -25,16 +26,16 @@ class WelcomeView extends StatelessWidget {
             const AppHeight(height: 40),
             Text(
               AppLocalizations.of(context)!.congrats,
-              style: AppTextStyle.font25.copyWith(color: AppColors.blackColor),
+              style: AppTextStyle.font25.copyWith(color: theme.textColor),
             ),
             Text(
               AppLocalizations.of(context)!.youareallsetyourprofile,
-              style: AppTextStyle.font20.copyWith(color: AppColors.blackColor),
+              style: AppTextStyle.font20.copyWith(color: theme.textColor),
             ),
             const AppHeight(height: 40),
             Text(
               AppLocalizations.of(context)!.nowYouAreReadyToExplorethepeople,
-              style: AppTextStyle.font16.copyWith(color: AppColors.blackColor),
+              style: AppTextStyle.font16.copyWith(color: theme.textColor),
               textAlign: TextAlign.center,
             ),
             const AppHeight(height: 40),

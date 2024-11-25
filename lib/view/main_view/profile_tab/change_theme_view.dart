@@ -14,8 +14,9 @@ class ChangeThemeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: theme.bgColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -32,7 +33,7 @@ class ChangeThemeView extends StatelessWidget {
                       AppLocalizations.of(context)!.changeTheme,
                       style: TextStyle(
                           fontWeight: FontWeight.w700,
-                          color: AppColors.blackColor,
+                          color: theme.textColor,
                           fontSize: 30),
                     ),
                     const SizedBox(width: 60),
@@ -43,19 +44,15 @@ class ChangeThemeView extends StatelessWidget {
                   onTap: () {
                     context
                         .read<ChangeThemeBloc>()
-                        .add(ChangeThemeMode(theme: ThemeData.light()));
+                        .add(ChangeThemeMode(theme: ThemeMode.light));
                   },
                   child: Container(
                     decoration: BoxDecoration(
                         border: Border.all(
-                          width:
-                              state.currentTheme.brightness == Brightness.dark
-                                  ? 1
-                                  : 2,
-                          color:
-                              state.currentTheme.brightness == Brightness.dark
-                                  ? AppColors.borderGreyColor
-                                  : AppColors.redColor,
+                          width: state.currentTheme == ThemeMode.dark ? 1 : 2,
+                          color: state.currentTheme == ThemeMode.dark
+                              ? AppColors.borderGreyColor
+                              : AppColors.redColor,
                         ),
                         borderRadius: BorderRadius.circular(20)),
                     padding: const EdgeInsets.symmetric(
@@ -65,7 +62,7 @@ class ChangeThemeView extends StatelessWidget {
                         Text(
                           "Light Mode",
                           style: AppTextStyle.font20.copyWith(
-                              color: AppColors.blackColor,
+                              color: theme.textColor,
                               fontWeight: FontWeight.w500),
                         )
                       ],
@@ -77,19 +74,15 @@ class ChangeThemeView extends StatelessWidget {
                   onTap: () {
                     context
                         .read<ChangeThemeBloc>()
-                        .add(ChangeThemeMode(theme: ThemeData.dark()));
+                        .add(ChangeThemeMode(theme: ThemeMode.dark));
                   },
                   child: Container(
                     decoration: BoxDecoration(
                         border: Border.all(
-                          width:
-                              state.currentTheme.brightness == Brightness.dark
-                                  ? 2
-                                  : 1,
-                          color:
-                              state.currentTheme.brightness == Brightness.dark
-                                  ? AppColors.redColor
-                                  : AppColors.borderGreyColor,
+                          width: state.currentTheme == ThemeMode.dark ? 2 : 1,
+                          color: state.currentTheme == ThemeMode.dark
+                              ? AppColors.redColor
+                              : AppColors.borderGreyColor,
                         ),
                         borderRadius: BorderRadius.circular(20)),
                     padding: const EdgeInsets.symmetric(
@@ -99,7 +92,7 @@ class ChangeThemeView extends StatelessWidget {
                         Text(
                           "Dark Mode",
                           style: AppTextStyle.font20.copyWith(
-                              color: AppColors.blackColor,
+                              color: theme.textColor,
                               fontWeight: FontWeight.w500),
                         )
                       ],

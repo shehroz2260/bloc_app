@@ -10,8 +10,9 @@ class AboutUsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: theme.bgColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SafeArea(
@@ -24,8 +25,8 @@ class AboutUsView extends StatelessWidget {
               children: [
                 const CustomBackButton(),
                 Text(AppLocalizations.of(context)!.aboutUs,
-                    style: AppTextStyle.font25
-                        .copyWith(color: AppColors.blackColor)),
+                    style:
+                        AppTextStyle.font25.copyWith(color: theme.textColor)),
                 const SizedBox(width: 50),
               ],
             ),
@@ -37,8 +38,8 @@ class AboutUsView extends StatelessWidget {
                 children: [
                   Text(
                       "Welcome to Friendzy – the place where meaningful connections begin! Our mission is simple: to help people find genuine relationships in a safe, inclusive, and supportive environment. We believe in fostering connections that go beyond superficial swipes and endless scrolling. Our app is designed to bring people together who share common interests, values, and goals.",
-                      style: AppTextStyle.font16
-                          .copyWith(color: AppColors.blackColor)),
+                      style:
+                          AppTextStyle.font16.copyWith(color: theme.textColor)),
                   const AppHeight(height: 12),
                   Text(
                     "Why Choose Us?",

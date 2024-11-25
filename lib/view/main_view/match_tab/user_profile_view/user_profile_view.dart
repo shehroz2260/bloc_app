@@ -23,8 +23,9 @@ class UserProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: theme.bgColor,
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -49,7 +50,7 @@ class UserProfileView extends StatelessWidget {
                                 height: 30,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
-                                    color: AppColors.whiteColor,
+                                    color: theme.bgColor,
                                     borderRadius: const BorderRadius.only(
                                         topLeft: Radius.circular(30),
                                         topRight: Radius.circular(30))),
@@ -75,20 +76,26 @@ class UserProfileView extends StatelessWidget {
                               children: [
                                 Row(
                                   children: [
-                                    Text("${user.firstName}, ",
-                                        style: AppTextStyle.font25.copyWith(
-                                            color: AppColors.blackColor,
-                                            fontWeight: FontWeight.bold)),
+                                    Flexible(
+                                      child: Text("${user.firstName}, ",
+                                          style: AppTextStyle.font25.copyWith(
+                                              color: theme.textColor,
+                                              fontWeight: FontWeight.bold)),
+                                    ),
                                     Text(user.age.toString(),
                                         style: AppTextStyle.font25.copyWith(
-                                            color: AppColors.blackColor,
+                                            color: theme.textColor,
                                             fontWeight: FontWeight.bold)),
                                   ],
                                 ),
-                                Text(" ${user.bio}")
+                                Text(
+                                  " ${user.bio}",
+                                  style: TextStyle(color: theme.textColor),
+                                )
                               ],
                             ),
                           ),
+                          const AppWidth(width: 10),
                           if (!isCUser)
                             GestureDetector(
                               onTap: () async {
@@ -129,13 +136,13 @@ class UserProfileView extends StatelessWidget {
                                 Text(
                                   AppLocalizations.of(context)!.location,
                                   style: AppTextStyle.font20.copyWith(
-                                      color: AppColors.blackColor,
+                                      color: theme.textColor,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
                                   user.location,
                                   style: AppTextStyle.font16
-                                      .copyWith(color: AppColors.blackColor),
+                                      .copyWith(color: theme.textColor),
                                 )
                               ],
                             ),
@@ -168,7 +175,7 @@ class UserProfileView extends StatelessWidget {
                       Text(
                         AppLocalizations.of(context)!.about,
                         style: AppTextStyle.font20.copyWith(
-                            color: AppColors.blackColor,
+                            color: theme.textColor,
                             fontWeight: FontWeight.bold),
                       ),
                       TextWithSeeMore(text: user.about),
@@ -176,7 +183,7 @@ class UserProfileView extends StatelessWidget {
                       Text(
                         AppLocalizations.of(context)!.interests,
                         style: AppTextStyle.font20.copyWith(
-                            color: AppColors.blackColor,
+                            color: theme.textColor,
                             fontWeight: FontWeight.bold),
                       ),
                       const AppHeight(height: 10),
@@ -228,7 +235,7 @@ class UserProfileView extends StatelessWidget {
                             children: [
                               Text(AppLocalizations.of(context)!.gallery,
                                   style: AppTextStyle.font20.copyWith(
-                                      color: AppColors.blackColor,
+                                      color: theme.textColor,
                                       fontWeight: FontWeight.bold)),
                               Text(AppLocalizations.of(context)!.seeAll,
                                   style: AppTextStyle.font16.copyWith(

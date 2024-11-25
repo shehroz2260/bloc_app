@@ -35,10 +35,11 @@ class _OtpScreenState extends State<OtpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Form(
       key: _formKey,
       child: Scaffold(
-        backgroundColor: AppColors.whiteColor,
+        backgroundColor: theme.bgColor,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
           child: BlocBuilder<OtpBloc, OtpState>(builder: (context, state) {
@@ -49,13 +50,13 @@ class _OtpScreenState extends State<OtpScreen> {
                     alignment: Alignment.centerLeft, child: CustomBackButton()),
                 const AppHeight(height: 30),
                 Text("00:${state.timer}",
-                    style: AppTextStyle.font30
-                        .copyWith(color: AppColors.blackColor)),
+                    style:
+                        AppTextStyle.font30.copyWith(color: theme.textColor)),
                 Text(
                     AppLocalizations.of(context)!
                         .typeTheVerificationCodeWeHaveSentyou,
-                    style: AppTextStyle.font16
-                        .copyWith(color: AppColors.blackColor)),
+                    style:
+                        AppTextStyle.font16.copyWith(color: theme.textColor)),
                 const AppHeight(height: 30),
                 Pinput(
                   validator: (value) {

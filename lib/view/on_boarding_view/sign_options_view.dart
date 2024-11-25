@@ -19,8 +19,9 @@ class SignOptionsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: theme.bgColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
@@ -35,7 +36,7 @@ class SignOptionsView extends StatelessWidget {
             const AppHeight(height: 80),
             Text(AppLocalizations.of(context)!.signInToContinue,
                 style: AppTextStyle.font20.copyWith(
-                    color: AppColors.blackColor, fontWeight: FontWeight.bold)),
+                    color: theme.textColor, fontWeight: FontWeight.bold)),
             const AppHeight(height: 30),
             CustomNewButton(
                 btnName: AppLocalizations.of(context)!.continueToEmail,
@@ -54,17 +55,20 @@ class SignOptionsView extends StatelessWidget {
                 Expanded(
                     child: Divider(
                   height: 0,
-                  color: AppColors.blackColor,
+                  color: theme.textColor,
                   endIndent: 15,
                   indent: 15,
                 )),
-                Text(AppLocalizations.of(context)!.or),
+                Text(
+                  AppLocalizations.of(context)!.or,
+                  style: TextStyle(color: theme.textColor),
+                ),
                 Expanded(
                     child: Divider(
                   indent: 15,
                   endIndent: 15,
                   height: 0,
-                  color: AppColors.blackColor,
+                  color: theme.textColor,
                 ))
               ],
             ),

@@ -49,6 +49,7 @@ class _InboxViewState extends State<InboxView> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: BlocBuilder<InboxBloc, InboxState>(
@@ -58,8 +59,7 @@ class _InboxViewState extends State<InboxView> {
             children: [
               const AppHeight(height: 60),
               Text(AppLocalizations.of(context)!.messages,
-                  style: AppTextStyle.font25
-                      .copyWith(color: AppColors.blackColor)),
+                  style: AppTextStyle.font25.copyWith(color: theme.textColor)),
               const AppHeight(height: 10),
               CustomTextField(
                 hintText: AppLocalizations.of(context)!.search,
@@ -125,8 +125,8 @@ class _InboxViewState extends State<InboxView> {
                                                           "",
                                                       style: AppTextStyle.font16
                                                           .copyWith(
-                                                              color: AppColors
-                                                                  .blackColor,
+                                                              color: theme
+                                                                  .textColor,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold),
@@ -149,8 +149,8 @@ class _InboxViewState extends State<InboxView> {
                                                         style: AppTextStyle
                                                             .font16
                                                             .copyWith(
-                                                                color: AppColors
-                                                                    .blackColor,
+                                                                color: theme
+                                                                    .textColor,
                                                                 fontSize: 12)),
                                                   ],
                                                 ),
@@ -188,8 +188,8 @@ class _InboxViewState extends State<InboxView> {
                                                             .messageCount
                                                             .toString(),
                                                         style: TextStyle(
-                                                            color: AppColors
-                                                                .whiteColor,
+                                                            color:
+                                                                theme.textColor,
                                                             fontSize: 10),
                                                       ),
                                                     ),

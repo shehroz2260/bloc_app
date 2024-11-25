@@ -22,8 +22,9 @@ class _PhoneNumberLoginViewState extends State<PhoneNumberLoginView> {
   final _controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: theme.bgColor,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Form(
@@ -35,12 +36,10 @@ class _PhoneNumberLoginViewState extends State<PhoneNumberLoginView> {
               const CustomBackButton(),
               const AppHeight(height: 50),
               Text(AppLocalizations.of(context)!.phoneNumber,
-                  style: AppTextStyle.font30
-                      .copyWith(color: AppColors.blackColor)),
+                  style: AppTextStyle.font30.copyWith(color: theme.textColor)),
               Text(
                   AppLocalizations.of(context)!.pleaseEnterYourValidPhoneNumber,
-                  style: AppTextStyle.font16
-                      .copyWith(color: AppColors.blackColor)),
+                  style: AppTextStyle.font16.copyWith(color: theme.textColor)),
               const AppHeight(height: 30),
               CustomTextField(
                 hintText: AppLocalizations.of(context)!.phoneHint,
