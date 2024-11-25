@@ -28,6 +28,7 @@ class ChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     var isSender =
         data.senderId == context.read<UserBaseBloc>().state.userData.uid;
     return Column(
@@ -37,19 +38,20 @@ class ChatBubble extends StatelessWidget {
         if (showTime)
           Row(
             children: [
-              const Expanded(
+              Expanded(
                 child: Divider(
-                  color: Colors.black,
+                  color: theme.textColor,
                   thickness: 1,
                 ),
               ),
               Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
-                      AppFuncs.getFormattedDate(data.messageTime.toLocal()))),
-              const Expanded(
+                      AppFuncs.getFormattedDate(data.messageTime.toLocal()),
+                      style: TextStyle(color: theme.textColor))),
+              Expanded(
                 child: Divider(
-                  color: Colors.black,
+                  color: theme.textColor,
                   thickness: 1,
                 ),
               ),
@@ -146,10 +148,19 @@ class ChatBubble extends StatelessWidget {
                             style: TextStyle(color: AppColors.blueColor)),
                       ]))
                     else
-                      SelectableText(data.message),
+                      SelectableText(
+                        data.message,
+                        style: TextStyle(
+                            color: !isSender
+                                ? theme.textColor
+                                : AppColors.blackColor),
+                      ),
                   ],
                 )),
-        Text(DateFormat("hh:mm a").format(data.messageTime)),
+        Text(
+          DateFormat("hh:mm a").format(data.messageTime),
+          style: TextStyle(color: theme.textColor),
+        ),
         const SizedBox(
           height: 7,
         )

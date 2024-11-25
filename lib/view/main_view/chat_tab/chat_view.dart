@@ -74,9 +74,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     final mediaQuery = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: AppColors.whiteColor,
+      backgroundColor: theme.bgColor,
       body: BlocBuilder<ChatBloc, ChatState>(builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -87,7 +88,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: [
                   GestureDetector(
                       onTap: () => Go.back(context),
-                      child: const Icon(Icons.arrow_back_ios_new_outlined)),
+                      child: Icon(Icons.arrow_back_ios_new_outlined,
+                          color: theme.textColor)),
                   const AppWidth(width: 10),
                   GestureDetector(
                     onTap: () {
@@ -124,7 +126,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       children: [
                         Text(widget.model.userDetail?.firstName ?? "",
                             style: AppTextStyle.font20.copyWith(
-                                color: AppColors.blackColor,
+                                color: theme.textColor,
                                 fontWeight: FontWeight.bold)),
                         StreamBuilder(
                           stream: FirebaseFirestore.instance
