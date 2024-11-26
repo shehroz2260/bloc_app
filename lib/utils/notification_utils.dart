@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:chat_with_bloc/services/local_storage_service.dart';
 import 'package:chat_with_bloc/services/network_service.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_event.dart';
@@ -12,8 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
-// import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 
+// import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 class NotificationUtils {
   static final FirebaseMessaging _firebaseMessaging =
       FirebaseMessaging.instance;
@@ -39,7 +40,13 @@ class NotificationUtils {
     await _firebaseMessaging.getAPNSToken();
 
     try {
-      await Permission.notification.request().isGranted;
+      final allowed = await Permission.notification.request().isGranted;
+      bool? isAllow = LocalStorageService.storage
+          .read(LocalStorageService.notificationPermission);
+      if (allowed && isAllow == null) {
+        LocalStorageService.storage
+            .write(LocalStorageService.notificationPermission, true);
+      }
     } catch (e) {
       showOkAlertDialog(
           context: _context, message: e.toString(), title: "Error");

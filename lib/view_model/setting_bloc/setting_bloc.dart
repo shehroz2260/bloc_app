@@ -33,7 +33,7 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
       userBloc.add(UpdateUserEvent(userModel: user));
       NetworkService.updateUser(user);
       LocalStorageService.storage
-          .remove(LocalStorageService.notificationPermission);
+          .write(LocalStorageService.notificationPermission, false);
     }
   }
 

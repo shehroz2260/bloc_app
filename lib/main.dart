@@ -48,12 +48,12 @@ const testStripePublishKey = '';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await GetStorage.init();
   await NotificationUtils.init();
   Stripe.publishableKey = testStripePublishKey;
   Stripe.merchantIdentifier = Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();
   await dotenv.load();
-  await GetStorage.init();
   AppTheme.initThemeMode();
   runApp(MultiBlocProvider(
     providers: [

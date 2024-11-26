@@ -1,13 +1,12 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_event.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:permission_handler/permission_handler.dart';
 import '../../model/user_model.dart';
+import '../../services/local_storage_service.dart';
 import '../../services/network_service.dart';
 import '../../view/main_view/chat_tab/inbox_view.dart';
 import '../../view/main_view/home_tab/home_view.dart';
@@ -62,22 +61,20 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   _oninitNotifications(
       OninitNotification event, Emitter<MainState> emit) async {
     final userBloc = event.context.read<UserBaseBloc>();
-    // final notificaion = LocalStorageService.storage
-    //         .read(LocalStorageService.notificationPermission) ??
-    //     false;
-    final isAllowed = await Permission.notification.isGranted;
+    bool isAllowed = LocalStorageService.storage
+            .read(LocalStorageService.notificationPermission) ??
+        false;
+
     if (isAllowed) {
       var user = userBloc.state.userData;
       user = user.copyWith(isOnNotification: true);
       userBloc.add(UpdateUserEvent(userModel: user));
       NetworkService.updateUser(user);
-      log("^^^^^^^^^^^^^^^^^^^^^^${userBloc.state.userData.isOnNotification}");
     } else {
       var user = userBloc.state.userData;
       user = user.copyWith(isOnNotification: false);
       userBloc.add(UpdateUserEvent(userModel: user));
       NetworkService.updateUser(user);
-      log("^^^^^^^^^^^^^^^^^^^^^^${userBloc.state.userData.isOnNotification}");
     }
   }
 }
