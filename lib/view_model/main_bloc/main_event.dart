@@ -18,3 +18,10 @@ class ListernerChanges extends MainEvent {
 }
 
 class OnDispose extends MainEvent {}
+
+class OninitNotification extends MainEvent {
+  final BuildContext context;
+  OninitNotification({
+    required this.context,
+  });
+}

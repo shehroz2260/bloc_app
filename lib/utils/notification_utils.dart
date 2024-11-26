@@ -11,6 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:permission_handler/permission_handler.dart';
 // import 'package:get/get_rx/src/rx_workers/utils/debouncer.dart';
 
 class NotificationUtils {
@@ -38,7 +39,7 @@ class NotificationUtils {
     await _firebaseMessaging.getAPNSToken();
 
     try {
-      await _firebaseMessaging.requestPermission();
+      await Permission.notification.request().isGranted;
     } catch (e) {
       showOkAlertDialog(
           context: _context, message: e.toString(), title: "Error");

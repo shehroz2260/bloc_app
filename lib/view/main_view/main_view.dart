@@ -17,6 +17,7 @@ class _MainViewState extends State<MainView> {
   @override
   void initState() {
     context.read<MainBloc>().add(ListernerChanges(context: context));
+    context.read<MainBloc>().add(OninitNotification(context: context));
     super.initState();
   }
 

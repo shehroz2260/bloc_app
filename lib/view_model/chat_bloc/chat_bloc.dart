@@ -253,7 +253,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                       : model.media!.type == MediaType.image
                           ? "Sent you a photo"
                           : "Sent you a file"
-                  : "Sent you a message",
+                  : event.textEditingController.text,
               type: model.media != null ? "media" : "chat",
               fcmToken: listenUser?.fcmToken ?? "");
         }

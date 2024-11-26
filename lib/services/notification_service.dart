@@ -72,17 +72,18 @@ class NotificationService {
     final serviceAccountJson = {
       "type": "service_account",
       "project_id": "chat-app-bloc-c3ea9",
-      "private_key_id": "4a4b30c4f664f9e2b62d80c5b71d850691d65488",
+      "private_key_id": "8c95d09d0f2ca81cf21812e17efbc7546add6211",
       "private_key":
-          "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDIZJoZrtwG+p67\nnVGknK1ce1G6UHB72TBqOvHbGIldkW+XPNmm2aNRrOm8pZaDNcUYAmEmB7rOP+F8\nF2YLAxBPNUkMaXdUqsNcW22E25GHIx6KdHItRjjofU6kMrbl5TekAx5zUOPCrfrj\nTa+kxfcHUU/9j29spRON0Gx0YxVYuxIKMWQyTQH46R1AUniUkI8rygzorHbDIda1\nP2grRsMsNQLHSRmV6uIWINIFa0BQ4da6M7ebmUBVzgSDQGcZD/B3cYwNgCHL8QZ3\nI9f5yl6YPAJTTLoEmgngHcYR5XzYrwNUyYKjP29ppJNrUleKTyx1t/vFVGUsyc8a\nhbHMde0RAgMBAAECggEAAIl15qzuTskxoXojQnlEAF5Upx/m+4sdsNhShILPbWrv\nhlycoR5J0RB1ugS22tqB/ro5eeqBB3WqSflMODxn1HXuxRGjImXomL64r4MOrQUP\nLZG5zwYtLoDemIpArUfPIhvELIO27/MkUrVii7UpYAqb1957s3xcdxZ+NHl9WbBn\nazPitv+Y++J9FRTZ0YF1+Ei4YmBKYBHw91vgh5WoxS/bplzBYgWSrmjNxgzN/btJ\n3XqZ6VtbHEFCPG/zy0uAujvGSCD2Z+m8nIcoKRm0Jt27HjtZm/FFxMI/Tz6ztLe9\naU7MkdcxIxNkGj6xlIXZmxXhKNP9xqDTQMW4h0UuFQKBgQDwl0x7o/fyJzrtUNZ1\nhS2x/859yWBBLemYuERp1u712cO4ZfZ0dJS6G4CfgEMJNSuWPoZFyFHAkpBiZgu3\nNlAntmN2V40kpFqFsDtdLB8hU/zcOQtppl94TABvgawwxj4yXS90nXPv2b5J4Gjb\nHuuBDzmKI1k0ADF66Fp/eo9Q5QKBgQDVOjiXgTmmT4H7CkpvxWmQVRi63zZJx11c\n8gPZyL5fONki6BlhnYWnt+avlVbOCrIaFhjbUQqHC9pcHT5Yk/WjVv9GvXRsE6XG\nNZHvNV7bmKhXdjHtLP4FytzwbLL9rRk2UaBgfz5v0BsiCTRmtJbekcfconAvYs2A\n4Y8wqrskvQKBgQCXRSnrm17sPEpKqEcPQRtIDaTRZepFUQ7M3R72xRMeNTtgF4vs\nENjqYxxuLQD5KxsqrklSWu87+2sY0zyOh3HCZmUHJWkzHrtjzzikDnfMRrh35s4M\nMXVZd7/WXFvdlufIVtrdoZohtnB0lsqW60v7q4zsE+mkTnLN6oXsHS07GQKBgQC2\nFM2Wsscj+ekpEpSV9aI7mi9QBKQ7RH+5iwE2zHGkpsrlQAXMkdM8cZIQhhpmQEPu\nesgnIIE46SpCVsaSpWaxYO0E32u3jt+U7tH7zzt9klLOvSPNQQp6r80Tkf8XGOXa\nuMGXJZGPsco5ulqBCd17mkltY1khXeHXGMZJ7MF6kQKBgQDW74j17KMjO7j02VUt\naxLLQw3MsdT2xpYi57RCDEpuS+zQPpp2UZreOCPzET3Vw3Y8R+MpGH3bovYdiSl3\nTUQOIr6KbnAgKeAy2uZvC5stx6MTdBaifm8+K9VUelMUwFl7P6w83WqQZG+77dLF\nycracYbCq6PM48nqe7dHtfKKwA==\n-----END PRIVATE KEY-----\n",
-      "client_email": "chat-bloc@chat-app-bloc-c3ea9.iam.gserviceaccount.com",
-      "client_id": "115294422211429272606",
+          "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDT+o3ujJew+Aul\nvmx3s/WApux+4SOVwQEjA8spJieTS22cZOyII2qMN8Nq0xO3Cv8gZXy6IrqCcykW\nYjP7vrQJroQyZCmfc/ePUXDufxVnGZQjSybaEhWKiNeYbLNuoCh4i39mt9sLH/9M\nrvhY8QmXB4RtfyHBTdGC+Mboy+UI4SDe9gjRGOBW55xP7ySWC/X6t0IeTkrcL0i6\n7aDAK7ufsaN4dq1ahTwwb+G9anub2/O7uIoBiZucLoejKBppedOmm3KUu2yhMUjQ\n+cVLMiZShp7eAmJzxwX+Frqw4JxkP4Ih0S2CAwRHBiPWFTVBDsS0S5nydGAZHuZa\n5IJs+uaTAgMBAAECggEADI0q50OS3csqIWO/l2zj7fy0RyT8jurxLsoUNvkH4dxW\n/qopKTxznB7XJtWdtrpjdd8cfgb9ZSj9d1JUQqU9ks8vC67LmiHrOCS5251RvpuQ\nnnBeOg5VETFeFqvlCflYvB6CaiobwbJg0wEPOnD3QOaUjEk5TfFWJPunB3S/OIHE\nbGxDQXiMOtiL10oCRvD5IBfRUXVXLJR+zyJxzHX3SO/PNN//1tqpKyVuPYVDj4ZE\nkp/wNDAPFOW2bnCYpWUypI3gj4yvATNtmKcr0Y+9mmGn+2CScHnuwryCRaKztBW7\nGPdf+5HGnvO4QDg6xdyjoMgc1DGWMqiN2XfYEsrQOQKBgQDzAt7YfXVbZhCt/HYM\nmWCF4VXv8wKqnh/hQa1HCTfaM4XYQHXdI3fqA0OKB3XY2HcnDkta6yz04lEhFoN9\nWL3iNl4V7FJC7aL0hXOjsEls3kiNafFhJWhCIX3p/p5qiHxBsUlp3d8jOpIMJdpt\nAp/ZueX8PLOvmvNUj3ywByOUywKBgQDfTxDHHuhyFIL4fxb1KFvfYz0ChijqoTx4\nOL+Dg3Hm1qzB55qkrxYHFNLLbUnU8rTIZXwJ54nKYtziVWxvBKv5xGJdMMGoxNhD\nVcw6KfaI01KHNY4yaxNxlbn3DIIqBaAkpx+AKBkMHNMkp9pEbZNEvJlty37j//v4\nk2ItubsEWQKBgAIHPRrreSZJJMx+9fFG+nJDnjcBfT01UqjLpomYPxoYIf7bEuDE\nogSXAGJPi6FCtUPjL6fTnK1ykiDHklNigTs5HvHp5gne9+Q4lO2B1CsPc+WSQ8x+\nxm7+3pEsaeATwY2+0BENJAakP4HQcxFD21ey4IOJcip+DZfgFrdVZ+ufAoGBAN8U\nn1AsQk3ky8nvPEIA5XbOLp6c47cxB7WaC0gYQes3PjIfas9l0X2VgdeTABTpuUwQ\nhc9nLLGv/bVlXQOzCRJk61bpZC1zKBBsX68jSJP7eBB2oe0gJrZruvFf35CXOhoj\nkkZ2yD7fdNbDkDqXtG0Qc73JcqPWkCMNKSFAz+FRAoGAFlf11sM2DY27pUiK2LZL\npL3edFdyeCsELOmT6UUyPJbFlFMULITA3DvQdbs5pEqrEsuZl/Cja1JI1Wi2M+B5\n9hHZBJRaPC+v/H4oLb8i9UZVXVODHwRKUC6m8KnCf40D4BBfxTpfl+UvcNPdJhdi\n/HSkrPJWUH5LoZjvu9fR6/4=\n-----END PRIVATE KEY-----\n",
+      "client_email":
+          "firebase-adminsdk-ufdiu@chat-app-bloc-c3ea9.iam.gserviceaccount.com",
+      "client_id": "111024950175309721425",
       "auth_uri": "https://accounts.google.com/o/oauth2/auth",
       "token_uri": "https://oauth2.googleapis.com/token",
       "auth_provider_x509_cert_url":
           "https://www.googleapis.com/oauth2/v1/certs",
       "client_x509_cert_url":
-          "https://www.googleapis.com/robot/v1/metadata/x509/chat-bloc%40chat-app-bloc-c3ea9.iam.gserviceaccount.com",
+          "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-ufdiu%40chat-app-bloc-c3ea9.iam.gserviceaccount.com",
       "universe_domain": "googleapis.com"
     };
 
