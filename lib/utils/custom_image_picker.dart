@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_image/flutter_native_image.dart';
+// import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../src/app_colors.dart';
@@ -227,14 +227,14 @@ Future<File?> _getImage(ImageSource imageSource, BuildContext context,
 
   if (pickedFile != null) {
     file = File(pickedFile.path);
-    ImageProperties properties =
-        await FlutterNativeImage.getImageProperties(file.path);
-    File compressedFile = await FlutterNativeImage.compressImage(file.path,
-        quality: 40,
-        targetWidth: 900,
-        targetHeight: (properties.height! * 900 / properties.width!).round());
+    // ImageProperties properties =
+    //     await FlutterNativeImage.getImageProperties(file.path);
+    // File compressedFile = await FlutterNativeImage.compressImage(file.path,
+    //     quality: 40,
+    //     targetWidth: 900,
+    //     targetHeight: (properties.height! * 900 / properties.width!).round());
 
-    return compressedFile;
+    return file;
   } else {
     return null;
   }

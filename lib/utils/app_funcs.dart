@@ -6,8 +6,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
+import 'package:video_compress/video_compress.dart';
 
 class AppFuncs {
   static String generateRandomString(int len) {
@@ -62,19 +61,21 @@ class AppFuncs {
   }
 
   static Future<File?> generateThumbNail(String path) async {
-    final uint8list = await VideoThumbnail.thumbnailData(
-      video: path,
-      imageFormat: ImageFormat.JPEG,
-      maxWidth: 390,
-      quality: 60,
-    );
-    final directory = await getTemporaryDirectory();
-    final pathOfImage =
-        await File('${directory.path}/${DateTime.now().toIso8601String()}.jpeg')
-            .create();
+    // final uint8list = await VideoThumbnail.thumbnailData(
+    //   video: path,
+    //   imageFormat: ImageFormat.JPEG,
+    //   maxWidth: 390,
+    //   quality: 60,
+    // );
+    // final directory = await getTemporaryDirectory();
+    // final pathOfImage =
+    //     await File('${directory.path}/${DateTime.now().toIso8601String()}.jpeg')
+    //         .create();
 
-    if (uint8list == null) return null;
-    File filed = await pathOfImage.writeAsBytes(uint8list);
-    return filed;
+    // if (uint8list == null) return null;
+    // File filed = await pathOfImage.writeAsBytes(uint8list);
+    final thumbnailFile =
+        await VideoCompress.getFileThumbnail(path, quality: 50, position: -1);
+    return thumbnailFile;
   }
 }

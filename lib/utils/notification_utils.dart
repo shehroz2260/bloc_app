@@ -76,7 +76,8 @@ class NotificationUtils {
         DarwinInitializationSettings(
       requestAlertPermission: false,
       requestSoundPermission: false,
-      onDidReceiveLocalNotification: onDidReceiveLocalNotification,
+
+      // onDidReceiveLocalNotification: onDidReceiveLocalNotification,
     );
     const InitializationSettings initializationSettings =
         InitializationSettings(

@@ -139,6 +139,7 @@ class ChatTextField extends StatelessWidget {
   final bool isDisable;
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
@@ -181,6 +182,8 @@ class ChatTextField extends StatelessWidget {
                                         AppAssets.filesIcon,
                                         height: 20,
                                         width: 20,
+                                        colorFilter: ColorFilter.mode(
+                                            theme.textColor, BlendMode.srcIn),
                                       ),
                                     )),
               hintText: "Your message",

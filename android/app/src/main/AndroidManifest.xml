@@ -39,7 +39,7 @@
      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
         <!--work manager end-->
     <application
-        android:label="chat_with_bloc"
+        android:label="Friendzy"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
