@@ -264,8 +264,8 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       emit(state.copyWith(
         messageSending: false,
         audioUrl: null,
-        pickFile: null,
-        thumbnail: null,
+        pickFile: File(""),
+        thumbnail: File(""),
       ));
     } on FirebaseException catch (e) {
       emit(state.copyWith(messageSending: false));

@@ -226,8 +226,8 @@ class _ChatScreenState extends State<ChatScreen> {
                 thumbnail: state.thumbnail,
                 controller: _chatController,
                 isDisable: _chatController.text.isEmpty &&
-                    state.thumbnail == null &&
-                    state.pickFile == null,
+                    (state.thumbnail?.path ?? "").isEmpty &&
+                    (state.pickFile?.path ?? "").isEmpty,
                 isLoading: state.isLoading,
                 isRecording: state.isRecording,
                 pickFiles: () {
