@@ -4,4 +4,7 @@ class LocalStorageService {
   static GetStorage storage = GetStorage();
   static String languageKey = "LanguageKey";
   static String notificationPermission = "Notifications_key";
+  static String navigationKey = "_Navigation_Key_";
+  static String matchedTabKey = "_Matched_Tab_Key_";
+  static String profileTabKey = "_Profile_Tab_Key_";
 }

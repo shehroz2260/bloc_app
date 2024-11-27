@@ -9,8 +9,10 @@ import 'package:chat_with_bloc/view_model/home_bloc/home_event.dart';
 import 'package:chat_with_bloc/view_model/home_bloc/home_state.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:chat_with_bloc/widgets/custom_button.dart';
+import 'package:chat_with_bloc/widgets/show_case_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_sliders/sliders.dart';
 import '../../../src/app_text_style.dart';
@@ -21,7 +23,22 @@ import '../../../widgets/app_cache_image.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+  final GlobalKey key1;
+  final GlobalKey key2;
+  final GlobalKey key3;
+  final GlobalKey key4;
+  final GlobalKey key5;
+  final GlobalKey key6;
+  final bool isVisited;
+  const HomeView(
+      {super.key,
+      required this.key1,
+      required this.key2,
+      required this.key3,
+      required this.key4,
+      required this.isVisited,
+      required this.key5,
+      required this.key6});
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -253,20 +270,26 @@ class _HomeViewState extends State<HomeView> {
                 Text(AppLocalizations.of(context)!.discover,
                     style:
                         AppTextStyle.font25.copyWith(color: theme.textColor)),
-                GestureDetector(
-                  onTap: () {
-                    _openFilterDialog();
-                  },
-                  child: Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          color: AppColors.borderGreyColor,
-                        ),
-                        borderRadius: BorderRadius.circular(15)),
-                    padding: const EdgeInsets.all(12),
-                    child: SvgPicture.asset(AppAssets.filterIcon),
+                Showcaseview(
+                  targetBorderRadius: BorderRadius.circular(20),
+                  description: "Click to search people by filter",
+                  globalKey: widget.key1,
+                  title: "Filter",
+                  child: GestureDetector(
+                    onTap: () {
+                      _openFilterDialog();
+                    },
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            color: AppColors.borderGreyColor,
+                          ),
+                          borderRadius: BorderRadius.circular(15)),
+                      padding: const EdgeInsets.all(12),
+                      child: SvgPicture.asset(AppAssets.filterIcon),
+                    ),
                   ),
                 )
               ],
@@ -329,6 +352,18 @@ class _HomeViewState extends State<HomeView> {
                                               0.75,
                                           round: 25,
                                         ),
+                                        if (!widget.isVisited)
+                                          Align(
+                                              alignment: Alignment.center,
+                                              child: Showcaseview(
+                                                globalKey: widget.key2,
+                                                description:
+                                                    "Swipe up and down to explore",
+                                                title: "Find matches",
+                                                tooltipPosition:
+                                                    TooltipPosition.top,
+                                                child: const SizedBox(),
+                                              )),
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(right: 15),
@@ -336,54 +371,160 @@ class _HomeViewState extends State<HomeView> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
-                                              WidgetForLikeorDislike(
-                                                  icon: Icons.info,
-                                                  onTap: () {
-                                                    Go.to(
-                                                        context,
-                                                        UserProfileView(
-                                                            user: user));
-                                                  }),
+                                              widget.isVisited
+                                                  ? WidgetForLikeorDislike(
+                                                      icon: Icons.info,
+                                                      onTap: () {
+                                                        Go.to(
+                                                            context,
+                                                            UserProfileView(
+                                                                user: user));
+                                                      })
+                                                  : Showcaseview(
+                                                      globalKey: widget.key3,
+                                                      description:
+                                                          "Click to see user info",
+                                                      title: "Info",
+                                                      tooltipPosition:
+                                                          TooltipPosition.top,
+                                                      targetBorderRadius:
+                                                          BorderRadius.circular(
+                                                              40),
+                                                      child:
+                                                          WidgetForLikeorDislike(
+                                                              icon: Icons.info,
+                                                              onTap: () {
+                                                                Go.to(
+                                                                    context,
+                                                                    UserProfileView(
+                                                                        user:
+                                                                            user));
+                                                              }),
+                                                    ),
                                               const SizedBox(height: 15),
-                                              WidgetForLikeorDislike(
-                                                  icon: Icons.favorite,
-                                                  onTap: () {
-                                                    context
-                                                        .read<HomeBloc>()
-                                                        .add(LikeUser(
-                                                            likee: user,
-                                                            context: context,
-                                                            liker: context
-                                                                .read<
-                                                                    UserBaseBloc>()
-                                                                .state
-                                                                .userData));
-                                                  }),
+                                              widget.isVisited
+                                                  ? WidgetForLikeorDislike(
+                                                      icon: Icons.favorite,
+                                                      onTap: () {
+                                                        context
+                                                            .read<HomeBloc>()
+                                                            .add(LikeUser(
+                                                                likee: user,
+                                                                context:
+                                                                    context,
+                                                                liker: context
+                                                                    .read<
+                                                                        UserBaseBloc>()
+                                                                    .state
+                                                                    .userData));
+                                                      })
+                                                  : Showcaseview(
+                                                      targetBorderRadius:
+                                                          BorderRadius.circular(
+                                                              40),
+                                                      description:
+                                                          "Click to like user",
+                                                      globalKey: widget.key4,
+                                                      tooltipPosition:
+                                                          TooltipPosition.top,
+                                                      title: "Like",
+                                                      child:
+                                                          WidgetForLikeorDislike(
+                                                              icon: Icons
+                                                                  .favorite,
+                                                              onTap: () {
+                                                                context.read<HomeBloc>().add(LikeUser(
+                                                                    likee: user,
+                                                                    context:
+                                                                        context,
+                                                                    liker: context
+                                                                        .read<
+                                                                            UserBaseBloc>()
+                                                                        .state
+                                                                        .userData));
+                                                              }),
+                                                    ),
                                               const SizedBox(height: 15),
-                                              WidgetForLikeorDislike(
-                                                  icon: Icons.remove,
-                                                  onTap: () {
-                                                    context
-                                                        .read<HomeBloc>()
-                                                        .add(DisLikeUser(
-                                                            likee: user,
-                                                            liker: context
-                                                                .read<
-                                                                    UserBaseBloc>()
-                                                                .state
-                                                                .userData,
-                                                            context: context));
-                                                  }),
+                                              widget.isVisited
+                                                  ? WidgetForLikeorDislike(
+                                                      icon: Icons.remove,
+                                                      onTap: () {
+                                                        context
+                                                            .read<HomeBloc>()
+                                                            .add(DisLikeUser(
+                                                                likee: user,
+                                                                liker: context
+                                                                    .read<
+                                                                        UserBaseBloc>()
+                                                                    .state
+                                                                    .userData,
+                                                                context:
+                                                                    context));
+                                                      })
+                                                  : Showcaseview(
+                                                      targetBorderRadius:
+                                                          BorderRadius.circular(
+                                                              40),
+                                                      description:
+                                                          "Click if you don't want to match",
+                                                      globalKey: widget.key5,
+                                                      tooltipPosition:
+                                                          TooltipPosition.top,
+                                                      title: "Not your match",
+                                                      child:
+                                                          WidgetForLikeorDislike(
+                                                              icon:
+                                                                  Icons.remove,
+                                                              onTap: () {
+                                                                context.read<HomeBloc>().add(DisLikeUser(
+                                                                    likee: user,
+                                                                    liker: context
+                                                                        .read<
+                                                                            UserBaseBloc>()
+                                                                        .state
+                                                                        .userData,
+                                                                    context:
+                                                                        context));
+                                                              }),
+                                                    ),
                                               const SizedBox(height: 15),
-                                              WidgetForLikeorDislike(
-                                                  icon: Icons.report,
-                                                  onTap: () {
-                                                    context
-                                                        .read<HomeBloc>()
-                                                        .add(OnReportUser(
-                                                            context: context,
-                                                            userModel: user));
-                                                  }),
+                                              widget.isVisited
+                                                  ? WidgetForLikeorDislike(
+                                                      icon: Icons.report,
+                                                      onTap: () {
+                                                        context
+                                                            .read<HomeBloc>()
+                                                            .add(OnReportUser(
+                                                                context:
+                                                                    context,
+                                                                userModel:
+                                                                    user));
+                                                      })
+                                                  : Showcaseview(
+                                                      targetBorderRadius:
+                                                          BorderRadius.circular(
+                                                              40),
+                                                      description:
+                                                          "Click if you want to report user",
+                                                      globalKey: widget.key6,
+                                                      tooltipPosition:
+                                                          TooltipPosition.top,
+                                                      title: "Report",
+                                                      child:
+                                                          WidgetForLikeorDislike(
+                                                              icon:
+                                                                  Icons.report,
+                                                              onTap: () {
+                                                                context
+                                                                    .read<
+                                                                        HomeBloc>()
+                                                                    .add(OnReportUser(
+                                                                        context:
+                                                                            context,
+                                                                        userModel:
+                                                                            user));
+                                                              }),
+                                                    ),
                                               const SizedBox(height: 15),
                                             ],
                                           ),
