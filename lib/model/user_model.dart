@@ -23,6 +23,7 @@ class UserModel {
   final String cusId;
   final DateTime dob;
   final bool isOnline;
+  final bool isAdmin;
   final bool isOnNotification;
   final String profileImage;
   final List<String> myLikes;
@@ -43,6 +44,7 @@ class UserModel {
     required this.isOnline,
     required this.myInstrest,
     required this.firstName,
+    required this.isAdmin,
     required this.email,
     this.password,
     required this.uid,
@@ -78,6 +80,7 @@ class UserModel {
     int? preferGender,
     DateTime? dob,
     bool? isOnline,
+    bool? isAdmin,
     bool? isOnNotification,
     String? profileImage,
     List<String>? myLikes,
@@ -93,6 +96,7 @@ class UserModel {
       phoneNumber: phoneNumber ?? this.phoneNumber,
       galleryImages: galleryImages ?? this.galleryImages,
       bio: bio ?? this.bio,
+      isAdmin: isAdmin ?? this.isAdmin,
       fcmToken: fcmToken ?? this.fcmToken,
       isOnNotification: isOnNotification ?? this.isOnNotification,
       cusId: cusId ?? this.cusId,
@@ -130,6 +134,7 @@ class UserModel {
       'location': location,
       'lat': lat,
       'lng': lng,
+      'isAdmin': isAdmin,
       'gender': gender,
       'galleryImages': galleryImages,
       'bio': bio,
@@ -163,6 +168,7 @@ class UserModel {
       lng: map['lng'] ?? 0.0,
       gender: map['gender'] ?? 0,
       isOnline: map['isOnline'] ?? false,
+      isAdmin: map['isAdmin'] ?? false,
       isOnNotification: map['isOnNotification'] ?? false,
       preferGender: map['preferGender'] ?? 0,
       dob: (map['dob'] as Timestamp).toDate(),
@@ -213,6 +219,7 @@ class UserModel {
         bio: "",
         galleryImages: [],
         isOnline: false,
+        isAdmin: false,
         isOnNotification: false,
         myInstrest: [],
         userName: "",
@@ -244,6 +251,6 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(fcmToken: $fcmToken, isOnNotification: $isOnNotification, cusId: $cusId, phoneNumber: $phoneNumber, galleryImages: $galleryImages, bio: $bio, about: $about, isOnline: $isOnline, myInstrest: $myInstrest, userName: $userName, first1Name: $firstName, email: $email, password: $password, uid: $uid, location: $location, lat: $lat, lng: $lng, gender: $gender, preferGender: $preferGender, dob: $dob, profileImage: $profileImage, myLikes: $myLikes, myDislikes: $myDislikes, otherLikes: $otherLikes, otherDislikes: $otherDislikes, matches: $matches)';
+    return 'UserModel(isAdmin: $isAdmin, fcmToken: $fcmToken, isOnNotification: $isOnNotification, cusId: $cusId, phoneNumber: $phoneNumber, galleryImages: $galleryImages, bio: $bio, about: $about, isOnline: $isOnline, myInstrest: $myInstrest, userName: $userName, first1Name: $firstName, email: $email, password: $password, uid: $uid, location: $location, lat: $lat, lng: $lng, gender: $gender, preferGender: $preferGender, dob: $dob, profileImage: $profileImage, myLikes: $myLikes, myDislikes: $myDislikes, otherLikes: $otherLikes, otherDislikes: $otherDislikes, matches: $matches)';
   }
 }

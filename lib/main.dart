@@ -1,6 +1,7 @@
 import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/view/splash_view/splash_view.dart';
+import 'package:chat_with_bloc/view_model/admin_bloc/bloc/admin_nav_bloc.dart';
 import 'package:chat_with_bloc/view_model/bio_bloc/bio_bloc.dart';
 import 'package:chat_with_bloc/view_model/change_language/change_language_bloc.dart';
 import 'package:chat_with_bloc/view_model/change_language/change_language_event.dart';
@@ -80,6 +81,7 @@ void main() async {
       BlocProvider(create: (_) => StoryBloc()),
       BlocProvider(create: (_) => SettingBloc()),
       BlocProvider(create: (_) => ProfileBloc()),
+      BlocProvider(create: (_) => AdminNavBloc()),
       BlocProvider(create: (_) => ChangeLanguageBloc()),
     ],
     child: const MyApp(),

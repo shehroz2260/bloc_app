@@ -1,26 +1,18 @@
 import 'package:chat_with_bloc/src/app_assets.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
-import 'package:chat_with_bloc/src/go_file.dart';
-import 'package:chat_with_bloc/view/main_view/match_tab/user_profile_view/user_profile_view.dart';
-import 'package:chat_with_bloc/view_model/filter_bloc.dart/filter_bloc.dart';
-import 'package:chat_with_bloc/view_model/filter_bloc.dart/filter_state.dart';
+import 'package:chat_with_bloc/utils/custom_dialogs.dart';
 import 'package:chat_with_bloc/view_model/home_bloc/home_bloc.dart';
 import 'package:chat_with_bloc/view_model/home_bloc/home_event.dart';
 import 'package:chat_with_bloc/view_model/home_bloc/home_state.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
-import 'package:chat_with_bloc/widgets/custom_button.dart';
 import 'package:chat_with_bloc/widgets/show_case_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:showcaseview/showcaseview.dart';
-import 'package:syncfusion_flutter_core/theme.dart';
-import 'package:syncfusion_flutter_sliders/sliders.dart';
 import '../../../src/app_text_style.dart';
 import '../../../src/width_hieght.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../view_model/filter_bloc.dart/filter_event.dart';
-import '../../../widgets/app_cache_image.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../widgets/home_card_widget.dart';
 
 class HomeView extends StatefulWidget {
   final GlobalKey key1;
@@ -60,200 +52,6 @@ class _HomeViewState extends State<HomeView> {
     super.didChangeDependencies();
   }
 
-  void _openFilterDialog() async {
-    showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (context) {
-          return Container(
-            height: MediaQuery.of(context).size.height * 0.8,
-            decoration: BoxDecoration(
-                color: AppColors.whiteColor,
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30))),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: BlocBuilder<FilterBloc, FilterState>(
-                  builder: (context, state) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const AppHeight(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(AppLocalizations.of(context)!.clear,
-                            style: AppTextStyle.font20.copyWith(
-                                color: AppColors.whiteColor,
-                                fontWeight: FontWeight.bold)),
-                        Text(AppLocalizations.of(context)!.filter,
-                            style: AppTextStyle.font20.copyWith(
-                                color: AppColors.blackColor,
-                                fontWeight: FontWeight.bold)),
-                        GestureDetector(
-                            onTap: () {
-                              context
-                                  .read<FilterBloc>()
-                                  .add(OnChangedGender(gender: 0));
-                              context.read<FilterBloc>().add(ONChangedAges(
-                                  onChanged: const SfRangeValues(18, 50)));
-                              context.read<FilterBloc>().add(OnChangeRadisus(
-                                  value: 100, context: context));
-                            },
-                            child: Text(AppLocalizations.of(context)!.clear,
-                                style: AppTextStyle.font20.copyWith(
-                                    color: AppColors.redColor,
-                                    fontWeight: FontWeight.bold)))
-                      ],
-                    ),
-                    const AppHeight(height: 30),
-                    Text(AppLocalizations.of(context)!.showMe,
-                        style: AppTextStyle.font20.copyWith(
-                            color: AppColors.blackColor,
-                            fontWeight: FontWeight.bold)),
-                    const AppHeight(height: 15),
-                    const InterestedInWidget(),
-                    const AppHeight(height: 30),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Text(AppLocalizations.of(context)!.age,
-                                style: AppTextStyle.font20.copyWith(
-                                    color: AppColors.blackColor,
-                                    fontWeight: FontWeight.bold))),
-                        Text(
-                          "${state.minAge.toInt()} - ",
-                          style: AppTextStyle.font16.copyWith(
-                              color: AppColors.blackColor,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                            state.maxAge == 100
-                                ? AppLocalizations.of(context)!.all
-                                : state.maxAge.toInt().toString(),
-                            style: AppTextStyle.font16.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.blackColor)),
-                        const AppWidth(width: 20)
-                      ],
-                    ),
-                    const AppHeight(height: 10),
-                    SfRangeSliderTheme(
-                      data: SfRangeSliderThemeData(
-                          overlayColor: Colors.transparent,
-                          activeTrackHeight: 10,
-                          inactiveTrackHeight: 10,
-                          inactiveTrackColor:
-                              AppColors.redColor.withOpacity(.5),
-                          activeTrackColor: AppColors.redColor,
-                          thumbRadius: 16,
-                          thumbStrokeWidth: 1.5,
-                          thumbStrokeColor: AppColors.whiteColor,
-                          thumbColor: AppColors.whiteColor),
-                      child: SfRangeSlider(
-                        values: SfRangeValues(
-                            state.minAge.toDouble(), state.maxAge.toDouble()),
-                        onChanged: (value) => context
-                            .read<FilterBloc>()
-                            .add(ONChangedAges(onChanged: value)),
-                        max: 100,
-                        min: 18,
-                        startThumbIcon: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.whiteColor),
-                          padding: const EdgeInsets.all(4),
-                          child: Container(
-                            height: double.infinity,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColors.redColor),
-                          ),
-                        ),
-                        endThumbIcon: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.whiteColor),
-                          padding: const EdgeInsets.all(4),
-                          child: Container(
-                            height: double.infinity,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColors.redColor),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const AppHeight(height: 30),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: Text(AppLocalizations.of(context)!.distance,
-                                style: AppTextStyle.font20.copyWith(
-                                    color: AppColors.blackColor,
-                                    fontWeight: FontWeight.bold))),
-                        Text(
-                            state.radius == 100
-                                ? AppLocalizations.of(context)!.all
-                                : state.radius.toInt().toString(),
-                            style: AppTextStyle.font16.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.blackColor)),
-                        const AppWidth(width: 20)
-                      ],
-                    ),
-                    const AppHeight(height: 10),
-                    SfSliderTheme(
-                      data: const SfSliderThemeData(
-                          thumbRadius: 16,
-                          activeTrackHeight: 10,
-                          inactiveTrackHeight: 10),
-                      child: SfSlider(
-                        activeColor: AppColors.redColor,
-                        inactiveColor: AppColors.redColor.withOpacity(.5),
-                        value: state.radius,
-                        onChanged: (value) => context.read<FilterBloc>().add(
-                            OnChangeRadisus(value: value, context: context)),
-                        max: 100,
-                        thumbIcon: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: AppColors.whiteColor),
-                          padding: const EdgeInsets.all(4),
-                          child: Container(
-                            height: double.infinity,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: AppColors.redColor),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const AppHeight(height: 30),
-                    CustomNewButton(
-                        btnName: AppLocalizations.of(context)!.apply,
-                        onTap: () {
-                          context.read<FilterBloc>().add(OnAppLyFilter(
-                              context: context, userBloc: ancestorContext));
-                        })
-                  ],
-                );
-              }),
-            ),
-          );
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
@@ -277,7 +75,7 @@ class _HomeViewState extends State<HomeView> {
                   title: "Filter",
                   child: GestureDetector(
                     onTap: () {
-                      _openFilterDialog();
+                      CustomDialogs.openFilterDialog(context, ancestorContext);
                     },
                     child: Container(
                       height: 50,
@@ -301,14 +99,26 @@ class _HomeViewState extends State<HomeView> {
                 child: Center(
               child: CircularProgressIndicator(color: AppColors.blueColor),
             )),
-          if (!state.isLoading && state.userList.isEmpty)
+          if (!state.isLoading && !widget.isVisited)
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: HomeCardForMessage(
+                    key3: widget.key3,
+                    key4: widget.key4,
+                    key5: widget.key5,
+                    key6: widget.key6,
+                    key7: widget.key2),
+              ),
+            ),
+          if (!state.isLoading && state.userList.isEmpty && widget.isVisited)
             Expanded(
                 child: Center(
               child: Text(AppLocalizations.of(context)!.thereIsNoUsers,
                   style: AppTextStyle.font16
                       .copyWith(color: AppColors.blackColor)),
             )),
-          if (!state.isLoading && state.userList.isNotEmpty)
+          if (!state.isLoading && state.userList.isNotEmpty && widget.isVisited)
             Expanded(
               child: Stack(
                 children: [
@@ -335,247 +145,7 @@ class _HomeViewState extends State<HomeView> {
                               movementDuration: const Duration(milliseconds: 1),
                               resizeDuration: const Duration(milliseconds: 1),
                               key: ValueKey(state.userList[index]),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Stack(
-                                      alignment: Alignment.bottomRight,
-                                      children: [
-                                        AppCacheImage(
-                                          onTap: () {},
-                                          imageUrl: user.profileImage,
-                                          width: double.infinity,
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.75,
-                                          round: 25,
-                                        ),
-                                        if (!widget.isVisited)
-                                          Align(
-                                              alignment: Alignment.center,
-                                              child: Showcaseview(
-                                                globalKey: widget.key2,
-                                                description:
-                                                    "Swipe up and down to explore",
-                                                title: "Find matches",
-                                                tooltipPosition:
-                                                    TooltipPosition.top,
-                                                child: const SizedBox(),
-                                              )),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 15),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              widget.isVisited
-                                                  ? WidgetForLikeorDislike(
-                                                      icon: Icons.info,
-                                                      onTap: () {
-                                                        Go.to(
-                                                            context,
-                                                            UserProfileView(
-                                                                user: user));
-                                                      })
-                                                  : Showcaseview(
-                                                      globalKey: widget.key3,
-                                                      description:
-                                                          "Click to see user info",
-                                                      title: "Info",
-                                                      tooltipPosition:
-                                                          TooltipPosition.top,
-                                                      targetBorderRadius:
-                                                          BorderRadius.circular(
-                                                              40),
-                                                      child:
-                                                          WidgetForLikeorDislike(
-                                                              icon: Icons.info,
-                                                              onTap: () {
-                                                                Go.to(
-                                                                    context,
-                                                                    UserProfileView(
-                                                                        user:
-                                                                            user));
-                                                              }),
-                                                    ),
-                                              const SizedBox(height: 15),
-                                              widget.isVisited
-                                                  ? WidgetForLikeorDislike(
-                                                      icon: Icons.favorite,
-                                                      onTap: () {
-                                                        context
-                                                            .read<HomeBloc>()
-                                                            .add(LikeUser(
-                                                                likee: user,
-                                                                context:
-                                                                    context,
-                                                                liker: context
-                                                                    .read<
-                                                                        UserBaseBloc>()
-                                                                    .state
-                                                                    .userData));
-                                                      })
-                                                  : Showcaseview(
-                                                      targetBorderRadius:
-                                                          BorderRadius.circular(
-                                                              40),
-                                                      description:
-                                                          "Click to like user",
-                                                      globalKey: widget.key4,
-                                                      tooltipPosition:
-                                                          TooltipPosition.top,
-                                                      title: "Like",
-                                                      child:
-                                                          WidgetForLikeorDislike(
-                                                              icon: Icons
-                                                                  .favorite,
-                                                              onTap: () {
-                                                                context.read<HomeBloc>().add(LikeUser(
-                                                                    likee: user,
-                                                                    context:
-                                                                        context,
-                                                                    liker: context
-                                                                        .read<
-                                                                            UserBaseBloc>()
-                                                                        .state
-                                                                        .userData));
-                                                              }),
-                                                    ),
-                                              const SizedBox(height: 15),
-                                              widget.isVisited
-                                                  ? WidgetForLikeorDislike(
-                                                      icon: Icons.remove,
-                                                      onTap: () {
-                                                        context
-                                                            .read<HomeBloc>()
-                                                            .add(DisLikeUser(
-                                                                likee: user,
-                                                                liker: context
-                                                                    .read<
-                                                                        UserBaseBloc>()
-                                                                    .state
-                                                                    .userData,
-                                                                context:
-                                                                    context));
-                                                      })
-                                                  : Showcaseview(
-                                                      targetBorderRadius:
-                                                          BorderRadius.circular(
-                                                              40),
-                                                      description:
-                                                          "Click if you don't want to match",
-                                                      globalKey: widget.key5,
-                                                      tooltipPosition:
-                                                          TooltipPosition.top,
-                                                      title: "Not your match",
-                                                      child:
-                                                          WidgetForLikeorDislike(
-                                                              icon:
-                                                                  Icons.remove,
-                                                              onTap: () {
-                                                                context.read<HomeBloc>().add(DisLikeUser(
-                                                                    likee: user,
-                                                                    liker: context
-                                                                        .read<
-                                                                            UserBaseBloc>()
-                                                                        .state
-                                                                        .userData,
-                                                                    context:
-                                                                        context));
-                                                              }),
-                                                    ),
-                                              const SizedBox(height: 15),
-                                              widget.isVisited
-                                                  ? WidgetForLikeorDislike(
-                                                      icon: Icons.report,
-                                                      onTap: () {
-                                                        context
-                                                            .read<HomeBloc>()
-                                                            .add(OnReportUser(
-                                                                context:
-                                                                    context,
-                                                                userModel:
-                                                                    user));
-                                                      })
-                                                  : Showcaseview(
-                                                      targetBorderRadius:
-                                                          BorderRadius.circular(
-                                                              40),
-                                                      description:
-                                                          "Click if you want to report user",
-                                                      globalKey: widget.key6,
-                                                      tooltipPosition:
-                                                          TooltipPosition.top,
-                                                      title: "Report",
-                                                      child:
-                                                          WidgetForLikeorDislike(
-                                                              icon:
-                                                                  Icons.report,
-                                                              onTap: () {
-                                                                context
-                                                                    .read<
-                                                                        HomeBloc>()
-                                                                    .add(OnReportUser(
-                                                                        context:
-                                                                            context,
-                                                                        userModel:
-                                                                            user));
-                                                              }),
-                                                    ),
-                                              const SizedBox(height: 15),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 13),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      RichText(
-                                          text: TextSpan(children: [
-                                        TextSpan(
-                                          text: "${user.firstName},",
-                                          style: TextStyle(
-                                            color: theme.textColor,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                        TextSpan(
-                                          text: '${user.age}',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: theme.textColor,
-                                            fontSize: 24,
-                                          ),
-                                        ),
-                                      ])),
-                                      Container(
-                                        decoration: BoxDecoration(
-                                          color: AppColors.redColor
-                                              .withOpacity(0.3),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 20, vertical: 10),
-                                        child: Text(
-                                          "${user.distance(context, null)} km",
-                                          style: AppTextStyle.font16
-                                              .copyWith(color: theme.textColor),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(height: 15),
-                                ],
-                              ),
+                              child: HomeCard(user: user),
                             ),
                           ),
                         );
@@ -585,151 +155,6 @@ class _HomeViewState extends State<HomeView> {
             ),
         ]);
       },
-    );
-  }
-}
-
-class InterestedInWidget extends StatefulWidget {
-  const InterestedInWidget({
-    super.key,
-  });
-
-  @override
-  State<InterestedInWidget> createState() => _InterestedInWidgetState();
-}
-
-class _InterestedInWidgetState extends State<InterestedInWidget> {
-  @override
-  void initState() {
-    context.read<FilterBloc>().add(ONInitEvent());
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<FilterBloc, FilterState>(builder: (context, state) {
-      return Row(
-        children: [
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                context.read<FilterBloc>().add(OnChangedGender(gender: 1));
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                    color: state.gender == 1 ? AppColors.redColor : null,
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(25),
-                        bottomLeft: Radius.circular(25)),
-                    border: Border(
-                      bottom: BorderSide(color: AppColors.borderGreyColor),
-                      top: BorderSide(color: AppColors.borderGreyColor),
-                      left: BorderSide(color: AppColors.borderGreyColor),
-                    )),
-                padding: const EdgeInsets.symmetric(vertical: 18),
-                alignment: Alignment.center,
-                child: Text(AppLocalizations.of(context)!.men,
-                    style: AppTextStyle.font16.copyWith(
-                        color: state.gender == 1
-                            ? AppColors.whiteColor
-                            : AppColors.redColor)),
-              ),
-            ),
-          ),
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                context.read<FilterBloc>().add(OnChangedGender(gender: 2));
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                    color: state.gender == 2 ? AppColors.redColor : null,
-                    border: Border(
-                      bottom: BorderSide(color: AppColors.borderGreyColor),
-                      top: BorderSide(color: AppColors.borderGreyColor),
-                    )),
-                padding: const EdgeInsets.symmetric(vertical: 18),
-                child: Container(
-                    alignment: Alignment.center,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                        border: Border(
-                            left: BorderSide(
-                                color: state.gender == 2
-                                    ? AppColors.redColor
-                                    : AppColors.borderGreyColor),
-                            right: BorderSide(
-                                color: state.gender == 2
-                                    ? AppColors.redColor
-                                    : AppColors.borderGreyColor))),
-                    child: Text(AppLocalizations.of(context)!.women,
-                        style: AppTextStyle.font16.copyWith(
-                            color: state.gender == 2
-                                ? AppColors.whiteColor
-                                : AppColors.redColor))),
-              ),
-            ),
-          ),
-          Expanded(
-            child: GestureDetector(
-              onTap: () {
-                context.read<FilterBloc>().add(OnChangedGender(gender: 0));
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                    color: state.gender == 0 ? AppColors.redColor : null,
-                    borderRadius: const BorderRadius.only(
-                        topRight: Radius.circular(25),
-                        bottomRight: Radius.circular(25)),
-                    border: Border(
-                      bottom: BorderSide(color: AppColors.borderGreyColor),
-                      top: BorderSide(color: AppColors.borderGreyColor),
-                      right: BorderSide(color: AppColors.borderGreyColor),
-                    )),
-                padding: const EdgeInsets.symmetric(vertical: 18),
-                alignment: Alignment.center,
-                child: Text(AppLocalizations.of(context)!.both,
-                    style: AppTextStyle.font16.copyWith(
-                        color: state.gender == 0
-                            ? AppColors.whiteColor
-                            : AppColors.redColor)),
-              ),
-            ),
-          )
-        ],
-      );
-    });
-  }
-}
-
-class WidgetForLikeorDislike extends StatelessWidget {
-  final IconData icon;
-  final void Function() onTap;
-  final String? svgICon;
-  const WidgetForLikeorDislike({
-    super.key,
-    required this.icon,
-    required this.onTap,
-    this.svgICon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 40,
-        width: 40,
-        // margin:  const EdgeInsets.only(right: 15,bottom: 15),
-        padding: const EdgeInsets.all(6),
-        decoration: BoxDecoration(
-            color: AppColors.whiteColor,
-            border: Border.all(color: AppColors.redColor, width: 2),
-            shape: BoxShape.circle),
-        child: svgICon == null
-            ? Icon(icon, color: AppColors.redColor)
-            : SvgPicture.asset(svgICon ?? ""),
-      ),
     );
   }
 }

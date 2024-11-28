@@ -25,6 +25,7 @@ import '../model/report_user_model.dart';
 import '../model/thread_model.dart';
 import '../utils/notification_utils.dart';
 import '../view/account_creation_view/location_view.dart';
+import '../view/admin_view/admin_nav_view.dart';
 import '../view/main_view/home_tab/congrats_message_view.dart';
 import '../view_model/user_base_bloc/user_base_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -91,6 +92,10 @@ class NetworkService {
         return;
       }
       await NotificationUtils.fcmSubscribe(context);
+      if (user.isAdmin) {
+        Go.to(context, const AdminNavView());
+        return;
+      }
       Go.offAll(context, const MainView());
     });
   }
