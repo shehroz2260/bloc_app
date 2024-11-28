@@ -1,10 +1,17 @@
 import 'package:chat_with_bloc/src/app_colors.dart';
-import 'package:chat_with_bloc/view_model/admin_bloc/bloc/admin_nav_bloc.dart';
-import 'package:chat_with_bloc/view_model/admin_bloc/bloc/admin_nav_state.dart';
+import 'package:chat_with_bloc/src/width_hieght.dart';
+import 'package:chat_with_bloc/view/admin_view/admin_home_view.dart';
+import 'package:chat_with_bloc/view/admin_view/admin_inbox_view.dart';
+import 'package:chat_with_bloc/view/admin_view/admin_reports_view.dart';
+import 'package:chat_with_bloc/view/main_view/profile_tab/profile_view.dart';
+import 'package:chat_with_bloc/view_model/admin_bloc/admin_nav_bloc/admin_nav_bloc.dart';
+import 'package:chat_with_bloc/view_model/admin_bloc/admin_nav_bloc/admin_nav_event.dart';
+import 'package:chat_with_bloc/view_model/admin_bloc/admin_nav_bloc/admin_nav_state.dart';
 import 'package:chat_with_bloc/view_model/main_bloc/main_bloc.dart';
 import 'package:chat_with_bloc/view_model/main_bloc/main_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../src/app_text_style.dart';
 import '../../widgets/custom_navigation_bar.dart';
 
 class AdminNavView extends StatefulWidget {
@@ -39,10 +46,35 @@ class _AdminNavViewState extends State<AdminNavView> {
         builder: (context, state) {
           return Column(
             children: [
+              if (state.currentIndex != 3) const AppHeight(height: 60),
+              if (state.currentIndex != 3)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                          state.currentIndex == 0
+                              ? "All users"
+                              : state.currentIndex == 1
+                                  ? "Reports"
+                                  : state.currentIndex == 2
+                                      ? "Chat with users"
+                                      : "",
+                          style: AppTextStyle.font25
+                              .copyWith(color: theme.textColor)),
+                    ],
+                  ),
+                ),
               Expanded(
                   child: IndexedStack(
                 index: state.currentIndex,
-                children: const [],
+                children: const [
+                  AdminHomeView(),
+                  AdminReportsView(),
+                  AdminInboxView(),
+                  ProfileView(index: 0),
+                ],
               )),
               CustomAdminNavigationBar(
                   ontap: _onIndexChange, currentIndex: state.currentIndex)
@@ -54,7 +86,7 @@ class _AdminNavViewState extends State<AdminNavView> {
   }
 
   void _onIndexChange(int index) {
-    context.read<MainBloc>().add(ChangeIndexEvent(index: index));
+    context.read<AdminNavBloc>().add(UpdateAdminNavIndex(index: index));
   }
 }
 

@@ -1,7 +1,7 @@
 import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/view/splash_view/splash_view.dart';
-import 'package:chat_with_bloc/view_model/admin_bloc/bloc/admin_nav_bloc.dart';
+import 'package:chat_with_bloc/view_model/admin_bloc/admin_nav_bloc/admin_nav_bloc.dart';
 import 'package:chat_with_bloc/view_model/bio_bloc/bio_bloc.dart';
 import 'package:chat_with_bloc/view_model/change_language/change_language_bloc.dart';
 import 'package:chat_with_bloc/view_model/change_language/change_language_event.dart';
@@ -40,6 +40,7 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get_storage/get_storage.dart';
 import 'firebase_options.dart';
 import 'utils/notification_utils.dart';
+import 'view_model/admin_bloc/admin_home_bloc/admin_home_bloc.dart';
 import 'view_model/gender_bloc/gender_bloc.dart';
 import 'view_model/location_permission_bloc/location_bloc.dart';
 import 'view_model/chat_bloc/chat_bloc.dart';
@@ -81,6 +82,7 @@ void main() async {
       BlocProvider(create: (_) => StoryBloc()),
       BlocProvider(create: (_) => SettingBloc()),
       BlocProvider(create: (_) => ProfileBloc()),
+      BlocProvider(create: (_) => AdminHomeBloc()),
       BlocProvider(create: (_) => AdminNavBloc()),
       BlocProvider(create: (_) => ChangeLanguageBloc()),
     ],
