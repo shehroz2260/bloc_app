@@ -14,6 +14,7 @@ class ThreadModel {
   final List<dynamic> activeUserList;
   final List<String> blockUserList;
   final String senderId;
+  final bool isAdmin;
   final int messageCount;
   final String threadId;
   UserModel? userDetail;
@@ -24,6 +25,7 @@ class ThreadModel {
   ThreadModel({
     required this.lastMessage,
     required this.activeUserList,
+    required this.isAdmin,
     required this.blockUserList,
     required this.lastMessageTime,
     required this.participantUserList,
@@ -51,6 +53,7 @@ class ThreadModel {
     UserModel? userDetail,
     bool? isPending,
     bool? isBlocked,
+    bool? isAdmin,
     bool? isSelect,
     List<MessageDeleteModel>? messageDelete,
   }) {
@@ -66,6 +69,7 @@ class ThreadModel {
       threadId: threadId ?? this.threadId,
       userDetail: userDetail ?? this.userDetail,
       isPending: isPending ?? this.isPending,
+      isAdmin: isAdmin ?? this.isAdmin,
       isBlocked: isBlocked ?? this.isBlocked,
       isSelect: isSelect ?? this.isSelect,
     );
@@ -83,6 +87,7 @@ class ThreadModel {
       'messageCount': messageCount,
       'threadId': threadId,
       'isPending': isPending,
+      'isAdmin': isAdmin,
       'isBlocked': isBlocked,
     };
   }
@@ -106,6 +111,7 @@ class ThreadModel {
       threadId: map['threadId'] as String,
       isPending: map['isPending'] as bool,
       isBlocked: map['isBlocked'] as bool,
+      isAdmin: map['isAdmin'] ?? false,
     );
   }
   void readMessage() async {
@@ -162,7 +168,7 @@ class ThreadModel {
 
   @override
   String toString() {
-    return 'ThreadModel(messageDelete: $messageDelete, lastMessage: $lastMessage, lastMessageTime: $lastMessageTime, participantUserList: $participantUserList, senderId: $senderId, messageCount: $messageCount, threadId: $threadId, userDetail: $userDetail, isPending: $isPending, isBlocked: $isBlocked)';
+    return 'ThreadModel(isAdmin: $isAdmin, messageDelete: $messageDelete, lastMessage: $lastMessage, lastMessageTime: $lastMessageTime, participantUserList: $participantUserList, senderId: $senderId, messageCount: $messageCount, threadId: $threadId, userDetail: $userDetail, isPending: $isPending, isBlocked: $isBlocked)';
   }
 }
 

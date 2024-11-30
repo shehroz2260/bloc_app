@@ -33,6 +33,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         uid: "",
         firstName: "",
         isOnline: false,
+        isVerified: true,
         isAdmin: false,
         isOnNotification: false,
         location: "",

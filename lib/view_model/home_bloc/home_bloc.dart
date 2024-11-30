@@ -58,12 +58,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           filterModel.distance < 100) {
         return state;
       }
+      if (value.isAdmin) {
+        return state;
+      }
       final reportedUSer =
           reportUserList.where((e) => e.reportedUserId == value.uid).toList();
       if (reportedUSer.isNotEmpty &&
           reportedUSer.first.reportedUserId == value.uid) {
         return state;
       }
+
       state.userList.add(value);
       return state.copyWith(userList: state.userList);
     });

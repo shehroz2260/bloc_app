@@ -24,6 +24,7 @@ class UserModel {
   final DateTime dob;
   final bool isOnline;
   final bool isAdmin;
+  final bool isVerified;
   final bool isOnNotification;
   final String profileImage;
   final List<String> myLikes;
@@ -34,6 +35,7 @@ class UserModel {
   final List<String> matches;
   UserModel({
     required this.bio,
+    required this.isVerified,
     required this.isOnNotification,
     required this.galleryImages,
     required this.userName,
@@ -81,6 +83,7 @@ class UserModel {
     DateTime? dob,
     bool? isOnline,
     bool? isAdmin,
+    bool? isVerified,
     bool? isOnNotification,
     String? profileImage,
     List<String>? myLikes,
@@ -102,6 +105,7 @@ class UserModel {
       cusId: cusId ?? this.cusId,
       about: about ?? this.about,
       isOnline: isOnline ?? this.isOnline,
+      isVerified: isVerified ?? this.isVerified,
       myInstrest: myInstrest ?? this.myInstrest,
       firstName: firstName ?? this.firstName,
       email: email ?? this.email,
@@ -135,6 +139,7 @@ class UserModel {
       'lat': lat,
       'lng': lng,
       'isAdmin': isAdmin,
+      'isVerified': isVerified,
       'gender': gender,
       'galleryImages': galleryImages,
       'bio': bio,
@@ -168,6 +173,7 @@ class UserModel {
       lng: map['lng'] ?? 0.0,
       gender: map['gender'] ?? 0,
       isOnline: map['isOnline'] ?? false,
+      isVerified: map['isVerified'] ?? true,
       isAdmin: map['isAdmin'] ?? false,
       isOnNotification: map['isOnNotification'] ?? false,
       preferGender: map['preferGender'] ?? 0,
@@ -220,6 +226,7 @@ class UserModel {
         galleryImages: [],
         isOnline: false,
         isAdmin: false,
+        isVerified: false,
         isOnNotification: false,
         myInstrest: [],
         userName: "",
@@ -251,6 +258,6 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(isAdmin: $isAdmin, fcmToken: $fcmToken, isOnNotification: $isOnNotification, cusId: $cusId, phoneNumber: $phoneNumber, galleryImages: $galleryImages, bio: $bio, about: $about, isOnline: $isOnline, myInstrest: $myInstrest, userName: $userName, first1Name: $firstName, email: $email, password: $password, uid: $uid, location: $location, lat: $lat, lng: $lng, gender: $gender, preferGender: $preferGender, dob: $dob, profileImage: $profileImage, myLikes: $myLikes, myDislikes: $myDislikes, otherLikes: $otherLikes, otherDislikes: $otherDislikes, matches: $matches)';
+    return 'UserModel(isVerified: $isVerified, isAdmin: $isAdmin, fcmToken: $fcmToken, isOnNotification: $isOnNotification, cusId: $cusId, phoneNumber: $phoneNumber, galleryImages: $galleryImages, bio: $bio, about: $about, isOnline: $isOnline, myInstrest: $myInstrest, userName: $userName, first1Name: $firstName, email: $email, password: $password, uid: $uid, location: $location, lat: $lat, lng: $lng, gender: $gender, preferGender: $preferGender, dob: $dob, profileImage: $profileImage, myLikes: $myLikes, myDislikes: $myDislikes, otherLikes: $otherLikes, otherDislikes: $otherDislikes, matches: $matches)';
   }
 }

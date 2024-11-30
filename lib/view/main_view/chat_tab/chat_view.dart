@@ -159,22 +159,24 @@ class _ChatScreenState extends State<ChatScreen> {
                       ],
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () async {
-                      context.read<ChatBloc>().add(OpenOptions(
-                          context: context,
-                          userModel: widget.model.userDetail!));
-                    },
-                    child: Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: AppColors.borderGreyColor)),
-                      alignment: Alignment.center,
-                      child: const Icon(Icons.more_vert),
-                    ),
-                  )
+                  if (!widget.model.isAdmin)
+                    GestureDetector(
+                      onTap: () async {
+                        context.read<ChatBloc>().add(OpenOptions(
+                            context: context,
+                            userModel: widget.model.userDetail!));
+                      },
+                      child: Container(
+                        height: 60,
+                        width: 60,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            border:
+                                Border.all(color: AppColors.borderGreyColor)),
+                        alignment: Alignment.center,
+                        child: const Icon(Icons.more_vert),
+                      ),
+                    )
                 ],
               ),
               const AppHeight(height: 30),

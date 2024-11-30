@@ -113,17 +113,11 @@ class CustomAdminNavigationBar extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // SvgPicture.asset(
-                //     index == currentIndex
-                //         ? iconLists[index]
-                //         : unSelectedIconLists[index],
-                //     colorFilter: index == 3 && currentIndex == 3
-                //         ? ColorFilter.mode(AppColors.redColor, BlendMode.srcIn)
-                //         : null,
-                //     height: 30,
-                //     width: 30),
-                Icon(adminIcon[index],
-                    color: index == currentIndex ? AppColors.redColor : null)
+                Icon(
+                  adminIcon[index],
+                  color: index == currentIndex ? AppColors.redColor : null,
+                  size: 30,
+                )
               ],
             ),
           );
@@ -134,8 +128,8 @@ class CustomAdminNavigationBar extends StatelessWidget {
 }
 
 List<IconData> adminIcon = [
-  Icons.home_filled,
-  Icons.people,
+  Icons.people_sharp,
+  Icons.pie_chart,
   Icons.message,
   Icons.person_2_rounded
 ];
