@@ -128,14 +128,14 @@ class NetworkService {
     var user = context.read<UserBaseBloc>().state.userData;
     context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
     if (isMatch) {
-      await createNewThread(liker, likee, null);
+      await createNewThread(liker, likee, false, null);
       LoadingDialog.hideProgress(context);
       Go.to(context, CongratsMessageView(user: likee));
     }
   }
 
   static Future<void> createNewThread(
-      UserModel liker, UserModel likee, String? message) async {
+      UserModel liker, UserModel likee, bool isAdmin, String? message) async {
     var threadId = createThreadId(liker.uid, likee.uid);
     var snapShot = await FirebaseFirestore.instance
         .collection(ThreadModel.tableName)
@@ -143,6 +143,7 @@ class NetworkService {
         .get();
     if (snapShot.exists) return;
     var thread = ThreadModel(
+        isAdmin: isAdmin,
         lastMessage: message ?? "",
         lastMessageTime: DateTime.now(),
         participantUserList: [liker.uid, likee.uid],

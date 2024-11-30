@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_event.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../model/user_model.dart';
 import '../../services/local_storage_service.dart';
 import '../../services/network_service.dart';
+import '../../view/on_boarding_view/un_verified_view.dart';
 import '../matches_bloc/matches_bloc.dart';
 import '../matches_bloc/matches_event.dart';
 import 'main_event.dart';
@@ -31,6 +33,9 @@ class MainBloc extends Bloc<MainEvent, MainState> {
         .snapshots()
         .listen((e) async {
       var user = UserModel.fromMap(e.data() ?? {});
+      if (!user.isVerified) {
+        Go.offAll(event.context, const UnVerifiedView());
+      }
       event.context.read<MatchesBloc>().add(ONinit(bloc: user));
       event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
     });

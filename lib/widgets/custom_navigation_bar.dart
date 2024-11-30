@@ -128,8 +128,8 @@ class CustomAdminNavigationBar extends StatelessWidget {
 }
 
 List<IconData> adminIcon = [
-  Icons.home_filled,
-  Icons.people,
+  Icons.people_sharp,
+  Icons.pie_chart,
   Icons.message,
   Icons.person_2_rounded
 ];

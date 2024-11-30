@@ -1,19 +1,16 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/view_model/inbox_bloc/inbox_bloc.dart';
 import 'package:chat_with_bloc/view_model/inbox_bloc/inbox_event.dart';
 import 'package:chat_with_bloc/view_model/inbox_bloc/inbox_state.dart';
-import 'package:chat_with_bloc/widgets/app_cache_image.dart';
 import 'package:chat_with_bloc/widgets/custom_text_field.dart';
-import 'package:chat_with_bloc/widgets/image_view.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:timeago/timeago.dart' as timeago;
-import '../../../src/go_file.dart';
-import 'chat_view.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../../widgets/thread_widget.dart';
 
 class InboxView extends StatefulWidget {
   const InboxView({super.key});
@@ -25,7 +22,6 @@ class InboxView extends StatefulWidget {
 class _InboxViewState extends State<InboxView> {
   ScrollController scrollController = ScrollController();
 
-  // final _chatController = TextEditingController();
   @override
   void initState() {
     context.read<InboxBloc>().add(ThreadListener(context: context));
@@ -83,132 +79,7 @@ class _InboxViewState extends State<InboxView> {
                                   "")
                               .toLowerCase()
                               .contains(state.searchText.toLowerCase())
-                          ? GestureDetector(
-                              onTap: () {
-                                Go.to(context,
-                                    ChatScreen(model: state.threadList[index]));
-                              },
-                              behavior: HitTestBehavior.opaque,
-                              child: Container(
-                                height: 60,
-                                margin: const EdgeInsets.only(bottom: 25),
-                                child: Row(
-                                  children: [
-                                    AppCacheImage(
-                                        onTap: () => _imageView(state
-                                                .threadList[index]
-                                                .userDetail
-                                                ?.profileImage ??
-                                            ""),
-                                        imageUrl: state.threadList[index]
-                                                .userDetail?.profileImage ??
-                                            "",
-                                        height: 60,
-                                        width: 60,
-                                        round: 60),
-                                    const AppWidth(width: 10),
-                                    Expanded(
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      state
-                                                              .threadList[index]
-                                                              .userDetail
-                                                              ?.firstName ??
-                                                          "",
-                                                      style: AppTextStyle.font16
-                                                          .copyWith(
-                                                              color: theme
-                                                                  .textColor,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                    ),
-                                                    Text(
-                                                        state
-                                                                .threadList[
-                                                                    index]
-                                                                .lastMessage
-                                                                .isEmpty
-                                                            ? AppLocalizations
-                                                                    .of(
-                                                                        context)!
-                                                                .sendYourFirstMessage
-                                                            : state
-                                                                .threadList[
-                                                                    index]
-                                                                .lastMessage,
-                                                        maxLines: 1,
-                                                        style: AppTextStyle
-                                                            .font16
-                                                            .copyWith(
-                                                                color: theme
-                                                                    .textColor,
-                                                                fontSize: 12)),
-                                                  ],
-                                                ),
-                                              ),
-                                              Column(
-                                                children: [
-                                                  Text(
-                                                    timeago.format(
-                                                      state.threadList[index]
-                                                          .lastMessageTime,
-                                                      locale: 'en_short',
-                                                    ),
-                                                  ),
-                                                  if (state.threadList[index]
-                                                              .senderId !=
-                                                          (FirebaseAuth
-                                                                  .instance
-                                                                  .currentUser
-                                                                  ?.uid ??
-                                                              "") &&
-                                                      state.threadList[index]
-                                                              .messageCount !=
-                                                          0)
-                                                    Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              7),
-                                                      decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        color:
-                                                            AppColors.redColor,
-                                                      ),
-                                                      child: Text(
-                                                        state.threadList[index]
-                                                            .messageCount
-                                                            .toString(),
-                                                        style: TextStyle(
-                                                            color:
-                                                                theme.textColor,
-                                                            fontSize: 10),
-                                                      ),
-                                                    ),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                          const Spacer(),
-                                          Container(
-                                            height: 1.5,
-                                            color: AppColors.borderGreyColor,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
+                          ? ThreadWidget(threadModel: state.threadList[index])
                           : const SizedBox();
                     }),
                   ),
@@ -219,25 +90,58 @@ class _InboxViewState extends State<InboxView> {
       ),
     );
   }
+}
 
-  void _imageView(String image) async {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            contentPadding: EdgeInsets.zero,
-            content: AppCacheImage(
-              imageUrl: image,
-              height: 400,
-              boxFit: BoxFit.fitWidth,
-              onTap: () {
-                Go.off(context, ImageView(imageUrl: image));
-              },
-              // width: double.infinity,
-            ),
-          );
-        });
+class MyInheritedWidget extends InheritedWidget {
+  final InboxBloc bloc;
+
+  const MyInheritedWidget({
+    super.key,
+    required this.bloc,
+    required super.child,
+  });
+
+  static MyInheritedWidget? of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<MyInheritedWidget>();
   }
+
+  @override
+  bool updateShouldNotify(covariant MyInheritedWidget oldWidget) {
+    return false;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // void _imageView(String image) async {
+  // showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         contentPadding: EdgeInsets.zero,
+  //         content: AppCacheImage(
+  //           imageUrl: image,
+  //           height: 400,
+  //           boxFit: BoxFit.fitWidth,
+  //           onTap: () {
+  //             Go.off(context, ImageView(imageUrl: image));
+  //           },
+  //           // width: double.infinity,
+  //         ),
+  //       );
+  //     });
+  // }
 // void _openChatView(ThreadModel thread)async{
 //   final id = thread.threadId;
 //    scrollController.addListener((){
@@ -331,23 +235,3 @@ class _InboxViewState extends State<InboxView> {
 // });
 //   // chatBloc.add(ClearData());
 // }
-}
-
-class MyInheritedWidget extends InheritedWidget {
-  final InboxBloc bloc;
-
-  const MyInheritedWidget({
-    super.key,
-    required this.bloc,
-    required super.child,
-  });
-
-  static MyInheritedWidget? of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<MyInheritedWidget>();
-  }
-
-  @override
-  bool updateShouldNotify(covariant MyInheritedWidget oldWidget) {
-    return false;
-  }
-}

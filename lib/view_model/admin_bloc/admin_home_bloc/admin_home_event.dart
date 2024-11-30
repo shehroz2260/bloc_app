@@ -11,7 +11,9 @@ class OnChangedTextField extends AdminHomeEvent {
 
 class OnChangeVerify extends AdminHomeEvent {
   final bool val;
+  final int index;
   OnChangeVerify({
     required this.val,
+    required this.index,
   });
 }

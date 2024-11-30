@@ -41,6 +41,9 @@ import 'package:get_storage/get_storage.dart';
 import 'firebase_options.dart';
 import 'utils/notification_utils.dart';
 import 'view_model/admin_bloc/admin_home_bloc/admin_home_bloc.dart';
+import 'view_model/admin_bloc/admin_inbox_bloc/admin_inbox_bloc.dart';
+import 'view_model/admin_bloc/admin_reports_bloc/admin_report_bloc.dart';
+import 'view_model/contact_us_bloc/contact_us_bloc.dart';
 import 'view_model/gender_bloc/gender_bloc.dart';
 import 'view_model/location_permission_bloc/location_bloc.dart';
 import 'view_model/chat_bloc/chat_bloc.dart';
@@ -81,8 +84,11 @@ void main() async {
       BlocProvider(create: (_) => EditBloc()),
       BlocProvider(create: (_) => StoryBloc()),
       BlocProvider(create: (_) => SettingBloc()),
+      BlocProvider(create: (_) => ContactUsBloc()),
       BlocProvider(create: (_) => ProfileBloc()),
       BlocProvider(create: (_) => AdminHomeBloc()),
+      BlocProvider(create: (_) => AdminInboxBloc()),
+      BlocProvider(create: (_) => AdminReportBloc()),
       BlocProvider(create: (_) => AdminNavBloc()),
       BlocProvider(create: (_) => ChangeLanguageBloc()),
     ],

@@ -71,13 +71,15 @@ class _AdminHomeViewState extends State<AdminHomeView> {
                                             .copyWith(color: theme.textColor))),
                                 Column(
                                   children: [
-                                    const Text("verify"),
+                                    Text(state.userList[index].isVerified
+                                        ? "Verified"
+                                        : "Blocked"),
                                     Switch(
-                                        value: state.isVerify,
+                                        value: state.userList[index].isVerified,
                                         onChanged: (val) {
-                                          context
-                                              .read<AdminHomeBloc>()
-                                              .add(OnChangeVerify(val: val));
+                                          context.read<AdminHomeBloc>().add(
+                                              OnChangeVerify(
+                                                  val: val, index: index));
                                         }),
                                   ],
                                 )

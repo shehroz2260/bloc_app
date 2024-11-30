@@ -193,6 +193,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         threadId: event.threadId,
         messageDelete: listenThread?.messageDelete ?? [],
         isPending: false,
+        isAdmin: listenThread?.isAdmin ?? false,
         isBlocked: false,
         blockUserList: []);
     var thradJsom = threadModel.toMap();

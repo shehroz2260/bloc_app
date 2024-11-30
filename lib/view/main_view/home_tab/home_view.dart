@@ -39,7 +39,11 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
-    context.read<HomeBloc>().add(ONINITEvent(context: context));
+    if (context.read<UserBaseBloc>().state.userData.isVerified) {
+      context
+          .read<HomeBloc>()
+          .add(ONINITEvent(context: context, userBaseBloc: null));
+    }
     super.initState();
   }
 

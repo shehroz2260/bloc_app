@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:chat_with_bloc/model/user_model.dart';
 
 class HomeState {
@@ -11,6 +10,7 @@ class HomeState {
 
   HomeState copyWith({
     List<UserModel>? userList,
+    List<UserModel>? adminList,
     bool? isLoading,
   }) {
     return HomeState(
