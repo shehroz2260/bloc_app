@@ -5,6 +5,7 @@ import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/view_model/chat_bloc/chat_bloc.dart';
 import 'package:chat_with_bloc/view_model/chat_bloc/chat_event.dart';
 import 'package:chat_with_bloc/view_model/chat_bloc/chat_state.dart';
+import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:chat_with_bloc/widgets/user_detail_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -159,7 +160,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       ],
                     ),
                   ),
-                  if (!widget.model.isAdmin)
+                  if (!widget.model.isAdmin ||
+                      context.read<UserBaseBloc>().state.userData.isAdmin)
                     GestureDetector(
                       onTap: () async {
                         context.read<ChatBloc>().add(OpenOptions(

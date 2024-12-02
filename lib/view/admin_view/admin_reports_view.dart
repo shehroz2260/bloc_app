@@ -23,8 +23,24 @@ class _AdminReportsViewState extends State<AdminReportsView> {
     super.initState();
   }
 
+  AdminReportBloc ancestorContext = AdminReportBloc();
+  @override
+  void didChangeDependencies() {
+    ancestorContext = MyInheritedWidget(
+            bloc: context.read<AdminReportBloc>(), child: const SizedBox())
+        .bloc;
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    ancestorContext.add(OnDisposeReport());
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return BlocBuilder<AdminReportBloc, AdminReportState>(
         builder: (context, state) {
       return Column(
@@ -35,7 +51,8 @@ class _AdminReportsViewState extends State<AdminReportsView> {
             child: Column(
               children: List.generate(state.reportList.length, (index) {
                 return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   decoration: BoxDecoration(
@@ -49,11 +66,11 @@ class _AdminReportsViewState extends State<AdminReportsView> {
                         children: [
                           Text("Message: ",
                               style: AppTextStyle.font16.copyWith(
-                                  color: AppColors.blackColor,
+                                  color: theme.textColor,
                                   fontWeight: FontWeight.w600)),
                           Text(state.reportList[index].messages.first,
                               style: AppTextStyle.font16.copyWith(
-                                color: AppColors.blackColor,
+                                color: theme.textColor,
                               )),
                         ],
                       ),
@@ -61,13 +78,13 @@ class _AdminReportsViewState extends State<AdminReportsView> {
                         children: [
                           Text("Report by: ",
                               style: AppTextStyle.font16.copyWith(
-                                  color: AppColors.blackColor,
+                                  color: theme.textColor,
                                   fontWeight: FontWeight.w600)),
                           Text(
                               state.reportList[index].senderUser?.firstName ??
                                   "",
                               style: AppTextStyle.font16.copyWith(
-                                color: AppColors.blackColor,
+                                color: theme.textColor,
                               ))
                         ],
                       ),
@@ -75,13 +92,13 @@ class _AdminReportsViewState extends State<AdminReportsView> {
                         children: [
                           Text("Reported user: ",
                               style: AppTextStyle.font16.copyWith(
-                                  color: AppColors.blackColor,
+                                  color: theme.textColor,
                                   fontWeight: FontWeight.w600)),
                           Text(
                               state.reportList[index].reportUser?.firstName ??
                                   "",
                               style: AppTextStyle.font16.copyWith(
-                                color: AppColors.blackColor,
+                                color: theme.textColor,
                               ))
                         ],
                       ),
@@ -137,5 +154,26 @@ class _AdminReportsViewState extends State<AdminReportsView> {
         ],
       );
     });
+  }
+}
+
+class MyInheritedWidget extends InheritedWidget {
+  final AdminReportBloc bloc;
+
+  const MyInheritedWidget({
+    super.key,
+    required this.bloc,
+    required super.child,
+  });
+
+  // Access the BLoC from the widget tree.
+  static MyInheritedWidget? of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<MyInheritedWidget>();
+  }
+
+  @override
+  bool updateShouldNotify(covariant MyInheritedWidget oldWidget) {
+    // Notify when the BLoC changes (not needed here because BLoC is the same).
+    return false;
   }
 }

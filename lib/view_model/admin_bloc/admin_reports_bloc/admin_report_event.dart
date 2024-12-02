@@ -10,3 +10,5 @@ class ListenBlockUser extends AdminReportEvent {
     required this.val,
   });
 }
+
+class OnDisposeReport extends AdminReportEvent {}

@@ -27,7 +27,7 @@ class _AdminHomeViewState extends State<AdminHomeView> {
   final _textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    // final theme = AppTheme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -67,13 +67,16 @@ class _AdminHomeViewState extends State<AdminHomeView> {
                                 const AppWidth(width: 10),
                                 Expanded(
                                     child: Text(state.userList[index].firstName,
-                                        style: AppTextStyle.font20
-                                            .copyWith(color: theme.textColor))),
+                                        style: AppTextStyle.font20.copyWith(
+                                            color: AppColors.blackColor))),
                                 Column(
                                   children: [
-                                    Text(state.userList[index].isVerified
-                                        ? "Verified"
-                                        : "Blocked"),
+                                    Text(
+                                        state.userList[index].isVerified
+                                            ? "Verified"
+                                            : "Blocked",
+                                        style: AppTextStyle.font16.copyWith(
+                                            color: AppColors.blackColor)),
                                     Switch(
                                         value: state.userList[index].isVerified,
                                         onChanged: (val) {

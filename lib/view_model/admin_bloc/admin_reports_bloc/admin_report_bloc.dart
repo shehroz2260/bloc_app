@@ -9,6 +9,7 @@ class AdminReportBloc extends Bloc<AdminReportEvent, AdminReportState> {
   AdminReportBloc() : super(AdminReportState(reportList: [])) {
     on<OninitReports>(_oninitReports);
     on<ListenBlockUser>(_listenBlockUser);
+    on<OnDisposeReport>(_onDisposeRep);
   }
   _oninitReports(OninitReports event, Emitter<AdminReportState> emit) async {
     await FirebaseFirestore.instance
@@ -34,5 +35,9 @@ class AdminReportBloc extends Bloc<AdminReportEvent, AdminReportState> {
         .reportList[event.index].reportUser!
         .copyWith(isVerified: event.val);
     emit(state.copyWith(reportList: state.reportList));
+  }
+
+  _onDisposeRep(OnDisposeReport event, Emitter<AdminReportState> emit) {
+    emit(state.copyWith(reportList: []));
   }
 }
