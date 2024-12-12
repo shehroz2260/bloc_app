@@ -1,5 +1,6 @@
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import '../src/app_assets.dart';
 import '../src/app_colors.dart';
@@ -91,7 +92,7 @@ class CustomNewButton extends StatelessWidget {
             border: Border.all(
               color: AppColors.borderGreyColor,
             )),
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: EdgeInsets.symmetric(vertical: 16.h),
         alignment: Alignment.center,
         child: isRow
             ? Padding(

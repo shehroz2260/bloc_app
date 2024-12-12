@@ -1,5 +1,8 @@
 import 'package:chat_with_bloc/src/app_colors.dart';
+import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
+import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
+import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_state.dart';
 import 'package:chat_with_bloc/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,6 +53,27 @@ class LocationPermissionScreen extends StatelessWidget {
             ),
           ),
           const Spacer(),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Show Location Publically",
+                      style: AppTextStyle.font16
+                          .copyWith(color: AppColors.blackColor)),
+                  BlocBuilder<UserBaseBloc, UserBaseState>(
+                      builder: (context, state) {
+                    return Switch(
+                        value: state.userData.isShowLocation,
+                        onChanged: (val) {
+                          context
+                              .read<LocationBloc>()
+                              .add(OnPublically(isOn: val, context: context));
+                        });
+                  }),
+                ]),
+          ),
+          const AppHeight(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: CustomNewButton(

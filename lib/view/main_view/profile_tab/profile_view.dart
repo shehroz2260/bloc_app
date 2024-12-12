@@ -44,7 +44,7 @@ class _ProfileViewState extends State<ProfileView> {
     bool isVisited =
         LocalStorageService.storage.read(LocalStorageService.profileTabKey) ??
             false;
-    if (!isVisited && widget.index == 3) {
+    if (!isVisited && widget.index == 4) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ShowCaseWidget.of(showcaseContext!).startShowCase([key1, key2, key3]);
       });
@@ -103,7 +103,8 @@ class _ProfileViewState extends State<ProfileView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("${state.userData.firstName}, ",
+                        Text(
+                            "${state.userData.firstName} ${state.userData.lastName}, ",
                             style: AppTextStyle.font25
                                 .copyWith(color: AppColors.blackColor)),
                         Text(state.userData.age.toString(),

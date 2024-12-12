@@ -22,7 +22,8 @@ class CongratsMessageView extends StatelessWidget {
       body: Column(
         children: [
           const AppHeight(height: 30),
-          Image.asset("assets/images/png/match_message_image.png"),
+          Expanded(
+              child: Image.asset("assets/images/png/match_message_image.png")),
           Text("It’s a match, ${user.firstName}!",
               textAlign: TextAlign.center,
               style: AppTextStyle.font30.copyWith(color: AppColors.redColor)),
@@ -56,6 +57,7 @@ class CongratsMessageView extends StatelessWidget {
               isFillColor: false,
             ),
           ),
+          const AppHeight(height: 30),
         ],
       ),
     );

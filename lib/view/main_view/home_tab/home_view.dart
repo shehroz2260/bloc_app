@@ -101,7 +101,7 @@ class _HomeViewState extends State<HomeView> {
           if (state.isLoading)
             Expanded(
                 child: Center(
-              child: CircularProgressIndicator(color: AppColors.blueColor),
+              child: CircularProgressIndicator(color: AppColors.redColor),
             )),
           if (!state.isLoading && !widget.isVisited)
             Expanded(

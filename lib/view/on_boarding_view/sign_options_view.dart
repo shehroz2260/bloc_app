@@ -90,7 +90,6 @@ class SignOptionsView extends StatelessWidget {
                   const CustomSigninBtnWithSocial(isApple: true),
               ],
             ),
-            const AppHeight(height: 20),
           ],
         ),
       ),

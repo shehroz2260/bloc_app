@@ -125,52 +125,54 @@ class UserProfileView extends StatelessWidget {
                             )
                         ],
                       ),
-                      const AppHeight(height: 30),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  AppLocalizations.of(context)!.location,
-                                  style: AppTextStyle.font20.copyWith(
-                                      color: theme.textColor,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  user.location,
-                                  style: AppTextStyle.font16
-                                      .copyWith(color: theme.textColor),
-                                )
-                              ],
-                            ),
-                          ),
-                          const AppWidth(width: 5),
-                          if (!isCUser)
-                            Container(
-                              decoration: BoxDecoration(
-                                color: AppColors.redColor.withOpacity(0.15),
-                                borderRadius: BorderRadius.circular(7),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              child: Row(
+                      if (user.isShowLocation || isCUser)
+                        const AppHeight(height: 30),
+                      if (user.isShowLocation || isCUser)
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SvgPicture.asset(AppAssets.locationICon),
-                                  const AppWidth(width: 5),
                                   Text(
-                                    "${user.distance(context, null)} km",
-                                    style: AppTextStyle.font16.copyWith(
-                                        color: AppColors.redColor,
-                                        fontWeight: FontWeight.w600),
+                                    AppLocalizations.of(context)!.location,
+                                    style: AppTextStyle.font20.copyWith(
+                                        color: theme.textColor,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    user.location,
+                                    style: AppTextStyle.font16
+                                        .copyWith(color: theme.textColor),
                                   )
                                 ],
                               ),
-                            )
-                        ],
-                      ),
+                            ),
+                            const AppWidth(width: 5),
+                            if (!isCUser)
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.redColor.withOpacity(0.15),
+                                  borderRadius: BorderRadius.circular(7),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                child: Row(
+                                  children: [
+                                    SvgPicture.asset(AppAssets.locationICon),
+                                    const AppWidth(width: 5),
+                                    Text(
+                                      "${user.distance(context, null)} km",
+                                      style: AppTextStyle.font16.copyWith(
+                                          color: AppColors.redColor,
+                                          fontWeight: FontWeight.w600),
+                                    )
+                                  ],
+                                ),
+                              )
+                          ],
+                        ),
                       const AppHeight(height: 30),
                       Text(
                         AppLocalizations.of(context)!.about,

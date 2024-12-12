@@ -206,7 +206,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       itemBuilder: (context, index) {
                         var data = state.messageList[index];
                         return ChatBubble(
-                            key: UniqueKey(),
+                            key: Key(state.messageList[index].id),
                             userModel:
                                 widget.model.userDetail ?? UserModel.emptyModel,
                             data: data,

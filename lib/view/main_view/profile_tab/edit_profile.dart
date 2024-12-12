@@ -17,6 +17,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../view_model/location_permission_bloc/location_bloc.dart';
+import '../../../view_model/location_permission_bloc/location_event.dart';
 import '../../account_creation_view/preference_view.dart';
 
 class EditProfile extends StatefulWidget {
@@ -295,6 +297,24 @@ class _EditProfileState extends State<EditProfile> {
                               ),
                             );
                           }),
+                      const AppHeight(height: 20),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Show Location Publically",
+                                style: AppTextStyle.font16
+                                    .copyWith(color: AppColors.blackColor)),
+                            BlocBuilder<UserBaseBloc, UserBaseState>(
+                                builder: (context, state) {
+                              return Switch(
+                                  value: state.userData.isShowLocation,
+                                  onChanged: (val) {
+                                    context.read<LocationBloc>().add(
+                                        OnPublically(
+                                            isOn: val, context: context));
+                                  });
+                            }),
+                          ]),
                       const AppHeight(height: 20),
                     ],
                   ),

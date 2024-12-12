@@ -88,7 +88,7 @@ class HomeCard extends StatelessWidget {
             RichText(
                 text: TextSpan(children: [
               TextSpan(
-                text: "${user.firstName},",
+                text: "${user.firstName} ${user.lastName},",
                 style: TextStyle(
                   color: theme.textColor,
                   fontWeight: FontWeight.bold,

@@ -7,7 +7,7 @@ import 'package:chat_with_bloc/widgets/app_cache_image.dart';
 import 'package:chat_with_bloc/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../view_model/admin_bloc/admin_home_bloc/admin_home_event.dart';
 
 class AdminHomeView extends StatefulWidget {
@@ -37,7 +37,7 @@ class _AdminHomeViewState extends State<AdminHomeView> {
               onChange: (p0) {
                 context.read<AdminHomeBloc>().add(OnChangedTextField(val: p0));
               },
-              hintText: "Search here...",
+              hintText: AppLocalizations.of(context)!.search,
               textEditingController: _textEditingController),
           const AppHeight(height: 10),
           BlocBuilder<AdminHomeBloc, AdminHomeState>(
@@ -73,8 +73,10 @@ class _AdminHomeViewState extends State<AdminHomeView> {
                                   children: [
                                     Text(
                                         state.userList[index].isVerified
-                                            ? "Verified"
-                                            : "Blocked",
+                                            ? AppLocalizations.of(context)!
+                                                .verified
+                                            : AppLocalizations.of(context)!
+                                                .block,
                                         style: AppTextStyle.font16.copyWith(
                                             color: AppColors.blackColor)),
                                     Switch(

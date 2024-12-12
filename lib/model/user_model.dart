@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 
 class UserModel {
-  final String userName;
+  final String lastName;
   final String firstName;
   final String email;
   final String fcmToken;
@@ -24,6 +24,8 @@ class UserModel {
   final DateTime dob;
   final bool isOnline;
   final bool isAdmin;
+  final bool ignitoMode;
+  final bool isShowLocation;
   final bool isVerified;
   final bool isOnNotification;
   final String profileImage;
@@ -36,9 +38,11 @@ class UserModel {
   UserModel({
     required this.bio,
     required this.isVerified,
+    required this.isShowLocation,
     required this.isOnNotification,
+    required this.ignitoMode,
     required this.galleryImages,
-    required this.userName,
+    required this.lastName,
     required this.about,
     required this.fcmToken,
     required this.cusId,
@@ -66,7 +70,7 @@ class UserModel {
   static const String tableName = "users";
 
   UserModel copyWith({
-    String? userName,
+    String? lastName,
     String? firstName,
     String? email,
     String? uid,
@@ -83,7 +87,9 @@ class UserModel {
     DateTime? dob,
     bool? isOnline,
     bool? isAdmin,
+    bool? isShowLocation,
     bool? isVerified,
+    bool? ignitoMode,
     bool? isOnNotification,
     String? profileImage,
     List<String>? myLikes,
@@ -95,7 +101,8 @@ class UserModel {
     List<String>? matches,
   }) {
     return UserModel(
-      userName: userName ?? this.userName,
+      lastName: lastName ?? this.lastName,
+      isShowLocation: isShowLocation ?? this.isShowLocation,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       galleryImages: galleryImages ?? this.galleryImages,
       bio: bio ?? this.bio,
@@ -113,6 +120,7 @@ class UserModel {
       location: location ?? this.location,
       lat: lat ?? this.lat,
       lng: lng ?? this.lng,
+      ignitoMode: ignitoMode ?? this.ignitoMode,
       gender: gender ?? this.gender,
       preferGender: preferGender ?? this.preferGender,
       dob: dob ?? this.dob,
@@ -127,7 +135,7 @@ class UserModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'userName': userName,
+      'lastName': lastName,
       'firstName': firstName,
       'myInstrest': myInstrest,
       'email': email,
@@ -143,6 +151,8 @@ class UserModel {
       'gender': gender,
       'galleryImages': galleryImages,
       'bio': bio,
+      'ignitoMode': ignitoMode,
+      'isShowLocation': isShowLocation,
       'about': about,
       'preferGender': preferGender,
       'phoneNumber': phoneNumber,
@@ -159,7 +169,7 @@ class UserModel {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      userName: map['userName'] ?? "",
+      lastName: map['lastName'] ?? "",
       about: map['about'] ?? "",
       fcmToken: map['fcmToken'] ?? "",
       phoneNumber: map['phoneNumber'] ?? "",
@@ -173,6 +183,8 @@ class UserModel {
       lng: map['lng'] ?? 0.0,
       gender: map['gender'] ?? 0,
       isOnline: map['isOnline'] ?? false,
+      ignitoMode: map['ignitoMode'] ?? false,
+      isShowLocation: map['isShowLocation'] ?? true,
       isVerified: map['isVerified'] ?? true,
       isAdmin: map['isAdmin'] ?? false,
       isOnNotification: map['isOnNotification'] ?? false,
@@ -225,11 +237,13 @@ class UserModel {
         bio: "",
         galleryImages: [],
         isOnline: false,
+        isShowLocation: true,
         isAdmin: false,
         isVerified: false,
+        ignitoMode: false,
         isOnNotification: false,
         myInstrest: [],
-        userName: "",
+        lastName: "",
         firstName: "",
         fcmToken: "",
         cusId: "",
@@ -258,6 +272,6 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(isVerified: $isVerified, isAdmin: $isAdmin, fcmToken: $fcmToken, isOnNotification: $isOnNotification, cusId: $cusId, phoneNumber: $phoneNumber, galleryImages: $galleryImages, bio: $bio, about: $about, isOnline: $isOnline, myInstrest: $myInstrest, userName: $userName, first1Name: $firstName, email: $email, password: $password, uid: $uid, location: $location, lat: $lat, lng: $lng, gender: $gender, preferGender: $preferGender, dob: $dob, profileImage: $profileImage, myLikes: $myLikes, myDislikes: $myDislikes, otherLikes: $otherLikes, otherDislikes: $otherDislikes, matches: $matches)';
+    return 'UserModel(lastName: $lastName, ignitoMode: $ignitoMode, isShowLocation: $isShowLocation, isVerified: $isVerified, isAdmin: $isAdmin, fcmToken: $fcmToken, isOnNotification: $isOnNotification, cusId: $cusId, phoneNumber: $phoneNumber, galleryImages: $galleryImages, bio: $bio, about: $about, isOnline: $isOnline, myInstrest: $myInstrest, first1Name: $firstName, email: $email, password: $password, uid: $uid, location: $location, lat: $lat, lng: $lng, gender: $gender, preferGender: $preferGender, dob: $dob, profileImage: $profileImage, myLikes: $myLikes, myDislikes: $myDislikes, otherLikes: $otherLikes, otherDislikes: $otherDislikes, matches: $matches)';
   }
 }

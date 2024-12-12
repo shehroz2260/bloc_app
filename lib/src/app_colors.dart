@@ -43,6 +43,10 @@ abstract class AppTheme {
         : isDarkTheme
             ? ThemeMode.dark
             : ThemeMode.light;
+    if (isDarkTheme == null) {
+      LocalStorageService.storage
+          .write(kThemeModeKey, ThemeMode.system == ThemeMode.dark);
+    }
   }
 
   static void saveThemeMode(ThemeMode mode) {

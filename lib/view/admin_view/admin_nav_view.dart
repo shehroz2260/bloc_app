@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../src/app_text_style.dart';
 import '../../widgets/custom_navigation_bar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AdminNavView extends StatefulWidget {
   const AdminNavView({super.key});
@@ -55,11 +56,11 @@ class _AdminNavViewState extends State<AdminNavView> {
                     children: [
                       Text(
                           state.currentIndex == 0
-                              ? "All users"
+                              ? AppLocalizations.of(context)!.allUsers
                               : state.currentIndex == 1
-                                  ? "Reports"
+                                  ? AppLocalizations.of(context)!.reports
                                   : state.currentIndex == 2
-                                      ? "Chat with users"
+                                      ? AppLocalizations.of(context)!.messages
                                       : "",
                           style: AppTextStyle.font25
                               .copyWith(color: theme.textColor)),

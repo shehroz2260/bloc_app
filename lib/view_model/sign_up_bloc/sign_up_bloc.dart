@@ -27,14 +27,16 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     try {
       UserModel user = UserModel(
         phoneNumber: "",
-        userName: event.nameController.text,
         email: event.emailController.text,
         profileImage: "",
         uid: "",
+        lastName: "",
         firstName: "",
         isOnline: false,
         isVerified: true,
+        isShowLocation: true,
         isAdmin: false,
+        ignitoMode: false,
         isOnNotification: false,
         location: "",
         cusId: "",
@@ -57,7 +59,6 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
       user.password = event.passwordController.text;
       event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
       await AuthServices.signupUser(user, event.context);
-      event.nameController.clear();
       event.emailController.clear();
       event.passwordController.clear();
       LoadingDialog.hideProgress(event.context);

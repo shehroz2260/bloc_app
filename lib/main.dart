@@ -9,6 +9,7 @@ import 'package:chat_with_bloc/view_model/change_language/change_language_state.
 import 'package:chat_with_bloc/view_model/change_theme_bloc/change_theme_bloc.dart';
 import 'package:chat_with_bloc/view_model/change_theme_bloc/change_theme_event.dart';
 import 'package:chat_with_bloc/view_model/change_theme_bloc/change_theme_state.dart';
+import 'package:chat_with_bloc/view_model/create_post_bloc/create_post_bloc.dart';
 import 'package:chat_with_bloc/view_model/profile_bloc/profile_bloc.dart';
 import 'package:chat_with_bloc/view_model/setting_bloc/setting_bloc.dart';
 import 'package:chat_with_bloc/view_model/story_bloc/story_bloc.dart';
@@ -43,6 +44,7 @@ import 'utils/notification_utils.dart';
 import 'view_model/admin_bloc/admin_home_bloc/admin_home_bloc.dart';
 import 'view_model/admin_bloc/admin_inbox_bloc/admin_inbox_bloc.dart';
 import 'view_model/admin_bloc/admin_reports_bloc/admin_report_bloc.dart';
+import 'view_model/chat_bloc/post_bloc/post_bloc.dart';
 import 'view_model/contact_us_bloc/contact_us_bloc.dart';
 import 'view_model/gender_bloc/gender_bloc.dart';
 import 'view_model/location_permission_bloc/location_bloc.dart';
@@ -85,6 +87,8 @@ void main() async {
       BlocProvider(create: (_) => StoryBloc()),
       BlocProvider(create: (_) => SettingBloc()),
       BlocProvider(create: (_) => ContactUsBloc()),
+      BlocProvider(create: (_) => PostBloc()),
+      BlocProvider(create: (_) => CreatePostBloc()),
       BlocProvider(create: (_) => ProfileBloc()),
       BlocProvider(create: (_) => AdminHomeBloc()),
       BlocProvider(create: (_) => AdminInboxBloc()),
@@ -182,3 +186,88 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     );
   }
 }
+
+// class AudioPage extends StatefulWidget {
+//   const AudioPage({super.key});
+
+//   @override
+//   AudioPageState createState() => AudioPageState();
+// }
+
+// class AudioPageState extends State<AudioPage> {
+//   final FlutterSoundRecorder _recorder = FlutterSoundRecorder();
+//   final FlutterSoundPlayer _player = FlutterSoundPlayer();
+
+//   bool _isRecording = false;
+//   String _audioFilePath = '';
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _initializeRecorder();
+//     _initializePlayer();
+//   }
+
+//   Future<void> _initializeRecorder() async {
+//     await _recorder.openRecorder();
+//   }
+
+//   Future<void> _initializePlayer() async {
+//     await _player.openPlayer();
+//   }
+
+//   Future<String> _getFilePath() async {
+//     final directory = await getApplicationDocumentsDirectory();
+//     return '${directory.path}/audio_example.aac';
+//   }
+
+//   Future<void> _startRecording() async {
+//     String filePath = await _getFilePath();
+//     await _recorder.startRecorder(toFile: filePath);
+//     setState(() {
+//       _isRecording = true;
+//       _audioFilePath = filePath;
+//     });
+//   }
+
+//   Future<void> _stopRecording() async {
+//     await _recorder.stopRecorder();
+//     setState(() {
+//       _isRecording = false;
+//     });
+//   }
+
+//   Future<void> _playRecording() async {
+//     await _player.startPlayer(fromURI: _audioFilePath);
+//   }
+
+//   @override
+//   void dispose() {
+//     _recorder.closeRecorder();
+//     _player.closePlayer();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(title: const Text('Flutter Sound Example')),
+//       body: Center(
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: <Widget>[
+//             ElevatedButton(
+//               onPressed: _isRecording ? _stopRecording : _startRecording,
+//               child: Text(_isRecording ? 'Stop Recording' : 'Start Recording'),
+//             ),
+//             const SizedBox(height: 20),
+//             ElevatedButton(
+//               onPressed: _playRecording,
+//               child: const Text('Play Recorded Sound'),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

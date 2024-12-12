@@ -17,6 +17,7 @@ class CustomTextField extends StatefulWidget {
   final bool? enabled;
   final bool isSowPrefixcon;
   final Widget? prefixIcon;
+  final Widget? sufixIcon;
   final String? labelText;
   final int? maxLength;
   final int? errorMaxLines;
@@ -29,6 +30,7 @@ class CustomTextField extends StatefulWidget {
       this.autofocus = false,
       this.prefixIcon,
       this.keyboardType,
+      this.sufixIcon,
       this.maxLength,
       this.enabled,
       this.maxLines = 1,
@@ -75,17 +77,18 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 : null),
         labelText: widget.labelText,
         floatingLabelBehavior: widget.floatingLabelBehavior,
-        suffixIcon: widget.isPasswordField
-            ? Padding(
-                padding: const EdgeInsets.all(5),
-                child: GestureDetector(
-                    onTap: visiblePassword,
-                    child: Icon(
-                      isVisible ? Icons.visibility : Icons.visibility_off,
-                      color: AppColors.redColor,
-                    )),
-              )
-            : null,
+        suffixIcon: widget.sufixIcon ??
+            (widget.isPasswordField
+                ? Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: GestureDetector(
+                        onTap: visiblePassword,
+                        child: Icon(
+                          isVisible ? Icons.visibility : Icons.visibility_off,
+                          color: AppColors.redColor,
+                        )),
+                  )
+                : null),
         focusedErrorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
             borderSide: BorderSide(color: AppColors.borderGreyColor, width: 1)),

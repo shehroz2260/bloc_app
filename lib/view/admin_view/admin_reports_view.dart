@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../view_model/admin_bloc/admin_home_bloc/admin_home_event.dart';
 import '../../view_model/admin_bloc/admin_reports_bloc/admin_report_bloc.dart';
 import '../../view_model/admin_bloc/admin_reports_bloc/admin_report_event.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AdminReportsView extends StatefulWidget {
   const AdminReportsView({super.key});
@@ -64,7 +65,7 @@ class _AdminReportsViewState extends State<AdminReportsView> {
                     children: [
                       Row(
                         children: [
-                          Text("Message: ",
+                          Text("${AppLocalizations.of(context)!.reason}: ",
                               style: AppTextStyle.font16.copyWith(
                                   color: theme.textColor,
                                   fontWeight: FontWeight.w600)),
@@ -76,7 +77,7 @@ class _AdminReportsViewState extends State<AdminReportsView> {
                       ),
                       Row(
                         children: [
-                          Text("Report by: ",
+                          Text("${AppLocalizations.of(context)!.reportBy}: ",
                               style: AppTextStyle.font16.copyWith(
                                   color: theme.textColor,
                                   fontWeight: FontWeight.w600)),

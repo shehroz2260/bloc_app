@@ -11,12 +11,14 @@ class CustomNavigationBar extends StatelessWidget {
       required this.currentIndex,
       required this.key7,
       required this.key8,
+      required this.key10,
       required this.key9});
   final void Function(int) ontap;
   final int currentIndex;
   final GlobalKey key7;
   final GlobalKey key8;
   final GlobalKey key9;
+  final GlobalKey key10;
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
@@ -46,12 +48,14 @@ class CustomNavigationBar extends StatelessWidget {
                           ? key8
                           : index == 3
                               ? key9
-                              : GlobalKey(),
+                              : index == 4
+                                  ? key10
+                                  : GlobalKey(),
                   child: SvgPicture.asset(
                       index == currentIndex
                           ? iconLists[index]
                           : unSelectedIconLists[index],
-                      colorFilter: index == 3 && currentIndex == 3
+                      colorFilter: index == 4 && currentIndex == 4
                           ? ColorFilter.mode(
                               AppColors.redColor, BlendMode.srcIn)
                           : null,
@@ -71,19 +75,22 @@ List<String> iconLists = [
   "assets/images/svg/cards.svg",
   "assets/images/svg/selectedIndicator.svg",
   "assets/images/svg/selectedMessage.svg",
+  "assets/images/svg/selected_posts.svg",
   "assets/images/svg/people.svg"
 ];
 List<String> diss = [
   "",
   "Click this tab to see yours likes",
   "Click this tab to chat with your matches",
+  "",
   "Click this tab to see your profile"
 ];
-List<String> title = ["", "Likes", "Chat", "Profile"];
+List<String> title = ["", "Likes", "Chat", "Posts", "Profile"];
 List<String> unSelectedIconLists = [
   "assets/images/svg/unSelectedCard.svg",
   "assets/images/svg/indicator.svg",
   "assets/images/svg/message.svg",
+  "assets/images/svg/posts.svg",
   "assets/images/svg/people.svg"
 ];
 
