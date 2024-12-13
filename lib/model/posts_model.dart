@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'user_model.dart';
 
 class PostsModel {
   static const tableName = "posts";
@@ -9,6 +10,7 @@ class PostsModel {
   final String avatar;
   final String userName;
   final List<dynamic> imageList;
+  UserModel? userDetail;
   final DateTime createdAt;
   PostsModel({
     required this.id,

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:chat_with_bloc/model/posts_model.dart';
+import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,7 +28,7 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         .orderBy("createdAt", descending: true)
         .limit(1);
 
-    subs = ref.snapshots().listen((value) {
+    subs = ref.snapshots().listen((value) async {
       if (value.docs.isEmpty) return;
       var chat = PostsModel.fromMap(value.docs[0].data());
       if (state.postList.where((e) => e.id == chat.id).isNotEmpty) return;
@@ -40,6 +41,11 @@ class PostBloc extends Bloc<PostEvent, PostState> {
           chat.uid != event.context.read<UserBaseBloc>().state.userData.uid) {
         return;
       }
+      final snapShow = await FirebaseFirestore.instance
+          .collection(UserModel.tableName)
+          .doc(chat.uid)
+          .get();
+      chat.userDetail = UserModel.fromMap(snapShow.data()!);
       add(ListPostModel(postsModel: chat));
     });
   }
@@ -53,11 +59,15 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     if (state.limit < 20) {
       return;
     }
-    final snapShot = await FirebaseFirestore.instance
+    Query<Map<String, dynamic>> snapShotQuery;
+    snapShotQuery = FirebaseFirestore.instance
         .collection(PostsModel.tableName)
         .orderBy("createdAt", descending: true)
-        .limit(20)
-        .get();
+        .limit(20);
+    if (lastDocument != null) {
+      snapShotQuery = snapShotQuery.startAfterDocument(lastDocument!);
+    }
+    final snapShot = await snapShotQuery.get();
     List<PostsModel> messagesLIst = [];
     for (final e in snapShot.docs) {
       final model = PostsModel.fromMap(e.data());
@@ -71,6 +81,11 @@ class PostBloc extends Bloc<PostEvent, PostState> {
         continue;
       }
       lastDocument = e;
+      final snapShow = await FirebaseFirestore.instance
+          .collection(UserModel.tableName)
+          .doc(model.uid)
+          .get();
+      model.userDetail = UserModel.fromMap(snapShow.data()!);
       messagesLIst.add(model);
     }
     // var messagesLIst = snapShot.docs.map((e) {

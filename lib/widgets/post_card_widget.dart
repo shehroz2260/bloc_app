@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'package:chat_with_bloc/src/go_file.dart';
+import 'package:chat_with_bloc/view/main_view/posts_tab/comment_view.dart';
+import 'package:chat_with_bloc/widgets/image_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -60,17 +63,39 @@ class _PostCardsState extends State<PostCards> {
           Row(
             children: [
               AppCacheImage(
-                imageUrl: widget.data.avatar,
+                onTap: () {
+                  Go.to(
+                      context,
+                      ImageView(
+                          imageUrl:
+                              widget.data.userDetail?.profileImage ?? ""));
+                },
+                imageUrl: widget.data.userDetail?.profileImage ?? "",
                 height: 50,
                 width: 50,
                 round: 50,
               ),
               const AppWidth(width: 10),
-              Text(widget.data.userName)
+              Text(
+                  "${widget.data.userDetail?.firstName ?? ""} ${widget.data.userDetail?.lastName ?? ""}")
             ],
           ),
           const AppHeight(height: 10),
-          if (widget.data.imageList.isNotEmpty)
+          if (widget.data.imageList.isNotEmpty &&
+              widget.data.imageList.length == 1)
+            AppCacheImage(
+              imageUrl: widget.data.imageList.first,
+              width: double.infinity,
+              onTap: () {
+                Go.to(
+                    context, ImageView(imageUrl: widget.data.imageList.first));
+              },
+              height: 150,
+              boxFit: BoxFit.fill,
+              round: 20,
+            ),
+          if (widget.data.imageList.isNotEmpty &&
+              widget.data.imageList.length > 2)
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
@@ -78,6 +103,11 @@ class _PostCardsState extends State<PostCards> {
                   return Padding(
                     padding: const EdgeInsets.only(right: 10),
                     child: AppCacheImage(
+                      onTap: () {
+                        Go.to(context,
+                            ImageView(imageUrl: widget.data.imageList[index]));
+                      },
+                      boxFit: BoxFit.fill,
                       imageUrl: widget.data.imageList[index],
                       height: 150,
                       width: 200,
@@ -104,7 +134,6 @@ class _PostCardsState extends State<PostCards> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        print("^^^^^^^^^^^^^^^^^");
                         LikeModel model = LikeModel(
                             likeruid:
                                 FirebaseAuth.instance.currentUser?.uid ?? "");
@@ -118,7 +147,11 @@ class _PostCardsState extends State<PostCards> {
                     Text(likes.toString())
                   ],
                 ),
-                const Text("Comment"),
+                GestureDetector(
+                    onTap: () {
+                      Go.to(context, CommentView(postsModel: widget.data));
+                    },
+                    child: const Text("Comment")),
                 const Icon(Icons.share)
               ],
             ),
