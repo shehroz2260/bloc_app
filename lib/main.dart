@@ -47,6 +47,7 @@ import 'view_model/admin_bloc/admin_reports_bloc/admin_report_bloc.dart';
 import 'view_model/chat_bloc/post_bloc/post_bloc.dart';
 import 'view_model/contact_us_bloc/contact_us_bloc.dart';
 import 'view_model/gender_bloc/gender_bloc.dart';
+import 'view_model/language_from_onbo_bloc/language_from_onbo_bloc.dart';
 import 'view_model/location_permission_bloc/location_bloc.dart';
 import 'view_model/chat_bloc/chat_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -90,6 +91,7 @@ void main() async {
       BlocProvider(create: (_) => PostBloc()),
       BlocProvider(create: (_) => CreatePostBloc()),
       BlocProvider(create: (_) => ProfileBloc()),
+      BlocProvider(create: (_) => LanguageFromOnboBloc()),
       BlocProvider(create: (_) => AdminHomeBloc()),
       BlocProvider(create: (_) => AdminInboxBloc()),
       BlocProvider(create: (_) => AdminReportBloc()),

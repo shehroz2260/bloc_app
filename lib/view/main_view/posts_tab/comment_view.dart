@@ -14,6 +14,7 @@ import 'package:intl/intl.dart';
 import '../../../src/app_text_style.dart';
 import '../../../src/width_hieght.dart';
 import '../../../widgets/custom_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CommentView extends StatefulWidget {
   final PostsModel postsModel;
@@ -136,7 +137,7 @@ class _CommentViewState extends State<CommentView> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const CustomBackButton(),
-                Text("Comments",
+                Text(AppLocalizations.of(context)!.comments,
                     style:
                         AppTextStyle.font25.copyWith(color: theme.textColor)),
                 const AppWidth(width: 50)
@@ -203,7 +204,7 @@ class _CommentViewState extends State<CommentView> {
               children: [
                 Expanded(
                   child: CustomTextField(
-                    hintText: "Enter comment",
+                    hintText: AppLocalizations.of(context)!.enterComment,
                     textEditingController: _commentController,
                   ),
                 ),
@@ -213,7 +214,8 @@ class _CommentViewState extends State<CommentView> {
                       if (_commentController.text.isEmpty) {
                         showOkAlertDialog(
                             context: context,
-                            message: "Enter something",
+                            message:
+                                AppLocalizations.of(context)!.enterSomeThing,
                             title: "Error");
                         return;
                       }

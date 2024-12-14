@@ -9,6 +9,7 @@ import '../../../src/app_text_style.dart';
 import '../../../src/width_hieght.dart';
 import '../../../view_model/chat_bloc/post_bloc/post_event.dart';
 import '../../../widgets/post_card_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PostsView extends StatefulWidget {
   const PostsView({
@@ -64,7 +65,7 @@ class _PostsViewState extends State<PostsView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Posts",
+                Text(AppLocalizations.of(context)!.posts,
                     style:
                         AppTextStyle.font25.copyWith(color: theme.textColor)),
                 GestureDetector(

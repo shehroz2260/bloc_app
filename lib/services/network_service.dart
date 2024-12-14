@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/model/user_model.dart';
 import 'package:chat_with_bloc/services/auth_services.dart';
+import 'package:chat_with_bloc/services/local_storage_service.dart';
 import 'package:chat_with_bloc/src/app_string.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/utils/app_funcs.dart';
@@ -26,15 +27,23 @@ import '../utils/notification_utils.dart';
 import '../view/account_creation_view/location_view.dart';
 import '../view/admin_view/admin_nav_view.dart';
 import '../view/main_view/home_tab/congrats_message_view.dart';
+import '../view/on_boarding_view/language_from_onboarding.dart';
 import '../view_model/user_base_bloc/user_base_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NetworkService {
   static Future<void> gotoHomeScreen(BuildContext context,
       [bool isSplash = false]) async {
+    bool isVisited = LocalStorageService.storage
+            .read(LocalStorageService.forLanguageVisitedScreen) ??
+        false;
     var isLoadData = await AuthServices.isLoadData(context);
     if (isSplash && !isLoadData) {
-      Go.offAll(context, const OnBoardingScreen());
+      if (isVisited) {
+        Go.offAll(context, const OnBoardingScreen());
+      } else {
+        Go.offAll(context, const LanguageFromOnboarding());
+      }
       return;
     }
     StreamSubscription<UserBaseState>? sub;

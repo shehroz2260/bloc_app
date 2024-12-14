@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/view_model/create_post_bloc/create_post_bloc.dart';
 import 'package:chat_with_bloc/view_model/create_post_bloc/create_post_state.dart';
@@ -10,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../src/app_text_style.dart';
 import '../../../src/width_hieght.dart';
 import '../../../view_model/create_post_bloc/create_post_event.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CreatePostView extends StatefulWidget {
   const CreatePostView({super.key});
@@ -35,7 +35,7 @@ class _CreatePostViewState extends State<CreatePostView> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const CustomBackButton(),
-                Text("Create Post",
+                Text(AppLocalizations.of(context)!.createPost,
                     style:
                         AppTextStyle.font25.copyWith(color: theme.textColor)),
                 // const AppWidth(width: 50)
@@ -51,7 +51,7 @@ class _CreatePostViewState extends State<CreatePostView> {
                         borderRadius: BorderRadius.circular(25),
                         color: AppColors.redColor),
                     child: Text(
-                      "Post",
+                      AppLocalizations.of(context)!.post,
                       style: AppTextStyle.font16,
                     ),
                   ),
@@ -65,7 +65,7 @@ class _CreatePostViewState extends State<CreatePostView> {
                 children: [
                   CustomTextField(
                     textEditingController: _textController,
-                    hintText: "Whats on your mind",
+                    hintText: AppLocalizations.of(context)!.whatsOnYourMind,
                     maxLines: 5,
                   ),
                   const AppHeight(height: 20),
@@ -85,7 +85,7 @@ class _CreatePostViewState extends State<CreatePostView> {
                   children: [
                     if (state.images.isEmpty)
                       Text(
-                        "Images",
+                        AppLocalizations.of(context)!.images,
                         style: AppTextStyle.font20.copyWith(color: Colors.grey),
                       ),
                     if (state.images.isNotEmpty)

@@ -120,10 +120,10 @@ class _ProfileViewState extends State<ProfileView> {
                           padding: EdgeInsets.only(bottom: 40.h),
                           child: Showcaseview(
                             globalKey: key1,
-                            title: "Settings",
+                            title: AppLocalizations.of(context)!.settings,
                             tooltipPosition: TooltipPosition.bottom,
                             description:
-                                "Click to change theme, change language, mute notifications , change password , delete account and loug out",
+                                AppLocalizations.of(context)!.settingInS1,
                             child: ProfileWidget(
                               title: AppLocalizations.of(context)!.settings,
                               icon: AppAssets.settingICon,
@@ -137,9 +137,10 @@ class _ProfileViewState extends State<ProfileView> {
                           padding: EdgeInsets.only(top: 50.h),
                           child: Showcaseview(
                             globalKey: key2,
-                            title: "Edit profile",
+                            title: AppLocalizations.of(context)!.editProfile,
                             tooltipPosition: TooltipPosition.bottom,
-                            description: "Click to edit profile",
+                            description:
+                                AppLocalizations.of(context)!.settingInS2,
                             child: ProfileWidget(
                               title: AppLocalizations.of(context)!.editProfile,
                               icon: AppAssets.pencilICon,
@@ -153,10 +154,10 @@ class _ProfileViewState extends State<ProfileView> {
                           padding: EdgeInsets.only(bottom: 40.h),
                           child: Showcaseview(
                             globalKey: key3,
-                            title: "Gallery",
+                            title: AppLocalizations.of(context)!.gallery,
                             tooltipPosition: TooltipPosition.bottom,
                             description:
-                                "Click to add and remove Photos in gallery",
+                                AppLocalizations.of(context)!.settingInS3,
                             child: ProfileWidget(
                               title: AppLocalizations.of(context)!.gallery,
                               icon: '',

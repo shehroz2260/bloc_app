@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:showcaseview/showcaseview.dart';
 import '../src/app_colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomNavigationBar extends StatelessWidget {
   const CustomNavigationBar(
@@ -38,7 +39,7 @@ class CustomNavigationBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Showcaseview(
-                  description: diss[index],
+                  description: diss(context)[index],
                   title: title[index],
                   targetBorderRadius: BorderRadius.circular(50),
                   tooltipPosition: TooltipPosition.top,
@@ -78,13 +79,16 @@ List<String> iconLists = [
   "assets/images/svg/selected_posts.svg",
   "assets/images/svg/people.svg"
 ];
-List<String> diss = [
-  "",
-  "Click this tab to see yours likes",
-  "Click this tab to chat with your matches",
-  "",
-  "Click this tab to see your profile"
-];
+List<String> diss(BuildContext context) {
+  return [
+    "",
+    AppLocalizations.of(context)!.navInst1,
+    AppLocalizations.of(context)!.navInst2,
+    AppLocalizations.of(context)!.navInst3,
+    AppLocalizations.of(context)!.navInst4
+  ];
+}
+
 List<String> title = ["", "Likes", "Chat", "Posts", "Profile"];
 List<String> unSelectedIconLists = [
   "assets/images/svg/unSelectedCard.svg",

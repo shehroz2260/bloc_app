@@ -12,6 +12,7 @@ import '../view_model/home_bloc/home_bloc.dart';
 import '../view_model/home_bloc/home_event.dart';
 import 'app_cache_image.dart';
 import 'show_case_widget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeCard extends StatelessWidget {
   const HomeCard({
@@ -159,8 +160,9 @@ class HomeCardForMessage extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Showcaseview(
                   globalKey: key7,
-                  description: "Swipe up and down to explore",
-                  title: "Find Match",
+                  description:
+                      AppLocalizations.of(context)!.swipeUpAndDownToExplore,
+                  title: AppLocalizations.of(context)!.findMatch,
                   tooltipPosition: TooltipPosition.bottom,
                   targetBorderRadius: BorderRadius.circular(40),
                   child: const SizedBox(),
@@ -173,8 +175,9 @@ class HomeCardForMessage extends StatelessWidget {
                   children: [
                     Showcaseview(
                       globalKey: key3,
-                      description: "Click to see user info",
-                      title: "Info",
+                      description:
+                          AppLocalizations.of(context)!.clickToSeeUserInfo,
+                      title: AppLocalizations.of(context)!.info,
                       tooltipPosition: TooltipPosition.top,
                       targetBorderRadius: BorderRadius.circular(40),
                       child: WidgetForLikeorDislike(
@@ -183,30 +186,33 @@ class HomeCardForMessage extends StatelessWidget {
                     const SizedBox(height: 15),
                     Showcaseview(
                       targetBorderRadius: BorderRadius.circular(40),
-                      description: "Click to like user",
+                      description:
+                          AppLocalizations.of(context)!.clickToLikeUser,
                       globalKey: key4,
                       tooltipPosition: TooltipPosition.top,
-                      title: "Like",
+                      title: AppLocalizations.of(context)!.like,
                       child: WidgetForLikeorDislike(
                           icon: Icons.favorite, onTap: () {}),
                     ),
                     const SizedBox(height: 15),
                     Showcaseview(
                       targetBorderRadius: BorderRadius.circular(40),
-                      description: "Click if you don't want to match",
+                      description: AppLocalizations.of(context)!
+                          .clickIfYouDontWantToMatch,
                       globalKey: key5,
                       tooltipPosition: TooltipPosition.top,
-                      title: "Not your match",
+                      title: AppLocalizations.of(context)!.notYourMatch,
                       child: WidgetForLikeorDislike(
                           icon: Icons.remove, onTap: () {}),
                     ),
                     const SizedBox(height: 15),
                     Showcaseview(
                       targetBorderRadius: BorderRadius.circular(40),
-                      description: "Click if you want to report user",
+                      description: AppLocalizations.of(context)!
+                          .clickIfYouWantToReportUser,
                       globalKey: key6,
                       tooltipPosition: TooltipPosition.top,
-                      title: "Report",
+                      title: AppLocalizations.of(context)!.report,
                       child: WidgetForLikeorDislike(
                           icon: Icons.report, onTap: () {}),
                     ),

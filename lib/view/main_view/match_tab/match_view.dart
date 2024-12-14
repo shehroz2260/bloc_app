@@ -83,10 +83,10 @@ class _MatchTabState extends State<MatchTab> {
                   child: Row(
                     children: [
                       Showcaseview(
-                        description:
-                            "Click this tab to see who likes your profile",
+                        description: AppLocalizations.of(context)!
+                            .clickThisTabToSeeWhoLikesYourProfile,
                         globalKey: key1,
-                        title: "Likes",
+                        title: AppLocalizations.of(context)!.likes,
                         tooltipPosition: TooltipPosition.bottom,
                         child: GestureDetector(
                           onTap: () {
@@ -130,9 +130,10 @@ class _MatchTabState extends State<MatchTab> {
                       ),
                       const AppWidth(width: 15),
                       Showcaseview(
-                        description: "Click this tab to see your matched",
+                        description: AppLocalizations.of(context)!
+                            .clickThisTabToSeeYourMatched,
                         globalKey: key2,
-                        title: "matched",
+                        title: AppLocalizations.of(context)!.matched,
                         tooltipPosition: TooltipPosition.bottom,
                         child: GestureDetector(
                           onTap: () {

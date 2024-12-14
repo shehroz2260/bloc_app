@@ -74,9 +74,10 @@ class _HomeViewState extends State<HomeView> {
                         AppTextStyle.font25.copyWith(color: theme.textColor)),
                 Showcaseview(
                   targetBorderRadius: BorderRadius.circular(20),
-                  description: "Click to search people by filter",
+                  description:
+                      AppLocalizations.of(context)!.clickToSearchPeopleByFilter,
                   globalKey: widget.key1,
-                  title: "Filter",
+                  title: AppLocalizations.of(context)!.filter,
                   child: GestureDetector(
                     onTap: () {
                       CustomDialogs.openFilterDialog(context, ancestorContext);
