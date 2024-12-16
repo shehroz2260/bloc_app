@@ -1,6 +1,8 @@
 import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
+import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
+import 'package:chat_with_bloc/view/main_view/main_view.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_state.dart';
 import 'package:chat_with_bloc/widgets/custom_button.dart';
@@ -82,6 +84,14 @@ class LocationPermissionScreen extends StatelessWidget {
                       context: context, isFromOnboard: isFromOnboard)),
               btnName: AppLocalizations.of(context)!.enableLocation,
             ),
+          ),
+          const AppHeight(height: 20),
+          GestureDetector(
+            onTap: () {
+              Go.offAll(context, const MainView());
+            },
+            child: Text("Skip",
+                style: AppTextStyle.font20.copyWith(color: theme.textColor)),
           ),
           const SizedBox(height: 30),
         ],

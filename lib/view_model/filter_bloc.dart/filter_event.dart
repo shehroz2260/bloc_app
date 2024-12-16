@@ -8,8 +8,10 @@ abstract class FilterEvent {}
 
 class ONChangedAges extends FilterEvent {
   final SfRangeValues onChanged;
+  final BuildContext context;
   ONChangedAges({
     required this.onChanged,
+    required this.context,
   });
 }
 

@@ -12,6 +12,7 @@ class AppColors {
   static Color borderColor = const Color(0xffF3F3F3);
   static Color borderGreyColor = const Color(0xffE8E6EA);
   static Color redColor = const Color(0xffE94057);
+  static Color pinkColor = const Color(0xffFE6897);
   static Color blueColor = Colors.blue.shade600;
 }
 
