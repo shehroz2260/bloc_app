@@ -17,6 +17,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../view_model/location_permission_bloc/location_bloc.dart';
+import '../../../view_model/location_permission_bloc/location_event.dart';
 import '../../account_creation_view/preference_view.dart';
 
 class EditProfile extends StatefulWidget {
@@ -43,6 +45,7 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   final _nameController = TextEditingController();
+  final _lastNameController = TextEditingController();
   final _bioController = TextEditingController();
   final _aboutController = TextEditingController();
   @override
@@ -50,6 +53,7 @@ class _EditProfileState extends State<EditProfile> {
     final user = context.read<UserBaseBloc>().state.userData;
     _nameController.text = user.firstName;
     _bioController.text = user.bio;
+    _lastNameController.text = user.lastName;
     _aboutController.text = user.about;
     super.initState();
   }
@@ -153,6 +157,14 @@ class _EditProfileState extends State<EditProfile> {
                               hintText:
                                   AppLocalizations.of(context)!.enterFirstName,
                               textEditingController: _nameController,
+                              validator: (val) =>
+                                  AppValidation.nameValidation(val, context),
+                            ),
+                            const AppHeight(height: 20),
+                            CustomTextField(
+                              hintText: AppLocalizations.of(context)!
+                                  .enterYourLastName,
+                              textEditingController: _lastNameController,
                               validator: (val) =>
                                   AppValidation.nameValidation(val, context),
                             ),
@@ -296,6 +308,24 @@ class _EditProfileState extends State<EditProfile> {
                             );
                           }),
                       const AppHeight(height: 20),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Show Location Publically",
+                                style: AppTextStyle.font16
+                                    .copyWith(color: AppColors.blackColor)),
+                            BlocBuilder<UserBaseBloc, UserBaseState>(
+                                builder: (context, state) {
+                              return Switch(
+                                  value: state.userData.isShowLocation,
+                                  onChanged: (val) {
+                                    context.read<LocationBloc>().add(
+                                        OnPublically(
+                                            isOn: val, context: context));
+                                  });
+                            }),
+                          ]),
+                      const AppHeight(height: 20),
                     ],
                   ),
                 )),
@@ -306,6 +336,7 @@ class _EditProfileState extends State<EditProfile> {
                       if (!_formKey.currentState!.validate()) return;
                       context.read<EditBloc>().add(UpdateUser(
                           context: context,
+                          lastName: _lastNameController.text,
                           firstName: _nameController.text,
                           bio: _bioController.text,
                           about: _aboutController.text));

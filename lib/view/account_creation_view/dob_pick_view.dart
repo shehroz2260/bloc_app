@@ -24,6 +24,7 @@ class DobPickView extends StatefulWidget {
 class _DobPickViewState extends State<DobPickView> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
+  final _lastNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
@@ -103,8 +104,16 @@ class _DobPickViewState extends State<DobPickView> {
                       labelText: AppLocalizations.of(context)!.firsyName,
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       textEditingController: _nameController,
+                      onChange: (p0) {},
                       validator: (val) =>
                           AppValidation.nameValidation(val, context)),
+                  const AppHeight(height: 20),
+                  CustomTextField(
+                    hintText: AppLocalizations.of(context)!.optionals,
+                    labelText: AppLocalizations.of(context)!.lastName,
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    textEditingController: _lastNameController,
+                  ),
                   const AppHeight(height: 20),
                   CustomNewButton(
                     btnName: state.dob == null
@@ -133,6 +142,7 @@ class _DobPickViewState extends State<DobPickView> {
                         context.read<DobBloc>().add(OnNextEvent(
                             context: context,
                             formKey: _formKey,
+                            lastController: _lastNameController,
                             nameController: _nameController));
                       }),
                   const AppHeight(height: 30)

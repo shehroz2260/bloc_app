@@ -7,7 +7,7 @@ import 'package:chat_with_bloc/widgets/app_cache_image.dart';
 import 'package:chat_with_bloc/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../view_model/admin_bloc/admin_home_bloc/admin_home_event.dart';
 
 class AdminHomeView extends StatefulWidget {
@@ -27,7 +27,7 @@ class _AdminHomeViewState extends State<AdminHomeView> {
   final _textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final theme = AppTheme.of(context);
+    // final theme = AppTheme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -37,7 +37,7 @@ class _AdminHomeViewState extends State<AdminHomeView> {
               onChange: (p0) {
                 context.read<AdminHomeBloc>().add(OnChangedTextField(val: p0));
               },
-              hintText: "Search here...",
+              hintText: AppLocalizations.of(context)!.search,
               textEditingController: _textEditingController),
           const AppHeight(height: 10),
           BlocBuilder<AdminHomeBloc, AdminHomeState>(
@@ -67,13 +67,18 @@ class _AdminHomeViewState extends State<AdminHomeView> {
                                 const AppWidth(width: 10),
                                 Expanded(
                                     child: Text(state.userList[index].firstName,
-                                        style: AppTextStyle.font20
-                                            .copyWith(color: theme.textColor))),
+                                        style: AppTextStyle.font20.copyWith(
+                                            color: AppColors.blackColor))),
                                 Column(
                                   children: [
-                                    Text(state.userList[index].isVerified
-                                        ? "Verified"
-                                        : "Blocked"),
+                                    Text(
+                                        state.userList[index].isVerified
+                                            ? AppLocalizations.of(context)!
+                                                .verified
+                                            : AppLocalizations.of(context)!
+                                                .block,
+                                        style: AppTextStyle.font16.copyWith(
+                                            color: AppColors.blackColor)),
                                     Switch(
                                         value: state.userList[index].isVerified,
                                         onChanged: (val) {

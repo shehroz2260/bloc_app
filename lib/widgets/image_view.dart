@@ -18,6 +18,7 @@ class ImageView extends StatelessWidget {
               imageUrl: imageUrl,
               height: double.infinity,
               round: 0,
+              boxFit: BoxFit.contain,
               width: double.infinity,
             ),
           ),

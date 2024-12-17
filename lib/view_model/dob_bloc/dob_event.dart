@@ -17,11 +17,13 @@ class ImagePickerEvent extends DobEvent {
 
 class OnNextEvent extends DobEvent {
   final TextEditingController nameController;
+  final TextEditingController lastController;
   final BuildContext context;
   final GlobalKey<FormState> formKey;
   OnNextEvent({
     required this.context,
     required this.nameController,
+    required this.lastController,
     required this.formKey,
   });
 }

@@ -3,6 +3,8 @@ import 'package:chat_with_bloc/repos/filter_repo.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/utils/loading_dialog.dart';
 import 'package:chat_with_bloc/view_model/home_bloc/home_bloc.dart';
+import 'package:permission_handler/permission_handler.dart';
+import '../../view/account_creation_view/location_view.dart';
 import '../home_bloc/home_event.dart';
 import 'filter_event.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,7 +45,17 @@ class FilterBloc extends Bloc<FilterEvent, FilterState> {
     emit(state.copyWith(gender: event.gender));
   }
 
-  _onChangeDistance(OnChangeRadisus event, Emitter<FilterState> emit) {
+  _onChangeDistance(OnChangeRadisus event, Emitter<FilterState> emit) async {
+    await Future.wait([
+      Permission.location.isGranted,
+      Permission.locationWhenInUse.serviceStatus
+    ]).then((e) {
+      var isLocationGranted = e[0] as bool;
+      var serviceStatus = e[1] as ServiceStatus;
+      if (!isLocationGranted || !serviceStatus.isEnabled) {
+        Go.offAll(event.context, const LocationPermissionScreen());
+      }
+    });
     emit(state.copyWith(radius: event.value.toInt()));
   }
 

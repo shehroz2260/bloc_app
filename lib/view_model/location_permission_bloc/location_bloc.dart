@@ -19,6 +19,7 @@ import 'location_state.dart';
 class LocationBloc extends Bloc<LocationEvent, LocationState> {
   LocationBloc() : super(LocationState()) {
     on<OnRequestPermissionEvent>(_onRequestPermission);
+    on<OnPublically>(_onPublicallyLocation);
   }
 
   Position? position;
@@ -93,5 +94,14 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       showOkAlertDialog(
           context: event.context, message: e.message, title: "Error");
     }
+  }
+
+  _onPublicallyLocation(OnPublically event, Emitter<LocationState> emit) {
+    var userBloc = event.context.read<UserBaseBloc>();
+    var userData = userBloc.state.userData;
+
+    userData = userData.copyWith(isShowLocation: event.isOn);
+    userBloc.add(UpdateUserEvent(userModel: userData));
+    NetworkService.updateUser(userData);
   }
 }

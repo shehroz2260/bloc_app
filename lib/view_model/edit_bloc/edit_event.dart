@@ -17,11 +17,13 @@ class OpenEditTextField extends EditEvent {}
 class UpdateUser extends EditEvent {
   final BuildContext context;
   final String firstName;
+  final String lastName;
   final String bio;
   final String about;
   UpdateUser({
     required this.context,
     required this.firstName,
+    required this.lastName,
     required this.bio,
     required this.about,
   });

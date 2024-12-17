@@ -28,9 +28,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         child: Column(
           children: [
             const AppHeight(height: 70),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
-              child: Image.asset(AppAssets.onboardingScreen),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
+                child: Image.asset(AppAssets.onboardingScreen),
+              ),
             ),
             const AppHeight(height: 40),
             Text(AppStrings.appName,
@@ -38,7 +40,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             Text(AppLocalizations.of(context)!.wematchYouWithPeople,
                 style: AppTextStyle.font16.copyWith(color: theme.textColor),
                 textAlign: TextAlign.center),
-            const Spacer(),
+            const AppHeight(height: 40),
             CustomNewButton(
                 btnName: AppLocalizations.of(context)!.createAnAccoun,
                 onTap: () => Go.to(context, const SignUpView())),

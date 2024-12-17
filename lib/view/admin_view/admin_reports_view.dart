@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../view_model/admin_bloc/admin_home_bloc/admin_home_event.dart';
 import '../../view_model/admin_bloc/admin_reports_bloc/admin_report_bloc.dart';
 import '../../view_model/admin_bloc/admin_reports_bloc/admin_report_event.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AdminReportsView extends StatefulWidget {
   const AdminReportsView({super.key});
@@ -23,8 +24,24 @@ class _AdminReportsViewState extends State<AdminReportsView> {
     super.initState();
   }
 
+  AdminReportBloc ancestorContext = AdminReportBloc();
+  @override
+  void didChangeDependencies() {
+    ancestorContext = MyInheritedWidget(
+            bloc: context.read<AdminReportBloc>(), child: const SizedBox())
+        .bloc;
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    ancestorContext.add(OnDisposeReport());
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = AppTheme.of(context);
     return BlocBuilder<AdminReportBloc, AdminReportState>(
         builder: (context, state) {
       return Column(
@@ -35,7 +52,8 @@ class _AdminReportsViewState extends State<AdminReportsView> {
             child: Column(
               children: List.generate(state.reportList.length, (index) {
                 return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   decoration: BoxDecoration(
@@ -47,27 +65,27 @@ class _AdminReportsViewState extends State<AdminReportsView> {
                     children: [
                       Row(
                         children: [
-                          Text("Message: ",
+                          Text("${AppLocalizations.of(context)!.reason}: ",
                               style: AppTextStyle.font16.copyWith(
-                                  color: AppColors.blackColor,
+                                  color: theme.textColor,
                                   fontWeight: FontWeight.w600)),
                           Text(state.reportList[index].messages.first,
                               style: AppTextStyle.font16.copyWith(
-                                color: AppColors.blackColor,
+                                color: theme.textColor,
                               )),
                         ],
                       ),
                       Row(
                         children: [
-                          Text("Report by: ",
+                          Text("${AppLocalizations.of(context)!.reportBy}: ",
                               style: AppTextStyle.font16.copyWith(
-                                  color: AppColors.blackColor,
+                                  color: theme.textColor,
                                   fontWeight: FontWeight.w600)),
                           Text(
                               state.reportList[index].senderUser?.firstName ??
                                   "",
                               style: AppTextStyle.font16.copyWith(
-                                color: AppColors.blackColor,
+                                color: theme.textColor,
                               ))
                         ],
                       ),
@@ -75,13 +93,13 @@ class _AdminReportsViewState extends State<AdminReportsView> {
                         children: [
                           Text("Reported user: ",
                               style: AppTextStyle.font16.copyWith(
-                                  color: AppColors.blackColor,
+                                  color: theme.textColor,
                                   fontWeight: FontWeight.w600)),
                           Text(
                               state.reportList[index].reportUser?.firstName ??
                                   "",
                               style: AppTextStyle.font16.copyWith(
-                                color: AppColors.blackColor,
+                                color: theme.textColor,
                               ))
                         ],
                       ),
@@ -137,5 +155,26 @@ class _AdminReportsViewState extends State<AdminReportsView> {
         ],
       );
     });
+  }
+}
+
+class MyInheritedWidget extends InheritedWidget {
+  final AdminReportBloc bloc;
+
+  const MyInheritedWidget({
+    super.key,
+    required this.bloc,
+    required super.child,
+  });
+
+  // Access the BLoC from the widget tree.
+  static MyInheritedWidget? of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<MyInheritedWidget>();
+  }
+
+  @override
+  bool updateShouldNotify(covariant MyInheritedWidget oldWidget) {
+    // Notify when the BLoC changes (not needed here because BLoC is the same).
+    return false;
   }
 }

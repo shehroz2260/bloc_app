@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_svg/svg.dart';
 import '../src/app_colors.dart';
 import '../src/app_text_style.dart';
 import '../view_model/filter_bloc.dart/filter_bloc.dart';
@@ -121,34 +121,58 @@ class _InterestedInWidgetState extends State<InterestedInWidget> {
   }
 }
 
-class WidgetForLikeorDislike extends StatelessWidget {
-  final IconData icon;
-  final void Function() onTap;
-  final String? svgICon;
-  const WidgetForLikeorDislike({
+class LikeAndDisLikeWidget extends StatelessWidget {
+  final double? height;
+  final String? icon;
+  final bool isLike;
+  const LikeAndDisLikeWidget({
     super.key,
-    required this.icon,
-    required this.onTap,
-    this.svgICon,
+    this.height,
+    this.icon,
+    this.isLike = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 40,
-        width: 40,
-        // margin:  const EdgeInsets.only(right: 15,bottom: 15),
-        padding: const EdgeInsets.all(6),
-        decoration: BoxDecoration(
-            color: AppColors.whiteColor,
-            border: Border.all(color: AppColors.redColor, width: 2),
-            shape: BoxShape.circle),
-        child: svgICon == null
-            ? Icon(icon, color: AppColors.redColor)
-            : SvgPicture.asset(svgICon ?? ""),
-      ),
+    return Container(
+      height: height ?? 50,
+      width: height ?? 50,
+      decoration: BoxDecoration(
+          boxShadow: const [
+            BoxShadow(
+                color: Colors.black12,
+                offset: Offset(0, 5),
+                blurRadius: 4,
+                spreadRadius: 1)
+          ],
+          shape: BoxShape.circle,
+          gradient: RadialGradient(
+              center: Alignment.center,
+              radius: 2,
+              stops: const [
+                0.0,
+                1.0,
+                1.0,
+              ],
+              colors: isLike
+                  ? [
+                      AppColors.pinkColor,
+                      AppColors.pinkColor,
+                      AppColors.whiteColor,
+                    ]
+                  : [
+                      AppColors.pinkColor.withOpacity(0.1),
+                      AppColors.pinkColor.withOpacity(0.1),
+                      AppColors.whiteColor,
+                    ])),
+      alignment: Alignment.center,
+      child: (icon ?? "").isEmpty
+          ? Icon(
+              Icons.report,
+              size: 30,
+              color: AppColors.pinkColor,
+            )
+          : SvgPicture.asset(icon ?? ""),
     );
   }
 }

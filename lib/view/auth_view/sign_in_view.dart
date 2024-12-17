@@ -32,54 +32,58 @@ class _SignInWithEmailViewState extends State<SignInWithEmailView> {
     return Form(
       key: _formKey,
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        // resizeToAvoidBottomInset: false,
         backgroundColor: theme.bgColor,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: Column(
-            children: [
-              const AppHeight(height: 10),
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: SafeArea(child: CustomBackButton()),
-              ),
-              const AppHeight(height: 40),
-              SvgPicture.asset(AppAssets.appIcon),
-              const AppHeight(height: 20),
-              Text(AppLocalizations.of(context)!.signInWithEmail,
-                  style: AppTextStyle.font25.copyWith(color: theme.textColor)),
-              const AppHeight(height: 30),
-              CustomTextField(
-                textEditingController: _emailController,
-                validator: (val) => AppValidation.emailValidation(val, context),
-                hintText: AppLocalizations.of(context)!.enterEmailAddress,
-              ),
-              const AppHeight(height: 20),
-              CustomTextField(
-                textEditingController: _passwordController,
-                validator: (val) =>
-                    AppValidation.passwordValidation(val, context),
-                hintText: AppLocalizations.of(context)!.enterPassword,
-                isPasswordField: true,
-              ),
-              const AppHeight(height: 5),
-              Align(
-                alignment: Alignment.centerRight,
-                child: GestureDetector(
-                  onTap: () {
-                    Go.to(context, const ForgotPasswordView());
-                  },
-                  child: Text(AppLocalizations.of(context)!.forgotPassword,
-                      style: AppTextStyle.font16.copyWith(
-                        color: AppColors.redColor,
-                      )),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const AppHeight(height: 10),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: SafeArea(child: CustomBackButton()),
                 ),
-              ),
-              const AppHeight(height: 20),
-              CustomNewButton(
-                  btnName: AppLocalizations.of(context)!.signIn,
-                  onTap: _onSignin)
-            ],
+                const AppHeight(height: 40),
+                SvgPicture.asset(AppAssets.appIcon),
+                const AppHeight(height: 20),
+                Text(AppLocalizations.of(context)!.signInWithEmail,
+                    style:
+                        AppTextStyle.font25.copyWith(color: theme.textColor)),
+                const AppHeight(height: 30),
+                CustomTextField(
+                  textEditingController: _emailController,
+                  validator: (val) =>
+                      AppValidation.emailValidation(val, context),
+                  hintText: AppLocalizations.of(context)!.enterEmailAddress,
+                ),
+                const AppHeight(height: 20),
+                CustomTextField(
+                  textEditingController: _passwordController,
+                  validator: (val) =>
+                      AppValidation.passwordValidation(val, context),
+                  hintText: AppLocalizations.of(context)!.enterPassword,
+                  isPasswordField: true,
+                ),
+                const AppHeight(height: 5),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () {
+                      Go.to(context, const ForgotPasswordView());
+                    },
+                    child: Text(AppLocalizations.of(context)!.forgotPassword,
+                        style: AppTextStyle.font16.copyWith(
+                          color: AppColors.redColor,
+                        )),
+                  ),
+                ),
+                const AppHeight(height: 20),
+                CustomNewButton(
+                    btnName: AppLocalizations.of(context)!.signIn,
+                    onTap: _onSignin)
+              ],
+            ),
           ),
         ),
       ),

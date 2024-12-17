@@ -10,6 +10,7 @@ import '../../widgets/custom_navigation_bar.dart';
 import 'chat_tab/inbox_view.dart';
 import 'home_tab/home_view.dart';
 import 'match_tab/match_view.dart';
+import 'posts_tab/posts_view.dart';
 import 'profile_tab/profile_view.dart';
 
 class MainView extends StatefulWidget {
@@ -29,6 +30,7 @@ class _MainViewState extends State<MainView> {
   final GlobalKey key7 = GlobalKey();
   final GlobalKey key8 = GlobalKey();
   final GlobalKey key9 = GlobalKey();
+  final GlobalKey key10 = GlobalKey();
   BuildContext? showcaseContext;
   bool isVisited = false;
   @override
@@ -50,6 +52,7 @@ class _MainViewState extends State<MainView> {
           key7,
           key8,
           key9,
+          key10,
         ]);
       });
     }
@@ -80,7 +83,7 @@ class _MainViewState extends State<MainView> {
     return Scaffold(
       backgroundColor: theme.bgColor,
       body: ShowCaseWidget(onComplete: (p0, p1) {
-        if (p0 == 8) {
+        if (p0 == 9) {
           setState(() {
             isVisited = true;
           });
@@ -110,15 +113,17 @@ class _MainViewState extends State<MainView> {
                         index: state.currentIndex,
                         key: ValueKey(state.currentIndex == 1)),
                     const InboxView(),
+                    const PostsView(),
                     ProfileView(
                         index: state.currentIndex,
-                        key: ValueKey(state.currentIndex == 3)),
+                        key: ValueKey(state.currentIndex == 4)),
                   ],
                 )),
                 CustomNavigationBar(
                     key7: key7,
                     key8: key8,
                     key9: key9,
+                    key10: key10,
                     ontap: _onIndexChange,
                     currentIndex: state.currentIndex)
               ],

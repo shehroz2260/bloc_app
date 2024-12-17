@@ -8,6 +8,7 @@ import 'package:chat_with_bloc/view/main_view/profile_tab/change_theme_view.dart
 import 'package:chat_with_bloc/view/main_view/profile_tab/contact_us_view.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/faqs_view.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/story_view.dart';
+import 'package:chat_with_bloc/view_model/admin_bloc/admin_nav_bloc/admin_nav_bloc.dart';
 import 'package:chat_with_bloc/view_model/change_theme_bloc/change_theme_bloc.dart';
 import 'package:chat_with_bloc/view_model/change_theme_bloc/change_theme_state.dart';
 import 'package:chat_with_bloc/view_model/setting_bloc/setting_bloc.dart';
@@ -21,6 +22,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../model/user_model.dart';
 import '../../../src/go_file.dart';
+import '../../../view_model/admin_bloc/admin_nav_bloc/admin_nav_event.dart';
 import '../../../view_model/main_bloc/main_bloc.dart';
 import '../../../view_model/main_bloc/main_event.dart';
 import '../../../view_model/user_base_bloc/user_base_bloc.dart';
@@ -242,11 +244,19 @@ class _SettingViewState extends State<SettingView> {
                             cancelLabel: AppLocalizations.of(context)!.notNow);
                         if (result == OkCancelResult.cancel) return;
                         await FirebaseAuth.instance.signOut();
+                        if (context
+                            .read<UserBaseBloc>()
+                            .state
+                            .userData
+                            .isAdmin) {
+                          context
+                              .read<AdminNavBloc>()
+                              .add(OnDisposeNavigation());
+                        } else {
+                          context.read<MainBloc>().add(OnDispose());
+                        }
                         context.read<UserBaseBloc>().add(
                             UpdateUserEvent(userModel: UserModel.emptyModel));
-                        context
-                            .read<MainBloc>()
-                            .add(ChangeIndexEvent(index: 0));
                         Go.offAll(context, const SplashView());
                       },
                       title: AppLocalizations.of(context)!.logout,

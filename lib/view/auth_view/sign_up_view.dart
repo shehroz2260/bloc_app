@@ -20,7 +20,7 @@ class SignUpView extends StatefulWidget {
 }
 
 class _SignUpViewState extends State<SignUpView> {
-  final _nameController = TextEditingController();
+  final _cPasswordController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -30,48 +30,67 @@ class _SignUpViewState extends State<SignUpView> {
     return Form(
       key: _formKey,
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        // resizeToAvoidBottomInset: false,
         backgroundColor: theme.bgColor,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              const AppHeight(height: 12),
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: SafeArea(child: CustomBackButton()),
-              ),
-              const AppHeight(height: 40),
-              SvgPicture.asset(AppAssets.appIcon),
-              const AppHeight(height: 20),
-              Text(AppLocalizations.of(context)!.createAnAccoun,
-                  style: AppTextStyle.font25.copyWith(color: theme.textColor)),
-              const AppHeight(height: 30),
-              CustomTextField(
-                validator: (val) =>
-                    AppValidation.userNameValidation(val, context),
-                textEditingController: _nameController,
-                hintText: AppLocalizations.of(context)!.enterUserName,
-              ),
-              const AppHeight(height: 20),
-              CustomTextField(
-                validator: (val) => AppValidation.emailValidation(val, context),
-                textEditingController: _emailController,
-                hintText: AppLocalizations.of(context)!.enterEmailAddress,
-              ),
-              const AppHeight(height: 20),
-              CustomTextField(
-                validator: (val) =>
-                    AppValidation.passwordValidation(val, context),
-                textEditingController: _passwordController,
-                hintText: AppLocalizations.of(context)!.enterPassword,
-                isPasswordField: true,
-              ),
-              const AppHeight(height: 20),
-              CustomNewButton(
-                  btnName: AppLocalizations.of(context)!.signup,
-                  onTap: _onSignUp),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                const AppHeight(height: 12),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: SafeArea(child: CustomBackButton()),
+                ),
+                const AppHeight(height: 40),
+                SvgPicture.asset(AppAssets.appIcon),
+                const AppHeight(height: 20),
+                Text(AppLocalizations.of(context)!.createAnAccoun,
+                    style:
+                        AppTextStyle.font25.copyWith(color: theme.textColor)),
+                const AppHeight(height: 30),
+                // CustomTextField(
+                //   validator: (val) =>
+                //       AppValidation.userNameValidation(val, context),
+                //   textEditingController: _nameController,
+                //   hintText: AppLocalizations.of(context)!.enterUserName,
+                // ),
+                // const AppHeight(height: 20),
+                CustomTextField(
+                  validator: (val) =>
+                      AppValidation.emailValidation(val, context),
+                  textEditingController: _emailController,
+                  hintText: AppLocalizations.of(context)!.enterEmailAddress,
+                ),
+                const AppHeight(height: 20),
+                CustomTextField(
+                  validator: (val) =>
+                      AppValidation.passwordValidation(val, context),
+                  textEditingController: _passwordController,
+                  hintText: AppLocalizations.of(context)!.enterPassword,
+                  isPasswordField: true,
+                ),
+                const AppHeight(height: 20),
+                CustomTextField(
+                  validator: (val) {
+                    if ((val ?? "").isEmpty) {
+                      return AppLocalizations.of(context)!.passwordReq;
+                    }
+                    if ((val ?? "") != _passwordController.text) {
+                      return AppLocalizations.of(context)!.passwordDotnotMatch;
+                    }
+                    return null;
+                  },
+                  textEditingController: _cPasswordController,
+                  hintText: AppLocalizations.of(context)!.enterConfirmPassword,
+                  isPasswordField: true,
+                ),
+                const AppHeight(height: 20),
+                CustomNewButton(
+                    btnName: AppLocalizations.of(context)!.signup,
+                    onTap: _onSignUp),
+              ],
+            ),
           ),
         ),
       ),
@@ -82,7 +101,6 @@ class _SignUpViewState extends State<SignUpView> {
     context.read<SignUpBloc>().add(OnSignUpEvent(
         context: context,
         formKey: _formKey,
-        nameController: _nameController,
         emailController: _emailController,
         passwordController: _passwordController));
   }

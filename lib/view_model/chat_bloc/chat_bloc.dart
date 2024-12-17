@@ -18,6 +18,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:chat_with_bloc/utils/app_funcs.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../model/char_model.dart';
@@ -407,7 +408,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         context: event.context,
         builder: (_) {
           return Container(
-            height: 200,
+            height: 130,
             width: MediaQuery.of(event.context).size.width,
             decoration: BoxDecoration(
                 color: AppColors.borderGreyColor,
@@ -426,16 +427,16 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                   },
                   child: Row(
                     children: [
-                      Icon(Icons.image, size: 40, color: AppColors.redColor),
+                      Icon(Icons.image, size: 25, color: AppColors.redColor),
                       const SizedBox(width: 10),
                       Text(
                         AppLocalizations.of(event.context)!.image,
-                        style: const TextStyle(fontSize: 30),
+                        style: const TextStyle(fontSize: 20),
                       )
                     ],
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 GestureDetector(
                   onTap: () async {
                     Go.back(event.context);
@@ -446,12 +447,12 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
                     children: [
                       Icon(
                         Icons.video_camera_back_outlined,
-                        size: 40,
+                        size: 25,
                         color: AppColors.redColor,
                       ),
                       const SizedBox(width: 10),
                       Text(AppLocalizations.of(event.context)!.video,
-                          style: const TextStyle(fontSize: 30))
+                          style: const TextStyle(fontSize: 20))
                     ],
                   ),
                 ),
@@ -514,19 +515,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       final response = await http.get(Uri.parse(event.chat.media?.url ?? ""));
       if (response.statusCode == 200) {
         if ((event.chat.media?.type ?? 0) == MediaType.image) {
-          // final result = await ImageGallerySaverPlus.saveFile(
-          //     File.fromRawPath(response.bodyBytes).path);
-          // if (result != null && result['isSuccess']) {
-          //   showOkAlertDialog(
-          //       context: event.context,
-          //       message: "Image save to gallery",
-          //       title: "Download media");
-          // } else {
-          //   showOkAlertDialog(
-          //       context: event.context,
-          //       message: "Failed to save image",
-          //       title: "Download media");
-          // }
+          final result =
+              await ImageGallerySaverPlus.saveImage(response.bodyBytes);
+          if (result != null && result['isSuccess']) {
+            showOkAlertDialog(
+                context: event.context,
+                message: "Image save to gallery",
+                title: "Download media");
+          } else {
+            showOkAlertDialog(
+                context: event.context,
+                message: "Failed to save image",
+                title: "Download media");
+          }
         } else if ((event.chat.media?.type ?? 0) == MediaType.video) {
           final directory = await getTemporaryDirectory();
           final filePath =
@@ -534,18 +535,18 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           final file = File(filePath);
           await file.writeAsBytes(response.bodyBytes);
 
-          // final result = await ImageGallerySaver.saveFile(filePath);
-          // if (result != null && result['isSuccess']) {
-          //   showOkAlertDialog(
-          //       context: event.context,
-          //       message: "Video saved to gallery",
-          //       title: "Download media");
-          // } else {
-          //   showOkAlertDialog(
-          //       context: event.context,
-          //       message: "Failed to save video",
-          //       title: "Download media");
-          // }
+          final result = await ImageGallerySaverPlus.saveFile(filePath);
+          if (result != null && result['isSuccess']) {
+            showOkAlertDialog(
+                context: event.context,
+                message: "Video saved to gallery",
+                title: "Download media");
+          } else {
+            showOkAlertDialog(
+                context: event.context,
+                message: "Failed to save video",
+                title: "Download media");
+          }
         }
       } else {
         showOkAlertDialog(

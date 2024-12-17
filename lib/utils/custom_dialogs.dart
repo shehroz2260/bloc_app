@@ -52,7 +52,8 @@ class CustomDialogs {
                                   .read<FilterBloc>()
                                   .add(OnChangedGender(gender: 0));
                               context.read<FilterBloc>().add(ONChangedAges(
-                                  onChanged: const SfRangeValues(18, 50)));
+                                  onChanged: const SfRangeValues(18, 50),
+                                  context: context));
                               context.read<FilterBloc>().add(OnChangeRadisus(
                                   value: 100, context: context));
                             },
@@ -109,9 +110,8 @@ class CustomDialogs {
                       child: SfRangeSlider(
                         values: SfRangeValues(
                             state.minAge.toDouble(), state.maxAge.toDouble()),
-                        onChanged: (value) => context
-                            .read<FilterBloc>()
-                            .add(ONChangedAges(onChanged: value)),
+                        onChanged: (value) => context.read<FilterBloc>().add(
+                            ONChangedAges(onChanged: value, context: context)),
                         max: 100,
                         min: 18,
                         startThumbIcon: Container(

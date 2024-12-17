@@ -53,6 +53,7 @@ class EditBloc extends Bloc<EditEvent, EditState> {
     user = user.copyWith(
         about: event.about,
         bio: event.bio,
+        lastName: event.lastName,
         firstName: event.firstName,
         profileImage: url,
         dob: date);

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:chat_with_bloc/services/firebase_services_storage.dart';
 import 'package:chat_with_bloc/services/network_service.dart';
@@ -62,6 +63,12 @@ class DobBloc extends Bloc<DobEvent, DobState> {
 
   _onNext(OnNextEvent event, Emitter<DobState> emit) async {
     if ((state.image?.path ?? "").isEmpty) {
+      ScaffoldMessenger.of(event.context).showSnackBar(SnackBar(
+          backgroundColor: AppColors.redColor,
+          content: Text(
+            AppLocalizations.of(event.context)!.imageIsReq,
+            style: AppTextStyle.font16,
+          )));
       emit(state.copyWith(
           imgString: AppLocalizations.of(event.context)!.imageIsReq));
     }
@@ -79,6 +86,7 @@ class DobBloc extends Bloc<DobEvent, DobState> {
     user = user.copyWith(
         dob: state.dob,
         profileImage: url,
+        lastName: event.lastController.text,
         firstName: event.nameController.text);
     event.context.read<UserBaseBloc>().add(UpdateUserEvent(userModel: user));
     NetworkService.updateUser(user);

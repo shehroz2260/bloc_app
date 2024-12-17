@@ -6,3 +6,5 @@ class UpdateAdminNavIndex extends AdminNavEvent {
     required this.index,
   });
 }
+
+class OnDisposeNavigation extends AdminNavEvent {}

@@ -42,6 +42,7 @@ class MainBloc extends Bloc<MainEvent, MainState> {
   }
 
   _onDispose(OnDispose event, Emitter<MainState> emit) async {
+    add(ChangeIndexEvent(index: 0));
     await sub?.cancel();
   }
 

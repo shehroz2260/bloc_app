@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:showcaseview/showcaseview.dart';
 import '../src/app_colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomNavigationBar extends StatelessWidget {
   const CustomNavigationBar(
@@ -11,12 +12,14 @@ class CustomNavigationBar extends StatelessWidget {
       required this.currentIndex,
       required this.key7,
       required this.key8,
+      required this.key10,
       required this.key9});
   final void Function(int) ontap;
   final int currentIndex;
   final GlobalKey key7;
   final GlobalKey key8;
   final GlobalKey key9;
+  final GlobalKey key10;
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context).size;
@@ -36,7 +39,7 @@ class CustomNavigationBar extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Showcaseview(
-                  description: diss[index],
+                  description: diss(context)[index],
                   title: title[index],
                   targetBorderRadius: BorderRadius.circular(50),
                   tooltipPosition: TooltipPosition.top,
@@ -46,12 +49,14 @@ class CustomNavigationBar extends StatelessWidget {
                           ? key8
                           : index == 3
                               ? key9
-                              : GlobalKey(),
+                              : index == 4
+                                  ? key10
+                                  : GlobalKey(),
                   child: SvgPicture.asset(
                       index == currentIndex
                           ? iconLists[index]
                           : unSelectedIconLists[index],
-                      colorFilter: index == 3 && currentIndex == 3
+                      colorFilter: index == 4 && currentIndex == 4
                           ? ColorFilter.mode(
                               AppColors.redColor, BlendMode.srcIn)
                           : null,
@@ -71,19 +76,25 @@ List<String> iconLists = [
   "assets/images/svg/cards.svg",
   "assets/images/svg/selectedIndicator.svg",
   "assets/images/svg/selectedMessage.svg",
+  "assets/images/svg/selected_posts.svg",
   "assets/images/svg/people.svg"
 ];
-List<String> diss = [
-  "",
-  "Click this tab to see yours likes",
-  "Click this tab to chat with your matches",
-  "Click this tab to see your profile"
-];
-List<String> title = ["", "Likes", "Chat", "Profile"];
+List<String> diss(BuildContext context) {
+  return [
+    "",
+    AppLocalizations.of(context)!.navInst1,
+    AppLocalizations.of(context)!.navInst2,
+    AppLocalizations.of(context)!.navInst3,
+    AppLocalizations.of(context)!.navInst4
+  ];
+}
+
+List<String> title = ["", "Likes", "Chat", "Posts", "Profile"];
 List<String> unSelectedIconLists = [
   "assets/images/svg/unSelectedCard.svg",
   "assets/images/svg/indicator.svg",
   "assets/images/svg/message.svg",
+  "assets/images/svg/posts.svg",
   "assets/images/svg/people.svg"
 ];
 
@@ -115,7 +126,9 @@ class CustomAdminNavigationBar extends StatelessWidget {
               children: [
                 Icon(
                   adminIcon[index],
-                  color: index == currentIndex ? AppColors.redColor : null,
+                  color: index == currentIndex
+                      ? AppColors.redColor
+                      : Colors.black.withOpacity(0.7),
                   size: 30,
                 )
               ],
