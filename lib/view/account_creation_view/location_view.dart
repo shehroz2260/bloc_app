@@ -1,9 +1,11 @@
+import 'package:chat_with_bloc/services/network_service.dart';
 import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
 import 'package:chat_with_bloc/view/main_view/main_view.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
+import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_event.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_state.dart';
 import 'package:chat_with_bloc/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
@@ -88,6 +90,11 @@ class LocationPermissionScreen extends StatelessWidget {
           const AppHeight(height: 20),
           GestureDetector(
             onTap: () {
+              var userBloc = context.read<UserBaseBloc>();
+              var user = userBloc.state.userData;
+              user = user.copyWith(isShowLocation: false);
+              userBloc.add(UpdateUserEvent(userModel: user));
+              NetworkService.updateUser(user);
               Go.offAll(context, const MainView());
             },
             child: Text("Skip",

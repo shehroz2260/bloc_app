@@ -88,9 +88,10 @@ class NetworkService {
         }
         return;
       }
-      if ((!await Permission.location.isGranted) ||
-          (!await Permission.locationWhenInUse.serviceStatus.isEnabled) ||
-          (user.lat == 0.0 && user.lng == 0.0)) {
+      if (user.isShowLocation &&
+          ((!await Permission.location.isGranted) ||
+              (!await Permission.locationWhenInUse.serviceStatus.isEnabled) ||
+              (user.lat == 0.0 && user.lng == 0.0))) {
         Go.offAll(context, const LocationPermissionScreen());
 
         return;

@@ -125,7 +125,8 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(widget.model.userDetail?.firstName ?? "",
+                        Text(
+                            "${widget.model.userDetail?.firstName ?? ""} ${widget.model.userDetail?.lastName ?? ""}",
                             style: AppTextStyle.font20.copyWith(
                                 color: theme.textColor,
                                 fontWeight: FontWeight.bold)),
@@ -210,12 +211,12 @@ class _ChatScreenState extends State<ChatScreen> {
                             userModel:
                                 widget.model.userDetail ?? UserModel.emptyModel,
                             data: data,
-                            showTime: index == state.messageList.length - 1 ||
-                                state.messageList[index].messageTime
+                            showTime: (index == state.messageList.length - 1) ||
+                                (state.messageList[index].messageTime
                                         .difference(state
                                             .messageList[index + 1].messageTime)
                                         .inHours >
-                                    1);
+                                    1));
                       }),
                 )),
               if (state.messageSending)

@@ -160,26 +160,29 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
                             ? SystemUiOverlayStyle.dark
                             : SystemUiOverlayStyle.light,
                       );
-                      return MaterialApp(
-                        localizationsDelegates: const [
-                          AppLocalizations.delegate,
-                          GlobalMaterialLocalizations.delegate,
-                          GlobalCupertinoLocalizations.delegate,
-                          GlobalWidgetsLocalizations.delegate,
-                        ],
-                        themeMode: AppTheme.themeNotifier.value,
-                        theme: AppTheme.lightTheme,
-                        darkTheme: AppTheme.darkTheme,
-                        locale: state.locale,
-                        supportedLocales: AppLocalizations.supportedLocales,
-                        debugShowCheckedModeBanner: false,
-                        builder: (context, child) {
-                          return Directionality(
-                            textDirection: TextDirection.ltr,
-                            child: child!,
-                          );
-                        },
-                        home: const SplashView(),
+                      return Directionality(
+                        textDirection: TextDirection.ltr,
+                        child: MaterialApp(
+                          localizationsDelegates: const [
+                            AppLocalizations.delegate,
+                            GlobalMaterialLocalizations.delegate,
+                            GlobalCupertinoLocalizations.delegate,
+                            GlobalWidgetsLocalizations.delegate,
+                          ],
+                          themeMode: AppTheme.themeNotifier.value,
+                          theme: AppTheme.lightTheme,
+                          darkTheme: AppTheme.darkTheme,
+                          locale: state.locale,
+                          supportedLocales: AppLocalizations.supportedLocales,
+                          debugShowCheckedModeBanner: false,
+                          builder: (context, child) {
+                            return Directionality(
+                              textDirection: TextDirection.ltr,
+                              child: child!,
+                            );
+                          },
+                          home: const SplashView(),
+                        ),
                       );
                     });
               });

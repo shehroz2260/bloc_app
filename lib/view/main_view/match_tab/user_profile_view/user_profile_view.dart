@@ -96,7 +96,7 @@ class UserProfileView extends StatelessWidget {
                             ),
                           ),
                           const AppWidth(width: 10),
-                          if (!isCUser)
+                          if (user.isShowLocation || isCUser)
                             GestureDetector(
                               onTap: () async {
                                 var res = await showOkCancelAlertDialog(
