@@ -254,7 +254,7 @@ class StripSetupIntent extends GetConnect implements GetxService {
       }
     ],
     "merchantInfo": {
-      "merchantId": "BCR2DN4TZXQ3TJD4", 
+      "merchantId": "BCR2DN4TZXQ3TJD4",
       "merchantName": "Lumo Aps"
     },
     "transactionInfo": {

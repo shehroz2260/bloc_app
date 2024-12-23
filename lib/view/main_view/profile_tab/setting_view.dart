@@ -8,6 +8,7 @@ import 'package:chat_with_bloc/view/main_view/profile_tab/change_theme_view.dart
 import 'package:chat_with_bloc/view/main_view/profile_tab/contact_us_view.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/faqs_view.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/story_view.dart';
+import 'package:chat_with_bloc/view/splash_view/splash_view.dart';
 import 'package:chat_with_bloc/view_model/admin_bloc/admin_nav_bloc/admin_nav_bloc.dart';
 import 'package:chat_with_bloc/view_model/change_theme_bloc/change_theme_bloc.dart';
 import 'package:chat_with_bloc/view_model/change_theme_bloc/change_theme_state.dart';
@@ -29,7 +30,6 @@ import '../../../view_model/user_base_bloc/user_base_bloc.dart';
 import '../../../view_model/user_base_bloc/user_base_event.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/setting_widget.dart';
-import '../../splash_view/splash_view.dart';
 import 'change_language_view.dart';
 import 'change_password_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

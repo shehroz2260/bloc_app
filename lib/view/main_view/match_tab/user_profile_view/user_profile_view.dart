@@ -153,7 +153,8 @@ class UserProfileView extends StatelessWidget {
                             if (!isCUser)
                               Container(
                                 decoration: BoxDecoration(
-                                  color: AppColors.redColor.withOpacity(0.15),
+                                  color: AppColors.redColor
+                                      .withAlpha((0.15 * 255).toInt()),
                                   borderRadius: BorderRadius.circular(7),
                                 ),
                                 padding: const EdgeInsets.symmetric(

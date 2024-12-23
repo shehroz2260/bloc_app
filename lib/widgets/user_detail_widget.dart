@@ -190,7 +190,7 @@ class SliverPersistentDelegate extends SliverPersistentHeaderDelegate {
                   user.firstName,
                   style: TextStyle(
                     fontSize: 20,
-                    color: Colors.black.withOpacity(percent2),
+                    color: Colors.black.withAlpha((percent2 * 255).toInt()),
                   ),
                 ),
               ),

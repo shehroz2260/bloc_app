@@ -5,12 +5,10 @@ import 'package:chat_with_bloc/src/app_colors.dart';
 import 'package:chat_with_bloc/src/app_text_style.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/src/width_hieght.dart';
-import 'package:chat_with_bloc/utils/loading_dialog.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/edit_profile.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/galler_view.dart';
 import 'package:chat_with_bloc/view/main_view/profile_tab/setting_view.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
-import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_event.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_state.dart';
 import 'package:chat_with_bloc/widgets/app_cache_image.dart';
 import 'package:chat_with_bloc/widgets/custom_button.dart';
@@ -25,6 +23,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:showcaseview/showcaseview.dart';
 import '../../../model/user_model.dart';
 import '../../../services/stripe_payment.dart';
+import '../../../utils/loading_dialog.dart';
+import '../../../view_model/user_base_bloc/user_base_event.dart';
 
 class ProfileView extends StatefulWidget {
   final int index;

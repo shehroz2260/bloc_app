@@ -27,9 +27,11 @@ class MainBloc extends Bloc<MainEvent, MainState> {
 
   StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>? sub;
   _onChangeListener(ListernerChanges event, Emitter<MainState> emit) {
+    String uid = FirebaseAuth.instance.currentUser?.uid ?? "";
+    if (uid.isEmpty) return;
     sub = FirebaseFirestore.instance
         .collection(UserModel.tableName)
-        .doc(FirebaseAuth.instance.currentUser?.uid ?? "")
+        .doc(uid)
         .snapshots()
         .listen((e) async {
       var user = UserModel.fromMap(e.data() ?? {});

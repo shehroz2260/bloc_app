@@ -9,7 +9,7 @@ class PostsModel {
   final String text;
   final String avatar;
   final String userName;
-  final List<dynamic> imageList;
+  final List<String> imageList;
   UserModel? userDetail;
   final DateTime createdAt;
   PostsModel({
@@ -28,7 +28,7 @@ class PostsModel {
     String? text,
     String? avatar,
     String? userName,
-    List<dynamic>? imageList,
+    List<String>? imageList,
     DateTime? createdAt,
   }) {
     return PostsModel(
@@ -61,7 +61,7 @@ class PostsModel {
       text: map['text'] as String,
       avatar: map['avatar'] as String,
       userName: map['userName'] as String,
-      imageList: List<dynamic>.from((map['imageList'] as List<dynamic>)),
+      imageList: List<String>.from((map['imageList'] as List<dynamic>)),
       createdAt: (map['createdAt'] as Timestamp).toDate(),
     );
   }

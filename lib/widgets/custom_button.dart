@@ -130,8 +130,9 @@ class CustomBackButton extends StatelessWidget {
       child: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-              color:
-                  isUSerPRofile ? AppColors.whiteColor.withOpacity(0.5) : null,
+              color: isUSerPRofile
+                  ? AppColors.whiteColor.withAlpha((0.5 * 255).toInt())
+                  : null,
               border: Border.all(color: AppColors.borderColor),
               borderRadius: BorderRadius.circular(10)),
           child:

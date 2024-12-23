@@ -207,7 +207,8 @@ class _EditProfileState extends State<EditProfile> {
                               btnName: state.dob == DateTime(1800)
                                   ? userState.userData.age.toString()
                                   : DateFormat("dd MMM yyyy").format(state.dob),
-                              btnColor: AppColors.redColor.withOpacity(0.1),
+                              btnColor: AppColors.redColor
+                                  .withAlpha((0.1 * 255).toInt()),
                               isRow: true,
                               onTap: () {
                                 context

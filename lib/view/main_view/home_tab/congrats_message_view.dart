@@ -53,7 +53,7 @@ class CongratsMessageView extends StatelessWidget {
             child: CustomNewButton(
               onTap: () => Go.back(context),
               btnName: AppLocalizations.of(context)!.keepSwiping,
-              btnColor: AppColors.redColor.withOpacity(0.2),
+              btnColor: AppColors.redColor.withAlpha((0.2 * 255).toInt()),
               isFillColor: false,
             ),
           ),

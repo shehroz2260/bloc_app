@@ -135,7 +135,8 @@ class _AdminReportsViewState extends State<AdminReportsView> {
                                           ?.isVerified ??
                                       false)
                                   ? AppColors.redColor
-                                  : AppColors.redColor.withOpacity(0.4)),
+                                  : AppColors.redColor
+                                      .withAlpha((0.4 * 255).toInt())),
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 5),
                           child: Text(

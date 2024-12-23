@@ -161,8 +161,8 @@ class LikeAndDisLikeWidget extends StatelessWidget {
                       AppColors.whiteColor,
                     ]
                   : [
-                      AppColors.pinkColor.withOpacity(0.1),
-                      AppColors.pinkColor.withOpacity(0.1),
+                      AppColors.pinkColor.withAlpha((0.1 * 255).toInt()),
+                      AppColors.pinkColor.withAlpha((0.1 * 255).toInt()),
                       AppColors.whiteColor,
                     ])),
       alignment: Alignment.center,

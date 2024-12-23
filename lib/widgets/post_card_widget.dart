@@ -1,10 +1,15 @@
 import 'dart:async';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/src/go_file.dart';
 import 'package:chat_with_bloc/view/main_view/posts_tab/comment_view.dart';
+import 'package:chat_with_bloc/view/main_view/posts_tab/create_post_view.dart';
+import 'package:chat_with_bloc/view_model/chat_bloc/post_bloc/post_bloc.dart';
+import 'package:chat_with_bloc/view_model/chat_bloc/post_bloc/post_event.dart';
 import 'package:chat_with_bloc/widgets/image_view.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../model/like_model.dart';
 import '../model/posts_model.dart';
 import '../src/app_colors.dart';
@@ -42,11 +47,27 @@ class _PostCardsState extends State<PostCards> {
   }
 
   @override
-  void dispose() async {
-    await sub?.cancel();
+  void dispose() {
+    ondisPose();
+
     super.dispose();
   }
 
+  ondisPose() async {
+    await sub?.cancel();
+  }
+
+  String? selectedItem;
+  final List<Map<String, dynamic>> items = [
+    {
+      "item": "Edit",
+      "icon": Icons.edit,
+    },
+    {
+      "item": "Delete",
+      "icon": Icons.delete,
+    }
+  ];
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -76,8 +97,45 @@ class _PostCardsState extends State<PostCards> {
                 round: 50,
               ),
               const AppWidth(width: 10),
-              Text(
-                  "${widget.data.userDetail?.firstName ?? ""} ${widget.data.userDetail?.lastName ?? ""}")
+              Expanded(
+                child: Text(
+                    "${widget.data.userDetail?.firstName ?? ""} ${widget.data.userDetail?.lastName ?? ""}"),
+              ),
+              if (widget.data.uid ==
+                  (FirebaseAuth.instance.currentUser?.uid ?? ""))
+                DropdownButton<String>(
+                  underline: const SizedBox(),
+                  icon: const Icon(Icons.more_vert),
+                  items: items.map((Map<String, dynamic> item) {
+                    return DropdownMenuItem<String>(
+                      value: item["item"],
+                      child: Row(
+                        children: [
+                          Icon(item["icon"]),
+                          const AppWidth(width: 10),
+                          Text(item["item"]),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) async {
+                    if (newValue == items[0]["item"]) {
+                      Go.to(context, CreatePostView(postModel: widget.data));
+                    } else {
+                      final res = await showOkCancelAlertDialog(
+                          context: context,
+                          message: "Do you really want to delete this post?",
+                          title: "Are you sure?");
+                      if (res == OkCancelResult.cancel) return;
+                      context.read<PostBloc>().add(
+                          OnDelete(postsModel: widget.data, context: context));
+                    }
+                    setState(() {
+                      selectedItem = newValue;
+                    });
+                  },
+                ),
+              const AppWidth(width: 10)
             ],
           ),
           const AppHeight(height: 10),
@@ -95,7 +153,7 @@ class _PostCardsState extends State<PostCards> {
               round: 20,
             ),
           if (widget.data.imageList.isNotEmpty &&
-              widget.data.imageList.length > 2)
+              widget.data.imageList.length > 1)
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(

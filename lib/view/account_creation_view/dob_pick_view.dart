@@ -119,7 +119,7 @@ class _DobPickViewState extends State<DobPickView> {
                     btnName: state.dob == null
                         ? AppLocalizations.of(context)!.choosebirthdaydate
                         : DateFormat("dd MMM yyyy").format(state.dob!),
-                    btnColor: AppColors.redColor.withOpacity(0.1),
+                    btnColor: AppColors.redColor.withAlpha((0.1 * 255).toInt()),
                     isRow: true,
                     onTap: () {
                       context
