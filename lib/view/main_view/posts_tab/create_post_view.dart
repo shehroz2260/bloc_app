@@ -6,13 +6,15 @@ import 'package:chat_with_bloc/widgets/custom_button.dart';
 import 'package:chat_with_bloc/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../model/posts_model.dart';
 import '../../../src/app_text_style.dart';
 import '../../../src/width_hieght.dart';
 import '../../../view_model/create_post_bloc/create_post_event.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CreatePostView extends StatefulWidget {
-  const CreatePostView({super.key});
+  final PostsModel? postModel;
+  const CreatePostView({super.key, this.postModel});
 
   @override
   State<CreatePostView> createState() => _CreatePostViewState();
@@ -20,6 +22,32 @@ class CreatePostView extends StatefulWidget {
 
 class _CreatePostViewState extends State<CreatePostView> {
   final _textController = TextEditingController();
+  @override
+  void initState() {
+    if (widget.postModel != null) {
+      _textController.text = widget.postModel!.text;
+      context.read<CreatePostBloc>().add(OnUpdatePost(
+            postModel: widget.postModel!,
+          ));
+    }
+    super.initState();
+  }
+
+  CreatePostBloc ancestorContext = CreatePostBloc();
+  @override
+  void didChangeDependencies() {
+    ancestorContext = MyInheritedWidget(
+            bloc: context.read<CreatePostBloc>(), child: const SizedBox())
+        .bloc;
+    super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    ancestorContext.add(ClearData());
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
@@ -35,14 +63,19 @@ class _CreatePostViewState extends State<CreatePostView> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const CustomBackButton(),
-                Text(AppLocalizations.of(context)!.createPost,
+                Text(
+                    widget.postModel == null
+                        ? AppLocalizations.of(context)!.createPost
+                        : AppLocalizations.of(context)!.editPost,
                     style:
                         AppTextStyle.font25.copyWith(color: theme.textColor)),
                 // const AppWidth(width: 50)
                 GestureDetector(
                   onTap: () {
                     context.read<CreatePostBloc>().add(OnPostCreate(
-                        controller: _textController, context: context));
+                        model: widget.postModel,
+                        controller: _textController,
+                        context: context));
                   },
                   child: Container(
                     padding:
@@ -51,7 +84,9 @@ class _CreatePostViewState extends State<CreatePostView> {
                         borderRadius: BorderRadius.circular(25),
                         color: AppColors.redColor),
                     child: Text(
-                      AppLocalizations.of(context)!.post,
+                      widget.postModel == null
+                          ? AppLocalizations.of(context)!.post
+                          : AppLocalizations.of(context)!.update,
                       style: AppTextStyle.font16,
                     ),
                   ),
@@ -100,8 +135,11 @@ class _CreatePostViewState extends State<CreatePostView> {
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
                                   image: DecorationImage(
-                                      image: FileImage(
-                                          File(state.images[index].path)),
+                                      image: state.images[index]
+                                              .contains("http")
+                                          ? NetworkImage(state.images[index])
+                                          : FileImage(
+                                              File(state.images[index])),
                                       fit: BoxFit.cover)),
                               margin: const EdgeInsets.only(right: 10),
                               alignment: Alignment.topRight,
@@ -111,7 +149,17 @@ class _CreatePostViewState extends State<CreatePostView> {
                                         .read<CreatePostBloc>()
                                         .add(CancelImage(index: index));
                                   },
-                                  child: const Icon(Icons.cancel)),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                        color: AppColors.redColor,
+                                        shape: BoxShape.circle),
+                                    child: const Icon(
+                                      Icons.close,
+                                      color: Colors.white,
+                                      size: 16,
+                                    ),
+                                  )),
                             );
                           }),
                         ),
@@ -132,5 +180,26 @@ class _CreatePostViewState extends State<CreatePostView> {
         ),
       ),
     );
+  }
+}
+
+class MyInheritedWidget extends InheritedWidget {
+  final CreatePostBloc bloc;
+
+  const MyInheritedWidget({
+    super.key,
+    required this.bloc,
+    required super.child,
+  });
+
+  // Access the BLoC from the widget tree.
+  static MyInheritedWidget? of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<MyInheritedWidget>();
+  }
+
+  @override
+  bool updateShouldNotify(covariant MyInheritedWidget oldWidget) {
+    // Notify when the BLoC changes (not needed here because BLoC is the same).
+    return false;
   }
 }

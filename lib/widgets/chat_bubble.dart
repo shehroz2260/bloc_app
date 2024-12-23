@@ -16,6 +16,7 @@ import '../model/char_model.dart';
 import '../utils/media_type.dart';
 import 'app_cache_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+// import 'custom_video_player.dart';
 import 'custom_video_player.dart';
 import 'wave_bubble.dart';
 
@@ -81,7 +82,7 @@ class ChatBubble extends StatelessWidget {
                   decoration: BoxDecoration(
                     // border: Border.all(color: Colors.black),
                     color: !isSender
-                        ? AppColors.redColor.withOpacity(0.15)
+                        ? AppColors.redColor.withAlpha((0.15 * 255).toInt())
                         : AppColors.borderGreyColor,
                     borderRadius: BorderRadius.only(
                         topLeft: const Radius.circular(12),

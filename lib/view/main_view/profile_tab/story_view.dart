@@ -204,7 +204,7 @@ class _StoryViewState extends State<StoryView> {
                   Container(
                     height: double.infinity,
                     width: double.infinity,
-                    color: AppColors.whiteColor.withOpacity(0.3),
+                    color: AppColors.whiteColor.withAlpha((0.3 * 255).toInt()),
                     child: Center(
                       child: CircularProgressIndicator(
                         color: AppColors.redColor,

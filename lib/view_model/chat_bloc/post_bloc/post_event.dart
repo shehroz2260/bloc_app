@@ -27,3 +27,14 @@ class OnPostLoad extends PostEvent {
 }
 
 class OnDispose extends PostEvent {}
+
+class OnClearData extends PostEvent {}
+
+class OnDelete extends PostEvent {
+  final PostsModel postsModel;
+  final BuildContext context;
+  OnDelete({
+    required this.postsModel,
+    required this.context,
+  });
+}

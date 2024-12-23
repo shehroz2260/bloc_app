@@ -53,7 +53,7 @@ class AppCacheImage extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.20),
+          color: Colors.black.withAlpha((0.2 * 255).toInt()),
           borderRadius: BorderRadius.circular(round ?? 20)),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(round ?? 20),

@@ -101,7 +101,7 @@ class CustomDialogs {
                           activeTrackHeight: 10,
                           inactiveTrackHeight: 10,
                           inactiveTrackColor:
-                              AppColors.redColor.withOpacity(.5),
+                              AppColors.redColor.withAlpha((0.5 * 255).toInt()),
                           activeTrackColor: AppColors.redColor,
                           thumbRadius: 16,
                           thumbStrokeWidth: 1.5,
@@ -172,7 +172,8 @@ class CustomDialogs {
                           inactiveTrackHeight: 10),
                       child: SfSlider(
                         activeColor: AppColors.redColor,
-                        inactiveColor: AppColors.redColor.withOpacity(.5),
+                        inactiveColor:
+                            AppColors.redColor.withAlpha((0.5 * 255).toInt()),
                         value: state.radius,
                         onChanged: (value) => context.read<FilterBloc>().add(
                             OnChangeRadisus(value: value, context: context)),

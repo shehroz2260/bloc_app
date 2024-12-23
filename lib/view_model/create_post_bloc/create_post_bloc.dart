@@ -20,6 +20,8 @@ class CreatePostBloc extends Bloc<CreatePostEvent, CreatePostState> {
     on<PickImages>(_pickImages);
     on<CancelImage>(_cancelImage);
     on<OnPostCreate>(_onCreatePost);
+    on<ClearData>(_clearData);
+    on<OnUpdatePost>(_onUpdatePost);
   }
 
   _pickImages(PickImages event, Emitter<CreatePostState> emit) async {
@@ -43,7 +45,10 @@ class CreatePostBloc extends Bloc<CreatePostEvent, CreatePostState> {
 
     final files = await picker.pickMultiImage();
     if (files.isNotEmpty) {
-      emit(state.copyWith(images: files));
+      for (final e in files) {
+        state.images.add(e.path);
+        emit(state.copyWith(images: state.images));
+      }
     }
   }
 
@@ -65,31 +70,65 @@ class CreatePostBloc extends Bloc<CreatePostEvent, CreatePostState> {
       LoadingDialog.showProgress(event.context);
       List<String> images = [];
       var cUser = event.context.read<UserBaseBloc>().state.userData;
-      if (state.images.isNotEmpty) {
+      if (state.images.isNotEmpty && event.model == null) {
         for (final e in state.images) {
           final url = await FirebaseStorageService().uploadImage(
-              "Post/${cUser.uid}/${AppFuncs.generateRandomString(10)}", e.path);
+              "Post/${cUser.uid}/${AppFuncs.generateRandomString(10)}", e);
           images.add(url);
         }
       }
-      PostsModel model = PostsModel(
-          id: AppFuncs.generateRandomString(15),
-          uid: cUser.uid,
-          text: event.controller.text,
-          avatar: cUser.profileImage,
-          userName: "${cUser.firstName} ${cUser.lastName}",
-          imageList: images,
-          createdAt: DateTime.now());
+
+      if (state.images.isNotEmpty && event.model != null) {
+        for (final e in state.images) {
+          if (!e.contains("http")) {
+            final url = await FirebaseStorageService().uploadImage(
+                "Post/${cUser.uid}/${AppFuncs.generateRandomString(10)}", e);
+            images.add(url);
+          } else {
+            images.add(e);
+          }
+        }
+      }
+
+      var updateModel = event.model;
+
+      if (event.model != null) {
+        updateModel = updateModel!.copyWith(
+            text: event.controller.text,
+            imageList: images,
+            createdAt: DateTime.now());
+      } else {
+        updateModel = PostsModel(
+            id: AppFuncs.generateRandomString(15),
+            uid: cUser.uid,
+            text: event.controller.text,
+            avatar: cUser.profileImage,
+            userName: "${cUser.firstName} ${cUser.lastName}",
+            imageList: images,
+            createdAt: DateTime.now());
+      }
+
       await FirebaseFirestore.instance
           .collection(PostsModel.tableName)
-          .doc(model.id)
-          .set(model.toMap());
+          .doc(updateModel.id)
+          .set(updateModel.toMap(), SetOptions(merge: true));
+      add(ClearData());
       LoadingDialog.hideProgress(event.context);
       Go.back(event.context);
     } on FirebaseException catch (e) {
       LoadingDialog.hideProgress(event.context);
       showOkAlertDialog(
           context: event.context, message: e.message, title: "Error");
+    }
+  }
+
+  _clearData(ClearData event, Emitter<CreatePostState> emit) {
+    emit(state.copyWith(images: []));
+  }
+
+  _onUpdatePost(OnUpdatePost event, Emitter<CreatePostState> emit) async {
+    if (event.postModel.imageList.isNotEmpty) {
+      emit(state.copyWith(images: event.postModel.imageList));
     }
   }
 }

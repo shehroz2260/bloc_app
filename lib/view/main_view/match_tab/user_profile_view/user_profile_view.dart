@@ -96,7 +96,7 @@ class UserProfileView extends StatelessWidget {
                             ),
                           ),
                           const AppWidth(width: 10),
-                          if (!isCUser)
+                          if (user.isShowLocation || isCUser)
                             GestureDetector(
                               onTap: () async {
                                 var res = await showOkCancelAlertDialog(
@@ -153,7 +153,8 @@ class UserProfileView extends StatelessWidget {
                             if (!isCUser)
                               Container(
                                 decoration: BoxDecoration(
-                                  color: AppColors.redColor.withOpacity(0.15),
+                                  color: AppColors.redColor
+                                      .withAlpha((0.15 * 255).toInt()),
                                   borderRadius: BorderRadius.circular(7),
                                 ),
                                 padding: const EdgeInsets.symmetric(

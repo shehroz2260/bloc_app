@@ -38,6 +38,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+// import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get_storage/get_storage.dart';
 import 'firebase_options.dart';
 import 'utils/notification_utils.dart';
@@ -116,8 +117,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    context.read<ChangeLanguageBloc>().add(OnitLanguage());
-    context.read<ChangeThemeBloc>().add(OninitTheme());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ChangeLanguageBloc>().add(OnitLanguage());
+      context.read<ChangeThemeBloc>().add(OninitTheme());
+    });
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -148,41 +151,39 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         return BlocBuilder<ChangeThemeBloc, ChangeThemeState>(
             builder: (context, themeState) {
           return ScreenUtilInit(
-              designSize: const Size(375, 812),
-              minTextAdapt: true,
-              splitScreenMode: true,
+              // designSize: const Size(375, 812),
+              // minTextAdapt: true,
+              // splitScreenMode: true,
               builder: (context, child) {
-                return ValueListenableBuilder(
-                    valueListenable: AppTheme.themeNotifier,
-                    builder: (_, ThemeMode currentMode, __) {
-                      SystemChrome.setSystemUIOverlayStyle(
-                        AppTheme.themeMode == ThemeMode.light
-                            ? SystemUiOverlayStyle.dark
-                            : SystemUiOverlayStyle.light,
-                      );
-                      return MaterialApp(
-                        localizationsDelegates: const [
-                          AppLocalizations.delegate,
-                          GlobalMaterialLocalizations.delegate,
-                          GlobalCupertinoLocalizations.delegate,
-                          GlobalWidgetsLocalizations.delegate,
-                        ],
-                        themeMode: AppTheme.themeNotifier.value,
-                        theme: AppTheme.lightTheme,
-                        darkTheme: AppTheme.darkTheme,
-                        locale: state.locale,
-                        supportedLocales: AppLocalizations.supportedLocales,
-                        debugShowCheckedModeBanner: false,
-                        builder: (context, child) {
-                          return Directionality(
-                            textDirection: TextDirection.ltr,
-                            child: child!,
-                          );
-                        },
-                        home: const SplashView(),
-                      );
-                    });
-              });
+            return ValueListenableBuilder(
+                valueListenable: AppTheme.themeNotifier,
+                builder: (_, ThemeMode currentMode, __) {
+                  SystemChrome.setSystemUIOverlayStyle(
+                    AppTheme.themeMode == ThemeMode.light
+                        ? SystemUiOverlayStyle.dark
+                        : SystemUiOverlayStyle.light,
+                  );
+                  return MaterialApp(
+                    localizationsDelegates: const [
+                      AppLocalizations.delegate,
+                      GlobalMaterialLocalizations.delegate,
+                      GlobalCupertinoLocalizations.delegate,
+                      GlobalWidgetsLocalizations.delegate,
+                    ],
+                    themeMode: AppTheme.themeNotifier.value,
+                    theme: AppTheme.lightTheme,
+                    darkTheme: AppTheme.darkTheme,
+                    locale: state.locale,
+                    supportedLocales: AppLocalizations.supportedLocales,
+                    debugShowCheckedModeBanner: false,
+                    home: const SplashView(),
+                    builder: (context, child) {
+                      return Directionality(
+                          textDirection: TextDirection.ltr, child: child!);
+                    },
+                  );
+                });
+          });
         });
       }),
     );

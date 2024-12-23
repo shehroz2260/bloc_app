@@ -215,7 +215,7 @@ class UserModel {
       user = bloc.state.userData;
     }
     if (user.lat == 0 || user.lng == 0) {
-      return 232323232;
+      return (232323 * 0.001).toInt();
     }
 
     return ((Geolocator.distanceBetween(lat, lng, user.lat, user.lng)) * 0.001)

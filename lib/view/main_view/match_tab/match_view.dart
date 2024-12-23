@@ -320,7 +320,8 @@ class _MatchTabState extends State<MatchTab> {
                                     Container(
                                       height: 50,
                                       decoration: BoxDecoration(
-                                          color: Colors.black.withOpacity(0.5),
+                                          color: Colors.black
+                                              .withAlpha((0.5 * 255).toInt()),
                                           borderRadius: const BorderRadius.only(
                                             bottomLeft: Radius.circular(15),
                                             bottomRight: Radius.circular(15),

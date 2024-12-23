@@ -83,11 +83,11 @@ class _WaveBubbleState extends State<WaveBubble> {
       margin: const EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
           color: !widget.isSender
-              ? AppColors.redColor.withOpacity(0.15)
+              ? AppColors.redColor.withAlpha((0.15 * 255).toInt())
               : AppColors.borderGreyColor,
           border: Border.all(
             width: 1,
-            color: Colors.white.withOpacity(0.5),
+            color: Colors.white.withAlpha((0.5 * 255).toInt()),
           ),
           borderRadius: const BorderRadius.all(Radius.circular(14))),
       child: Row(
@@ -97,8 +97,7 @@ class _WaveBubbleState extends State<WaveBubble> {
               onTap: () async {
                 playerController1.playerState.isPlaying
                     ? await playerController1.pausePlayer()
-                    : await playerController1.startPlayer(
-                        finishMode: FinishMode.pause);
+                    : await playerController1.startPlayer(forceRefresh: false);
               },
               child: Container(
                   height: 24,

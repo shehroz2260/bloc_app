@@ -8,6 +8,8 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:intl/intl.dart';
 import 'package:video_compress/video_compress.dart';
 
+import '../model/char_model.dart';
+
 class AppFuncs {
   static String generateRandomString(int len) {
     var r = Random();
@@ -77,5 +79,19 @@ class AppFuncs {
     final thumbnailFile =
         await VideoCompress.getFileThumbnail(path, quality: 50, position: -1);
     return thumbnailFile;
+  }
+
+  static bool showTime(int index, List<ChatModel> messageList) {
+    if (index == messageList.length - 1) return true;
+
+    // if (messageList[index].messageTime == null || messageList[index + 1].messageTime == null) {
+    //   return false;
+    // }
+
+    Duration difference = messageList[index + 1]
+        .messageTime
+        .difference(messageList[index].messageTime);
+
+    return difference.inHours > 1;
   }
 }

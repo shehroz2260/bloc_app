@@ -23,8 +23,8 @@ class PostsView extends StatefulWidget {
 class _PostsViewState extends State<PostsView> {
   @override
   void initState() {
-    scrollController.addListener(onScroll);
-    context.read<PostBloc>().add(OnPostLoad(context: context));
+    // scrollController.addListener(onScroll);
+    context.read<PostBloc>().add(ListenPost(context: context));
     super.initState();
   }
 
@@ -45,16 +45,17 @@ class _PostsViewState extends State<PostsView> {
 
   ScrollController scrollController = ScrollController();
 
-  void onScroll() {
-    if (scrollController.position.pixels ==
-        scrollController.position.maxScrollExtent) {
-      context.read<PostBloc>().add(OnPostLoad(context: context));
-    }
-  }
+  // void onScroll() {
+  //   if (scrollController.position.pixels ==
+  //       scrollController.position.maxScrollExtent) {
+  //     context.read<PostBloc>().add(OnPostLoad(context: context));
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     final theme = AppTheme.of(context);
+
     return BlocBuilder<PostBloc, PostState>(builder: (context, state) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -84,7 +85,9 @@ class _PostsViewState extends State<PostsView> {
                   itemCount: state.postList.length,
                   controller: scrollController,
                   itemBuilder: (context, index) {
-                    return PostCards(data: state.postList[index]);
+                    return PostCards(
+                        data: state.postList[index],
+                        key: Key(state.postList[index].id));
                   }),
             )),
           ],

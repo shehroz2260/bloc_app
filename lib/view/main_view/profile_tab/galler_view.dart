@@ -88,7 +88,7 @@ class GallerView extends StatelessWidget {
                                         border: Border.all(
                                             color: AppColors.redColor),
                                         color: AppColors.whiteColor
-                                            .withOpacity(0.6)),
+                                            .withAlpha((0.6 * 255).toInt())),
                                     padding: const EdgeInsets.all(4),
                                     child: const Icon(
                                       Icons.close,

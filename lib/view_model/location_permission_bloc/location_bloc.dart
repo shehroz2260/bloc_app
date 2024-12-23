@@ -13,6 +13,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../utils/notification_utils.dart';
+import '../../view/account_creation_view/location_view.dart';
 import 'location_event.dart';
 import 'location_state.dart';
 
@@ -96,7 +97,17 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     }
   }
 
-  _onPublicallyLocation(OnPublically event, Emitter<LocationState> emit) {
+  _onPublicallyLocation(OnPublically event, Emitter<LocationState> emit) async {
+    await Future.wait([
+      Permission.location.isGranted,
+      Permission.locationWhenInUse.serviceStatus.isEnabled
+    ]).then((e) {
+      bool isLocationGranted = e[0];
+      bool serviceStatus = e[1];
+      if (!isLocationGranted || !serviceStatus) {
+        Go.offAll(event.context, const LocationPermissionScreen());
+      }
+    });
     var userBloc = event.context.read<UserBaseBloc>();
     var userData = userBloc.state.userData;
 

@@ -128,7 +128,7 @@ class CustomAdminNavigationBar extends StatelessWidget {
                   adminIcon[index],
                   color: index == currentIndex
                       ? AppColors.redColor
-                      : Colors.black.withOpacity(0.7),
+                      : Colors.black.withAlpha((0.7 * 255).toInt()),
                   size: 30,
                 )
               ],

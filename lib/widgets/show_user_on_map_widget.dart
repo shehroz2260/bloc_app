@@ -21,7 +21,7 @@ class ShowUserOnMapWidget extends StatelessWidget {
         child: Container(
           height: 152,
           decoration: BoxDecoration(
-            color: AppColors.blackColor.withOpacity(0.15),
+            color: AppColors.blackColor.withAlpha((0.15 * 255).toInt()),
             border: Border.all(color: const Color(0xFF31353C), width: 0.5),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 12.0),

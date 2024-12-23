@@ -81,7 +81,8 @@ class DeleteAccountDialogs {
                   child: Container(
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                        color: AppColors.redColor.withOpacity(0.2),
+                        color:
+                            AppColors.redColor.withAlpha((0.2 * 255).toInt()),
                         border: Border.all(color: AppColors.borderGreyColor),
                         borderRadius:
                             const BorderRadius.all(Radius.circular(3))),
