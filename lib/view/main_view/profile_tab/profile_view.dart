@@ -90,8 +90,8 @@ class _ProfileViewState extends State<ProfileView> {
                         padding: const EdgeInsets.all(4),
                         child: AppCacheImage(
                             imageUrl: state.userData.profileImage,
-                            height: 180.h,
-                            width: 180.h,
+                            height: 150.h,
+                            width: 150.h,
                             onTap: () {
                               Go.to(
                                   context,
@@ -112,7 +112,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 .copyWith(color: AppColors.blackColor)),
                       ],
                     ),
-                    AppHeight(height: 25.h),
+                    // AppHeight(height: 25.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -120,6 +120,7 @@ class _ProfileViewState extends State<ProfileView> {
                           padding: EdgeInsets.only(bottom: 40.h),
                           child: Showcaseview(
                             globalKey: key1,
+                            padding: EdgeInsets.zero,
                             title: AppLocalizations.of(context)!.settings,
                             tooltipPosition: TooltipPosition.bottom,
                             description:
@@ -137,6 +138,7 @@ class _ProfileViewState extends State<ProfileView> {
                           padding: EdgeInsets.only(top: 50.h),
                           child: Showcaseview(
                             globalKey: key2,
+                            padding: EdgeInsets.zero,
                             title: AppLocalizations.of(context)!.editProfile,
                             tooltipPosition: TooltipPosition.bottom,
                             description:
@@ -153,6 +155,7 @@ class _ProfileViewState extends State<ProfileView> {
                         Padding(
                           padding: EdgeInsets.only(bottom: 40.h),
                           child: Showcaseview(
+                            padding: EdgeInsets.zero,
                             globalKey: key3,
                             title: AppLocalizations.of(context)!.gallery,
                             tooltipPosition: TooltipPosition.bottom,
@@ -169,7 +172,7 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                       ],
                     ),
-                    AppHeight(height: 30.h)
+                    AppHeight(height: 20.h)
                   ],
                 );
               }),

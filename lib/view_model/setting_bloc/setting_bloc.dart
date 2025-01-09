@@ -10,9 +10,11 @@ import 'setting_event.dart';
 import 'setting_state.dart';
 
 class SettingBloc extends Bloc<SettingEvent, SettingState> {
-  SettingBloc() : super(SettingState(isOnNotification: false)) {
+  SettingBloc()
+      : super(SettingState(isOnNotification: false, isIgnitoMode: false)) {
     on<OnNotificationEvent>(_onNotification);
     on<OninitSetting>(_oninitSetting);
+    on<OnIgnitoModeEvent>(_onIgnitoMode);
   }
   _onNotification(OnNotificationEvent event, Emitter<SettingState> emit) async {
     if (!state.isOnNotification) {
@@ -37,13 +39,30 @@ class SettingBloc extends Bloc<SettingEvent, SettingState> {
     }
   }
 
+  _onIgnitoMode(OnIgnitoModeEvent event, Emitter<SettingState> emit) async {
+    if (!state.isOnNotification) {
+      var userBloc = event.context.read<UserBaseBloc>();
+      emit(state.copyWith(isIgnitoMode: event.isOn));
+      var user = userBloc.state.userData;
+      user = user.copyWith(ignitoMode: event.isOn);
+      userBloc.add(UpdateUserEvent(userModel: user));
+      NetworkService.updateUser(user);
+    } else {
+      var userBloc = event.context.read<UserBaseBloc>();
+      emit(state.copyWith(isIgnitoMode: event.isOn));
+      var user = userBloc.state.userData;
+      user = user.copyWith(ignitoMode: event.isOn);
+      userBloc.add(UpdateUserEvent(userModel: user));
+      NetworkService.updateUser(user);
+    }
+  }
+
   _oninitSetting(OninitSetting event, Emitter<SettingState> emit) {
     emit(state.copyWith(
-        isOnNotification: event.context
-            .read<UserBaseBloc>()
-            .state
-            .userData
-            .isOnNotification));
+        isOnNotification:
+            event.context.read<UserBaseBloc>().state.userData.isOnNotification,
+        isIgnitoMode:
+            event.context.read<UserBaseBloc>().state.userData.ignitoMode));
   }
 
   Future<bool> handleLocationPermission(BuildContext context) async {

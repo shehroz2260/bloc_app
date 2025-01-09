@@ -53,7 +53,8 @@ import 'view_model/location_permission_bloc/location_bloc.dart';
 import 'view_model/chat_bloc/chat_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-const testStripePublishKey = '';
+const testStripePublishKey =
+    'pk_test_51Poq3nRrhvPQKbL0xDAfF1lSSgY8Gx8ZSkTXLH2zcdg1nV05GWNiPlwtE41tdugWIiA5JvLi6RkQRKsp4PribGzq00CNhRWlN2';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);

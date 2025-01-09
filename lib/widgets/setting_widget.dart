@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../src/app_colors.dart';
 import '../src/app_text_style.dart';
 import '../src/width_hieght.dart';
-import '../view_model/setting_bloc/setting_bloc.dart';
-import '../view_model/setting_bloc/setting_event.dart';
-import '../view_model/setting_bloc/setting_state.dart';
 
 class SettiingWidget extends StatelessWidget {
   final IconData icon;
   final String title;
+  final String? subTitle;
   final void Function() onTap;
   final Color color;
   final bool isNotification;
+  final bool isVAlueOn;
+  final void Function(bool val)? onVAlueChanged;
   const SettiingWidget({
     super.key,
     this.isNotification = false,
+    this.isVAlueOn = false,
     required this.icon,
+    this.subTitle,
     required this.title,
+    this.onVAlueChanged,
     required this.onTap,
     required this.color,
   });
@@ -40,19 +41,20 @@ class SettiingWidget extends StatelessWidget {
             ),
             const AppWidth(width: 12),
             Expanded(
-                child: Text(title,
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title,
                     style:
-                        AppTextStyle.font20.copyWith(color: theme.textColor))),
+                        AppTextStyle.font20.copyWith(color: theme.textColor)),
+                if ((subTitle ?? "").isNotEmpty)
+                  Text(subTitle ?? "",
+                      style: AppTextStyle.font16
+                          .copyWith(color: theme.textColor, fontSize: 12)),
+              ],
+            )),
             isNotification
-                ? BlocBuilder<SettingBloc, SettingState>(
-                    builder: (context, state) {
-                    return Switch(
-                        value: state.isOnNotification,
-                        onChanged: (val) {
-                          context.read<SettingBloc>().add(
-                              OnNotificationEvent(isOn: val, context: context));
-                        });
-                  })
+                ? Switch(value: isVAlueOn, onChanged: onVAlueChanged)
                 : const Icon(Icons.arrow_forward_ios_outlined)
           ],
         ),

@@ -26,6 +26,7 @@ import '../../../src/go_file.dart';
 import '../../../view_model/admin_bloc/admin_nav_bloc/admin_nav_event.dart';
 import '../../../view_model/main_bloc/main_bloc.dart';
 import '../../../view_model/main_bloc/main_event.dart';
+import '../../../view_model/setting_bloc/setting_state.dart';
 import '../../../view_model/user_base_bloc/user_base_bloc.dart';
 import '../../../view_model/user_base_bloc/user_base_event.dart';
 import '../../../widgets/custom_button.dart';
@@ -165,15 +166,41 @@ class _SettingViewState extends State<SettingView> {
                       );
                     }),
                     if (!context.read<UserBaseBloc>().state.userData.isAdmin)
-                      SettiingWidget(
-                        color: Colors.purpleAccent.shade200,
-                        icon: Icons.notifications,
-                        isNotification: true,
-                        onTap: () {
-                          Go.to(context, const AboutUsView());
+                      BlocBuilder<SettingBloc, SettingState>(
+                        builder: (context, state) {
+                          return SettiingWidget(
+                            isVAlueOn: state.isOnNotification,
+                            color: Colors.purpleAccent.shade200,
+                            icon: Icons.notifications,
+                            isNotification: true,
+                            onTap: () {},
+                            onVAlueChanged: (val) {
+                              context.read<SettingBloc>().add(
+                                  OnNotificationEvent(
+                                      isOn: val, context: context));
+                            },
+                            title: AppLocalizations.of(context)!.notification,
+                          );
                         },
-                        title: AppLocalizations.of(context)!.notification,
                       ),
+                    if (!context.read<UserBaseBloc>().state.userData.isAdmin)
+                      BlocBuilder<SettingBloc, SettingState>(
+                          builder: (context, state) {
+                        return SettiingWidget(
+                          color: Colors.blueGrey.shade200,
+                          icon: Icons.visibility_off_outlined,
+                          isVAlueOn: state.isIgnitoMode,
+                          isNotification: true,
+                          onVAlueChanged: (val) {
+                            context.read<SettingBloc>().add(
+                                OnIgnitoModeEvent(context: context, isOn: val));
+                          },
+                          subTitle: AppLocalizations.of(context)!
+                              .withThisModeYourProfileSeeOnlyMutualFriends,
+                          onTap: () {},
+                          title: AppLocalizations.of(context)!.ignitoMode,
+                        );
+                      }),
                     if (!context.read<UserBaseBloc>().state.userData.isAdmin)
                       SettiingWidget(
                         color: Colors.amber.shade400,

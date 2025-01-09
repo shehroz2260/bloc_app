@@ -85,6 +85,10 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
       LoadingDialog.hideProgress(event.context);
       await NotificationUtils.fcmSubscribe(event.context);
+      if (event.isFromEdit) {
+        Go.back(event.context);
+        return;
+      }
       if (event.isFromOnboard) {
         Go.offAll(event.context, const WelcomeView());
       } else {
@@ -105,7 +109,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
       bool isLocationGranted = e[0];
       bool serviceStatus = e[1];
       if (!isLocationGranted || !serviceStatus) {
-        Go.offAll(event.context, const LocationPermissionScreen());
+        Go.to(event.context, const LocationPermissionScreen(isFromEdit: true));
       }
     });
     var userBloc = event.context.read<UserBaseBloc>();

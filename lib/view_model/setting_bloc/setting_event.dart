@@ -12,6 +12,15 @@ class OnNotificationEvent extends SettingEvent {
   });
 }
 
+class OnIgnitoModeEvent extends SettingEvent {
+  final bool isOn;
+  final BuildContext context;
+  OnIgnitoModeEvent({
+    required this.isOn,
+    required this.context,
+  });
+}
+
 class OninitSetting extends SettingEvent {
   final BuildContext context;
   OninitSetting({

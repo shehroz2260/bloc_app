@@ -6,9 +6,11 @@ abstract class LocationEvent {}
 class OnRequestPermissionEvent extends LocationEvent {
   final BuildContext context;
   final bool isFromOnboard;
+  final bool isFromEdit;
   OnRequestPermissionEvent({
     required this.context,
     required this.isFromOnboard,
+    required this.isFromEdit,
   });
 }
 

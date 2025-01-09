@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/repos/filter_repo.dart';
 import 'package:chat_with_bloc/repos/get_all_users.dart';
@@ -5,6 +8,7 @@ import 'package:chat_with_bloc/services/network_service.dart';
 import 'package:chat_with_bloc/utils/loading_dialog.dart';
 import 'package:chat_with_bloc/view_model/user_base_bloc/user_base_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../model/filter_model.dart';
 import '../../model/report_user_model.dart';
@@ -19,6 +23,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<LikeUser>(_onLikeUser);
     on<DisLikeUser>(_onDisLikeUser);
     on<OnReportUser>(_onReportUser);
+    on<USerListener>(_onUserListener);
+    on<SingleUserLinten>(_onSingleUserListen);
   }
 
   Future<List<ReportUserModel>> getReportedUser() async {
@@ -115,4 +121,74 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     if (options.isEmpty) return;
     add(RemoveUserFromList(userModel: event.userModel));
   }
+
+  _onUserListener(USerListener event, Emitter<HomeState> emit) async {
+    await emit.forEach(_onuserListener(event), onData: (value) {
+      return state.copyWith(userList: value.userList);
+    });
+  }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? subs;
+  Stream<HomeState> _onuserListener(USerListener event) async* {
+    subs = FirebaseFirestore.instance
+        .collection(UserModel.tableName)
+        .where("uid",
+            isNotEqualTo: FirebaseAuth.instance.currentUser?.uid ?? "")
+        .snapshots()
+        .listen((val) {
+      if (val.docChanges.isNotEmpty) {
+        var lsit = val.docChanges
+            .where((change) => change.type == DocumentChangeType.modified)
+            .toList();
+        var userList =
+            lsit.map((e) => UserModel.fromMap(e.doc.data()!)).toList();
+        for (final user in userList) {
+          add(SingleUserLinten(userModel: user, context: event.context));
+        }
+      }
+    });
+  }
+
+  _onSingleUserListen(SingleUserLinten event, Emitter<HomeState> emit) {
+    bool hasCommon = hasCommonElements(event.userModel.matches,
+        event.context.read<UserBaseBloc>().state.userData.matches);
+    log("^^^^^^^^^^^^^^^^^^^^$hasCommon");
+    if (event.userModel.ignitoMode) {
+      if (!hasCommon) {
+        state.userList.removeWhere((e) => e.uid == event.userModel.uid);
+        emit(state.copyWith(userList: state.userList));
+        log("^^^^^^^^^^^^^^^^^^^^${state.userList.length}");
+      }
+    } else {
+      var isContain = state.userList
+          .where((e) => e.uid == event.userModel.uid)
+          .toList()
+          .isEmpty;
+      if (isContain &&
+          !event.context
+              .read<UserBaseBloc>()
+              .state
+              .userData
+              .isLiked(event.userModel.uid) &&
+          !event.context
+              .read<UserBaseBloc>()
+              .state
+              .userData
+              .isDisLiked(event.userModel.uid)) {
+        state.userList.add(event.userModel);
+        emit(state.copyWith(userList: state.userList));
+      }
+      log("^^^^^^^^^^^^^^^^^^^^${state.userList.length}");
+    }
+  }
+}
+
+bool hasCommonElements(List list1, List list2) {
+  for (var item in list1) {
+    if (list2.contains(item)) {
+      return true;
+    }
+  }
+  return false;
 }

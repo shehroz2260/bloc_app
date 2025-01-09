@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:share_plus/share_plus.dart';
 import '../model/like_model.dart';
 import '../model/posts_model.dart';
 import '../src/app_colors.dart';
@@ -210,7 +211,12 @@ class _PostCardsState extends State<PostCards> {
                       Go.to(context, CommentView(postsModel: widget.data));
                     },
                     child: const Text("Comment")),
-                const Icon(Icons.share)
+                GestureDetector(
+                    onTap: () async {
+                      if (widget.data.imageList.isEmpty) return;
+                      Share.shareUri(Uri.parse(widget.data.imageList.first));
+                    },
+                    child: const Icon(Icons.share)),
               ],
             ),
           )

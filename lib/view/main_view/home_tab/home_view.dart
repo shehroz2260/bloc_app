@@ -43,6 +43,7 @@ class _HomeViewState extends State<HomeView> {
       context
           .read<HomeBloc>()
           .add(ONINITEvent(context: context, userBaseBloc: null));
+      context.read<HomeBloc>().add(USerListener(context: context));
     }
     super.initState();
   }

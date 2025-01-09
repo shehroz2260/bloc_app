@@ -50,3 +50,20 @@ class OnReportUser extends HomeEvent {
     required this.userModel,
   });
 }
+
+class USerListener extends HomeEvent {
+  final BuildContext context;
+  USerListener({
+    required this.context,
+  });
+}
+
+class SingleUserLinten extends HomeEvent {
+  final UserModel userModel;
+  final BuildContext context;
+
+  SingleUserLinten({
+    required this.userModel,
+    required this.context,
+  });
+}

@@ -63,6 +63,8 @@ dependencies:
   googleapis_auth: ^1.6.0
   showcaseview: ^3.0.0
   video_player: ^2.9.2
+  share_plus: ^10.1.3
+  font_awesome_flutter: ^10.8.0
   # flutter_sound: ^9.17.6
 dev_dependencies:
   flutter_test:

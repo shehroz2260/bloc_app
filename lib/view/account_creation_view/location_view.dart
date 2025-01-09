@@ -16,7 +16,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LocationPermissionScreen extends StatelessWidget {
   final bool isFromOnboard;
-  const LocationPermissionScreen({super.key, this.isFromOnboard = false});
+  final bool isFromEdit;
+  const LocationPermissionScreen(
+      {super.key, this.isFromOnboard = false, this.isFromEdit = false});
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +85,9 @@ class LocationPermissionScreen extends StatelessWidget {
             child: CustomNewButton(
               onTap: () => context.read<LocationBloc>().add(
                   OnRequestPermissionEvent(
-                      context: context, isFromOnboard: isFromOnboard)),
+                      context: context,
+                      isFromOnboard: isFromOnboard,
+                      isFromEdit: isFromEdit)),
               btnName: AppLocalizations.of(context)!.enableLocation,
             ),
           ),
@@ -95,6 +99,10 @@ class LocationPermissionScreen extends StatelessWidget {
               user = user.copyWith(isShowLocation: false);
               userBloc.add(UpdateUserEvent(userModel: user));
               NetworkService.updateUser(user);
+              if (isFromEdit) {
+                Go.back(context);
+                return;
+              }
               Go.offAll(context, const MainView());
             },
             child: Text("Skip",
