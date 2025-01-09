@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
-
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:chat_with_bloc/repos/filter_repo.dart';
 import 'package:chat_with_bloc/repos/get_all_users.dart';
@@ -62,6 +60,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       if (value.distance(event.context, event.userBaseBloc) >
               filterModel.distance &&
           filterModel.distance < 100) {
+        return state;
+      }
+      if (value.ignitoMode &&
+          !hasCommonElements(value.matches, cUser.matches)) {
         return state;
       }
       if (value.isAdmin) {
@@ -153,12 +155,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   _onSingleUserListen(SingleUserLinten event, Emitter<HomeState> emit) {
     bool hasCommon = hasCommonElements(event.userModel.matches,
         event.context.read<UserBaseBloc>().state.userData.matches);
-    log("^^^^^^^^^^^^^^^^^^^^$hasCommon");
     if (event.userModel.ignitoMode) {
       if (!hasCommon) {
         state.userList.removeWhere((e) => e.uid == event.userModel.uid);
         emit(state.copyWith(userList: state.userList));
-        log("^^^^^^^^^^^^^^^^^^^^${state.userList.length}");
       }
     } else {
       var isContain = state.userList
@@ -179,7 +179,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         state.userList.add(event.userModel);
         emit(state.copyWith(userList: state.userList));
       }
-      log("^^^^^^^^^^^^^^^^^^^^${state.userList.length}");
     }
   }
 }
